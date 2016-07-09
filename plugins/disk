@@ -1,0 +1,156 @@
+#!/bin/sh
+
+
+help(){
+    cat<<__EOF__
+    usage: m disk [ ls | list | info | fs | filesystems | ejectall | verify | repair | help ]
+
+    Examples:
+      m disk ls                                 # list disks
+      m disk list                               # list disks
+      m disk list /dev/disk0                    # list a specific disk
+
+      m disk fs                                 # list available filesystems for formatting
+      m disk filesystems                        # list available filesystems for formatting
+
+      m disk info /dev/disk0                    # display information
+
+      m disk ejectall                           # eject all mountable volumes
+
+      m disk verify volume  /Volume/MyVol       # verify volume
+      m disk verify disk /dev/disk0             # verify disk
+
+      m disk repair volume /Volume/MyVol        # repair volume
+      m disk repair disk /dev/disk0             # repair disk
+
+      m disk format MS-DOS MYNAME  /dev/disk2             # format the entire disk with a windows format (MS-DOS)
+      m disk format volume MS-DOS MYNAME /Volumes/myvol   # format the volume with a windows format(MS-DOS)
+
+      m disk reformat /Volumes/myvol                      # reformat a volume
+      m disk rename CURRENTNAME NEWNAME                   # rename a volume
+
+__EOF__
+}
+
+disk_ls(){
+    if [ -z "$1" ]; then
+        diskutil list
+    else
+        diskutil list $1
+    fi
+}
+
+disk_info(){
+    [ -z "$1" ] && help && exit 1
+    diskutil info $1
+}
+
+list_filesystems(){
+    diskutil listFilesystems
+}
+
+ejectall(){
+    osascript -e 'tell application "Finder" to eject (every disk whose ejectable is true)'
+}
+
+verify(){
+    case $1 in
+        volume)
+            [ -z "$2" ] && help && exit 1
+            diskutil verifyVolume $2
+            ;;
+        disk)
+            [ -z "$2" ] && help && exit 1
+            diskutil verifyDisk $2
+            ;;
+        *)
+            help
+            ;;
+    esac
+}
+
+repair(){
+    case $1 in
+        volume)
+            [ -z "$2" ] && help && exit 1
+            diskutil repairVolume $2
+            ;;
+        disk)
+            [ -z "$2" ] && help && exit 1
+            diskutil repairDisk $3
+            ;;
+        *)
+            help
+            ;;
+    esac
+}
+
+
+format(){
+
+    [ -z "$1" -o -z "$2" -o -z "$3" ] && help && exit 1
+
+    if [ "$1" == "volume" -a ! -z "$4" ]; then
+        diskutil eraseVolume $2 $3 $4
+    else
+        diskutil eraseDisk $1 $2 $3
+    fi
+}
+
+reformat(){
+    [ -z "$1" ] && help && exit 1
+    diskutil reformat $1
+}
+
+rename(){
+    [ -z "$1" -o -z "$2" ] && help && exit 1
+    diskutil rename $1 $2
+
+}
+
+case $1 in
+    help)
+        help
+        ;;
+    list|ls)
+        shift
+        disk_ls $@
+        ;;
+    info)
+        shift
+        disk_info $@
+        ;;
+    filesystems|fs)
+        shift
+        list_filesystems
+        ;;
+    ejectall)
+        shift
+        ejectall
+        ;;
+    verify)
+        shift
+        verify $@
+        ;;
+    repair)
+        shift
+        repair $@
+        ;;
+    format)
+        shift
+        format $@
+        ;;
+    reformat)
+        shift
+        reformat $@
+        ;;
+    rename)
+        shift
+        rename $@
+        ;;
+    *)
+        help
+        ;;
+esac
+
+# vim: set ts=4 sw=4 softtabstop=4 expandtab

@@ -1,0 +1,41 @@
+#!/bin/sh
+
+
+help(){
+    cat<<__EOF__
+    usage: m wallpaper [ /pat/to/file.jpg | help ]
+
+    Examples:
+      m wallpaper ./wallpapers/tree.jpg  # set wallpaper
+__EOF__
+}
+
+set_wallpaper(){
+    # osascript is up to Mountain Lion (10.8.5)
+    # the next version of mountain lion is Mavericks (10.9)
+    METHOD=$(sw_vers -productVersion | awk -F'.' '{ if ($1 < 10 || $2 < 9) { print "osascript" } else{ print "sqlite3"  } }')
+    case $METHOD in
+        osascript)
+            osascript -e "tell application \"Finder\" to set desktop picture to POSIX file \"${1}\""
+            ;;
+        sqlite3)
+            sqlite3 ~/Library/Application\ Support/Dock/desktoppicture.db "update data set value = '${1}'" && killall Dock
+            ;;
+        *)
+            echo "I can't set the wallpaper" && exit 1
+            ;;
+    esac
+}
+
+case $1 in
+    help)
+        help
+        ;;
+    *)
+        [ -z "$1" ] && help && exit 1
+        shift
+        set_wallpaper $1
+        ;;
+esac
+
+# vim: set ts=4 sw=4 softtabstop=4 expandtab

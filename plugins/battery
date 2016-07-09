@@ -1,0 +1,29 @@
+#!/bin/sh
+
+
+help(){
+    cat<<__EOF__
+    usage: m battery [ status | help ]
+
+    Examples:
+      m battery status    # get the battery status
+__EOF__
+}
+
+battery_satus(){
+    pmset -g batt
+}
+
+case $1 in
+    help)
+        help
+        ;;
+    status)
+        battery_satus
+        ;;
+    *)
+        help
+        ;;
+esac
+
+# vim: set ts=4 sw=4 softtabstop=4 expandtab

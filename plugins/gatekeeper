@@ -1,0 +1,72 @@
+#!/bin/sh
+
+# TODO: add more functionalities
+
+help(){
+    cat<<__EOF__
+    usage: m gatekeeper [ status | list | ls | enable | disable | create | help ]
+
+    Examples:
+      m gatekeeper status                               # gatekeeper status
+      m gatekeeper list                                 # list rules
+
+      m gatekeeper enable                               # enable gatekeeper
+      m gatekeeper disable                              # disable gatekeeper
+
+      m gatekeeper enable MYRULE                        # enable rule
+      m gatekeeper disable MYRULE                       # disable rule
+
+      m gatekeeper create  RULENAME /path/to/program    #  Create a rule for the application
+__EOF__
+}
+
+
+gk_list(){
+   if [ -z "$1" ]; then
+       spctl --list
+   else
+       spctl --list --label "$1"
+   fi
+}
+
+enable(){
+    if [ -z "$1" ]; then
+        spctl --master-enable
+    else
+        spctl --enable --label "$1"
+    fi
+}
+
+disable(){
+    if [ -z "$1" ]; then
+        spctl --master-disable
+    else
+        spctl --disable --label "$1"
+    fi
+}
+
+case $1 in
+    help)
+        help
+        ;;
+    status)
+        spctl --status
+        ;;
+    list|ls)
+        shift
+        gk_list "$*"
+        ;;
+    enable)
+        shift
+        enable "$*"
+        ;;
+    disable)
+        shift
+        disable "$*"
+        ;;
+    *)
+        help
+        ;;
+esac
+
+# vim: set ts=4 sw=4 softtabstop=4 expandtab

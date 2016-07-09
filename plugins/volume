@@ -1,0 +1,64 @@
+#!/bin/sh
+
+
+help(){
+    cat<<__EOF__
+    usage:  m volume [ level(0-100) | mute | unmute | ismute ]
+
+    Examples:
+      m volume 70     # set the volume to 70 %
+      m volume        # get the volume level
+      m volume mute   # set mute
+      m volume unmute # unset mute
+      m volume ismute # check the volume status
+__EOF__
+}
+
+mute(){
+    osascript -e "set volume output muted true"
+    echo "Vol, Mute: true "
+}
+
+unmute(){
+    osascript -e "set volume output muted false"
+    echo "Vol, Mute: false"
+
+}
+
+is_mute(){
+    VALUE=$(osascript -e 'output muted of (get volume settings)')
+    echo "Vol, is mute: ${VALUE}"
+}
+
+set_vol(){
+    osascript -e "set volume output volume $1"
+    echo "Vol: $1"
+}
+
+get_vol(){
+    VALUE=$(osascript -e "output volume of (get volume settings)")
+    echo "Vol: $VALUE"
+}
+
+case $1 in
+    [0-9]*)
+        set_vol $1
+        ;;
+    mute)
+        mute
+        ;;
+    unmute)
+        unmute
+        ;;
+    ismute)
+        is_mute
+        ;;
+    help)
+        help
+        ;;
+    *)
+        get_vol
+        ;;
+esac
+
+# vim: set ts=4 sw=4 softtabstop=4 expandtab

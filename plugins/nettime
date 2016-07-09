@@ -1,0 +1,33 @@
+#!/bin/sh
+
+
+help(){
+    cat<<__EOF__
+    usage: m nettime [ status | enable | disable | help ]
+
+    Examples:
+      m nettime status      # status of the network time service
+      m nettime enable      # enable clock to use network time
+      m nettime disable     # disable clock to use network time
+__EOF__
+}
+
+case $1 in
+    help)
+        help
+        ;;
+    status)
+        sudo systemsetup getusingnetworktime
+        ;;
+    enable)
+        sudo systemsetup setusingnetworktime on
+        ;;
+    disable)
+        sudo systemsetup setusingnetworktime off
+        ;;
+    *)
+        help
+        ;;
+esac
+
+# vim: set ts=4 sw=4 softtabstop=4 expandtab

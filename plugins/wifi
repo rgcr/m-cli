@@ -1,0 +1,85 @@
+#!/bin/sh
+
+
+_W_DEVICE=${_W_DEVICE:-en0}
+
+help(){
+    cat<<__EOF__
+    usage:  m wifi [ scan | off | on | connect | help ]
+
+    Examples:
+    Examples:
+      m wifi status                  # wifi status
+      m wifi scan                    # scan wifi
+      m wifi showwpassword mywifi    # show wifi network password
+      m wifi history                 # wifi connection history
+      m wifi off                     # turn off your wifi
+      m wifi on                      # turn on your wifi
+      m wifi connect ESSID PASSWORD  # join a wifi network
+__EOF__
+}
+
+wifi_status(){
+    /System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I
+}
+
+wifi_scan(){
+    sudo /System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -s
+}
+
+wifi_history(){
+    defaults read /Library/Preferences/SystemConfiguration/com.apple.airport.preferences | grep LastConnected -A 7
+}
+
+wifi_showpassword(){
+    [ -z "$1" ] && help && exit 1
+    security find-generic-password -D "AirPort network password" -a $1 -gw
+}
+
+wifi_off(){
+    networksetup -setairportpower ${_W_DEVICE} off
+}
+
+wifi_on(){
+    networksetup -setairportpower ${_W_DEVICE} on
+}
+
+connect_network(){
+    [ -z "$1" -o -z "$2" ] && help
+    networksetup -setairportnetwork ${_W_DEVICE} $1 $@
+}
+
+case $1 in
+    help)
+        help
+        ;;
+    scan)
+        wifi_scan
+        ;;
+    status)
+        wifi_status
+        ;;
+    off)
+        wifi_off
+        ;;
+    on)
+        wifi_on
+        ;;
+    connect)
+        shift
+        connect_network $@
+        ;;
+    history)
+        shift
+        wifi_history
+        ;;
+    showpassword)
+        shift
+        wifi_showpassword $@
+        ;;
+    *)
+        help
+        ;;
+esac
+
+# vim: set ts=4 sw=4 softtabstop=4 expandtab

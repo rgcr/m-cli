@@ -1,0 +1,40 @@
+#!/bin/sh
+
+
+help(){
+    cat<<__EOF__
+    usage: m firewall [ status | enable | disable | add | help ]
+
+    Examples:
+       m firewall status                # Show status
+       m firewall enable                # Enable firewall
+       m firewall disable               # Disable firewall
+       m firewall add /path/to/file     # Add app to firewall
+__EOF__
+}
+
+
+
+case $1 in
+    help)
+        help
+        ;;
+    status)
+        sudo /usr/libexec/ApplicationFirewall/socketfilterfw --getglobalstate
+        ;;
+    enable)
+        sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on
+        ;;
+    disable)
+        sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate off
+        ;;
+    add)
+        [ -z "$2" ] && help && exit 1
+        sudo /usr/libexec/ApplicationFirewall/socketfilterfw --add $2
+        ;;
+    *)
+        help
+        ;;
+esac
+
+# vim: set ts=4 sw=4 softtabstop=4 expandtab

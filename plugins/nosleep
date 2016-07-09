@@ -1,0 +1,43 @@
+#!/bin/sh
+
+
+help(){
+    cat<<__EOF__
+    usage: m nosleep [ until | help ]
+
+    Examples:
+      m nosleep until 3600            # no sleep until 3600 seconds
+      m nosleep until my_script.sh    # no sleep until the script ends
+__EOF__
+}
+
+
+nosleep_until(){
+    case $1 in
+        [0-9]*)
+            caffeinate -u -t $1
+            ;;
+        *)
+            [ ! -z "$1" ] && caffeinate $@
+            ;;
+    esac
+
+}
+
+
+
+case $1 in
+    help)
+        help
+        ;;
+    until)
+        shift  # remove "until" arg
+        nosleep_until $@
+        ;;
+
+    *)
+        help
+        ;;
+esac
+
+# vim: set ts=4 sw=4 softtabstop=4 expandtab

@@ -1,0 +1,35 @@
+#!/bin/sh
+
+
+help(){
+    cat<<__EOF__
+    usage:  m restart [ -f | --force | help ]
+
+    Examples:
+      m restart     # restart computer (needs confirmation)
+      m restart -f  # restart computer (without confirmation)
+__EOF__
+}
+
+restart(){
+    osascript -e 'tell app "loginwindow" to «event aevtrrst»'
+}
+
+force_restart(){
+   osascript -e 'tell app "System Events" to restart'
+}
+
+
+case $1 in
+    help)
+        help
+        ;;
+    -f|--force)
+        force_restart
+        ;;
+    *)
+        restart
+        ;;
+esac
+
+# vim: set ts=4 sw=4 softtabstop=4 expandtab
