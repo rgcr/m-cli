@@ -1,0 +1,36 @@
+#!/bin/sh
+
+
+help(){
+    cat<<__EOF__
+    usage: m safeboot [ status | enable | disable | help ]
+
+    Examples:
+      m safeboot status     # get the boot args
+      m safeboot enable     # enable safe boot
+      m safeboot disable    # disable safeboot
+__EOF__
+}
+
+
+case $1 in
+    help)
+        help
+        ;;
+    enable)
+        sudo nvram boot-args="-x"
+        echo "safeboot: true "
+        ;;
+    disable)
+        sudo nvram boot-args=""
+        echo "safeboot: false"
+        ;;
+    status)
+        nvram boot-args
+        ;;
+    *)
+        help
+        ;;
+esac
+
+# vim: set ts=4 sw=4 softtabstop=4 expandtab

@@ -1,0 +1,32 @@
+#!/bin/sh
+
+
+help(){
+    cat<<__EOF__
+    usage: m timezone [ list | ls | set | help ]
+
+    Examples:
+      m timezone                    # get current timezone
+      m timezone ls                 # list available timezones
+      m timezone set Europe/Berlin  # set timezone
+__EOF__
+}
+
+
+case $1 in
+    help)
+        help
+        ;;
+    list|ls)
+        sudo systemsetup -listtimezones
+        ;;
+    set)
+        [ -z "$2" ] && help && exit 1;
+        sudo systemsetup -settimezone $2
+        ;;
+    *)
+        sudo systemsetup -gettimezone
+        ;;
+esac
+
+# vim: set ts=4 sw=4 softtabstop=4 expandtab

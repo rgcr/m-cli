@@ -1,0 +1,70 @@
+#!/bin/sh
+
+source ${MPATH}/lib/functions.sh
+
+
+# TODO:
+# * include a function to delete older directories by days or mins
+# * include a function to delete newest directories by days or mins
+
+help(){
+    cat<<__EOF__
+    usage: m dir [ tree | delete | help ]
+
+    Examples:
+      m dir tree        # tree view of folders in the current path
+      m dir tree /path  # tree view of folders in a specific path
+
+      m dir delete empty          # delete empty folders recursively in the current path
+      m dir delete empty /path    # delete empty folders recursively in a specific path
+__EOF__
+
+}
+
+tree_dirs(){
+    dir=${1:-.}
+    ls -R ${dir}| grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
+}
+
+
+delete_empty(){
+    DIRS=${@:-.}
+    echo "Folders to be deleted: "
+    find $DIRS -type d -empty -print
+    confirm && find $DIRS -type d -empty -delete
+}
+
+
+
+delete(){
+    case $1 in
+        empty)
+            shift;
+            delete_empty $@
+            ;;
+        *)
+            help && exit 1
+            ;;
+    esac
+}
+
+
+
+case $1 in
+    help)
+        help
+        ;;
+    tree)
+        shift
+        tree_dirs $@
+        ;;
+    delete)
+        shift;
+        delete $@
+        ;;
+    *)
+        help
+        ;;
+esac
+
+# vim: set ts=4 sw=4 softtabstop=4 expandtab

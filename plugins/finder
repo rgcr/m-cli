@@ -1,0 +1,48 @@
+#!/bin/sh
+
+# TODO: add more functionalities
+
+help(){
+    cat<<__EOF__
+    usage: m finder [ showhiddenfiles | help ]
+
+    Examples:
+      m showhiddenfiles           # get the current status
+      m showhiddenfiles YES       # show hidden files
+      m showhiddenfiles NO        # no show hidden files
+__EOF__
+}
+
+hidden_files(){
+    case $1 in
+        [yY][eE][sS])
+            echo "Show Hiiden files: YES"
+            defaults write com.apple.finder AppleShowAllFiles YES
+            ;;
+        [nN][oO])
+            echo "Show Hiiden files: NO"
+            defaults write com.apple.finder AppleShowAllFiles NO
+            ;;
+        *)
+            echo "Show Hidden files: $(defaults read com.apple.finder AppleShowAllFiles)"
+            exit 1
+            ;;
+    esac
+    killall Finder
+}
+
+
+case $1 in
+    help)
+        help
+        ;;
+    showhiddenfiles)
+        shift
+        hidden_files $@
+        ;;
+    *)
+        help
+        ;;
+esac
+
+# vim: set ts=4 sw=4 softtabstop=4 expandtab

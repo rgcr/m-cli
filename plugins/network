@@ -1,0 +1,65 @@
+#!/bin/sh
+
+
+help(){
+    cat<<__EOF__
+    usage:  m network [ ls | list | location | help ]
+
+    Examples:
+      m network ls                          # list network interfaces
+      m network location                    # get current location
+      m network location create XYZ         # create a location
+      m network location delete XYZ         # delete a location
+      m network location switch XYZ         # switch location
+__EOF__
+
+}
+
+list_netservices(){
+    networksetup -listallhardwareports
+}
+
+
+location(){
+    case $1 in
+        create)
+            [ -z "$2" ] && help && exit 1;
+            networksetup -createlocation $2
+            ;;
+        delete|rm)
+            [ -z "$2" ] && help && exit 1;
+            networksetup -deletelocation $2
+            ;;
+        switch)
+            [ -z "$2" ] && help && exit 1;
+            networksetup -switchtolocation $2
+            ;;
+        list|ls)
+            echo "Locations: "
+            networksetup -listlocations
+            ;;
+        *)
+            echo "Current location: $(networksetup -getcurrentlocation)"
+            ;;
+    esac
+}
+
+
+
+case $1 in
+    help)
+        help
+        ;;
+    ls|list)
+        list_netservices
+        ;;
+    location)
+        shift
+        location $@
+        ;;
+    *)
+        help
+        ;;
+esac
+
+# vim: set ts=4 sw=4 softtabstop=4 expandtab

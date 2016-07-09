@@ -1,0 +1,32 @@
+#!/bin/sh
+
+
+help(){
+    cat<<__EOF__
+    usage: m trash [ clean | help ]
+
+    Examples:
+      m trash clean     # clean trash
+__EOF__
+}
+
+clean_trash(){
+    [ ! -e "$HOME/.Trash"  ] && echo "Trash not found" && exit 1
+    chflags -R nouchg $HOME/.Trash/*
+    rm -rf $HOME/.Trash/*
+
+}
+
+case $1 in
+    help)
+        help
+        ;;
+    clean)
+        clean_trash
+        ;;
+    *)
+        help
+        ;;
+esac
+
+# vim: set ts=4 sw=4 softtabstop=4 expandtab
