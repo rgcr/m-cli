@@ -4,6 +4,10 @@
 
 It doesn't have dependencies, it's simple, modular and extensible.
 
+## Installation
+
+`curl -fsSL https://raw.githubusercontent.com/rgcr/m-cli/master/install.sh | sh`
+
 ## Usage
 
 ```
