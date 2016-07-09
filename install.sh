@@ -42,7 +42,7 @@ Installed successfully!
 
 Please add the following line to your .bashrc or .zshrc or .profile:
 
-export \$PATH=\$PATH:${INSTALL_DIR}/${PKG}
+export PATH=\$PATH:${INSTALL_DIR}/${PKG}
 
 
 __EOF__
