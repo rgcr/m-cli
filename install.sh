@@ -16,7 +16,7 @@ install_from_git(){
     if [ -e "${INSTALL_DIR}/${PKG}" ]; then
         echo "${PKG} Is already installed"
         echo "Updating ${PKG} from git"
-        command git --git-dir="${INSTALL_DIR}/${PKG}/.git" --work-tree="${INSTALL_DIR}/${PKG}" fetch --all || {
+        command git --git-dir="${INSTALL_DIR}/${PKG}/.git" --work-tree="${INSTALL_DIR}/${PKG}" fetch --depth=1 || {
             echo >&2 "Failed to fetch changes => ${GIT_URL}"
             exit 1
         }
