@@ -6,6 +6,8 @@ It doesn't have dependencies, it's simple, modular and extensible.
 
 ## Installation
 
+To **install** or **update** m-cli you can run this command:
+
 `curl -fsSL https://raw.githubusercontent.com/rgcr/m-cli/master/install.sh | sh`
 
 ## Usage
@@ -15,7 +17,11 @@ It doesn't have dependencies, it's simple, modular and extensible.
   Swiss Army Knife for Mac OS X ! 
 
 
-usage:  m COMMAND [help]
+usage:  m [OPTIONS] COMMAND [help]
+
+    OPTIONS
+        --update        update m-cli to the last version
+        --uninstall     uninstall m-cli
 
     COMMANDS:
         help
