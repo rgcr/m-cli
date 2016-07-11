@@ -26,7 +26,7 @@ usage:  m [OPTIONS] COMMAND [help]
 __EOF__
 
     for i in ${MPATH}/plugins/*; do
-        echo "        ${i##*/}"
+        [ ! -L "$i" -a -f "$i"  ] && echo "        ${i##*/}"
     done
     exit 1
 }
@@ -45,7 +45,7 @@ esac
 
 COMMAND=$1; shift;
 
-[ ! -f ${MPATH}/plugins/${COMMAND} ] && usage #_die "There is no command ${COMMAND}";
+[ ! -f ${MPATH}/plugins/${COMMAND} ] && usage
 ${MPATH}/plugins/${COMMAND} $@
 
 
