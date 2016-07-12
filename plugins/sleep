@@ -1,0 +1,22 @@
+#!/bin/sh
+
+
+help(){
+    cat<<__EOF__
+    usage: m sleep [ help ]
+
+    Examples:
+      m sleep       #  put the mac to sleep
+__EOF__
+}
+
+case $1 in
+    help)
+        help
+        ;;
+    *)
+        pmset sleepnow
+        ;;
+esac
+
+# vim: set ts=4 sw=4 softtabstop=4 expandtab
