@@ -1,0 +1,129 @@
+#!/bin/sh
+
+
+help(){
+    cat<<__EOF__
+    usage: m user [ list | ls | info | create | delete | help ]
+
+    Examples:
+      m user ls                # list users
+      m user info demouser     # display user information
+
+      m user create            # create a user, it will ask you the below information
+                                    Username:
+                                    Full name:
+                                    Shell [/bin/bash]:
+                                    Password:
+
+      m user delete demouser   # delete user
+__EOF__
+}
+
+search_byname(){
+    # dscl . -search always returns 0
+    # dscl . -search /Users name "${1}" > /dev/null 2>&1
+    dscl . -list /Users | grep -i "${1}" >/dev/null 2>&1
+}
+
+user_ls(){
+    dscl . -list /Users uid
+}
+
+
+user_info(){
+    [ -z "$1" ] && help && exit 1
+
+    dscl . -read "/Users/$1"
+}
+
+remove_user_from_group(){
+    [ -z "$1" -o -z "$2" ] && help && exit 1
+    sudo dscl . -delete /Groups/$2 GroupMembership $1
+}
+
+groups_user_belongs(){
+    [ -z "$1" ] && help && exit 1
+    sudo dscl . -list /groups GroupMembership | grep -i "${1}" | awk '{print $1}'
+}
+
+user_create(){
+
+    #SECONDARY_GROUPS=""  # for a non-admin user
+    #SECONDARY_GROUPS="admin _lpadmin _appserveradm _appserverusr" # for an admin user
+
+
+    LAST_ID=$(dscl . -list /Users UniqueID | awk '{print $2}' | sort -n | tail -1)
+    LAST_ID=$(expr $LAST_ID + 1)
+
+    read -r -p "Username: " USERNAME
+    read -r -p "Full name: " FULLNAME
+    read -r -p "Shell [/bin/bash]: " USERSHELL
+    USERSHELL=${USERSHELL:-/bin/bash}
+    read -s -r -p "Password: " PASSWORD
+
+    echo "\n"
+    [ -z "${USERNAME}" ] && echo "Enter a username" && exit 1
+    [ -z "${FULLNAME}" ] && echo "Enter a real name" && exit 1
+    [ -z "${PASSWORD}" ] && echo "Enter a password" && exit 1
+
+    echo "Creating user..."
+    sudo dscl . -create /Users/${USERNAME}
+    sudo dscl . -create /Users/${USERNAME} UserShell ${USERSHELL}
+    sudo dscl . -create /Users/${USERNAME} RealName "${FULLNAME}"
+    sudo dscl . -create /Users/${USERNAME} UniqueID "${LAST_ID}"
+    # staff group by default
+    sudo dscl . -create /Users/${USERNAME} PrimaryGroupID 20
+    sudo dscl . -create /Users/${USERNAME} NFSHomeDirectory /Users/${USERNAME}
+    # set password
+    sudo dscl . -passwd /Users/${USERNAME} ${PASSWORD}
+
+    # Create the home directory
+    sudo createhomedir -c -u ${USERNAME} 2>/dev/null
+
+    echo "Created user ${USERNAME} - ${FULLNAME} (${LAST_ID})"
+}
+
+
+user_delete(){
+    [ -z "$1" ] && help && exit
+    if search_byname "$1"; then
+        sudo dscl . -delete "/Users/${1}"
+        sudo rm -rf /Users/${1} 2>/dev/null
+
+        for group in $(groups_user_belongs $1); do
+            remove_user_from_group $1 $group
+        done
+
+        echo "\"${1}\" was deleted!"
+    else
+        echo "\"${1}\" not found, try other one"
+    fi
+}
+
+
+
+case $1 in
+    help)
+        help
+        ;;
+    list|ls)
+        user_ls
+        ;;
+    info)
+        shift
+        user_info $@
+        ;;
+    create)
+        shift
+        user_create
+        ;;
+    delete)
+        shift
+        user_delete $@
+        ;;
+    *)
+        help
+        ;;
+esac
+
+# vim: set ts=4 sw=4 softtabstop=4 expandtab
