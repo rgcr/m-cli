@@ -31,6 +31,7 @@ usage:  m [OPTIONS] COMMAND [help]
         finder
         firewall
         gatekeeper
+        hostname
         info
         lock
         ntp
@@ -136,6 +137,17 @@ usage:  m [OPTIONS] COMMAND [help]
 
       m gatekeeper create  RULENAME /path/to/program    #  Create a rule for the application
 
+```
+
+#### Hostname:
+```
+    usage: m hostname [ help ]
+
+    Examples:
+      m hostname                # get the current hostname information (computername, hostname, localhostname and netbiosname)
+      m hostname newhostname    # set a new hostname (computarname, hostname, localhostname, netbiosname)
+
+      m hostname help           # only shows this help
 ```
 
 #### Info:
