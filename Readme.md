@@ -42,6 +42,7 @@ usage:  m [OPTIONS] COMMAND [help]
         safeboot
         screensaver
         shutdown
+        sleep
         timezone
         trash
         volume
@@ -247,6 +248,14 @@ usage:  m [OPTIONS] COMMAND [help]
     Examples:
       m shutdown     # shutdown computer (needs confirmation)
       m shutdown -f  # shutdown computer (without confirmation)
+```
+
+#### Sleep:
+```
+    usage: m sleep [ help ]
+
+    Examples:
+      m sleep       #  put the mac to sleep
 ```
 
 #### Timezone:
