@@ -1,8 +1,16 @@
 #  m-cli
 
-:boom: Swiss Army Knife for Mac OS X !
+:boom: **Swiss Army Knife for Mac OS X !**
 
-It doesn't have dependencies, it's simple, modular and extensible.
+## The difference
+
+**m-cli** differs from other mac command line tools in that:
+
+* Its main purpose is to manage administrative tasks and do it easier
+* You don't need any 3rd party tool to install it because it doesn't have dependencies
+* The installation is very easy and doesn't require intervention
+* It only uses OS X commands
+
 
 ## Installation
 
