@@ -145,7 +145,7 @@ usage:  m [OPTIONS] COMMAND [help]
       m lock      # lock session
 ```
 
-#### ntp:
+#### Ntp:
 ```
     usage: m ntp [ status | enable | disable | set | help ]
 
@@ -229,9 +229,10 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Trash:
 ```
-    usage: m trash [ clean | help ]
+    usage: m trash [ status | clean | help ]
 
     Examples:
+      m trash status    # get trash info
       m trash clean     # clean trash
 ```
 
