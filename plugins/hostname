@@ -1,0 +1,48 @@
+#!/bin/sh
+
+
+help(){
+    cat<<__EOF__
+    usage: m hostname [ help ]
+
+    Examples:
+      m hostname                # get the current hostname information (computername, hostname, localhostname and netbiosname)
+      m hostname newhostname    # set a new hostname (computarname, hostname, localhostname, netbiosname)
+
+      m hostname help           # only shows this help
+__EOF__
+}
+
+
+show_hostname(){
+    sudo scutil --get ComputerName | awk '{print "ComputerName: ", $1}'
+    sudo scutil --get HostName | awk '{print "HostName: ", $1}'
+    sudo scutil --get LocalHostName | awk '{print "LocalHostName: ", $1}'
+    sudo defaults read /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName | awk '{print "NetBIOSName: " $1}'
+
+}
+
+
+set_hostname(){
+    echo "Changing hostname to: $1"
+    sudo scutil --set ComputerName "$1" && \
+        sudo scutil --set HostName "$1" && \
+        sudo scutil --set LocalHostName "$1" && \
+        sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "$1"
+}
+
+
+case $1 in
+    help)
+        help
+        ;;
+    *)
+        if [ -z "$1" ]; then
+            show_hostname
+        else
+            set_hostname $1
+        fi
+        ;;
+esac
+
+# vim: set ts=4 sw=4 softtabstop=4 expandtab
