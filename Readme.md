@@ -32,7 +32,7 @@ usage:  m [OPTIONS] COMMAND [help]
         firewall
         gatekeeper
         lock
-        nettime
+        ntp
         network
         nosleep
         restart
@@ -145,14 +145,15 @@ usage:  m [OPTIONS] COMMAND [help]
       m lock      # lock session
 ```
 
-#### Nettime:
+#### ntp:
 ```
-    usage: m nettime [ status | enable | disable | help ]
+    usage: m ntp [ status | enable | disable | set | help ]
 
     Examples:
-      m nettime status      # status of the network time service
-      m nettime enable      # enable clock to use network time
-      m nettime disable     # disable clock to use network time
+      m ntp status                          # status of the network time service
+      m ntp enable                          # enable clock to use network time
+      m ntp disable                         # disable clock to use network time
+      m ntp set timehost1.net.sap.corp      # set network time server
 ```
 
 #### Network:

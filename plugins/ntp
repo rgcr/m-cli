@@ -1,0 +1,39 @@
+#!/bin/sh
+
+
+help(){
+    cat<<__EOF__
+    usage: m ntp [ status | enable | disable | set | help ]
+
+    Examples:
+      m ntp status                          # status of the network time service
+      m ntp enable                          # enable clock to use network time
+      m ntp disable                         # disable clock to use network time
+      m ntp set timehost1.net.sap.corp      # set network time server
+__EOF__
+}
+
+case $1 in
+    help)
+        help
+        ;;
+    status)
+        sudo systemsetup -getusingnetworktime
+        sudo systemsetup -getnetworktimeserver 2>/dev/null
+        ;;
+    enable)
+        sudo systemsetup -setusingnetworktime on
+        ;;
+    disable)
+        sudo systemsetup -setusingnetworktime off
+        ;;
+    set)
+        [ -z "$2" ] && help && exit 1
+        sudo systemsetup -setnetworktimeserver "$2"
+        ;;
+    *)
+        help
+        ;;
+esac
+
+# vim: set ts=4 sw=4 softtabstop=4 expandtab
