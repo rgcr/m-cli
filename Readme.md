@@ -126,9 +126,9 @@ usage:  m [OPTIONS] COMMAND [help]
     usage: m finder [ showhiddenfiles | help ]
 
     Examples:
-      m showhiddenfiles           # get the current status
-      m showhiddenfiles YES       # show hidden files
-      m showhiddenfiles NO        # no show hidden files
+      m finder showhiddenfiles           # get the current status
+      m finder showhiddenfiles YES       # show hidden files
+      m finder showhiddenfiles NO        # no show hidden files
 ```
 
 #### Firewall:
