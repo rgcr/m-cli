@@ -26,6 +26,7 @@ usage:  m [OPTIONS] COMMAND [help]
     COMMANDS:
         help
         battery
+        bluetooth
         dir
         disk
         finder
@@ -55,6 +56,16 @@ usage:  m [OPTIONS] COMMAND [help]
 
     Examples:
       m battery status    # get the battery status
+```
+
+#### Bluetooth:
+```
+    usage: m bluetooth [ status | enable | disable | help ]
+
+    Examples:
+      m bluetooth status    # bluetooth status
+      m bluetooth enable    # turn on bluetooth
+      m bluetooth disable   # turn off bluetooth
 ```
 
 
