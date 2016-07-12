@@ -31,6 +31,7 @@ usage:  m [OPTIONS] COMMAND [help]
         finder
         firewall
         gatekeeper
+        info
         lock
         ntp
         network
@@ -135,6 +136,14 @@ usage:  m [OPTIONS] COMMAND [help]
 
       m gatekeeper create  RULENAME /path/to/program    #  Create a rule for the application
 
+```
+
+#### Info:
+```
+    usage: m info [ help ]
+
+    Examples:
+      m info        #  print Mac OS X operating system version information
 ```
 
 #### Lock:
