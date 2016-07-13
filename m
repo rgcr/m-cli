@@ -18,7 +18,7 @@ usage(){
 usage:  m [OPTIONS] COMMAND [help]
 
     OPTIONS
-        --update        update m-cli to the last version
+        --update        update m-cli to the latest version
         --uninstall     uninstall m-cli
 
     COMMANDS:
