@@ -205,6 +205,7 @@ usage:  m [OPTIONS] COMMAND [help]
     Examples:
       m network ls                          # list network interfaces
       m network location                    # get current location
+      m network location ls                 # list locations
       m network location create XYZ         # create a location
       m network location delete XYZ         # delete a location
       m network location switch XYZ         # switch location
