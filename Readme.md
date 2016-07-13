@@ -7,7 +7,7 @@
 **m-cli** differs from other mac command line tools in that:
 
 * Its main purpose is to manage administrative tasks and do it easier
-* It doesn't install anything because it doesn't have dependencies, you don't need any 3rd party tool
+* It doesn't install 3rd party tools because it doesn't have dependencies
 * The installation is very easy and doesn't require intervention
 * It only uses OS X commands
 
