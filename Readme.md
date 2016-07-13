@@ -28,7 +28,7 @@ To **install** or **update** m-cli you can run this command:
 usage:  m [OPTIONS] COMMAND [help]
 
     OPTIONS
-        --update        update m-cli to the last version
+        --update        update m-cli to the lastest version
         --uninstall     uninstall m-cli
 
     COMMANDS:
