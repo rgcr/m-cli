@@ -10,7 +10,7 @@ help(){
 __EOF__
 }
 
-battery_satus(){
+battery_status(){
     pmset -g batt
 }
 
@@ -19,7 +19,7 @@ case $1 in
         help
         ;;
     status)
-        battery_satus
+        battery_status
         ;;
     *)
         help
