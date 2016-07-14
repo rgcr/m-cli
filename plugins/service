@@ -1,0 +1,118 @@
+#!/bin/sh
+
+LAUNCHCTLPATHS=( \
+    $HOME/Library/LaunchAgents \
+    /Library/LaunchAgents \
+    /Library/LaunchDaemons \
+    /System/Library/LaunchAgents \
+    /System/Library/LaunchDaemons \
+    )
+
+help(){
+    cat<<__EOF__
+    usage: m service [ --status-all | --list |  --ls | start | stop | load | unload | help ]
+
+
+    Examples:
+      m service --status-all                        # list all services
+
+      m service --list                              # list all services
+      m service --ls                                # list all services
+      m service --ls com.apple.sessionlogoutd       # show information about a specific service
+
+      m service start com.apple.sessionlogoutd      # start a service
+      m service stop com.apple.sessionlogoutd       # stop a service
+
+      m service load com.apple.sessionlogoutd       # load a service
+      m service unload com.apple.sessionlogoutd     # unload a service
+
+__EOF__
+}
+
+find_service(){
+    [ -z "$1" ] && >&2 echo "Please enter servicename" && exit 1
+
+    for p in "${LAUNCHCTLPATHS[@]}"; do
+        if [ -f "${p}/${1}" ]; then
+            echo "${p}/${1}"
+        elif [ -f "${p}/${1}.plist" ]; then
+            echo "${p}/${1}.plist"
+        fi
+    done
+}
+
+service_list(){
+    if [ -z "$@" ]; then
+        sudo launchctl list
+    else
+        sudo launchctl list $@
+    fi
+}
+
+service_load(){
+    [ -z "${1}" ] && >&2 echo "Please enter servicename" && exit 1
+
+    SERVICE_PATH=$(find_service $1)
+
+
+    echo "Loading < ${SERVICE_PATH} >"
+    sudo launchctl load -w ${SERVICE_PATH} 2>/dev/null
+}
+
+service_unload(){
+    [ -z "${1}" ] && >&2 echo "Please enter servicename" && exit 1
+
+    SERVICE_PATH=$(find_service $1)
+
+    echo "Unloading < ${SERVICE_PATH} >"
+    sudo launchctl unload -w ${SERVICE_PATH} 2>/dev/null
+}
+
+service_start(){
+    [ -z "${1}" ] && >&2 echo "Please enter servicename" && exit 1
+
+    echo "Starting < ${1} >"
+    sudo launchctl start "${1}"
+}
+
+service_stop(){
+    [ -z "${1}" ] && >&2 echo "Please enter servicename" && exit 1
+
+    echo "Stoping < ${1} >"
+    sudo launchctl stop "${1}"
+}
+
+
+case $1 in
+    help)
+        help
+        ;;
+    --status-all)
+        service_list
+        ;;
+    --list|--ls)
+        shift
+        service_list $@
+        ;;
+    load)
+        shift
+        service_load $@
+        ;;
+    unload)
+        shift
+        service_unload $@
+        ;;
+    start)
+        shift
+        service_start $@
+        ;;
+    stop)
+        shift
+        service_stop $@
+        ;;
+    *)
+        help
+        ;;
+esac
+
+# vim: set ts=4 sw=4 softtabstop=4 expandtab
