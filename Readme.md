@@ -49,6 +49,7 @@ usage:  m [OPTIONS] COMMAND [help]
         restart
         safeboot
         screensaver
+        service
         shutdown
         sleep
         timezone
