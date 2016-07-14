@@ -251,6 +251,26 @@ usage:  m [OPTIONS] COMMAND [help]
       m screensaver askforpassword NO       #  disable password requirement to unlock
 ```
 
+#### Service:
+```
+    usage: m service [ --status-all | --list |  --ls | start | stop | load | unload | help ]
+
+
+    Examples:
+      m service --status-all                        # list all services
+
+      m service --list                              # list all services
+      m service --ls                                # list all services
+      m service --ls com.apple.sessionlogoutd       # show information about a specific service
+
+      m service start com.apple.sessionlogoutd      # start a service
+      m service stop com.apple.sessionlogoutd       # stop a service
+
+      m service load com.apple.sessionlogoutd       # load a service
+      m service unload com.apple.sessionlogoutd     # unload a service
+
+```
+
 #### Shutdown:
 ```
     usage:  m  shutdown [-f | --force | help ]
