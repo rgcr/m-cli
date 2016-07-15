@@ -13,8 +13,10 @@ __EOF__
 
 clean_trash(){
     [ ! -e "$HOME/.Trash"  ] && echo "Trash not found" && exit 1
-    sudo chflags -R nouchg $HOME/.Trash/*
-    sudo rm -rf $HOME/.Trash/*
+    if [[ "$(ls $HOME/.Trash/)" !=  "" ]]; then
+        sudo chflags -R nouchg $HOME/.Trash/* ;
+        sudo rm -rf $HOME/.Trash/*;
+    fi
 
 }
 
