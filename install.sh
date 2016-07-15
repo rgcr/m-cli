@@ -21,7 +21,6 @@ install_from_git(){
             echo >&2 "Failed to reset changes => ${GIT_URL}"
             exit 1
         }
-        _WAS="Updated"
     else
         echo "Downloading ${PKG} from git to ${INSTALL_DIR}"
         command git clone --depth 1 ${GIT_URL} ${INSTALL_DIR}/${PKG} || {
@@ -31,7 +30,6 @@ install_from_git(){
         chmod -R 755 ${INSTALL_DIR}/${PKG}/lib  2>/dev/null
         chmod -R 755 ${INSTALL_DIR}/${PKG}/plugins 2>/dev/null
         chmod 755 ${INSTALL_DIR}/${PKG}/m 2>/dev/null
-        _WAS="Installed"
     fi
 }
 
@@ -47,7 +45,7 @@ if [ -f "${INSTALL_DIR}/${PKG}/m" ]; then
     echo "${INSTALL_DIR}/${PKG}" | sudo tee /etc/paths.d/m-cli >/dev/null 2>&1
 
     echo ""
-    echo "Installed successfully!"
+    echo "Done!"
 
     if [ ! -f "/etc/paths.d/m-cli" ]; then
         cat<<__EOF__
