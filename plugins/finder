@@ -16,11 +16,11 @@ __EOF__
 hidden_files(){
     case $1 in
         [yY][eE][sS])
-            echo "Show Hiiden files: YES"
+            echo "Show Hidden files: YES"
             defaults write com.apple.finder AppleShowAllFiles YES
             ;;
         [nN][oO])
-            echo "Show Hiiden files: NO"
+            echo "Show Hidden files: NO"
             defaults write com.apple.finder AppleShowAllFiles NO
             ;;
         *)
