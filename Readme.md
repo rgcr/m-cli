@@ -350,10 +350,9 @@ usage:  m [OPTIONS] COMMAND [help]
     usage:  m wifi [ scan | off | on | connect | help ]
 
     Examples:
-    Examples:
       m wifi status                  # wifi status
       m wifi scan                    # scan wifi
-      m wifi showpassword mywifi    # show wifi network password
+      m wifi showpassword ESSID      # show wifi network password
       m wifi history                 # wifi connection history
       m wifi off                     # turn off your wifi
       m wifi on                      # turn on your wifi
