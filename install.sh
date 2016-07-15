@@ -2,10 +2,7 @@
 
 PKG="m-cli"
 GIT_URL="https://github.com/rgcr/m-cli.git"
-INSTALL_DIR="/usr/local"
-
-_WAS="Installed"
-
+INSTALL_DIR="${INSTALL_DIR:-/usr/local}"
 
 has(){
     type "$1" > /dev/null 2>&1
@@ -46,11 +43,14 @@ else
 fi
 
 if [ -f "${INSTALL_DIR}/${PKG}/m" ]; then
-    if [ "${_WAS}" == "Installed" ]; then
+
+    echo "${INSTALL_DIR}/${PKG}" | sudo tee /etc/paths.d/m-cli >/dev/null 2>&1
+
+    echo ""
+    echo "Installed successfully!"
+
+    if [ ! -f "/etc/paths.d/m-cli" ]; then
         cat<<__EOF__
-
-
-    Installed successfully!
 
     Please add the following line to your .bashrc or .zshrc or .profile:
 

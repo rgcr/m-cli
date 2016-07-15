@@ -37,7 +37,10 @@ case $1 in
         exit 0
         ;;
     --uninstall)
-        confirm "Do you want to uninstall m-cli? [y/n]: " && rm -rf ${MPATH} 2>/dev/null && echo "Done !"
+        confirm "Do you want to uninstall m-cli? [y/n]: " && \
+            rm -rf ${MPATH} 2>/dev/null && \
+            rm -f "/etc/paths.d/m-cli" 2>/dev/null && \
+            echo "Done !"
         exit 0
         ;;
 esac
