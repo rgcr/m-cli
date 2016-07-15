@@ -18,6 +18,10 @@ To **install** or **update** m-cli you can run this command:
 
 `curl -fsSL https://raw.githubusercontent.com/rgcr/m-cli/master/install.sh | sh`
 
+You can also install it in a different path
+
+`INSTALL_DIR=~/.m-cli curl -fsSL https://raw.githubusercontent.com/rgcr/m-cli/master/install.sh | sh`
+
 ## Usage
 
 ```
