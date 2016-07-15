@@ -28,7 +28,7 @@ To **install** or **update** m-cli you can run this command:
 usage:  m [OPTIONS] COMMAND [help]
 
     OPTIONS
-        --update        update m-cli to the lastest version
+        --update        update m-cli to the latest version
         --uninstall     uninstall m-cli
 
     COMMANDS:
@@ -167,7 +167,7 @@ usage:  m [OPTIONS] COMMAND [help]
 
     Examples:
       m hostname                # get the current hostname information (computername, hostname, localhostname and netbiosname)
-      m hostname newhostname    # set a new hostname (computarname, hostname, localhostname, netbiosname)
+      m hostname newhostname    # set a new hostname (computername, hostname, localhostname, netbiosname)
 
       m hostname help           # only shows this help
 ```
@@ -339,7 +339,7 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Wallpaper:
 ```
-    usage: m wallpaper [ /pat/to/file.jpg | help ]
+    usage: m wallpaper [ /path/to/file.jpg | help ]
 
     Examples:
       m wallpaper ./wallpapers/tree.jpg  # set wallpaper
