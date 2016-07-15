@@ -1,6 +1,10 @@
 #!/bin/sh
 
-pushd `dirname $0` > /dev/null
+if [ -L $0 ]; then
+    pushd `readlink $0 | xargs dirname` > /dev/null
+else
+    pushd `dirname $0` > /dev/null
+fi
 MPATH=`pwd -P`
 popd > /dev/null
 
