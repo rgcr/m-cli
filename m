@@ -1,7 +1,7 @@
 #!/bin/sh
 
 pushd `dirname $0` > /dev/null
-MPATH=`pwd -P`
+export MPATH=`pwd -P`
 popd > /dev/null
 
 . ${MPATH}/lib/colors.sh
@@ -37,10 +37,10 @@ case $1 in
         exit 0
         ;;
     --uninstall)
-        confirm "Do you want to uninstall m-cli? [y/n]: " && \
-            rm -rf ${MPATH} 2>/dev/null && \
-            rm -f "/etc/paths.d/m-cli" 2>/dev/null && \
-            echo "Done !"
+        confirm "Do you want to uninstall m-cli? [y/n]: " \
+            && sudo rm -rf ${MPATH} 2>/dev/null \
+            && sudo rm -f "/etc/paths.d/m-cli" 2>/dev/null \
+            && echo "Done !"
         exit 0
         ;;
 esac
