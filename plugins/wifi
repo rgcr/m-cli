@@ -23,7 +23,7 @@ wifi_status(){
 }
 
 wifi_scan(){
-    sudo /System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -s
+    /System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -s
 }
 
 wifi_history(){
