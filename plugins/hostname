@@ -7,7 +7,7 @@ help(){
 
     Examples:
       m hostname                # get the current hostname information (computername, hostname, localhostname and netbiosname)
-      m hostname newhostname    # set a new hostname (computarname, hostname, localhostname, netbiosname)
+      m hostname newhostname    # set a new hostname (computername, hostname, localhostname, netbiosname)
 
       m hostname help           # only shows this help
 __EOF__
