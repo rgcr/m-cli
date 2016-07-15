@@ -15,10 +15,10 @@ __EOF__
 
 
 show_hostname(){
-    sudo scutil --get ComputerName | awk '{print "ComputerName: ", $1}'
-    sudo scutil --get HostName | awk '{print "HostName: ", $1}'
-    sudo scutil --get LocalHostName | awk '{print "LocalHostName: ", $1}'
-    sudo defaults read /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName | awk '{print "NetBIOSName: " $1}'
+    scutil --get ComputerName | awk '{print "ComputerName: ", $1}'
+    scutil --get HostName | awk '{print "HostName: ", $1}'
+    scutil --get LocalHostName | awk '{print "LocalHostName: ", $1}'
+    defaults read /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName | awk '{print "NetBIOSName: " $1}'
 
 }
 
