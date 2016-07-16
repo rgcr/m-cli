@@ -41,6 +41,7 @@ usage:  m [OPTIONS] COMMAND [help]
         bluetooth
         dir
         disk
+        dns
         dock
         finder
         firewall
@@ -113,6 +114,15 @@ usage:  m [OPTIONS] COMMAND [help]
 
       m disk reformat /Volumes/myvol                      # reformat a volume
       m disk rename CURRENTNAME NEWNAME                   # rename a volume
+
+```
+
+#### Dns:
+```
+    usage:  m dns [ flush | help ]
+
+    Examples:
+      m dns flush       # flushes local DNS
 
 ```
 
