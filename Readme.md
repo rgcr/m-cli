@@ -131,15 +131,20 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Dock:
 ```
-    usage: m dock [ showdelay | autohide | position | help ]
+    usage: m dock [ showdelay | autohide | magnification | position | addblankspace | addrecentitems | help ]
 
     Examples:
-      m dock showdelay x.x     # Changes how long the Dock takes to show up when auto-hide is enabled
-      m dock autohide YES      # Enable Dock's auto hide feature
-      m dock autohide NO       # Disable Dock's auto hide feature
-      m dock position BOTTOM   # Change Dock's position to the bottom of the screen
-      m dock position LEFT     # Change Dock's position to the left of the screen
-      m dock position RIGHT    # Change Dock's position to the right of the screen
+      m dock showdelay x.x          # Changes how long the Dock takes to show up when auto-hide is enabled
+      m dock autohide YES           # Enable Dock's auto hide feature
+      m dock autohide NO            # Disable Dock's auto hide feature
+      m dock magnification YES      # Turn magnification on
+      m dock magnification NO       # Turn magnification off
+      m dock position BOTTOM        # Change Dock's position to the bottom of the screen
+      m dock position LEFT          # Change Dock's position to the left of the screen
+      m dock position RIGHT         # Change Dock's position to the right of the screen
+      m dock addblankspace          # Add a blank space (separator) to the Dock
+      m dock addrecentitems         # Add a stack containg your recent items to the Dock
+                                    #  (You can change the stack's type by right clicking on it)
 
 ```
 
