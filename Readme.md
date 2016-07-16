@@ -41,6 +41,7 @@ usage:  m [OPTIONS] COMMAND [help]
         bluetooth
         dir
         disk
+        dock
         finder
         firewall
         gatekeeper
@@ -111,6 +112,20 @@ usage:  m [OPTIONS] COMMAND [help]
 
       m disk reformat /Volumes/myvol                      # reformat a volume
       m disk rename CURRENTNAME NEWNAME                   # rename a volume
+
+```
+
+#### Dock:
+```
+    usage: m dock [ showdelay | autohide | position | help ]
+
+    Examples:
+      m dock showdelay x.x     # Changes how long the Dock takes to show up when auto-hide is enabled
+      m dock autohide YES      # Enable Dock's auto hide feature
+      m dock autohide NO       # Disable Dock's auto hide feature
+      m dock position BOTTOM   # Change Dock's position to the bottom of the screen
+      m dock position LEFT     # Change Dock's position to the left of the screen
+      m dock position RIGHT    # Change Dock's position to the right of the screen
 
 ```
 
