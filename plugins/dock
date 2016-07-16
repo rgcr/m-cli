@@ -2,10 +2,10 @@
 
 help(){
     cat<<__EOF__
-    usage: m dock [ showuptime | autohide | position | help ]
+    usage: m dock [ showdelay | autohide | position | help ]
 
     Examples:
-      m dock showuptime x.x    # Changes how long the Dock takes to show up when auto-hide is enabled
+      m dock showdelay x.x    # Changes how long the Dock takes to show up when auto-hide is enabled
       m dock autohide YES      # Enable Dock's auto hide feature 
       m dock autohide NO       # Disable Dock's auto hide feature
       m dock position BOTTOM   # Change Dock's position to the bottom of the screen
@@ -14,7 +14,7 @@ help(){
 __EOF__
 }
 
-show_up_time(){
+show_delay(){
     case $1 in
         [0-9][.][0-9])
             echo "New Auto-Hide time: "$1
@@ -76,9 +76,9 @@ case $1 in
     help)
         help
         ;;
-    showuptime)
+    showdelay)
         shift
-        show_up_time $@
+        show_delay $@
         ;;
     autohide)
         shift
