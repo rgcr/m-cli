@@ -2,15 +2,20 @@
 
 help(){
     cat<<__EOF__
-    usage: m dock [ showdelay | autohide | position | help ]
+    usage: m dock [ showdelay | autohide | magnification | position | addblankspace | addrecentitems | help ]
 
     Examples:
-      m dock showdelay x.x     # Changes how long the Dock takes to show up when auto-hide is enabled
-      m dock autohide YES      # Enable Dock's auto hide feature
-      m dock autohide NO       # Disable Dock's auto hide feature
-      m dock position BOTTOM   # Change Dock's position to the bottom of the screen
-      m dock position LEFT     # Change Dock's position to the left of the screen
-      m dock position RIGHT    # Change Dock's position to the right of the screen
+      m dock showdelay x.x          # Changes how long the Dock takes to show up when auto-hide is enabled
+      m dock autohide YES           # Enable Dock's auto hide feature
+      m dock autohide NO            # Disable Dock's auto hide feature
+      m dock magnification YES      # Turn magnification on
+      m dock magnification NO       # Turn magnification off
+      m dock position BOTTOM        # Change Dock's position to the bottom of the screen
+      m dock position LEFT          # Change Dock's position to the left of the screen
+      m dock position RIGHT         # Change Dock's position to the right of the screen
+      m dock addblankspace          # Add a blank space (separator) to the Dock
+      m dock addrecentitems         # Add a stack containg your recent items to the Dock 
+                                      (You can change the stack's type by right clicking on it)
 __EOF__
 }
 
@@ -50,6 +55,24 @@ auto_hide(){
     killall Dock
 }
 
+magnify(){
+    case $1 in
+        [yY][eE][sS])
+            echo "Magnification: YES"
+            defaults write com.apple.dock magnification -boolean YES
+            ;;
+        [nN][oO])
+            echo "Magnification: NO"
+            defaults write com.apple.dock magnification -boolean NO
+            ;;
+        *)
+            echo "Magnification: $(defaults read com.apple.dock magnification)"
+            exit 3
+            ;;
+    esac
+    killall Dock
+}
+
 dock_position(){
     case $1 in
         [bB][oO][tT][tT][oO][mM])
@@ -72,6 +95,18 @@ dock_position(){
     killall Dock
 }
 
+add_blank_space(){
+    echo "New blank space added to the Dock"
+    defaults write com.apple.dock persistent-apps -array-add '{"tile-type"="spacer-tile";}'
+    killall Dock
+}
+
+add_recent_items(){
+    echo "Add recent items stack"
+    defaults write com.apple.dock persistent-others -array-add '{"tile-data" = {"list-type" = 1;}; "tile-type" = "recents-tile";}';
+    killall Dock
+}
+
 case $1 in
     help)
         help
@@ -84,9 +119,21 @@ case $1 in
         shift
         auto_hide $@
         ;;
+    magnification)
+        shift
+        magnify $@
+        ;;    
     position)
         shift
         dock_position $@
+        ;;
+    addblankspace)
+        shift
+        add_blank_space
+        ;;
+    addrecentitems)
+        shift
+        add_recent_items
         ;;
     *)
         help
