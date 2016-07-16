@@ -1,0 +1,66 @@
+#!/bin/sh
+
+
+help(){
+    cat<<__EOF__
+    usage:  m vpn [ ls | list | start | stop | status | help ]
+
+    Examples:
+      m vpn ls                  # list VPN connections
+      m vpn start VPN           # start vpn connection named VPN
+      m vpn stop VPN            # stop vpn connection named VPN
+      m vpn status VPN          # status vpn connection named VPN
+__EOF__
+
+}
+
+list_vpns(){
+    scutil --nc list
+}
+
+start_vpn(){
+/usr/bin/env osascript <<-EOF
+    tell application "System Events"
+            tell current location of network preferences
+                    set VPN to service "$1" -- your VPN name here
+                    if exists VPN then connect VPN
+            end tell
+    end tell
+EOF
+}
+
+stop_vpn(){
+    scutil --nc stop $1
+}
+
+vpn_status(){
+    scutil --nc status $1
+    echo $1
+}
+
+
+case $1 in
+    help)
+        help
+        ;;
+    ls|list)
+        list_vpns
+        ;;
+    start)
+        [ -z "$2" ] && help && exit 1;
+        start_vpn $2
+        ;;
+    stop)
+        [ -z "$2" ] && help && exit 1;
+        stop_vpn $2
+        ;;
+    status)
+        [ -z "$2" ] && help && exit 1;
+        vpn_status $2
+        ;;
+    *)
+        help
+        ;;
+esac
+
+# vim: set ts=4 sw=4 softtabstop=4 expandtab

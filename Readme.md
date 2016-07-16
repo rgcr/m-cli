@@ -61,6 +61,7 @@ usage:  m [OPTIONS] COMMAND [help]
         trash
         user
         volume
+        vpn
         wallpaper
         wifi
 
@@ -354,6 +355,17 @@ usage:  m [OPTIONS] COMMAND [help]
       m volume mute   # set mute
       m volume unmute # unset mute
       m volume ismute # check the volume status
+```
+
+#### VPN:
+```
+    usage:  m vpn [ ls | list | start | stop | status | help ]
+
+    Examples:
+      m vpn ls                  # list VPN connections
+      m vpn start VPN           # start vpn connection named VPN
+      m vpn stop VPN            # stop vpn connection named VPN
+      m vpn status VPN          # status vpn connection named VPN
 ```
 
 #### Wallpaper:
