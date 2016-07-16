@@ -2,18 +2,20 @@
 
 help(){
     cat<<__EOF__
-    usage:  m flushdns [ help ]
+    usage:  m dns [ flush | help ]
 
     Examples:
-      m flushdns      # flushes local DNS
+      m dns flush       # flushes local DNS
 __EOF__
 }
 
+
 flushdns(){
     VERSION=$(sw_vers -productVersion)
-    if [[ $VERSION =~ ^10\.10(\.[0-3])?$ ]]; then
+    echo "Flushing dns..."
+    if echo $VERSION | grep -E '^10\.10(\.[0-3])?$' >/dev/null 2>&1; then
         sudo discoveryutil mdnsflushcache
-    elif [[ $VERSION =~ ^10\.6(\.[0-8])?$ ]]; then
+    elif echo $VERSION | grep -E '^10\.6(\.[0-8])?$' >/dev/null 2>&1; then
         sudo dscacheutil -flushcache
     else
         sudo killall -HUP mDNSResponder
@@ -25,8 +27,11 @@ case $1 in
     help)
         help
         ;;
-    *)
+    flush)
         flushdns
+        ;;
+    *)
+        help
         ;;
 esac
 
