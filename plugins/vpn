@@ -35,7 +35,6 @@ stop_vpn(){
 
 vpn_status(){
     scutil --nc status $1
-    echo $1
 }
 
 
