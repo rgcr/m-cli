@@ -37,7 +37,7 @@ __EOF__
 
 case $1 in
     --update)
-        ${MPATH}/install.sh
+        INSTALL_DIR=${MPATH} ${MPATH}/install.sh
         exit 0
         ;;
     --uninstall)
