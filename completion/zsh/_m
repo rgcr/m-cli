@@ -1,3 +1,4 @@
+#compdef m
 
 function _m_dir {
 	local -a opts args
@@ -479,5 +480,5 @@ function _m {
 	esac
 }
 
-compdef _m m
+_m $@
 
