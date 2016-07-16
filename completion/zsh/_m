@@ -3,6 +3,7 @@
 function _m_dir {
 	local -a opts args
 	local delete_help="delete empty folders recursively in the current or specified path"
+	local cmd=dir
 
 	case $CURRENT in
 		3)
@@ -28,12 +29,11 @@ function _m_dir {
 			local sub=${words[3]}
 			local sub2=${words[4]}
 
-			[[ $sub == delete && $sub2 == empty ]] \
-				&& _path_files
+			[[ $sub == delete && $sub2 == empty ]] && _path_files
 			;;
 	esac
 
-	_describe 'values' opts -- args
+	_describe "dir commands" opts -- args
 }
 
 function _m_disk_verify {
@@ -52,7 +52,7 @@ function _m_disk_verify {
 			;;
 	esac
 
-	_describe 'values' opts -- args
+	_describe "disk $sub commands" opts -- args
 }
 
 function _m_disk_format {
@@ -80,7 +80,7 @@ function _m_disk_format {
 			;;
 	esac
 
-	_describe 'values' opts -- args
+	_describe 'disk format commands' opts -- args
 }
 
 function _m_disk_rename {
@@ -93,7 +93,7 @@ function _m_disk_rename {
 				| sed -E 's/^.+[0-9] (B|.B) +//'
 			)
 		)
-		_describe 'values' opts -- choices
+		_describe 'disk rename commands' opts -- choices
 	fi
 }
 
@@ -118,7 +118,7 @@ function _m_disk {
 			help
 		)
 
-		_describe 'values' opts -- args
+		_describe 'disk commands' opts -- args
 		return
 	fi
 	local sub=${words[3]}
@@ -142,10 +142,12 @@ function _m_disk {
 
 function _m_yesno {
 	local -a opts args
-	local what=$1
-	local desc=$2
-	local yes=$3
-	local no=$4
+	local sub=$1
+	local what=$2
+	local desc=$3
+	local yes=$4
+	local no=$5
+	local _type="commands"
 
 	case $CURRENT in
 		3)
@@ -156,6 +158,8 @@ function _m_yesno {
 			;;
 		4)
 			if [[ ${words[3]} == $what ]]; then
+				sub=$what
+				_type="options"
 				args=(
 					"$yes"
 					"$no"
@@ -164,7 +168,7 @@ function _m_yesno {
 			;;
 	esac
 
-	_describe 'values' opts -- args
+	_describe "$sub $_type" opts -- args
 }
 
 function _m_firewall {
@@ -187,7 +191,7 @@ function _m_firewall {
 			;;
 	esac
 
-	_describe 'values' opts -- args
+	_describe 'firewall commands' opts -- args
 }
 
 function _m_gatekeeper {
@@ -211,11 +215,12 @@ function _m_gatekeeper {
 			;;
 	esac
 
-	_describe 'values' opts -- args
+	_describe 'gatekeeper commands' opts -- args
 }
 
 function _m_network {
 	local -a opts args
+	local sub
 
 	case $CURRENT in
 		3)
@@ -227,6 +232,7 @@ function _m_network {
 			;;
 		4)
 			if [[ ${words[3]} == location ]]; then
+				sub=" location"
 				args=(
 					"ls:list locations"
 					"create:create a location"
@@ -237,7 +243,7 @@ function _m_network {
 			;;
 	esac
 
-	_describe 'values' opts -- args
+	_describe "network$sub commands" opts -- args
 }
 
 function _m_nosleep {
@@ -257,13 +263,14 @@ function _m_nosleep {
 			;;
 	esac
 
-	_describe 'values' opts -- args
+	_describe 'nosleep commands' opts -- args
 }
 
 function _m_user {
 	case $CURRENT in
 		3)
 			_m_solo \
+				"user" \
 				"ls:list users" \
 				"info:display user information" \
 				"create:create specified user (interactive)" \
@@ -279,7 +286,7 @@ function _m_user {
 					args=($(m user ls | cut -d' ' -f1))
 					;;
 			esac
-			_describe 'values' opts -- args
+			_describe 'users' opts -- args
 			;;
 	esac
 }
@@ -293,18 +300,20 @@ function _m_wallpaper {
 			_path_files
 			;;
 	esac
-	_describe 'values' opts -- args
+	_describe 'wallpaper commands' opts -- args
 }
 
 function _m_solo {
 	local -a opts
+	local cmd=$1
+	shift
 	local args=($@)
 
-	[[ $CURRENT == 3 ]] && _describe 'values' opts -- args
+	[[ $CURRENT == 3 ]] && _describe "$cmd commands" opts -- args
 }
 
 function _m_help {
-	_m_solo help
+	_m_solo help help
 }
 
 function _m_cmd {
@@ -314,10 +323,11 @@ function _m_cmd {
 		help)
 			;;
 		battery)
-			_m_solo "status:get the battery status" help
+			_m_solo $sub "status:get the battery status" help
 			;;
 		bluetooth)
 			_m_solo \
+				$sub \
 				"status:bluetooth status" \
 				"enable:turn on bluetooth" \
 				"disable:turn off bluetooth" \
@@ -331,6 +341,7 @@ function _m_cmd {
 			;;
 		finder)
 			_m_yesno \
+				$sub \
 				"showhiddenfiles" \
 				"get the current status" \
 				"YES:show hidden files" \
@@ -353,6 +364,7 @@ function _m_cmd {
 			;;
 		ntp)
 			_m_solo \
+				$sub \
 				"status:status of the network time service" \
 				"enable:enable clock to use network time" \
 				"disable:disable clock to use network time" \
@@ -361,12 +373,14 @@ function _m_cmd {
 			;;
 		restart)
 			_m_solo \
+				$sub \
 				"-f:restart computer without confirmation" \
 				"--force:restart computer without confirmation" \
 				help
 			;;
 		safeboot)
 			_m_solo \
+				$sub \
 				"status:get the boot args" \
 				"enable:enable safeboot" \
 				"disable:disable safeboot" \
@@ -374,6 +388,7 @@ function _m_cmd {
 			;;
 		screensaver)
 			_m_yesno \
+				$sub \
 				"askforpassword" \
 				"get the current status" \
 				"YES:enable password requirement to unlock" \
@@ -382,6 +397,7 @@ function _m_cmd {
 		service)
 			local ls_help="list all services show information about the specified service"
 			_m_solo \
+				$sub \
 				"--status-all:$ls_help" \
 				"--list:$ls_help" \
 				"--ls:$ls_help" \
@@ -393,18 +409,21 @@ function _m_cmd {
 			;;
 		shutdown)
 			_m_solo \
+				$sub \
 				"-f:shutdown computer without confirmation" \
 				"--force:shutdown computer without confirmation" \
 				help
 			;;
 		timezone)
 			_m_solo \
+				$sub \
 				"ls:list available timezones" \
 				"set:set timezone" \
 				help
 			;;
 		trash)
 			_m_solo \
+				$sub \
 				"status:get trash info" \
 				"clean:clean trash" \
 				help
@@ -414,6 +433,7 @@ function _m_cmd {
 			;;
 		volume)
 			_m_solo \
+				$sub \
 				"mute:set mute" \
 				"unmute:unset mute" \
 				"ismute:check the volume status" \
@@ -424,6 +444,7 @@ function _m_cmd {
 			;;
 		wifi)
 			_m_solo \
+				$sub \
 				"status:wifi status" \
 				"scan:scan wifi" \
 				"showpassword:show wifi network password" \
@@ -471,7 +492,7 @@ function _m {
 
 	case $CURRENT in
 		2)
-			_describe 'values' opts -- commands
+			_describe 'm commands' opts -- commands
 			;;
 		*)
 			local sub=${words[2]}
