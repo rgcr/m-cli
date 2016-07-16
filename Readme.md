@@ -41,10 +41,10 @@ usage:  m [OPTIONS] COMMAND [help]
         bluetooth
         dir
         disk
+        dns
         dock
         finder
         firewall
-        flushdns
         gatekeeper
         hostname
         info
@@ -117,6 +117,15 @@ usage:  m [OPTIONS] COMMAND [help]
 
 ```
 
+#### Dns:
+```
+    usage:  m dns [ flush | help ]
+
+    Examples:
+      m dns flush       # flushes local DNS
+
+```
+
 #### Dock:
 ```
     usage: m dock [ showdelay | autohide | position | help ]
@@ -162,14 +171,6 @@ usage:  m [OPTIONS] COMMAND [help]
        m firewall enable                # Enable firewall
        m firewall disable               # Disable firewall
        m firewall add /path/to/file     # Add app to firewall
-```
-
-#### Flush DNS:
-```
-    usage:  m flushdns [ help ]
-
-    Examples:
-      m flushdns      # flushes local DNS
 ```
 
 #### Gatekeeper:
