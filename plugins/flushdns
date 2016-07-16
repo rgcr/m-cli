@@ -1,0 +1,33 @@
+#!/bin/sh
+
+help(){
+    cat<<__EOF__
+    usage:  m flushdns [ help ]
+
+    Examples:
+      m flushdns      # flushes local DNS
+__EOF__
+}
+
+flushdns(){
+    VERSION=$(sw_vers -productVersion)
+    if [[ $VERSION =~ ^10\.10(\.[0-3])?$ ]]; then
+        sudo discoveryutil mdnsflushcache
+    elif [[ $VERSION =~ ^10\.6(\.[0-8])?$ ]]; then
+        sudo dscacheutil -flushcache
+    else
+        sudo killall -HUP mDNSResponder
+    fi
+}
+
+
+case $1 in
+    help)
+        help
+        ;;
+    *)
+        flushdns
+        ;;
+esac
+
+# vim: set ts=4 sw=4 softtabstop=4 expandtab
