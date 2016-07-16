@@ -1,0 +1,96 @@
+#!/bin/sh
+
+help(){
+    cat<<__EOF__
+    usage: m dock [ showuptime | autohide | position | help ]
+
+    Examples:
+      m dock showuptime x.x    # Changes how long the Dock takes to show up when auto-hide is enabled
+      m dock autohide YES      # Enable Dock's auto hide feature 
+      m dock autohide NO       # Disable Dock's auto hide feature
+      m dock position BOTTOM   # Change Dock's position to the bottom of the screen
+      m dock position LEFT     # Change Dock's position to the left of the screen
+      m dock position RIGHT    # Change Dock's position to the right of the screen
+__EOF__
+}
+
+show_up_time(){
+    case $1 in
+        [0-9][.][0-9])
+            echo "New Auto-Hide time: "$1
+            defaults write com.apple.dock autohide-time-modifier -float $1
+            ;;
+        [0-9])
+            echo "New Auto-Hide time: "$1
+            defaults write com.apple.dock autohide-time-modifier -int $1
+            ;;
+        *)
+            echo "Current Auto-Hide time: $(defaults read com.apple.dock autohide-time-modifier)"
+            exit 1
+            ;;
+    esac
+    killall Dock
+}
+
+auto_hide(){
+    case $1 in
+        [yY][eE][sS])
+            echo "Auto Hide: YES"
+            defaults write com.apple.dock autohide -boolean YES
+            ;;
+        [nN][oO])
+            echo "Auto Hide: No"
+            defaults write com.apple.dock autohide -boolean NO
+            ;;
+        *)
+            echo "Auto Hide: $(defaults read com.apple.dock autohide)"
+            exit 2
+            ;;
+    esac
+    killall Dock
+}
+
+dock_position(){
+    case $1 in
+        [bB][oO][tT][tT][oO][mM])
+            echo "Dock Position: BOTTOM"
+            defaults write com.apple.dock orientation bottom
+            ;;
+        [lL][eE][fF][tT])
+            echo "Dock Position: LEFT"
+            defaults write com.apple.dock orientation left
+            ;;
+        [rR][iI][gG][hH][tT])
+            echo "Dock Position: RIGHT"
+            defaults write com.apple.dock orientation right
+            ;;
+        *)
+            echo "Position: $(defaults read com.apple.dock orientation)"
+            exit 2
+            ;;
+    esac
+    killall Dock    
+}
+
+case $1 in
+    help)
+        help
+        ;;
+    showuptime)
+        shift
+        show_up_time $@
+        ;;
+    autohide)
+        shift
+        auto_hide $@
+        ;;
+    position)
+        shift
+        dock_position $@
+        ;;
+    *)
+        help
+        ;;
+esac
+
+# vim: set ts=4 sw=4 softtabstop=4 expandtab
