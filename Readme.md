@@ -172,9 +172,9 @@ usage:  m [OPTIONS] COMMAND [help]
       m finder showhiddenfiles           # get the current status
       m finder showhiddenfiles YES       # show hidden files
       m finder showhiddenfiles NO        # no show hidden files
-      m finder showfileextensions           # get the current status
-      m finder showfileextensions YES       # show all file extensions
-      m finder showfileextensions NO        # don't show all file extensions
+      m finder showextensions            # get the current status
+      m finder showextensions YES        # show all file extensions
+      m finder showextensions NO         # don't show all file extensions
 ```
 
 #### Firewall:
