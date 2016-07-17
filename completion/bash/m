@@ -39,6 +39,9 @@ _m_sub () {
 		gatekeeper)
 			subcommands=(status list enable disable create help)
 			;;
+        group)
+			subcommands=(list info adduser removeuser ismember help)
+            ;;
 		hostname)
 			subcommands=(help)
 			;;
@@ -193,7 +196,7 @@ _m_dock() {
 _m () {
 	local cur
 	local commands=(
-		help battery bluetooth dir disk dns dock finder firewall gatekeeper hostname
+		help battery bluetooth dir disk dns dock finder firewall gatekeeper group hostname
 		info lock network nosleep ntp restart safeboot screensaver service
 		shutdown sleep timezone trash user volume vpn wallpaper wifi
 	)

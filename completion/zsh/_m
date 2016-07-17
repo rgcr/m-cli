@@ -401,6 +401,16 @@ function _m_cmd {
         gatekeeper)
             _m_gatekeeper
             ;;
+        group)
+            _m_solo \
+                $sub \
+                "list:list of groups" \
+                "info:display group information" \
+                "adduser:add an user to a specific group" \
+                "removeuser:remove an user from a specific group" \
+                "ismember:show if the user is a member of a specific group"
+                "help:show a brief help"
+            ;;
         hostname | info | lock | sleep)
             _m_help
             ;;
@@ -529,6 +539,7 @@ function _m {
         "finder:manage finder properties"
         "firewall:manage firewall"
         "gatekeeper:manage gatekeeper (security for apps)"
+        "group:manage groups"
         "hostname:displays or set the computer's hostname"
         "info:print Mac OS X operating system version information"
         "lock:lock session"
