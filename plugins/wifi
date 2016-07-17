@@ -45,7 +45,9 @@ wifi_on(){
 
 connect_network(){
     [ -z "$1" -o -z "$2" ] && help
-    networksetup -setairportnetwork ${_W_DEVICE} $1 $@
+    NETWORK="$1"
+    shift
+    networksetup -setairportnetwork "${_W_DEVICE}" "${NETWORK}" "$@"
 }
 
 case $1 in
@@ -66,7 +68,7 @@ case $1 in
         ;;
     connect)
         shift
-        connect_network $@
+        connect_network "$@"
         ;;
     history)
         shift
@@ -74,7 +76,7 @@ case $1 in
         ;;
     showpassword)
         shift
-        wifi_showpassword $@
+        wifi_showpassword "$@"
         ;;
     *)
         help
