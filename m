@@ -43,7 +43,7 @@ case $1 in
     --uninstall)
         confirm "Do you want to uninstall m-cli? [y/n]: " \
             && sudo rm -rf ${MPATH} 2>/dev/null \
-            && sudo rm -f "/etc/paths.d/m-cli" 2>/dev/null \
+            && sudo rm -f "/usr/local/bin/m" 2>/dev/null \
             && echo "Done !"
         exit 0
         ;;

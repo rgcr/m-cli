@@ -45,22 +45,9 @@ fi
 [ -z "${INSTALL_DIR}" ] && INSTALL_DIR="/usr/local/${PKG}"
 
 if [ -f "${INSTALL_DIR}/m" ]; then
-
-    echo "${INSTALL_DIR}" | sudo tee /etc/paths.d/m-cli >/dev/null 2>&1
-
+    sudo ln -sf ${INSTALL_DIR}/m /usr/local/bin/m
     echo ""
     echo "Done!"
-
-    if [ ! -f "/etc/paths.d/m-cli" ]; then
-        cat<<__EOF__
-
-    Please add the following line to your .bashrc or .zshrc or .profile:
-
-    export PATH=\$PATH:${INSTALL_DIR}
-
-
-__EOF__
-    fi
 else
     echo >&2 ""
     echo >&2 "Something went wrong. ${INSTALL_DIR}/m not found"
