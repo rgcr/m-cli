@@ -31,7 +31,7 @@ _m_sub () {
             )
             ;;
 		finder)
-			subcommands=(showhiddenfiles help)
+			subcommands=(showhiddenfiles showfileextensions help)
 			;;
 		firewall)
 			subcommands=(status enable disable add help)
@@ -266,5 +266,3 @@ _m () {
 
 #complete -F _m m
 complete -o bashdefault -o default -F _m m
-
-

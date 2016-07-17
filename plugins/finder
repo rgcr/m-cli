@@ -4,12 +4,15 @@
 
 help(){
     cat<<__EOF__
-    usage: m finder [ showhiddenfiles | help ]
+    usage: m finder [ showhiddenfiles | showfileextensions | help ]
 
     Examples:
       m finder showhiddenfiles           # get the current status
       m finder showhiddenfiles YES       # show hidden files
       m finder showhiddenfiles NO        # no show hidden files
+      m finder showfileextensions           # get the current status
+      m finder showfileextensions YES       # show all file extensions
+      m finder showfileextensions NO        # don't show all file extensions
 __EOF__
 }
 
@@ -31,6 +34,24 @@ hidden_files(){
     killall Finder
 }
 
+file_extensions(){
+    case $1 in
+        [yY][eE][sS])
+            echo "Show Hidden files: YES"
+            defaults write NSGlobalDomain AppleShowAllExtensions YES
+            ;;
+        [nN][oO])
+            echo "Show Hidden files: NO"
+            defaults write NSGlobalDomain AppleShowAllExtensions NO
+            ;;
+        *)
+            echo "Show All File Extensions: $(defaults read NSGlobalDomain AppleShowAllExtensions)"
+            exit 1
+            ;;
+    esac
+    killall Finder
+}
+
 
 case $1 in
     help)
@@ -39,6 +60,10 @@ case $1 in
     showhiddenfiles)
         shift
         hidden_files $@
+        ;;
+    showfileextensions)
+        shift
+        file_extensions $@
         ;;
     *)
         help
