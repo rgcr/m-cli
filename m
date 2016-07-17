@@ -53,7 +53,7 @@ esac
 COMMAND=$1; shift;
 
 [ ! -f ${MPATH}/plugins/${COMMAND} ] && usage
-${MPATH}/plugins/${COMMAND} $@
+${MPATH}/plugins/${COMMAND} "$@"
 
 
 
