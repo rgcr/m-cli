@@ -426,6 +426,6 @@ usage:  m [OPTIONS] COMMAND [help]
 * Improve the help
 * Improve the installation script
 
-
 ---
 [MIT License](LICENSE.md) © Rogelio Cedillo
+
