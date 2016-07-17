@@ -422,7 +422,6 @@ usage:  m [OPTIONS] COMMAND [help]
 
 ## TODO:
 * Add more plugins
-* Add bash and zsh completion
 * Improve the help
 * Improve the installation script
 
