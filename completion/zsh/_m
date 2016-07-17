@@ -1,504 +1,558 @@
 #compdef m
 
 function _m_dir {
-	local -a opts args
-	local delete_help="delete empty folders recursively in the current or specified path"
-	local cmd=dir
+    local -a opts args
+    local delete_help="delete empty folders recursively in the current or specified path"
+    local cmd=dir
 
-	case $CURRENT in
-		3)
-			args=(
-				"tree:tree view of folders in the current or specified path"
-				"delete:$delete_help"
-				help
-			)
-			;;
-		4)
-			local sub=${words[3]}
+    case $CURRENT in
+        3)
+            args=(
+                "tree:tree view of folders in the current or specified path"
+                "delete:$delete_help"
+                help
+            )
+            ;;
+        4)
+            local sub=${words[3]}
 
-			case $sub in
-				tree)
-					_path_files
-					;;
-				delete)
-					args=("empty:$delete_help")
-					;;
-			esac
-			;;
-		5)
-			local sub=${words[3]}
-			local sub2=${words[4]}
+            case $sub in
+                tree)
+                    _path_files
+                    ;;
+                delete)
+                    args=("empty:$delete_help")
+                    ;;
+            esac
+            ;;
+        5)
+            local sub=${words[3]}
+            local sub2=${words[4]}
 
-			[[ $sub == delete && $sub2 == empty ]] && _path_files
-			;;
-	esac
+            [[ $sub == delete && $sub2 == empty ]] && _path_files
+            ;;
+    esac
 
-	_describe "dir commands" opts -- args
+    _describe "dir commands" opts -- args
 }
 
 function _m_disk_verify {
-	local sub=$1
-	local -a opts args
+    local sub=$1
+    local -a opts args
 
-	case $CURRENT in
-		4)
-			args=(
-				"volume:$sub volume"
-				"disk:$sub disk"
-			)
-			;;
-		5)
-			_path_files
-			;;
-	esac
+    case $CURRENT in
+        4)
+            args=(
+                "volume:$sub volume"
+                "disk:$sub disk"
+            )
+            ;;
+        5)
+            _path_files
+            ;;
+    esac
 
-	_describe "disk $sub commands" opts -- args
+    _describe "disk $sub commands" opts -- args
 }
 
 function _m_disk_format {
-	local -a opts args
+    local -a opts args
 
-	case $CURRENT in
-		4)
-			args=(
-				"MS-DOS:format the entire disk with a windows format (MS-DOS)"
-				"volume:format the volume with a windows format(MS-DOS)"
-			)
-			;;
-		*)
-			local sub=${words[4]}
+    case $CURRENT in
+        4)
+            args=(
+                "MS-DOS:format the entire disk with a windows format (MS-DOS)"
+                "ExFAT:format the entire disk (ExFat)"
+                "JHFS+:format the entire disk (JHFS+)"
+                "volume:format a volume"
+            )
+            ;;
+        *)
+            local sub=${words[4]}
 
-			case $sub in
-				"MS-DOS")
-					[[ $CURRENT == 6 ]] && _path_files
-					;;
-				volume)
-					[[ $CURRENT == 5 ]] && args=(MS-DOS)
-					[[ $CURRENT == 7 ]] && _path_files
-					;;
-			esac
-			;;
-	esac
+            case $sub in
+                "MS-DOS"|"ExFAT"|"JHFS+")
+                    [[ $CURRENT == 6 ]] && _path_files
+                    ;;
+                volume)
+                    [[ $CURRENT == 5 ]] && args=(MS-DOS ExFAT JHFS+)
+                    [[ $CURRENT == 7 ]] && _path_files
+                    ;;
+            esac
+            ;;
+    esac
 
-	_describe 'disk format commands' opts -- args
+    _describe 'disk format commands' opts -- args
 }
 
 function _m_disk_rename {
-	if [[ $CURRENT == 4 ]]; then
-		local opts
-		local choices=(
-			$(
-				m disk ls \
-				| grep -E '^ +[0-9]:' \
-				| sed -E 's/^.+[0-9] (B|.B) +//'
-			)
-		)
-		_describe 'disk rename commands' opts -- choices
-	fi
+    if [[ $CURRENT == 4 ]]; then
+        local opts
+        local choices=(
+            $(
+                m disk ls \
+                | grep -E '^ +[0-9]:' \
+                | sed -E 's/^.+[0-9] (B|.B) +//'
+            )
+        )
+        _describe 'disk rename commands' opts -- choices
+    fi
 }
 
 function _m_disk {
-	local -a opts args
+    local -a opts args
 
-	if [[ $CURRENT == 3 ]]; then
-		local ls_help="list disks"
-		local fs_help="list available filesystems for formatting"
-		args=(
-			"ls:$ls_help"
-			"list:$ls_help"
-			"fs:$fs_help"
-			"filesystems:$fs_help"
-			"info:display information"
-			"ejectall:eject all mountable volumes"
-			"verify:verify volume or disk"
-			"repair:repair volume or disk"
-			"format:format a volume or disk"
-			"reformat:reformat a volume"
-			"rename:rename a volume"
-			help
-		)
+    if [[ $CURRENT == 3 ]]; then
+        local ls_help="list disks"
+        local fs_help="list available filesystems for formatting"
+        args=(
+            "ls:$ls_help"
+            "list:$ls_help"
+            "fs:$fs_help"
+            "filesystems:$fs_help"
+            "info:display information"
+            "ejectall:eject all mountable volumes"
+            "verify:verify volume or disk"
+            "repair:repair volume or disk"
+            "format:format a volume or disk"
+            "reformat:reformat a volume"
+            "rename:rename a volume"
+            help
+        )
 
-		_describe 'disk commands' opts -- args
-		return
-	fi
-	local sub=${words[3]}
+        _describe 'disk commands' opts -- args
+        return
+    fi
+    local sub=${words[3]}
 
-	case $sub in
-		ls|list|info|reformat)
-			[[ $CURRENT == 4 ]] && _path_files
-			;;
-		verify|repair)
-			_m_disk_verify $sub
-			;;
-		format)
-			_m_disk_format
-			;;
-		rename)
-			_m_disk_rename
-			;;
-	esac
+    case $sub in
+        ls|list|info|reformat)
+            [[ $CURRENT == 4 ]] && _path_files
+            ;;
+        verify|repair)
+            _m_disk_verify $sub
+            ;;
+        format)
+            _m_disk_format
+            ;;
+        rename)
+            _m_disk_rename
+            ;;
+    esac
 
 }
 
 function _m_yesno {
-	local -a opts args
-	local sub=$1
-	local what=$2
-	local desc=$3
-	local yes=$4
-	local no=$5
-	local _type="commands"
+    local -a opts args
+    local sub=$1
+    local what=$2
+    local desc=$3
+    local yes=$4
+    local no=$5
+    local _type="commands"
 
-	case $CURRENT in
-		3)
-			args=(
-				"$what:$desc"
-				help
-			)
-			;;
-		4)
-			if [[ ${words[3]} == $what ]]; then
-				sub=$what
-				_type="options"
-				args=(
-					"$yes"
-					"$no"
-				)
-			fi
-			;;
-	esac
+    case $CURRENT in
+        3)
+            args=(
+                "$what:$desc"
+                help
+            )
+            ;;
+        4)
+            if [[ ${words[3]} == $what ]]; then
+                sub=$what
+                _type="options"
+                args=(
+                    "$yes"
+                    "$no"
+                )
+            fi
+            ;;
+    esac
 
-	_describe "$sub $_type" opts -- args
+    _describe "$sub $_type" opts -- args
+}
+
+function _m_dock {
+    local -a opts args
+
+    if [[ $CURRENT == 3 ]]; then
+        args=(
+            "showdelay:changes how long the Dock takes to show up when auto-hide is enabled"
+            "autohide:enable or disable Dock's auto hide feature"
+            "magnification:enable or disable magnification"
+            "position:change Dock's position"
+            "addblankspace:add a blank space(separator) to the dock"
+            "addrecentitems:add a stack containg your recent items to the Dock"
+            help
+        )
+
+        #_describe 'manage dock properties' opts -- args
+        #return
+    fi
+    local sub=${words[3]}
+
+    case $sub in
+        autohide|magnification)
+            [[ $CURRENT == 4 ]] && args=("" YES NO)
+            ;;
+        position)
+            [[ $CURRENT == 4 ]] && args=("" BOTTOM LEFT RIGHT)
+            ;;
+    esac
+    _describe 'manage dock properties' opts -- args
+    return
 }
 
 function _m_firewall {
-	local -a opts args
+    local -a opts args
 
-	case $CURRENT in
-		3)
-			args=(
-				"status:Show status"
-				"enable:Enable firewall"
-				"disable:Disable firewall"
-				"add:Add app to firewall"
-				help
-			)
-			;;
-		4)
-			if [[ ${words[3]} == add ]]; then
-				_path_files
-			fi
-			;;
-	esac
+    case $CURRENT in
+        3)
+            args=(
+                "status:Show status"
+                "enable:Enable firewall"
+                "disable:Disable firewall"
+                "add:Add app to firewall"
+                help
+            )
+            ;;
+        4)
+            if [[ ${words[3]} == add ]]; then
+                _path_files
+            fi
+            ;;
+    esac
 
-	_describe 'firewall commands' opts -- args
+    _describe 'firewall commands' opts -- args
 }
 
 function _m_gatekeeper {
-	local -a opts args
+    local -a opts args
 
-	case $CURRENT in
-		3)
-			args=(
-				"status:gatekeeper status"
-				"list:list rules"
-				"enable:enable gatekeeper or rule"
-				"disable:disable gatekeeper or rule"
-				"create:Create a rule for the application"
-				help
-			)
-			;;
-		5)
-			if [[ ${words[3]} == create ]]; then
-				_path_files
-			fi
-			;;
-	esac
+    case $CURRENT in
+        3)
+            args=(
+                "status:gatekeeper status"
+                "list:list rules"
+                "enable:enable gatekeeper or rule"
+                "disable:disable gatekeeper or rule"
+                "create:Create a rule for the application"
+                help
+            )
+            ;;
+        5)
+            if [[ ${words[3]} == create ]]; then
+                _path_files
+            fi
+            ;;
+    esac
 
-	_describe 'gatekeeper commands' opts -- args
+    _describe 'gatekeeper commands' opts -- args
 }
 
 function _m_network {
-	local -a opts args
-	local sub
+    local -a opts args
+    local sub
 
-	case $CURRENT in
-		3)
-			args=(
-				"ls:list network interfaces"
-				"location:get current location"
-				help
-			)
-			;;
-		4)
-			if [[ ${words[3]} == location ]]; then
-				sub=" location"
-				args=(
-					"ls:list locations"
-					"create:create a location"
-					"delete:delete a location"
-					"switch:switch location"
-				)
-			fi
-			;;
-	esac
+    case $CURRENT in
+        3)
+            args=(
+                "ls:list network interfaces"
+                "location:get or set the current location"
+                help
+            )
+            ;;
+        4)
+            if [[ ${words[3]} == location ]]; then
+                sub=" location"
+                args=(
+                    "ls:list locations"
+                    "create:create a location"
+                    "delete:delete a location"
+                    "switch:switch location"
+                )
+            fi
+            ;;
+    esac
 
-	_describe "network$sub commands" opts -- args
+    _describe "network$sub commands" opts -- args
 }
 
 function _m_nosleep {
-	local -a opts args
+    local -a opts args
 
-	case $CURRENT in
-		3)
-			args=(
-				"until:until timeout or specified script ends"
-				help
-			)
-			;;
-		4)
-			if [[ ${words[3]} == until ]]; then
-				_path_files
-			fi
-			;;
-	esac
+    case $CURRENT in
+        3)
+            args=(
+                "until:until timeout or specified script ends"
+                help
+            )
+            ;;
+        4)
+            if [[ ${words[3]} == until ]]; then
+                _path_files
+            fi
+            ;;
+    esac
 
-	_describe 'nosleep commands' opts -- args
+    _describe 'nosleep commands' opts -- args
 }
 
 function _m_user {
-	case $CURRENT in
-		3)
-			_m_solo \
-				"user" \
-				"ls:list users" \
-				"info:display user information" \
-				"create:create specified user (interactive)" \
-				"delete:delete specified user" \
-				help
-			;;
-		4)
-			local -a opts args
-			local sub=${words[3]}
+    case $CURRENT in
+        3)
+            _m_solo \
+                "user" \
+                "ls:list users" \
+                "info:display user information" \
+                "create:create specified user (interactive)" \
+                "delete:delete specified user" \
+                help
+            ;;
+        4)
+            local -a opts args
+            local sub=${words[3]}
 
-			case $sub in
-				info|delete)
-					args=($(m user ls | cut -d' ' -f1))
-					;;
-			esac
-			_describe 'users' opts -- args
-			;;
-	esac
+            case $sub in
+                info|delete)
+                    args=($(m user ls | cut -d' ' -f1))
+                    ;;
+            esac
+            _describe 'users' opts -- args
+            ;;
+    esac
 }
 
 function _m_wallpaper {
-	local -a opts args
+    local -a opts args
 
-	case $CURRENT in
-		3)
-			args=(help)
-			_path_files
-			;;
-	esac
-	_describe 'wallpaper commands' opts -- args
+    case $CURRENT in
+        3)
+            args=(help)
+            _path_files
+            ;;
+    esac
+    _describe 'wallpaper commands' opts -- args
 }
 
 function _m_solo {
-	local -a opts
-	local cmd=$1
-	shift
-	local args=($@)
+    local -a opts
+    local cmd=$1
+    shift
+    local args=($@)
 
-	[[ $CURRENT == 3 ]] && _describe "$cmd commands" opts -- args
+    [[ $CURRENT == 3 ]] && _describe "$cmd commands" opts -- args
 }
 
 function _m_help {
-	_m_solo help help
+    _m_solo help help
 }
 
 function _m_cmd {
-	local sub=$1
+    local sub=$1
 
-	case $sub in
-		help)
-			;;
-		battery)
-			_m_solo $sub "status:get the battery status" help
-			;;
-		bluetooth)
-			_m_solo \
-				$sub \
-				"status:bluetooth status" \
-				"enable:turn on bluetooth" \
-				"disable:turn off bluetooth" \
-				help
-			;;
-		dir)
-			_m_dir
-			;;
-		disk)
-			_m_disk
-			;;
-		finder)
-			_m_yesno \
-				$sub \
-				"showhiddenfiles" \
-				"get the current status" \
-				"YES:show hidden files" \
-				"NO:don't show hidden files"
-			;;
-		firewall)
-			_m_firewall
-			;;
-		gatekeeper)
-			_m_gatekeeper
-			;;
-		hostname | info | lock | sleep)
-			_m_help
-			;;
-		network)
-			_m_network
-			;;
-		nosleep)
-			_m_nosleep
-			;;
-		ntp)
-			_m_solo \
-				$sub \
-				"status:status of the network time service" \
-				"enable:enable clock to use network time" \
-				"disable:disable clock to use network time" \
-				"set:set network time server" \
-				help
-			;;
-		restart)
-			_m_solo \
-				$sub \
-				"-f:restart computer without confirmation" \
-				"--force:restart computer without confirmation" \
-				help
-			;;
-		safeboot)
-			_m_solo \
-				$sub \
-				"status:get the boot args" \
-				"enable:enable safeboot" \
-				"disable:disable safeboot" \
-				help
-			;;
-		screensaver)
-			_m_yesno \
-				$sub \
-				"askforpassword" \
-				"get the current status" \
-				"YES:enable password requirement to unlock" \
-				"NO:disable password requirement to unlock"
-			;;
-		service)
-			local ls_help="list all services show information about the specified service"
-			_m_solo \
-				$sub \
-				"--status-all:$ls_help" \
-				"--list:$ls_help" \
-				"--ls:$ls_help" \
-				"start:start a service" \
-				"stop:stop a service" \
-				"load:load a service" \
-				"unload:unload a service" \
-				help
-			;;
-		shutdown)
-			_m_solo \
-				$sub \
-				"-f:shutdown computer without confirmation" \
-				"--force:shutdown computer without confirmation" \
-				help
-			;;
-		timezone)
-			_m_solo \
-				$sub \
-				"ls:list available timezones" \
-				"set:set timezone" \
-				help
-			;;
-		trash)
-			_m_solo \
-				$sub \
-				"status:get trash info" \
-				"clean:clean trash" \
-				help
-			;;
-		user)
-			_m_user
-			;;
-		volume)
-			_m_solo \
-				$sub \
-				"mute:set mute" \
-				"unmute:unset mute" \
-				"ismute:check the volume status" \
-				help
-			;;
-		wallpaper)
-			_m_wallpaper
-			;;
-		wifi)
-			_m_solo \
-				$sub \
-				"status:wifi status" \
-				"scan:scan wifi" \
-				"showpassword:show wifi network password" \
-				"history:wifi connection history" \
-				"off:turn off your wifi" \
-				"on:turn on your wifi" \
-				"connect:join a wifi network" \
-				help
-			;;
-	esac
+    case $sub in
+        help)
+            ;;
+        battery)
+            _m_solo $sub "status:get the battery status" help
+            ;;
+        bluetooth)
+            _m_solo \
+                $sub \
+                "status:bluetooth status" \
+                "enable:turn on bluetooth" \
+                "disable:turn off bluetooth" \
+                help
+            ;;
+        dir)
+            _m_dir
+            ;;
+        disk)
+            _m_disk
+            ;;
+        dns)
+            _m_solo \
+                $sub \
+                "flush:flushes local DNS" \
+                help
+            ;;
+        dock)
+            _m_dock
+            ;;
+        finder)
+            _m_yesno \
+                $sub \
+                "showhiddenfiles" \
+                "get the current status" \
+                "YES:show hidden files" \
+                "NO:don't show hidden files"
+            ;;
+        firewall)
+            _m_firewall
+            ;;
+        gatekeeper)
+            _m_gatekeeper
+            ;;
+        hostname | info | lock | sleep)
+            _m_help
+            ;;
+        network)
+            _m_network
+            ;;
+        nosleep)
+            _m_nosleep
+            ;;
+        ntp)
+            _m_solo \
+                $sub \
+                "status:status of the network time service" \
+                "enable:enable clock to use network time" \
+                "disable:disable clock to use network time" \
+                "set:set network time server" \
+                help
+            ;;
+        restart)
+            _m_solo \
+                $sub \
+                "-f:restart computer without confirmation" \
+                "--force:restart computer without confirmation" \
+                help
+            ;;
+        safeboot)
+            _m_solo \
+                $sub \
+                "status:get the boot args" \
+                "enable:enable safeboot" \
+                "disable:disable safeboot" \
+                help
+            ;;
+        screensaver)
+            _m_yesno \
+                $sub \
+                "askforpassword" \
+                "get the current status" \
+                "YES:enable password requirement to unlock" \
+                "NO:disable password requirement to unlock"
+            ;;
+        service)
+            local ls_help="list all services show information about the specified service"
+            _m_solo \
+                $sub \
+                "--status-all:$ls_help" \
+                "--list:$ls_help" \
+                "--ls:$ls_help" \
+                "start:start a service" \
+                "stop:stop a service" \
+                "load:load a service" \
+                "unload:unload a service" \
+                help
+            ;;
+        shutdown)
+            _m_solo \
+                $sub \
+                "-f:shutdown computer without confirmation" \
+                "--force:shutdown computer without confirmation" \
+                help
+            ;;
+        timezone)
+            _m_solo \
+                $sub \
+                "ls:list available timezones" \
+                "set:set timezone" \
+                help
+            ;;
+        trash)
+            _m_solo \
+                $sub \
+                "status:get trash info" \
+                "clean:clean trash" \
+                help
+            ;;
+        user)
+            _m_user
+            ;;
+        volume)
+            _m_solo \
+                $sub \
+                "mute:set mute" \
+                "unmute:unset mute" \
+                "ismute:check the volume status" \
+                help
+            ;;
+        vpn)
+            _m_solo \
+                $sub \
+                "list:list VPN connections" \
+                "start:start vpn connection" \
+                "stop:stop vpn connection" \
+                "status:status vpn connection" \
+                help
+            ;;
+        wallpaper)
+            _m_wallpaper
+            ;;
+        wifi)
+            _m_solo \
+                $sub \
+                "status:wifi status" \
+                "scan:scan wifi" \
+                "showpassword:show wifi network password" \
+                "history:wifi connection history" \
+                "off:turn off your wifi" \
+                "on:turn on your wifi" \
+                "connect:join a wifi network" \
+                help
+            ;;
+    esac
 }
 
 function _m {
-	local -a opts
-	local commands=(
-		help
-		"--update:update m-cli to the latest version"
-		"--uninstall:uninstall m-cli"
-		"battery:get the battery status"
-		"bluetooth:manage bluetooth status"
-		"dir:show and delete dir trees"
-		"disk:manage disks and volumes"
-		"finder:manage finder hidden files configuration"
-		"firewall:manage firewall"
-		"gatekeeper:manage gatekeeper"
-		"hostname:displays or set the computer's hostname"
-		"info:print Mac OS X operating system version information"
-		"lock:lock session"
-		"network:manage interfaces and locations"
-		"nosleep:prevent sleeping"
-		"ntp:manage the network time service"
-		"restart:restart computer"
-		"safeboot:manage safeboot"
-		"screensaver:launch and manage the screensaver"
-		"service:manage services"
-		"shutdown:shutdown computer"
-		"sleep:put the computer to sleep"
-		"timezone:manage timezone"
-		"trash:manage the trash"
-		"user:manage users"
-		"volume:manage the sound's volume"
-		"wallpaper:set the wallpaper"
-		"wifi:manage the wifi"
-	)
+    local -a opts
+    local commands=(
+        help
+        "--update:update m-cli to the latest version"
+        "--uninstall:uninstall m-cli"
+        "battery:get the battery status"
+        "bluetooth:manage bluetooth status"
+        "dir:show and delete dir trees"
+        "disk:manage disks and volumes"
+        "dns:manage dns"
+        "dock:manage dock"
+        "finder:manage finder properties"
+        "firewall:manage firewall"
+        "gatekeeper:manage gatekeeper (security for apps)"
+        "hostname:displays or set the computer's hostname"
+        "info:print Mac OS X operating system version information"
+        "lock:lock session"
+        "network:manage interfaces and locations"
+        "nosleep:prevent sleeping"
+        "ntp:manage the network time service"
+        "restart:restart computer"
+        "safeboot:manage safeboot"
+        "screensaver:launch and manage the screensaver"
+        "service:manage services"
+        "shutdown:shutdown computer"
+        "sleep:put the computer to sleep"
+        "timezone:manage timezone"
+        "trash:manage the trash"
+        "user:manage users"
+        "volume:manage the sound's volume"
+        "vpn:basic vpn operations, start, stop, status, list"
+        "wallpaper:set the wallpaper"
+        "wifi:manage the wifi"
+    )
 
-	case $CURRENT in
-		2)
-			_describe 'm commands' opts -- commands
-			;;
-		*)
-			local sub=${words[2]}
-			_m_cmd $sub
-			;;
-	esac
+    case $CURRENT in
+        2)
+            _describe 'm commands' opts -- commands
+            ;;
+        *)
+            local sub=${words[2]}
+            _m_cmd $sub
+            ;;
+    esac
 }
 
 _m $@
