@@ -2,6 +2,10 @@
 
 :boom: **Swiss Army Knife for Mac OS X !**
 
+
+## Thanks
+[guarinogabriel/Mac-CLI](https://github.com/guarinogabriel/Mac-CLI) was a great source of inspiration.
+
 ## The difference
 
 **m-cli** differs from other mac command line tools in that:
@@ -421,9 +425,6 @@ usage:  m [OPTIONS] COMMAND [help]
 * Add bash and zsh completion
 * Improve the help
 * Improve the installation script
-
-## Thanks
-[guarinogabriel/Mac-CLI](https://github.com/guarinogabriel/Mac-CLI) was a great source of inspiration.
 
 
 ---
