@@ -1,0 +1,72 @@
+#!/bin/sh
+
+
+help(){
+    cat<<__EOF__
+    usage: m group [ list | ls | info | adduser | removeuser | ismember | help ]
+
+    Examples:
+      m group list                          # get list of groups
+      m group info mygroup                  # display group information
+
+      m group adduser myuser mygroup        # add an user to a specific group
+      m group removeuser myuser mygroup     # remove an user from a specific group
+
+      m group ismember myuser mygroup       # show if the user is a member of a specific group
+
+__EOF__
+}
+
+group_ls(){
+    dscl . -list /Groups gid
+}
+
+group_info(){
+    [ -z "$1" ] && help && exit 1
+    dscl . -read "/Groups/$1"
+}
+
+group_add_user(){
+    [ -z "$1" -o -z "$2" ] && help && exit 1
+    sudo dseditgroup -o edit -a ${1} -t user ${2}
+}
+
+group_remove_user(){
+    [ -z "$1" -o -z "$2" ] && help && exit 1
+    sudo dseditgroup -o edit -d ${1} -t user ${2}
+}
+
+group_is_a_member(){
+    [ -z "$1" -o -z "$2" ] && help && exit 1
+    dseditgroup -o checkmember -m ${1} ${2}
+}
+
+case $1 in
+    help)
+        help
+        ;;
+    list|ls)
+        group_ls
+        ;;
+    info)
+        shift
+        group_info $@
+        ;;
+    adduser)
+        shift
+        group_add_user $@
+        ;;
+    removeuser)
+        shift
+        group_remove_user $@
+        ;;
+    ismember)
+        shift
+        group_is_a_member $@
+        ;;
+    *)
+        help
+        ;;
+esac
+
+# vim: set ts=4 sw=4 softtabstop=4 expandtab

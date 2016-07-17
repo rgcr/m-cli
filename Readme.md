@@ -2,10 +2,6 @@
 
 :boom: **Swiss Army Knife for Mac OS X !**
 
-
-## Thanks
-[guarinogabriel/Mac-CLI](https://github.com/guarinogabriel/Mac-CLI) was a great source of inspiration.
-
 ## The difference
 
 **m-cli** differs from other mac command line tools in that:
@@ -166,7 +162,7 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Finder:
 ```
-    usage: m finder [ showhiddenfiles | showfileextensions | help ]
+    usage: m finder [ showhiddenfiles | showfileextensions | help  ]
 
     Examples:
       m finder showhiddenfiles           # get the current status
@@ -203,6 +199,21 @@ usage:  m [OPTIONS] COMMAND [help]
       m gatekeeper disable MYRULE                       # disable rule
 
       m gatekeeper create  RULENAME /path/to/program    #  Create a rule for the application
+
+```
+
+#### Group:
+```
+    usage: m group [ list | ls | info | adduser | removeuser | ismember | help ]
+
+    Examples:
+      m group list                          # get list of groups
+      m group info mygroup                  # display group information
+
+      m group adduser myuser mygroup        # add an user to a specific group
+      m group removeuser myuser mygroup     # remove an user from a specific group
+
+      m group ismember myuser mygroup       # show if the user is a member of a specific group
 
 ```
 
@@ -428,6 +439,10 @@ usage:  m [OPTIONS] COMMAND [help]
 * Add a brew formula
 * Improve the help
 * Improve the installation script
+
+## Thanks
+[guarinogabriel/Mac-CLI](https://github.com/guarinogabriel/Mac-CLI) was a great source of inspiration.
+
 
 ---
 [MIT License](LICENSE.md) © Rogelio Cedillo
