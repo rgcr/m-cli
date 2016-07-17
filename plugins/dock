@@ -30,7 +30,7 @@ show_delay(){
             defaults write com.apple.dock autohide-time-modifier -int $1
             ;;
         *)
-            echo "Current Auto-Hide time: $(defaults read com.apple.dock autohide-time-modifier)"
+            echo "Current Auto-Hide time: $(defaults read com.apple.dock autohide-time-modifier 2>/dev/null)"
             exit 0
             ;;
     esac
