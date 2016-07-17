@@ -20,7 +20,16 @@ _m_sub () {
 				ls list fs filesystems info ejectall verify
 				repair format reformat rename help
 			)
+            ;;
+        dns)
+            subcommands=(flush)
 			;;
+        dock)
+            subcommands=(
+                showdelay autohide magnification
+                position addblankspace addrecentitems
+            )
+            ;;
 		finder)
 			subcommands=(showhiddenfiles help)
 			;;
@@ -80,6 +89,9 @@ _m_sub () {
 		volume)
 			subcommands=(mute unmute ismute help)
 			;;
+        vpn)
+			subcommands=(list status stop start help)
+            ;;
 		wallpaper)
 			subcommands=(help *)
 			;;
@@ -125,14 +137,17 @@ _m_disk() {
 			;;
 		format)
 			if [[ $COMP_CWORD == 3 ]]; then
-				choices=(MS-DOS volume)
+				choices=(ExFAT JHFS+ MS-DOS volume)
 			else
 				case $COMP_CWORD in
 					4)
-						[[ ${COMP_WORDS[3]} == "volume" ]] && choices=(MS-DOS)
+                        [[ ${COMP_WORDS[3]} == "volume" ]] && choices=(ExFAT JHFS+ MS-DOS)
 						;;
 					5)
-						[[ ${COMP_WORDS[3]} == "MS-DOS" ]] && choices=(*)
+						[[ ${COMP_WORDS[3]} == "MS-DOS" || \
+                            ${COMP_WORDS[3]} == "ExFAT" || \
+                            ${COMP_WORDS[3]} == "JHFS+" ]] && choices=(*)
+
 						;;
 					6)
 						[[ ${COMP_WORDS[3]} == "volume" ]] && choices=(*)
@@ -155,12 +170,32 @@ _m_disk() {
 	COMPREPLY=( $( compgen -W "${choices[*]}" -- $cur  )  )
 }
 
+
+_m_dock() {
+	local prev="$1"
+	local sub="$2"
+	local choices=()
+
+	case "$sub" in
+		autohide)
+			[[ $COMP_CWORD == 3 ]] && choices=(YES NO)
+			;;
+		magnification)
+			[[ $COMP_CWORD == 3 ]] && choices=(YES NO)
+            ;;
+		position)
+			[[ $COMP_CWORD == 3 ]] && choices=(BOTTOM LEFT RIGHT)
+            ;;
+	esac
+	COMPREPLY=( $( compgen -W "${choices[*]}" -- $cur  )  )
+}
+
 _m () {
 	local cur
 	local commands=(
-		help battery bluetooth dir disk finder firewall gatekeeper hostname
+		help battery bluetooth dir disk dns dock finder firewall gatekeeper hostname
 		info lock network nosleep ntp restart safeboot screensaver service
-		shutdown sleep timezone trash user volume wallpaper wifi
+		shutdown sleep timezone trash user volume vpn wallpaper wifi
 	)
 
 	COMPREPLY=()
@@ -183,6 +218,9 @@ _m () {
 					;;
 				disk)
 					_m_disk "$prev" "$sub"
+					;;
+                dock)
+					_m_dock "$prev" "$sub"
 					;;
 				finder)
 					[[ $COMP_CWORD == 3 ]] \
@@ -226,5 +264,7 @@ _m () {
 
 }
 
-complete -F _m m
+#complete -F _m m
+complete -o bashdefault -o default -F _m m
+
 
