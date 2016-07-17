@@ -166,12 +166,15 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Finder:
 ```
-    usage: m finder [ showhiddenfiles | help ]
+    usage: m finder [ showhiddenfiles | showfileextensions | help ]
 
     Examples:
       m finder showhiddenfiles           # get the current status
       m finder showhiddenfiles YES       # show hidden files
       m finder showhiddenfiles NO        # no show hidden files
+      m finder showextensions            # get the current status
+      m finder showextensions YES        # show all file extensions
+      m finder showextensions NO         # don't show all file extensions
 ```
 
 #### Firewall:
@@ -428,4 +431,3 @@ usage:  m [OPTIONS] COMMAND [help]
 
 ---
 [MIT License](LICENSE.md) © Rogelio Cedillo
-

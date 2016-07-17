@@ -385,9 +385,15 @@ function _m_cmd {
             _m_yesno \
                 $sub \
                 "showhiddenfiles" \
-                "get the current status" \
+                "get or set hidden property" \
                 "YES:show hidden files" \
                 "NO:don't show hidden files"
+            _m_yesno \
+                $sub \
+                "showextensions" \
+                "get or set showextension property" \
+                "YES:show all file extensions" \
+                "NO:don't show all file extensions"
             ;;
         firewall)
             _m_firewall
