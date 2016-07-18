@@ -1,5 +1,4 @@
 #!/bin/sh
-
 # TODO:
 # * include a function to delete older directories by days or mins
 # * include a function to delete newest directories by days or mins
@@ -18,26 +17,39 @@ __EOF__
 
 }
 
+confirm () {
+		# call with a prompt string or use a default
+		read -r -p "${1:-Are you sure? [y/n]} " response
+		case $response in
+			[yY][eE][sS]|[yY])
+				true
+				;;
+			*)
+				false
+				;;
+    esac
+}
+
 tree_dirs(){
-    dir=${1:-.}
-    ls -R ${dir}| grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
+    dir="${1:-.}"
+    ls -R "${dir}"| grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
 }
 
 
 delete_empty(){
-    DIRS=${@:-.}
+    DIRS="${@:-.}"
     echo "Folders to be deleted: "
-    find $DIRS -type d -empty -print
-    confirm && find $DIRS -type d -empty -delete
+    find "${DIRS}" -type d -empty -print
+    confirm && find "${DIRS}" -type d -empty -delete
 }
 
 
 
 delete(){
-    case $1 in
+    case "$1" in
         empty)
             shift;
-            delete_empty $@
+            delete_empty "$@"
             ;;
         *)
             help && exit 1
@@ -47,17 +59,17 @@ delete(){
 
 
 
-case $1 in
+case "$1" in
     help)
         help
         ;;
     tree)
         shift
-        tree_dirs $@
+        tree_dirs "$@"
         ;;
     delete)
         shift;
-        delete $@
+        delete "$@"
         ;;
     *)
         help
