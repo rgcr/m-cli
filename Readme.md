@@ -63,6 +63,7 @@ usage:  m [OPTIONS] COMMAND [help]
         sleep
         timezone
         trash
+        update
         user
         volume
         vpn
@@ -362,6 +363,17 @@ usage:  m [OPTIONS] COMMAND [help]
     Examples:
       m trash status    # get trash info
       m trash clean     # clean trash
+```
+
+#### Update
+```
+    usage: m update [ list | install | help ]
+
+
+    Examples:
+      m update list                                                 # list available updates
+      m update install all                                          # install all the available updates
+      m update install iTunesX-12.4.1 RAWCameraUpdate6.20-6.20      # install specific updates
 ```
 
 #### User
