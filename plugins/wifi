@@ -31,9 +31,9 @@ wifi_history(){
 }
 
 wifi_showpassword(){
-    if [ -z "$1" ] 
-    then 
-        ssid="`/usr/local/bin/airport -I | awk '/ SSID/ {print substr($0, index($0, $2))}'`"
+    if [ -z "$1" ]
+    then
+        ssid="`/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I | awk '/ SSID/ {print substr($0, index($0, $2))}'`"
     else
         ssid=$1
     fi

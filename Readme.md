@@ -436,11 +436,12 @@ usage:  m [OPTIONS] COMMAND [help]
     Examples:
       m wifi status                  # wifi status
       m wifi scan                    # scan wifi
-      m wifi showpassword ESSID      # show wifi network password
+      m wifi showpassword [ESSID]    # show wifi network password (default: current)
       m wifi history                 # wifi connection history
       m wifi off                     # turn off your wifi
       m wifi on                      # turn on your wifi
       m wifi connect ESSID PASSWORD  # join a wifi network
+
 ```
 
 ## Contributing
