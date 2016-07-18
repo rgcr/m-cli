@@ -1,0 +1,50 @@
+#!/bin/sh
+
+help(){
+    cat<<__EOF__
+    usage: m update [ osx | pip | brew | help ]
+
+
+    Examples:
+      m update osx      # updates osx
+      m update pip[2/3] # updates pip packages [explicitly for python 2/3]
+      m update brew     # updates brew and installed packages
+      m update npm      # updates npm and packages
+
+__EOF__
+}
+
+case $1 in
+    help)
+        help
+        ;;
+    osx)
+        sudo softwareupdate -i -a
+        ;;
+    pip)
+        pip list --outdated | cut -d ' ' -f1 | xargs -n1 pip install -U
+        pip list --outdated | cut -d ' ' -f1 | xargs -n1 sudo -H pip install -U
+        ;;
+    pip2)
+        pip2 list --outdated | cut -d ' ' -f1 | xargs -n1 pip2 install -U
+        pip2 list --outdated | cut -d ' ' -f1 | xargs -n1 sudo -H pip2 install -U
+        ;;
+    pip3)
+        pip3 list --outdated | cut -d ' ' -f1 | xargs -n1 pip3 install -U
+        pip3 list --outdated | cut -d ' ' -f1 | xargs -n1 sudo -H pip3 install -U
+        ;;
+    brew)
+        if [ -f /usr/local/bin/brew ]; then
+            brew update; brew upgrade
+            echo "Cleaning up"
+            brew cleanup
+        fi
+        ;;
+    npm)
+        npm install npm -g; npm update -g;
+        ;;
+    *)
+        help
+        ;;
+
+esac
