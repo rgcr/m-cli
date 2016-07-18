@@ -21,7 +21,8 @@ case $1 in
             awk '{ if($1 != 0) {print "Bluetooth: ON"} else { print "Bluetooth: OFF" }  }'
         ;;
     enable)
-        sudo defaults write /Library/Preferences/com.apple.Bluetooth ControllerPowerState -int 1
+        sudo defaults write /Library/Preferences/com.apple.Bluetooth ControllerPowerState -int 1 && \
+            sudo killall -HUP blued
         ;;
     disable)
         sudo defaults write /Library/Preferences/com.apple.Bluetooth ControllerPowerState -int 0 && \
