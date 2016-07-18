@@ -19,25 +19,25 @@ __EOF__
 }
 
 tree_dirs(){
-    dir=${1:-.}
-    ls -R ${dir}| grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
+    dir="${1:-.}"
+    ls -R "${dir}"| grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
 }
 
 
 delete_empty(){
-    DIRS=${@:-.}
+    DIRS="${@:-.}"
     echo "Folders to be deleted: "
-    find $DIRS -type d -empty -print
-    confirm && find $DIRS -type d -empty -delete
+    find "${DIRS}" -type d -empty -print
+    confirm && find "${DIRS}" -type d -empty -delete
 }
 
 
 
 delete(){
-    case $1 in
+    case "$1" in
         empty)
             shift;
-            delete_empty $@
+            delete_empty "$@"
             ;;
         *)
             help && exit 1
@@ -47,17 +47,17 @@ delete(){
 
 
 
-case $1 in
+case "$1" in
     help)
         help
         ;;
     tree)
         shift
-        tree_dirs $@
+        tree_dirs "$@"
         ;;
     delete)
         shift;
-        delete $@
+        delete "$@"
         ;;
     *)
         help

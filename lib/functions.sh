@@ -1,17 +1,17 @@
 #!/bin/sh
 
-. ${MPATH}/lib/colors.sh
+. "${MPATH}/lib/colors.sh"
 
 _green_msg(){
-    echo "${GREEN}$@${NC}"
+    echo "${GREEN}$*${NC}"
 }
 
 _red_msg(){
-    echo "${RED}$@${NC}"
+    echo "${RED}$*${NC}"
 }
 
 _gray_msg(){
-    echo "${GRAY}$@${NC}"
+    echo "${GRAY}$*${NC}"
 }
 
 _is_function(){
@@ -19,14 +19,14 @@ _is_function(){
 }
 
 _die(){
-    _red_msg $@;
+    _red_msg "$@";
     exit 1
 }
 
 confirm () {
     # call with a prompt string or use a default
     read -r -p "${1:-Are you sure? [y/N]} " response
-    case $response in
+    case "${response}" in
         [yY][eE][sS]|[yY])
             true
             ;;
