@@ -1,5 +1,5 @@
 #!/bin/sh
-
+. "${MPATH}/lib/functions.sh"
 # TODO:
 # * include a function to delete older directories by days or mins
 # * include a function to delete newest directories by days or mins
