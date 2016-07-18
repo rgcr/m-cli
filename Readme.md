@@ -398,10 +398,16 @@ usage:  m [OPTIONS] COMMAND [help]
     usage:  m vpn [ ls | list | start | stop | status | help ]
 
     Examples:
-      m vpn ls                  # list VPN connections
-      m vpn start VPN           # start vpn connection named VPN
-      m vpn stop VPN            # stop vpn connection named VPN
-      m vpn status VPN          # status vpn connection named VPN
+      m vpn ls                              # list VPN connections
+
+      m vpn start VPN                       # start vpn connection named VPN
+      m vpn start VPN USER                  # start a vpn connection with a given user
+      m vpn start VPN USER PASS             # start a vpn connection with a given user and password
+      m vpn start VPN USER PASS SECRET      # start a vpn connection with a given user,password, and secret
+
+      m vpn stop VPN                        # stop vpn connection named VPN
+      m vpn status VPN                      # status vpn connection named VPN
+
 ```
 
 #### Wallpaper:

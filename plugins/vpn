@@ -6,10 +6,15 @@ help(){
     usage:  m vpn [ ls | list | start | stop | status | help ]
 
     Examples:
-      m vpn ls                  # list VPN connections
-      m vpn start VPN           # start vpn connection named VPN
-      m vpn stop VPN            # stop vpn connection named VPN
-      m vpn status VPN          # status vpn connection named VPN
+      m vpn ls                              # list VPN connections
+
+      m vpn start VPN                       # start vpn connection named VPN
+      m vpn start VPN USER                  # start a vpn connection with a given user
+      m vpn start VPN USER PASS             # start a vpn connection with a given user and password
+      m vpn start VPN USER PASS SECRET      # start a vpn connection with a given user,password, and secret
+
+      m vpn stop VPN                        # stop vpn connection named VPN
+      m vpn status VPN                      # status vpn connection named VPN
 __EOF__
 
 }
@@ -19,14 +24,21 @@ list_vpns(){
 }
 
 start_vpn(){
-/usr/bin/env osascript <<-EOF
-    tell application "System Events"
-            tell current location of network preferences
-                    set VPN to service "$1" -- your VPN name here
-                    if exists VPN then connect VPN
-            end tell
-    end tell
-EOF
+    [ -z "$1" ] && help && exit 1;
+
+    if [ $# -eq 4 ]; then
+        # vpn user pass secret
+        scutil --nc start "$1" --user "$2" --pasword "$3" --secret "$4"
+    elif [ $# -eq 3 ]; then
+        # vpn user password
+        scutil --nc start "$1" --user "$2" --pasword "$3"
+    elif [ $# -eq 2 ]; then
+        # vpn user
+        scutil --nc start "$1" --user "$2"
+    else
+        # vpn
+        scutil --nc start "$1"
+    fi
 }
 
 stop_vpn(){
@@ -46,8 +58,8 @@ case $1 in
         list_vpns
         ;;
     start)
-        [ -z "$2" ] && help && exit 1;
-        start_vpn $2
+        shift
+        start_vpn "$@"
         ;;
     stop)
         [ -z "$2" ] && help && exit 1;
