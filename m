@@ -8,10 +8,6 @@ fi
 export MPATH=`pwd -P`
 popd > /dev/null
 
-. ${MPATH}/lib/colors.sh
-. ${MPATH}/lib/functions.sh
-
-
 usage(){
 
     cat <<__EOF__

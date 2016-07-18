@@ -29,7 +29,6 @@ install_from_git(){
             echo >&2 "Failed to clone => ${GIT_URL}"
             exit 1
         }
-        chmod -R 755 ${INSTALL_DIR}/lib  2>/dev/null
         chmod -R 755 ${INSTALL_DIR}/plugins 2>/dev/null
         chmod 755 ${INSTALL_DIR}/m 2>/dev/null
         sudo ln -sf ${INSTALL_DIR}/m /usr/local/bin/m
