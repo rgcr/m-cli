@@ -489,6 +489,13 @@ function _m_cmd {
         user)
             _m_user
             ;;
+        update)
+            _m_solo \
+                $sub \
+                "list:list available updates" \
+                "install:install update(s)" \
+                help
+            ;;
         volume)
             _m_solo \
                 $sub \
@@ -555,6 +562,7 @@ function _m {
         "timezone:manage timezone"
         "trash:manage the trash"
         "user:manage users"
+        "update:manage OS X updates"
         "volume:manage the sound's volume"
         "vpn:basic vpn operations, start, stop, status, list"
         "wallpaper:set the wallpaper"
