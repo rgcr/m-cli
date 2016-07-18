@@ -369,7 +369,6 @@ usage:  m [OPTIONS] COMMAND [help]
 ```
     usage: m update [ list | install | help ]
 
-
     Examples:
       m update list                                                 # list available updates
       m update install all                                          # install all the available updates
