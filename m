@@ -1,10 +1,7 @@
 #!/bin/sh
 
-if [ -L $0 ]; then
-    pushd `readlink $0 | xargs dirname` > /dev/null
-else
-    pushd `dirname $0` > /dev/null
-fi
+[ -L $0 ] && pushd `readlink $0 | xargs dirname` > /dev/null \
+    || pushd `dirname $0` > /dev/null
 export MPATH=`pwd -P`
 popd > /dev/null
 
