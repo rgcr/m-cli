@@ -5,6 +5,21 @@
 export MPATH=`pwd -P`
 popd > /dev/null
 
+
+confirm () {
+    read -r -p "${1:-Are you sure? [y/N]} " response
+    case $response in
+        [yY][eE][sS]|[yY])
+            true
+            ;;
+        *)
+            false
+            ;;
+    esac
+}
+
+
+
 usage(){
 
     cat <<__EOF__
@@ -27,6 +42,7 @@ __EOF__
     done
     exit 1
 }
+
 
 case $1 in
     --update)
