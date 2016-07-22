@@ -28,10 +28,10 @@ start_vpn(){
 
     if [ $# -eq 4 ]; then
         # vpn user pass secret
-        scutil --nc start "$1" --user "$2" --pasword "$3" --secret "$4"
+        scutil --nc start "$1" --user "$2" --password "$3" --secret "$4"
     elif [ $# -eq 3 ]; then
         # vpn user password
-        scutil --nc start "$1" --user "$2" --pasword "$3"
+        scutil --nc start "$1" --user "$2" --password "$3"
     elif [ $# -eq 2 ]; then
         # vpn user
         scutil --nc start "$1" --user "$2"
