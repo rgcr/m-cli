@@ -13,7 +13,7 @@ _m_sub () {
 			subcommands=(status enable disable help)
 			;;
 		dir)
-			subcommands=(tree delete help)
+			subcommands=(tree size delete help)
 			;;
 		disk)
 			subcommands=(
@@ -118,6 +118,9 @@ _m_dir() {
 		tree)
 			choices=(*)
 			;;
+        size)
+            choices=(*)
+            ;;
 		delete)
 			choices=(empty)
 			;;
