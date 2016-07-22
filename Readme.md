@@ -25,11 +25,6 @@ You can also install it in a different path
 
 _Note: You need privileges_
 
-## Demo time:
-
-![Demo](https://cloud.githubusercontent.com/assets/1203422/16932455/0446ae66-4d0c-11e6-82a5-8bf9b2a3ab75.gif)
-
-
 
 ## Usage
 
