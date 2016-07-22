@@ -9,6 +9,7 @@ function _m_dir {
         3)
             args=(
                 "tree:tree view of folders in the current or specified path"
+                "size:calculate folder size"
                 "delete:$delete_help"
                 help
             )
@@ -18,6 +19,9 @@ function _m_dir {
 
             case $sub in
                 tree)
+                    _path_files
+                    ;;
+                size)
                     _path_files
                     ;;
                 delete)

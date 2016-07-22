@@ -5,7 +5,7 @@
 
 help(){
     cat<<__EOF__
-    usage: m dir [ tree | delete | help ]
+    usage: m dir [ tree | size | delete | help ]
 
     Examples:
       m dir tree        # tree view of folders in the current path
