@@ -13,6 +13,10 @@ help(){
 
       m dir delete empty          # delete empty folders recursively in the current path
       m dir delete empty /path    # delete empty folders recursively in a specific path
+
+      m dir size        # calculate current folder size
+      m dir size /path  # calculate folder size in a specific path
+
 __EOF__
 
 }
@@ -44,6 +48,12 @@ delete_empty(){
 }
 
 
+folder_size(){
+    dir="${@:-.}"
+    echo "Folder size:"
+    du -sh "${dir}"
+}
+
 
 delete(){
     case "$1" in
@@ -70,6 +80,10 @@ case "$1" in
     delete)
         shift;
         delete "$@"
+        ;;
+    size)
+        shift
+        folder_size "$@"
         ;;
     *)
         help
