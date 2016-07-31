@@ -14,16 +14,20 @@
 
 ## Installation
 
-To **install** or **update** m-cli you can run this command:
+* **Manual installation:**
 
-`curl -fsSL https://raw.githubusercontent.com/rgcr/m-cli/master/install.sh | sh`
+  `curl -fsSL https://raw.githubusercontent.com/rgcr/m-cli/master/install.sh | sh`
 
-You can also install it in a different path
+  You can also install it in a different path
 
-`INSTALL_DIR=$HOME/.m-cli sh <(curl -fsSL https://raw.githubusercontent.com/rgcr/m-cli/master/install.sh)`
+  `INSTALL_DIR=$HOME/.m-cli sh <(curl -fsSL https://raw.githubusercontent.com/rgcr/m-cli/master/install.sh)`
 
+  _Note: You need privileges_
 
-_Note: You need privileges_
+* **Using Homebrew:**
+
+  `brew install m-cli`
+
 
 
 ## Usage
