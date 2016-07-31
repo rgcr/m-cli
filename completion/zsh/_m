@@ -188,6 +188,7 @@ function _m_dock {
             "position:change Dock's position"
             "addblankspace:add a blank space(separator) to the dock"
             "addrecentitems:add a stack containg your recent items to the Dock"
+            "prune: removes all apps from dock"
             help
         )
 
