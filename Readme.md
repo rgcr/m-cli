@@ -14,6 +14,10 @@
 
 ## Installation
 
+`brew install m-cli`
+
+### Manual
+
 To **install** or **update** m-cli you can run this command:
 
 `curl -fsSL https://raw.githubusercontent.com/rgcr/m-cli/master/install.sh | sh`
