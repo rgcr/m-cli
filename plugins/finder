@@ -13,6 +13,9 @@ help(){
       m finder showextensions            # get the current status
       m finder showextensions YES        # show all file extensions
       m finder showextensions NO         # don't show all file extensions
+      m finder desktop                   # get the current desktop status 
+      m finder desktop enable            # enable the desktop
+      m finder desktop disable           # disable the desktop
 __EOF__
 }
 
@@ -52,6 +55,28 @@ file_extensions(){
     killall Finder
 }
 
+desktop(){
+    case $1 in
+        enable)
+            echo "Enables Desktop"
+            defaults write com.apple.finder CreateDesktop -bool TRUE
+            ;;
+        disable)
+            echo "Disables Desktop"
+            defaults write com.apple.finder CreateDesktop -bool FALSE
+            ;;
+        *)
+            DESKTOP_STATUS_NUM=`defaults read com.apple.finder CreateDesktop`
+            if [ "$DESKTOP_STATUS_NUM" -eq 0 ] ; then 
+              $DESKTOP_STATUS="disabled"
+            else
+              $DESKTOP_STATUS="enabled"
+            fi
+            echo "Desktop is: $DESKTOP_STATUS"
+            ;;
+    esac
+    killall Finder
+}
 
 case $1 in
     help)
@@ -64,6 +89,10 @@ case $1 in
     showextensions)
         shift
         file_extensions $@
+        ;;
+    desktop)
+        shift
+        desktop $@
         ;;
     *)
         help
