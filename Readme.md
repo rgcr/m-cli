@@ -173,7 +173,7 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Finder:
 ```
-    usage: m finder [ showhiddenfiles | showfileextensions | help  ]
+    usage: m finder [ showhiddenfiles | showfileextensions | desktop | help  ]
 
     Examples:
       m finder showhiddenfiles           # get the current status

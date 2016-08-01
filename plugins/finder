@@ -4,7 +4,7 @@
 
 help(){
     cat<<__EOF__
-    usage: m finder [ showhiddenfiles | showfileextensions | help ]
+    usage: m finder [ showhiddenfiles | showfileextensions | desktop | help ]
 
     Examples:
       m finder showhiddenfiles           # get the current status
@@ -13,7 +13,7 @@ help(){
       m finder showextensions            # get the current status
       m finder showextensions YES        # show all file extensions
       m finder showextensions NO         # don't show all file extensions
-      m finder desktop                   # get the current desktop status 
+      m finder desktop                   # get the current desktop status
       m finder desktop enable            # enable the desktop
       m finder desktop disable           # disable the desktop
 __EOF__
@@ -66,11 +66,11 @@ desktop(){
             defaults write com.apple.finder CreateDesktop -bool FALSE
             ;;
         *)
-            DESKTOP_STATUS_NUM=`defaults read com.apple.finder CreateDesktop`
-            if [ "$DESKTOP_STATUS_NUM" -eq 0 ] ; then 
-              $DESKTOP_STATUS="disabled"
+            DESKTOP_STATUS_NUM=$(defaults read com.apple.finder CreateDesktop 2>/dev/null)
+            if [ "$DESKTOP_STATUS_NUM" -eq 0 ] ; then
+              DESKTOP_STATUS="disabled"
             else
-              $DESKTOP_STATUS="enabled"
+              DESKTOP_STATUS="enabled"
             fi
             echo "Desktop is: $DESKTOP_STATUS"
             ;;
