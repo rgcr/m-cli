@@ -137,7 +137,7 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Dock:
 ```
-    usage: m dock [ showdelay | autohide | magnification | position | addblankspace | addrecentitems | help ]
+    usage: m dock [ showdelay | autohide | magnification | position | addblankspace | addrecentitems | prune | help ]
 
     Examples:
       m dock showdelay x.x          # Changes how long the Dock takes to show up when auto-hide is enabled
@@ -151,6 +151,7 @@ usage:  m [OPTIONS] COMMAND [help]
       m dock addblankspace          # Add a blank space (separator) to the Dock
       m dock addrecentitems         # Add a stack containg your recent items to the Dock
                                     #  (You can change the stack's type by right clicking on it)
+      m dock prune                  # Removes all apps from Dock
 
 ```
 
