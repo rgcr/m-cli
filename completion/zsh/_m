@@ -399,6 +399,13 @@ function _m_cmd {
                 "get or set showextension property" \
                 "YES:show all file extensions" \
                 "NO:don't show all file extensions"
+            _m_yesno \
+                $sub \
+                "desktop" \
+                "show desktop status" \
+                "enable:enables desktop" \
+                "disable:disables desktop"
+            _m_yesno \
             ;;
         firewall)
             _m_firewall

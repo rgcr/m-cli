@@ -32,7 +32,7 @@ _m_sub () {
             )
             ;;
 		finder)
-			subcommands=(showhiddenfiles showextensions help)
+			subcommands=(showhiddenfiles showextensions desktop help)
 			;;
 		firewall)
 			subcommands=(status enable disable add help)
