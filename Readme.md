@@ -14,6 +14,10 @@
 
 ## Installation
 
+* **Using Homebrew:**
+
+  `brew install m-cli`
+
 * **Manual installation:**
 
   `curl -fsSL https://raw.githubusercontent.com/rgcr/m-cli/master/install.sh | sh`
@@ -23,10 +27,6 @@
   `INSTALL_DIR=$HOME/.m-cli sh <(curl -fsSL https://raw.githubusercontent.com/rgcr/m-cli/master/install.sh)`
 
   _Note: You need privileges_
-
-* **Using Homebrew:**
-
-  `brew install m-cli`
 
 
 
