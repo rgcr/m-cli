@@ -173,7 +173,7 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Finder:
 ```
-    usage: m finder [ showhiddenfiles | showfileextensions | help  ]
+    usage: m finder [ showhiddenfiles | showfileextensions | desktop | help  ]
 
     Examples:
       m finder showhiddenfiles           # get the current status
@@ -182,6 +182,10 @@ usage:  m [OPTIONS] COMMAND [help]
       m finder showextensions            # get the current status
       m finder showextensions YES        # show all file extensions
       m finder showextensions NO         # don't show all file extensions
+      m finder desktop                   # get the current desktop status
+      m finder desktop enable            # enables desktop
+      m finder desktop disable           # disables desktop
+
 ```
 
 #### Firewall:
