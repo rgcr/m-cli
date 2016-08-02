@@ -545,7 +545,8 @@ function _m_cmd {
 
 function _m {
     local -a opts
-    local commands=(
+    local commands
+    commands=(
         help
         "--update:update m-cli to the latest version"
         "--uninstall:uninstall m-cli"
