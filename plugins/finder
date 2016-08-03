@@ -9,7 +9,7 @@ help(){
     Examples:
       m finder showhiddenfiles           # get the current status
       m finder showhiddenfiles YES       # show hidden files
-      m finder showhiddenfiles NO        # no show hidden files
+      m finder showhiddenfiles NO        # don't show hidden files
       m finder showextensions            # get the current status
       m finder showextensions YES        # show all file extensions
       m finder showextensions NO         # don't show all file extensions
@@ -40,11 +40,11 @@ hidden_files(){
 file_extensions(){
     case $1 in
         [yY][eE][sS])
-            echo "Show Hidden files: YES"
+            echo "Show file extensions: YES"
             defaults write NSGlobalDomain AppleShowAllExtensions YES
             ;;
         [nN][oO])
-            echo "Show Hidden files: NO"
+            echo "Show file extensions: NO"
             defaults write NSGlobalDomain AppleShowAllExtensions NO
             ;;
         *)
