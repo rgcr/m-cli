@@ -67,7 +67,7 @@ desktop(){
             ;;
         *)
             DESKTOP_STATUS_NUM=$(defaults read com.apple.finder CreateDesktop 2>/dev/null)
-            if [ "$DESKTOP_STATUS_NUM" -eq 0 ] ; then
+            if [ -n "$DESKTOP_STATUS_NUM" ] && [ "$DESKTOP_STATUS_NUM" -eq 0 ] ; then
               DESKTOP_STATUS="disabled"
             else
               DESKTOP_STATUS="enabled"
