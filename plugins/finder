@@ -4,34 +4,50 @@
 
 help(){
     cat<<__EOF__
-    usage: m finder [ showhiddenfiles | showfileextensions | desktop | help ]
+    usage: m finder [ showhiddenfiles | showfileextensions | showdesktop | help ]
 
     Examples:
       m finder showhiddenfiles           # get the current status
       m finder showhiddenfiles YES       # show hidden files
-      m finder showhiddenfiles NO        # no show hidden files
+      m finder showhiddenfiles NO        # don't show hidden files
+
       m finder showextensions            # get the current status
       m finder showextensions YES        # show all file extensions
       m finder showextensions NO         # don't show all file extensions
-      m finder desktop                   # get the current desktop status
-      m finder desktop enable            # enable the desktop
-      m finder desktop disable           # disable the desktop
+
+      m finder showdesktop               # get the current desktop status
+      m finder showdesktop YES           # enable the desktop
+      m finder showdesktop NO            # disable the desktop
 __EOF__
 }
 
 hidden_files(){
     case $1 in
         [yY][eE][sS])
-            echo "Show Hidden files: YES"
-            defaults write com.apple.finder AppleShowAllFiles YES
+            echo "Show hidden files: YES"
+            defaults write com.apple.finder AppleShowAllFiles -bool true
             ;;
         [nN][oO])
-            echo "Show Hidden files: NO"
-            defaults write com.apple.finder AppleShowAllFiles NO
+            echo "Show hidden files: NO"
+            defaults write com.apple.finder AppleShowAllFiles -bool false
             ;;
         *)
-            echo "Show Hidden files: $(defaults read com.apple.finder AppleShowAllFiles)"
-            exit 1
+            HIDDEN_FILE_STATUS=$(defaults read com.apple.finder AppleShowAllFiles 2>/dev/null)
+
+            case $HIDDEN_FILE_STATUS in
+                0|[nN][oO]|[fF][aA][lL][sS][eE])
+                    HIDDEN_FILE_STATUS="NO"
+                    ;;
+                1|[yY][eE][sS]|[tT][rU][eE])
+                    HIDDEN_FILE_STATUS="YES"
+                    ;;
+                *)
+                    echo "We can't read AppleShowAllFiles property" && exit 1
+                    ;;
+            esac
+
+            echo "Show hidden files: $HIDDEN_FILE_STATUS"
+            exit 0
             ;;
     esac
     killall Finder
@@ -40,16 +56,28 @@ hidden_files(){
 file_extensions(){
     case $1 in
         [yY][eE][sS])
-            echo "Show Hidden files: YES"
-            defaults write NSGlobalDomain AppleShowAllExtensions YES
+            echo "Show file extensions: YES"
+            defaults write NSGlobalDomain AppleShowAllExtensions -bool true
             ;;
         [nN][oO])
-            echo "Show Hidden files: NO"
-            defaults write NSGlobalDomain AppleShowAllExtensions NO
+            echo "Show file extensions: NO"
+            defaults write NSGlobalDomain AppleShowAllExtensions -bool false
             ;;
         *)
-            echo "Show All File Extensions: $(defaults read NSGlobalDomain AppleShowAllExtensions)"
-            exit 1
+            EXTENSION_STATUS=$(defaults read NSGlobalDomain AppleShowAllExtensions 2>/dev/null)
+            case $EXTENSION_STATUS in
+                0|[nN][oO]|[fF][aA][lL][sS][eE])
+                    EXTENSION_STATUS="NO"
+                    ;;
+                1|[yY][eE][sS]|[tT][rU][eE])
+                    EXTENSION_STATUS="YES"
+                    ;;
+                *)
+                    echo "We can't read AppleShowAllExtension property" && exit 1
+                    ;;
+            esac
+            echo "Show file extensions: $EXTENSION_STATUS"
+            exit 0
             ;;
     esac
     killall Finder
@@ -57,22 +85,28 @@ file_extensions(){
 
 desktop(){
     case $1 in
-        enable)
-            echo "Enables Desktop"
-            defaults write com.apple.finder CreateDesktop -bool TRUE
+        [yY][eE][sS])
+            echo "Enable desktop: YES"
+            defaults write com.apple.finder CreateDesktop -bool true
             ;;
-        disable)
-            echo "Disables Desktop"
-            defaults write com.apple.finder CreateDesktop -bool FALSE
+        [nN][oO])
+            echo "Enable desktop: NO"
+            defaults write com.apple.finder CreateDesktop -bool false
             ;;
         *)
-            DESKTOP_STATUS_NUM=$(defaults read com.apple.finder CreateDesktop 2>/dev/null)
-            if [ "$DESKTOP_STATUS_NUM" -eq 0 ] ; then
-              DESKTOP_STATUS="disabled"
-            else
-              DESKTOP_STATUS="enabled"
-            fi
-            echo "Desktop is: $DESKTOP_STATUS"
+            DESKTOP_STATUS=$(defaults read com.apple.finder CreateDesktop 2>/dev/null)
+            case $DESKTOP_STATUS in
+                0|[nN][oO]|[fF][aA][lL][sS][eE])
+                    DESKTOP_STATUS="disabled"
+                    ;;
+                1|[yY][eE][sS]|[tT][rU][eE])
+                    DESKTOP_STATUS="enabled"
+                    ;;
+                *)
+                    echo "We can't read CreateDesktop property" && exit 1
+                    ;;
+            esac
+            echo "Desktop: $DESKTOP_STATUS"
             ;;
     esac
     killall Finder
@@ -84,15 +118,15 @@ case $1 in
         ;;
     showhiddenfiles)
         shift
-        hidden_files $@
+        hidden_files "$@"
         ;;
     showextensions)
         shift
-        file_extensions $@
+        file_extensions "$@"
         ;;
-    desktop)
+    showdesktop)
         shift
-        desktop $@
+        desktop "$@"
         ;;
     *)
         help
