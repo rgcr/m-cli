@@ -22,12 +22,12 @@ __EOF__
 hidden_files(){
     case $1 in
         [yY][eE][sS])
-            echo "Show Hidden files: YES"
-            defaults write com.apple.finder AppleShowAllFiles YES
+            echo "Show hidden files: YES"
+            defaults write com.apple.finder AppleShowAllFiles -bool true
             ;;
         [nN][oO])
-            echo "Show Hidden files: NO"
-            defaults write com.apple.finder AppleShowAllFiles NO
+            echo "Show hidden files: NO"
+            defaults write com.apple.finder AppleShowAllFiles -bool false
             ;;
         *)
             HIDDEN_FILE_STATUS=$(defaults read com.apple.finder AppleShowAllFiles 2>/dev/null | tr '[:upper:]' '[:lower:]')
@@ -51,11 +51,11 @@ file_extensions(){
     case $1 in
         [yY][eE][sS])
             echo "Show file extensions: YES"
-            defaults write NSGlobalDomain AppleShowAllExtensions YES
+            defaults write NSGlobalDomain AppleShowAllExtensions -bool true
             ;;
         [nN][oO])
             echo "Show file extensions: NO"
-            defaults write NSGlobalDomain AppleShowAllExtensions NO
+            defaults write NSGlobalDomain AppleShowAllExtensions -bool false
             ;;
         *)
             EXTENSION_STATUS=$(defaults read NSGlobalDomain AppleShowAllExtensions 2>/dev/null | tr '[:upper:]' '[:lower:]')
@@ -79,11 +79,11 @@ desktop(){
     case $1 in
         [yY][eE][sS])
             echo "Enable desktop: YES"
-            defaults write com.apple.finder CreateDesktop -bool TRUE
+            defaults write com.apple.finder CreateDesktop -bool true
             ;;
         [nN][oO])
             echo "Enable desktop: NO"
-            defaults write com.apple.finder CreateDesktop -bool FALSE
+            defaults write com.apple.finder CreateDesktop -bool false
             ;;
         *)
             DESKTOP_STATUS=$(defaults read com.apple.finder CreateDesktop 2>/dev/null | tr '[:upper:]' '[:lower:]')
