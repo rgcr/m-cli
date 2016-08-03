@@ -18,6 +18,16 @@ confirm () {
     esac
 }
 
+update_mcli(){
+    INSTALL_DIR=${MPATH} ${MPATH}/install.sh
+}
+
+uninstall_mcli(){
+    confirm "Do you want to uninstall m-cli? [y/n]: " \
+        && sudo rm -rf ${MPATH} 2>/dev/null \
+        && sudo rm -f "/usr/local/bin/m" 2>/dev/null \
+        && echo "Done !"
+}
 
 
 usage(){
@@ -46,15 +56,10 @@ __EOF__
 
 case $1 in
     --update)
-        INSTALL_DIR=${MPATH} ${MPATH}/install.sh
-        exit 0
+        update_mcli && exit 0
         ;;
     --uninstall)
-        confirm "Do you want to uninstall m-cli? [y/n]: " \
-            && sudo rm -rf ${MPATH} 2>/dev/null \
-            && sudo rm -f "/usr/local/bin/m" 2>/dev/null \
-            && echo "Done !"
-        exit 0
+        uninstall_mcli && exit 0
         ;;
 esac
 
