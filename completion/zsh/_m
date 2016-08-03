@@ -345,7 +345,8 @@ function _m_solo {
     local -a opts
     local cmd=$1
     shift
-    local args=($@)
+    local args
+    args=($@)
 
     [[ $CURRENT == 3 ]] && _describe "$cmd commands" opts -- args
 }
