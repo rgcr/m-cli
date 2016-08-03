@@ -108,15 +108,15 @@ case $1 in
         ;;
     showhiddenfiles)
         shift
-        hidden_files $@
+        hidden_files "$@"
         ;;
     showextensions)
         shift
-        file_extensions $@
+        file_extensions "$@"
         ;;
     showdesktop)
         shift
-        desktop $@
+        desktop "$@"
         ;;
     *)
         help
