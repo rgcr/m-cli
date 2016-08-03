@@ -402,10 +402,10 @@ function _m_cmd {
                 "NO:don't show all file extensions"
             _m_yesno \
                 $sub \
-                "desktop" \
-                "show desktop status" \
-                "enable:enables desktop" \
-                "disable:disables desktop"
+                "showdesktop" \
+                "manage desktop status" \
+                "YES:enable desktop" \
+                "NO:disable desktop"
             _m_yesno \
             ;;
         firewall)

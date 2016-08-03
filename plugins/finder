@@ -4,7 +4,7 @@
 
 help(){
     cat<<__EOF__
-    usage: m finder [ showhiddenfiles | showfileextensions | desktop | help ]
+    usage: m finder [ showhiddenfiles | showfileextensions | showdesktop | help ]
 
     Examples:
       m finder showhiddenfiles           # get the current status
@@ -13,9 +13,9 @@ help(){
       m finder showextensions            # get the current status
       m finder showextensions YES        # show all file extensions
       m finder showextensions NO         # don't show all file extensions
-      m finder desktop                   # get the current desktop status
-      m finder desktop enable            # enable the desktop
-      m finder desktop disable           # disable the desktop
+      m finder showdesktop               # get the current desktop status
+      m finder showdesktop YES           # enable the desktop
+      m finder showdesktop NO            # disable the desktop
 __EOF__
 }
 
@@ -57,12 +57,12 @@ file_extensions(){
 
 desktop(){
     case $1 in
-        enable)
-            echo "Enables Desktop"
+        [yY][eE][sS])
+            echo "Enable desktop: YES"
             defaults write com.apple.finder CreateDesktop -bool TRUE
             ;;
-        disable)
-            echo "Disables Desktop"
+        [nN][oO])
+            echo "Enable desktop: NO"
             defaults write com.apple.finder CreateDesktop -bool FALSE
             ;;
         *)
@@ -90,7 +90,7 @@ case $1 in
         shift
         file_extensions $@
         ;;
-    desktop)
+    showdesktop)
         shift
         desktop $@
         ;;
