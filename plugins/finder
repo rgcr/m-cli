@@ -30,7 +30,17 @@ hidden_files(){
             defaults write com.apple.finder AppleShowAllFiles NO
             ;;
         *)
-            echo "Show Hidden files: $(defaults read com.apple.finder AppleShowAllFiles)"
+            HIDDEN_FILE_STATUS=$(defaults read com.apple.finder AppleShowAllFiles 2>/dev/null | tr '[:upper:]' '[:lower:]')
+            if \
+              [ -z "$HIDDEN_FILE_STATUS" ] || \
+              [ "$HIDDEN_FILE_STATUS" = "false" ] || \
+              [ "$HIDDEN_FILE_STATUS" = "no" ] || \
+              [ "$HIDDEN_FILE_STATUS" -eq 0 ] ; then
+                HIDDEN_FILE_STATUS_WORD="NO"
+            else
+                HIDDEN_FILE_STATUS_WORD="YES"
+            fi
+            echo "Show hidden files: $HIDDEN_FILE_STATUS_WORD"
             exit 1
             ;;
     esac
@@ -48,7 +58,17 @@ file_extensions(){
             defaults write NSGlobalDomain AppleShowAllExtensions NO
             ;;
         *)
-            echo "Show All File Extensions: $(defaults read NSGlobalDomain AppleShowAllExtensions)"
+            EXTENSION_STATUS=$(defaults read NSGlobalDomain AppleShowAllExtensions 2>/dev/null | tr '[:upper:]' '[:lower:]')
+            if \
+              [ -z "$EXTENSION_STATUS" ] || \
+              [ "$EXTENSION_STATUS" = "false" ] || \
+              [ "$EXTENSION_STATUS" = "no" ] || \
+              [ "$EXTENSION_STATUS" -eq 0 ] ; then
+                EXTENSION_STATUS_WORD="NO"
+            else
+                EXTENSION_STATUS_WORD="YES"
+            fi
+            echo "Show file extensions: $EXTENSION_STATUS_WORD"
             exit 1
             ;;
     esac
@@ -66,13 +86,17 @@ desktop(){
             defaults write com.apple.finder CreateDesktop -bool FALSE
             ;;
         *)
-            DESKTOP_STATUS_NUM=$(defaults read com.apple.finder CreateDesktop 2>/dev/null)
-            if [ "$DESKTOP_STATUS_NUM" -eq 0 ] ; then
-              DESKTOP_STATUS="disabled"
+            DESKTOP_STATUS=$(defaults read com.apple.finder CreateDesktop 2>/dev/null | tr '[:upper:]' '[:lower:]')
+            if \
+              [ -z "$DESKTOP_STATUS" ] || \
+              [ "$DESKTOP_STATUS" = "true" ] || \
+              [ "$DESKTOP_STATUS" = "yes" ] || \
+              [ "$DESKTOP_STATUS" -eq 1 ] ; then
+                DESKTOP_STATUS_WORD="enabled"
             else
-              DESKTOP_STATUS="enabled"
+                DESKTOP_STATUS_WORD="enabled"
             fi
-            echo "Desktop is: $DESKTOP_STATUS"
+            echo "Desktop: $DESKTOP_STATUS_WORD"
             ;;
     esac
     killall Finder
