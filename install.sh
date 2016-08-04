@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 PKG="m-cli"
 GIT_URL="https://github.com/rgcr/m-cli.git"

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 [ -L $0 ] && pushd `readlink $0 | xargs dirname` > /dev/null \
     || pushd `dirname $0` > /dev/null
