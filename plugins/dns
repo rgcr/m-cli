@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 help(){
     cat<<__EOF__
@@ -11,13 +11,19 @@ __EOF__
 
 
 flushdns(){
-    VERSION=$(sw_vers -productVersion)
+    product_version=$(sw_vers -productVersion)
+    semver=( ${product_version//./ } )
+    major="${semver[0]}"
+    minor="${semver[1]}"
+    patch="${semver[2]}"
     echo "Flushing dns..."
-    if echo $VERSION | grep -E '^10\.10(\.[0-3])?$' >/dev/null 2>&1; then
+    if [[ ${patch} =~ [0-3] && ${minor} -eq 10 && ${major} -eq 10 ]]; then
+        # 10.10.0 - 10.10.3
         sudo discoveryutil mdnsflushcache
-    elif echo $VERSION | grep -E '^10\.6(\.[0-8])?$' >/dev/null 2>&1; then
+    elif [[ ${minor} -eq 6 && ${major} -eq 10 ]]; then
+        # 10.6.x
         sudo dscacheutil -flushcache
-    else
+    elif [[ ${major} -eq 10 ]]; then
         sudo killall -HUP mDNSResponder
     fi
 }
