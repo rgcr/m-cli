@@ -25,7 +25,10 @@ function _m_dir {
                     _path_files
                     ;;
                 delete)
-                    args=("empty:$delete_help")
+                    args=(
+                        "empty:$delete_help"
+                        "dsfiles:delete .DS_Store files recursively"
+                    )
                     ;;
             esac
             ;;

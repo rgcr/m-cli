@@ -14,6 +14,9 @@ help(){
       m dir delete empty          # delete empty folders recursively in the current path
       m dir delete empty /path    # delete empty folders recursively in a specific path
 
+      m dir delete dsfiles        # delete .DS_Store files recursively in the current path
+      m dir delete dsfiles /path  # delete .DS_Store files recursively in a specific path
+
       m dir size        # calculate current folder size
       m dir size /path  # calculate folder size in a specific path
 
@@ -48,6 +51,14 @@ delete_empty(){
 }
 
 
+delete_dsfiles(){
+    DIRS="${@:-.}"
+    echo "Files to be deleted: "
+    find "${DIRS}" -type f -name .DS_Store -print
+    confirm && find "${DIRS}" -type f -name .DS_Store -print -delete
+}
+
+
 folder_size(){
     dir="${@:-.}"
     echo "Folder size:"
@@ -60,6 +71,10 @@ delete(){
         empty)
             shift;
             delete_empty "$@"
+            ;;
+        dsfiles)
+            shift;
+            delete_dsfiles "$@"
             ;;
         *)
             help && exit 1
