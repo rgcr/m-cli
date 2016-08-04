@@ -20,17 +20,17 @@ _m_sub () {
 				ls list fs filesystems info ejectall verify
 				repair format reformat rename help
 			)
-            ;;
-        dns)
-            subcommands=(flush)
 			;;
-        dock)
-            subcommands=(
-                showdelay autohide magnification
-                position addblankspace addrecentitems
-                prune
-            )
-            ;;
+		dns)
+			subcommands=(flush)
+			;;
+		dock)
+			subcommands=(
+				showdelay autohide magnification
+				position addblankspace addrecentitems
+				prune
+			)
+			;;
 		finder)
 			subcommands=(showhiddenfiles showextensions showdesktop help)
 			;;
@@ -40,9 +40,9 @@ _m_sub () {
 		gatekeeper)
 			subcommands=(status list enable disable create help)
 			;;
-        group)
+		group)
 			subcommands=(list info adduser removeuser ismember help)
-            ;;
+			;;
 		hostname)
 			subcommands=(help)
 			;;
@@ -90,15 +90,15 @@ _m_sub () {
 		user)
 			subcommands=(ls info create delete help)
 			;;
-        update)
+		update)
 			subcommands=(ls install help)
-            ;;
+			;;
 		volume)
 			subcommands=(mute unmute ismute help)
 			;;
-        vpn)
+		vpn)
 			subcommands=(list status stop start help)
-            ;;
+			;;
 		wallpaper)
 			subcommands=(help *)
 			;;
@@ -119,9 +119,9 @@ _m_dir() {
 		tree)
 			choices=(*)
 			;;
-        size)
-            choices=(*)
-            ;;
+		size)
+			choices=(*)
+			;;
 		delete)
 			choices=(empty)
 			;;
@@ -151,13 +151,12 @@ _m_disk() {
 			else
 				case $COMP_CWORD in
 					4)
-                        [[ ${COMP_WORDS[3]} == "volume" ]] && choices=(ExFAT JHFS+ MS-DOS)
+                        			[[ ${COMP_WORDS[3]} == "volume" ]] && choices=(ExFAT JHFS+ MS-DOS)
 						;;
 					5)
 						[[ ${COMP_WORDS[3]} == "MS-DOS" || \
-                            ${COMP_WORDS[3]} == "ExFAT" || \
-                            ${COMP_WORDS[3]} == "JHFS+" ]] && choices=(*)
-
+							${COMP_WORDS[3]} == "ExFAT" || \
+							${COMP_WORDS[3]} == "JHFS+" ]] && choices=(*)
 						;;
 					6)
 						[[ ${COMP_WORDS[3]} == "volume" ]] && choices=(*)
@@ -192,10 +191,10 @@ _m_dock() {
 			;;
 		magnification)
 			[[ $COMP_CWORD == 3 ]] && choices=(YES NO)
-            ;;
+			;;
 		position)
 			[[ $COMP_CWORD == 3 ]] && choices=(BOTTOM LEFT RIGHT)
-            ;;
+			;;
 	esac
 	COMPREPLY=( $( compgen -W "${choices[*]}" -- $cur  )  )
 }
@@ -229,7 +228,7 @@ _m () {
 				disk)
 					_m_disk "$prev" "$sub"
 					;;
-                dock)
+				dock)
 					_m_dock "$prev" "$sub"
 					;;
 				finder)
