@@ -166,6 +166,9 @@ usage:  m [OPTIONS] COMMAND [help]
       m dir delete empty          # delete empty folders recursively in the current path
       m dir delete empty /path    # delete empty folders recursively in a specific path
 
+      m dir delete dsfiles        # delete .DS_Store files recursively in the current path
+      m dir delete dsfiles /path  # delete .DS_Store files recursively in a specific path
+
       m dir size        # calculate current folder size
       m dir size /path  # calculate folder size in a specific path
 
