@@ -35,7 +35,7 @@ _m_sub () {
             subcommands=(showhiddenfiles showextensions showdesktop help)
             ;;
         firewall)
-            subcommands=(status enable disable add help)
+            subcommands=(status enable disable add remove list help)
             ;;
         gatekeeper)
             subcommands=(status list enable disable create help)
@@ -122,14 +122,14 @@ _m_dir() {
         size)
             choices=(*)
             ;;
-		delete)
-			choices=(empty dsfiles)
-			;;
-		empty)
-			choices=(*)
-			;;
-	esac
-	COMPREPLY=( $( compgen -W "${choices[*]}" -- $cur  )  )
+        delete)
+            choices=(empty)
+            ;;
+        empty)
+            choices=(*)
+            ;;
+    esac
+    COMPREPLY=( $( compgen -W "${choices[*]}" -- $cur  )  )
 }
 
 _m_disk() {
@@ -237,7 +237,7 @@ _m () {
                     ;;
                 firewall)
                     local _tmp=(*)
-                    [[ $sub == "add" && $COMP_CWORD -lt 5 ]] \
+                    [[ $sub == "add" || $sub == "remove" && $COMP_CWORD -lt 5 ]] \
                         && COMPREPLY=($(compgen -W "${_tmp[*]}" -- $cur))
                     ;;
                 gatekeeper)
@@ -276,5 +276,4 @@ _m () {
 #complete -F _m m
 complete -o bashdefault -o default -F _m m
 
-# vim: set ts=4 sw=4 softtabstop=4 expandtab
-
+# vim: ts=4 sw=6 softtabstop=4 expandtab ft=sh
