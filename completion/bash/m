@@ -276,5 +276,4 @@ _m () {
 #complete -F _m m
 complete -o bashdefault -o default -F _m m
 
-# vim: set ts=4 sw=4 softtabstop=4 expandtab
-
+# vim: ts=4 sw=4 softtabstop=4 expandtab ft=sh

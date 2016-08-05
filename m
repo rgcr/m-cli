@@ -71,5 +71,5 @@ ${MPATH}/plugins/${COMMAND} "$@"
 
 
 
-# vim: set ts=4 sw=4 softtabstop=4 expandtab
+# vim: ts=4 sw=4 softtabstop=4 expandtab
 
