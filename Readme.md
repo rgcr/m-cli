@@ -195,13 +195,16 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Firewall:
 ```
-    usage: m firewall [ status | enable | disable | add | help ]
+    usage: m firewall [ status | enable | disable | list | add | remove | help ]
 
     Examples:
        m firewall status                # Show status
        m firewall enable                # Enable firewall
        m firewall disable               # Disable firewall
+       m firewall list                  # List applications handled by firewall
        m firewall add /path/to/file     # Add app to firewall
+       m firewall remove /path/to/file  # Remove app from firewall
+
 ```
 
 #### Gatekeeper:

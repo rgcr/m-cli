@@ -219,14 +219,16 @@ function _m_firewall {
         3)
             args=(
                 "status:Show status"
+                "list:List applications handled by firewall"
                 "enable:Enable firewall"
                 "disable:Disable firewall"
                 "add:Add app to firewall"
+                "remove:Remove app to firewall"
                 help
             )
             ;;
         4)
-            if [[ ${words[3]} == add ]]; then
+            if [[ ${words[3]} == add || ${words[3]} == remove ]]; then
                 _path_files
             fi
             ;;

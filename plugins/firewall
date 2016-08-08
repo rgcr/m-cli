@@ -11,6 +11,7 @@ help(){
        m firewall list                  # List applications handled by firewall
        m firewall add /path/to/file     # Add app to firewall
        m firewall remove /path/to/file  # Remove app from firewall
+
 __EOF__
 }
 
