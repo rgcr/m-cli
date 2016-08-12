@@ -245,9 +245,9 @@ function _m_gatekeeper {
             args=(
                 "status:gatekeeper status"
                 "list:list rules"
-                "enable:enable gatekeeper or rule"
-                "disable:disable gatekeeper or rule"
-                "create:Create a rule for the application"
+                "enable:enable gatekeeper or a rule"
+                "disable:disable gatekeeper or a rule"
+                "create:Create a rule for an application"
                 help
             )
             ;;
