@@ -32,16 +32,16 @@ __EOF__
 }
 
 disk_ls(){
-    if [ -z "$1" ]; then
+    if [ -z "${1}" ]; then
         diskutil list
     else
-        diskutil list $1
+        diskutil list "${1}"
     fi
 }
 
 disk_info(){
-    [ -z "$1" ] && help && exit 1
-    diskutil info $1
+    [ -z "${1}" ] && help && exit 1
+    diskutil info "${1}"
 }
 
 list_filesystems(){
@@ -55,12 +55,12 @@ ejectall(){
 verify(){
     case $1 in
         volume)
-            [ -z "$2" ] && help && exit 1
-            diskutil verifyVolume $2
+            [ -z "${2}" ] && help && exit 1
+            diskutil verifyVolume "${2}"
             ;;
         disk)
-            [ -z "$2" ] && help && exit 1
-            diskutil verifyDisk $2
+            [ -z "${2}" ] && help && exit 1
+            diskutil verifyDisk "${2}"
             ;;
         *)
             help
@@ -71,12 +71,12 @@ verify(){
 repair(){
     case $1 in
         volume)
-            [ -z "$2" ] && help && exit 1
-            diskutil repairVolume $2
+            [ -z "${2}" ] && help && exit 1
+            diskutil repairVolume "${2}"
             ;;
         disk)
-            [ -z "$2" ] && help && exit 1
-            diskutil repairDisk $3
+            [ -z "${2}" ] && help && exit 1
+            diskutil repairDisk "${2}"
             ;;
         *)
             help
@@ -90,20 +90,20 @@ format(){
     [ -z "$1" -o -z "$2" -o -z "$3" ] && help && exit 1
 
     if [ "$1" == "volume" -a ! -z "$4" ]; then
-        diskutil eraseVolume $2 $3 $4
+        diskutil eraseVolume "${2}" "${3}" "${4}"
     else
-        diskutil eraseDisk $1 $2 $3
+        diskutil eraseDisk "${1} "${2} "${3}"
     fi
 }
 
 reformat(){
     [ -z "$1" ] && help && exit 1
-    diskutil reformat $1
+    diskutil reformat "${1}"
 }
 
 rename(){
     [ -z "$1" -o -z "$2" ] && help && exit 1
-    diskutil rename $1 $2
+    diskutil rename "${1}" "${2}"
 
 }
 
@@ -113,11 +113,11 @@ case $1 in
         ;;
     list|ls)
         shift
-        disk_ls $@
+        disk_ls "$@"
         ;;
     info)
         shift
-        disk_info $@
+        disk_info "$@"
         ;;
     filesystems|fs)
         shift
@@ -129,23 +129,23 @@ case $1 in
         ;;
     verify)
         shift
-        verify $@
+        verify "$@"
         ;;
     repair)
         shift
-        repair $@
+        repair "$@"
         ;;
     format)
         shift
-        format $@
+        format "$@"
         ;;
     reformat)
         shift
-        reformat $@
+        reformat "$@"
         ;;
     rename)
         shift
-        rename $@
+        rename "$@"
         ;;
     *)
         help
