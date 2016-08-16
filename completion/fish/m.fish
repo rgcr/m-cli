@@ -117,7 +117,7 @@ complete -f -c m -n '__fish_m_using_command group' -a "help" -d 'Show help'
 complete -f -c m -n '__fish_m_needs_command' -a hostname -d "Dislays or set the computre's hostname"
 complete -f -c m -n '__fish_m_using_command hostname' -a "help" -d 'Show help'
 
-complete -f -c m -n '__fish_m_needs_command' -a info -d 'print Mac OS X operating system version information'
+complete -f -c m -n '__fish_m_needs_command' -a info -d 'print macOS operating system version information'
 complete -f -c m -n '__fish_m_using_command info' -a "help" -d 'Show help'
 
 complete -f -c m -n '__fish_m_needs_command' -a lock -d 'Lock session'
@@ -187,7 +187,7 @@ complete -f -c m -n '__fish_m_using_command user' -a "create" -d 'create specifi
 complete -f -c m -n '__fish_m_using_command user' -a "delete" -d 'delete specified user'
 complete -f -c m -n '__fish_m_using_command user' -a "help" -d 'Show help'
 
-complete -f -c m -n '__fish_m_needs_command' -a update -d 'Manage OS X updates'
+complete -f -c m -n '__fish_m_needs_command' -a update -d 'Manage macOS updates'
 complete -f -c m -n '__fish_m_using_command update' -a "list" -d 'list available updates'
 complete -f -c m -n '__fish_m_using_command update' -a "install" -d 'install update(s)'
 complete -f -c m -n '__fish_m_using_command update' -a "help" -d 'Show help'

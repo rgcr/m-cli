@@ -1,6 +1,6 @@
 #  m-cli
 
-:boom: **Swiss Army Knife for Mac OS X !**
+:boom: **Swiss Army Knife for macOS !**
 
 ## The difference
 
@@ -9,7 +9,7 @@
 * Its main purpose is to manage administrative tasks and do it easier
 * It doesn't install 3rd party tools because it doesn't have dependencies
 * The installation is very easy and doesn't require intervention
-* It only uses OS X commands
+* It only uses macOS commands
 
 
 ## Installation
@@ -34,7 +34,7 @@
 
 ```
 
-  Swiss Army Knife for Mac OS X ! 
+  Swiss Army Knife for macOS ! 
 
 
 usage:  m [OPTIONS] COMMAND [help]
@@ -256,7 +256,7 @@ usage:  m [OPTIONS] COMMAND [help]
     usage: m info [ help ]
 
     Examples:
-      m info        #  print Mac OS X operating system version information
+      m info        #  print macOS operating system version information
 ```
 
 #### Lock:

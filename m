@@ -34,7 +34,7 @@ usage(){
 
     cat <<__EOF__
 
-  Swiss Army Knife for Mac OS X ! 
+  Swiss Army Knife for macOS ! 
 
 
 usage:  m [OPTIONS] COMMAND [help]
@@ -72,4 +72,3 @@ ${MPATH}/plugins/${COMMAND} "$@"
 
 
 # vim: ts=4 sw=4 softtabstop=4 expandtab
-
