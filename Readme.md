@@ -436,7 +436,7 @@ usage:  m [OPTIONS] COMMAND [help]
       m vpn start VPN                       # start vpn connection named VPN
       m vpn start VPN USER                  # start a vpn connection with a given user
       m vpn start VPN USER PASS             # start a vpn connection with a given user and password
-      m vpn start VPN USER PASS SECRET      # start a vpn connection with a given user,password, and secret
+      m vpn start VPN USER PASS SECRET      # start a vpn connection with a given user, password, and secret
 
       m vpn stop VPN                        # stop vpn connection named VPN
       m vpn status VPN                      # status vpn connection named VPN
