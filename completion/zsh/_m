@@ -392,6 +392,14 @@ function _m_cmd {
         dock)
             _m_dock
             ;;
+        notification)
+            _m_yesno \
+                $sub \
+                "showcenter" \
+                "set if notification center is enabled" \
+                "YES:enable notification center" \
+                "NO:disable notification center"
+            ;;
         finder)
             _m_yesno \
                 $sub \
@@ -585,6 +593,7 @@ function _m {
         "vpn:basic vpn operations, start, stop, status, list"
         "wallpaper:set the wallpaper"
         "wifi:manage the wifi"
+        "notification:manage the notification settings"
     )
 
     case $CURRENT in

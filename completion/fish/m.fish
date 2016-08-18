@@ -218,4 +218,8 @@ complete -f -c m -n '__fish_m_using_command wifi' -a "on" -d 'turn on your wifi'
 complete -f -c m -n '__fish_m_using_command wifi' -a "connect" -d 'join a wifi network'
 complete -f -c m -n '__fish_m_using_command wifi' -a "help" -d 'Show help'
 
+complete -f -c m -n '__fish_m_needs_command' -a notification -d 'Manage the Notification Settings'
+complete -f -c m -n '__fish_m_using_command notification' -a "showcenter" -d 'enable or disable notification center'
+complete -f -c m -n '__fish_m_using_command notification' -a "help" -d 'Show help'
+
 # vim: ft=sh ts=4 sw=4 softtabstop=4 expandtab

@@ -74,6 +74,7 @@ usage:  m [OPTIONS] COMMAND [help]
         vpn
         wallpaper
         wifi
+        notification
 
 ```
 
@@ -463,6 +464,17 @@ usage:  m [OPTIONS] COMMAND [help]
       m wifi off                     # turn off your wifi
       m wifi on                      # turn on your wifi
       m wifi connect ESSID PASSWORD  # join a wifi network
+
+```
+
+#### Notification:
+```
+    usage: m notification [ showcenter | help  ]
+
+    Examples:
+      m notification showcenter      # get the current status
+      m notification showcenter YES  # enable the notification center
+      m notification showcenter NO   # disable the notification center
 
 ```
 

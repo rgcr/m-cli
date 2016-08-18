@@ -107,6 +107,9 @@ _m_sub () {
                 status scan showpassword history on off connect help
             )
             ;;
+        notification)
+            subcommands=(showcenter help)
+            ;;
     esac
     COMPREPLY=( $( compgen -W "${subcommands[*]}" -- $cur  )  )
 }
@@ -204,7 +207,7 @@ _m () {
     local commands=(
         help battery bluetooth dir disk dns dock finder firewall gatekeeper group hostname
         info lock network nosleep ntp restart safeboot screensaver service
-        shutdown sleep timezone trash user update volume vpn wallpaper wifi
+        shutdown sleep timezone trash user update volume vpn wallpaper wifi notification
     )
 
     COMPREPLY=()
