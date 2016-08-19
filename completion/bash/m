@@ -58,6 +58,9 @@ _m_sub () {
         nosleep)
             subcommands=(until help)
             ;;
+        notification)
+            subcommands=(showcenter help)
+            ;;
         ntp)
             subcommands=(status enable disable set help)
             ;;
@@ -106,9 +109,6 @@ _m_sub () {
             subcommands=(
                 status scan showpassword history on off connect help
             )
-            ;;
-        notification)
-            subcommands=(showcenter help)
             ;;
     esac
     COMPREPLY=( $( compgen -W "${subcommands[*]}" -- $cur  )  )
@@ -206,8 +206,8 @@ _m () {
     local cur
     local commands=(
         help battery bluetooth dir disk dns dock finder firewall gatekeeper group hostname
-        info lock network nosleep ntp restart safeboot screensaver service
-        shutdown sleep timezone trash user update volume vpn wallpaper wifi notification
+        info lock network nosleep notification ntp restart safeboot screensaver service
+        shutdown sleep timezone trash user update volume vpn wallpaper wifi
     )
 
     COMPREPLY=()
