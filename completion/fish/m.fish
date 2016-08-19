@@ -133,6 +133,10 @@ complete -f -c m -n '__fish_m_needs_command' -a nosleep -d 'Prevent sleeping'
 complete -f -c m -n '__fish_m_using_command nosleep' -a "until" -d 'until timeout or specified script ends'
 complete -f -c m -n '__fish_m_using_command nosleep' -a "help" -d 'Show help'
 
+complete -f -c m -n '__fish_m_needs_command' -a notification -d 'Manage the Notification Settings'
+complete -f -c m -n '__fish_m_using_command notification' -a "showcenter" -d 'enable or disable notification center'
+complete -f -c m -n '__fish_m_using_command notification' -a "help" -d 'Show help'
+
 complete -f -c m -n '__fish_m_needs_command' -a ntp -d 'Manage the network time service'
 complete -f -c m -n '__fish_m_using_command ntp' -a "status" -d 'status of the network time service'
 complete -f -c m -n '__fish_m_using_command ntp' -a "enable" -d 'enable clock to use network time'
@@ -217,5 +221,6 @@ complete -f -c m -n '__fish_m_using_command wifi' -a "off" -d 'turn off your wif
 complete -f -c m -n '__fish_m_using_command wifi' -a "on" -d 'turn on your wifi'
 complete -f -c m -n '__fish_m_using_command wifi' -a "connect" -d 'join a wifi network'
 complete -f -c m -n '__fish_m_using_command wifi' -a "help" -d 'Show help'
+
 
 # vim: ft=sh ts=4 sw=4 softtabstop=4 expandtab

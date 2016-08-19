@@ -60,6 +60,7 @@ usage:  m [OPTIONS] COMMAND [help]
         ntp
         network
         nosleep
+        notification
         restart
         safeboot
         screensaver
@@ -298,6 +299,17 @@ usage:  m [OPTIONS] COMMAND [help]
     Examples:
       m nosleep until 3600            # no sleep until 3600 seconds
       m nosleep until my_script.sh    # no sleep until the script ends
+```
+
+#### Notification:
+```
+    usage: m notification [ showcenter | help  ]
+
+    Examples:
+      m notification showcenter      # get the current status
+      m notification showcenter YES  # enable the notification center
+      m notification showcenter NO   # disable the notification center
+
 ```
 
 #### Restart:
