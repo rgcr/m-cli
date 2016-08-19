@@ -6,7 +6,7 @@ help(){
     usage: m info [ help ]
 
     Examples:
-      m info        #  print Mac OS X operating system version information
+      m info        #  print macOS operating system version information
 __EOF__
 }
 
