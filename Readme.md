@@ -1,6 +1,6 @@
 #  m-cli
 
-:boom: **Swiss Army Knife for Mac OS X !**
+:boom: **Swiss Army Knife for macOS !**
 
 ## The difference
 
@@ -9,27 +9,32 @@
 * Its main purpose is to manage administrative tasks and do it easier
 * It doesn't install 3rd party tools because it doesn't have dependencies
 * The installation is very easy and doesn't require intervention
-* It only uses OS X commands
+* It only uses macOS commands
 
 
 ## Installation
 
-To **install** or **update** m-cli you can run this command:
+* **Using Homebrew:**
 
-`curl -fsSL https://raw.githubusercontent.com/rgcr/m-cli/master/install.sh | sh`
+  `brew install m-cli`
 
-You can also install it in a different path
+* **Manual installation:**
 
-`INSTALL_DIR=$HOME/.m-cli sh <(curl -fsSL https://raw.githubusercontent.com/rgcr/m-cli/master/install.sh)`
+  `curl -fsSL https://raw.githubusercontent.com/rgcr/m-cli/master/install.sh | sh`
+
+  You can also install it in a different path
+
+  `INSTALL_DIR=$HOME/.m-cli sh <(curl -fsSL https://raw.githubusercontent.com/rgcr/m-cli/master/install.sh)`
+
+  _Note: You need privileges_
 
 
-_Note: You should reload your shell in both cases_
 
 ## Usage
 
 ```
 
-  Swiss Army Knife for Mac OS X ! 
+  Swiss Army Knife for macOS ! 
 
 
 usage:  m [OPTIONS] COMMAND [help]
@@ -55,6 +60,7 @@ usage:  m [OPTIONS] COMMAND [help]
         ntp
         network
         nosleep
+        notification
         restart
         safeboot
         screensaver
@@ -132,7 +138,7 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Dock:
 ```
-    usage: m dock [ showdelay | autohide | magnification | position | addblankspace | addrecentitems | help ]
+    usage: m dock [ showdelay | autohide | magnification | position | addblankspace | addrecentitems | prune | help ]
 
     Examples:
       m dock showdelay x.x          # Changes how long the Dock takes to show up when auto-hide is enabled
@@ -146,12 +152,13 @@ usage:  m [OPTIONS] COMMAND [help]
       m dock addblankspace          # Add a blank space (separator) to the Dock
       m dock addrecentitems         # Add a stack containg your recent items to the Dock
                                     #  (You can change the stack's type by right clicking on it)
+      m dock prune                  # Removes all apps from Dock
 
 ```
 
 #### Dir:
 ```
-    usage: m dir [ tree | delete | help ]
+    usage: m dir [ tree | size | delete | help ]
 
     Examples:
       m dir tree        # tree view of folders in the current path
@@ -159,30 +166,46 @@ usage:  m [OPTIONS] COMMAND [help]
 
       m dir delete empty          # delete empty folders recursively in the current path
       m dir delete empty /path    # delete empty folders recursively in a specific path
+
+      m dir delete dsfiles        # delete .DS_Store files recursively in the current path
+      m dir delete dsfiles /path  # delete .DS_Store files recursively in a specific path
+
+      m dir size        # calculate current folder size
+      m dir size /path  # calculate folder size in a specific path
+
 ```
 
 #### Finder:
 ```
-    usage: m finder [ showhiddenfiles | showfileextensions | help  ]
+    usage: m finder [ showhiddenfiles | showfileextensions | showdesktop | help  ]
 
     Examples:
       m finder showhiddenfiles           # get the current status
       m finder showhiddenfiles YES       # show hidden files
       m finder showhiddenfiles NO        # no show hidden files
+
       m finder showextensions            # get the current status
       m finder showextensions YES        # show all file extensions
       m finder showextensions NO         # don't show all file extensions
+
+      m finder showdesktop               # get the current desktop status
+      m finder showdesktop YES           # enable the desktop
+      m finder showdesktop NO            # disable the desktop
+
 ```
 
 #### Firewall:
 ```
-    usage: m firewall [ status | enable | disable | add | help ]
+    usage: m firewall [ status | enable | disable | list | add | remove | help ]
 
     Examples:
        m firewall status                # Show status
        m firewall enable                # Enable firewall
        m firewall disable               # Disable firewall
+       m firewall list                  # List applications handled by firewall
        m firewall add /path/to/file     # Add app to firewall
+       m firewall remove /path/to/file  # Remove app from firewall
+
 ```
 
 #### Gatekeeper:
@@ -234,7 +257,7 @@ usage:  m [OPTIONS] COMMAND [help]
     usage: m info [ help ]
 
     Examples:
-      m info        #  print Mac OS X operating system version information
+      m info        #  print macOS operating system version information
 ```
 
 #### Lock:
@@ -276,6 +299,17 @@ usage:  m [OPTIONS] COMMAND [help]
     Examples:
       m nosleep until 3600            # no sleep until 3600 seconds
       m nosleep until my_script.sh    # no sleep until the script ends
+```
+
+#### Notification:
+```
+    usage: m notification [ showcenter | help  ]
+
+    Examples:
+      m notification showcenter      # get the current status
+      m notification showcenter YES  # enable the notification center
+      m notification showcenter NO   # disable the notification center
+
 ```
 
 #### Restart:
@@ -409,10 +443,16 @@ usage:  m [OPTIONS] COMMAND [help]
     usage:  m vpn [ ls | list | start | stop | status | help ]
 
     Examples:
-      m vpn ls                  # list VPN connections
-      m vpn start VPN           # start vpn connection named VPN
-      m vpn stop VPN            # stop vpn connection named VPN
-      m vpn status VPN          # status vpn connection named VPN
+      m vpn ls                              # list VPN connections
+
+      m vpn start VPN                       # start vpn connection named VPN
+      m vpn start VPN USER                  # start a vpn connection with a given user
+      m vpn start VPN USER PASS             # start a vpn connection with a given user and password
+      m vpn start VPN USER PASS SECRET      # start a vpn connection with a given user, password, and secret
+
+      m vpn stop VPN                        # stop vpn connection named VPN
+      m vpn status VPN                      # status vpn connection named VPN
+
 ```
 
 #### Wallpaper:
@@ -430,11 +470,12 @@ usage:  m [OPTIONS] COMMAND [help]
     Examples:
       m wifi status                  # wifi status
       m wifi scan                    # scan wifi
-      m wifi showpassword ESSID      # show wifi network password
+      m wifi showpassword [ESSID]    # show wifi network password (default: current)
       m wifi history                 # wifi connection history
       m wifi off                     # turn off your wifi
       m wifi on                      # turn on your wifi
       m wifi connect ESSID PASSWORD  # join a wifi network
+
 ```
 
 ## Contributing

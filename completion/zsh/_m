@@ -9,6 +9,7 @@ function _m_dir {
         3)
             args=(
                 "tree:tree view of folders in the current or specified path"
+                "size:calculate folder size"
                 "delete:$delete_help"
                 help
             )
@@ -20,8 +21,14 @@ function _m_dir {
                 tree)
                     _path_files
                     ;;
+                size)
+                    _path_files
+                    ;;
                 delete)
-                    args=("empty:$delete_help")
+                    args=(
+                        "empty:$delete_help"
+                        "dsfiles:delete .DS_Store files recursively"
+                    )
                     ;;
             esac
             ;;
@@ -184,6 +191,7 @@ function _m_dock {
             "position:change Dock's position"
             "addblankspace:add a blank space(separator) to the dock"
             "addrecentitems:add a stack containg your recent items to the Dock"
+            "prune: removes all apps from dock"
             help
         )
 
@@ -211,14 +219,16 @@ function _m_firewall {
         3)
             args=(
                 "status:Show status"
+                "list:List applications handled by firewall"
                 "enable:Enable firewall"
                 "disable:Disable firewall"
                 "add:Add app to firewall"
+                "remove:Remove app to firewall"
                 help
             )
             ;;
         4)
-            if [[ ${words[3]} == add ]]; then
+            if [[ ${words[3]} == add || ${words[3]} == remove ]]; then
                 _path_files
             fi
             ;;
@@ -235,9 +245,9 @@ function _m_gatekeeper {
             args=(
                 "status:gatekeeper status"
                 "list:list rules"
-                "enable:enable gatekeeper or rule"
-                "disable:disable gatekeeper or rule"
-                "create:Create a rule for the application"
+                "enable:enable gatekeeper or a rule"
+                "disable:disable gatekeeper or a rule"
+                "create:Create a rule for an application"
                 help
             )
             ;;
@@ -340,7 +350,8 @@ function _m_solo {
     local -a opts
     local cmd=$1
     shift
-    local args=($@)
+    local args
+    args=($@)
 
     [[ $CURRENT == 3 ]] && _describe "$cmd commands" opts -- args
 }
@@ -385,15 +396,21 @@ function _m_cmd {
             _m_yesno \
                 $sub \
                 "showhiddenfiles" \
-                "get or set hidden property" \
+                "manage hidden file visibility" \
                 "YES:show hidden files" \
                 "NO:don't show hidden files"
             _m_yesno \
                 $sub \
                 "showextensions" \
-                "get or set showextension property" \
+                "manage file extension visibility" \
                 "YES:show all file extensions" \
                 "NO:don't show all file extensions"
+            _m_yesno \
+                $sub \
+                "showdesktop" \
+                "manage desktop status" \
+                "YES:enable desktop" \
+                "NO:disable desktop"
             ;;
         firewall)
             _m_firewall
@@ -419,6 +436,14 @@ function _m_cmd {
             ;;
         nosleep)
             _m_nosleep
+            ;;
+        notification)
+            _m_yesno \
+                $sub \
+                "showcenter" \
+                "set if notification center is enabled" \
+                "YES:enable notification center" \
+                "NO:disable notification center"
             ;;
         ntp)
             _m_solo \
@@ -533,7 +558,8 @@ function _m_cmd {
 
 function _m {
     local -a opts
-    local commands=(
+    local commands
+    commands=(
         help
         "--update:update m-cli to the latest version"
         "--uninstall:uninstall m-cli"
@@ -548,10 +574,11 @@ function _m {
         "gatekeeper:manage gatekeeper (security for apps)"
         "group:manage groups"
         "hostname:displays or set the computer's hostname"
-        "info:print Mac OS X operating system version information"
+        "info:print macOS operating system version information"
         "lock:lock session"
         "network:manage interfaces and locations"
         "nosleep:prevent sleeping"
+        "notification:manage the notification settings"
         "ntp:manage the network time service"
         "restart:restart computer"
         "safeboot:manage safeboot"
@@ -562,7 +589,7 @@ function _m {
         "timezone:manage timezone"
         "trash:manage the trash"
         "user:manage users"
-        "update:manage OS X updates"
+        "update:manage macOS updates"
         "volume:manage the sound's volume"
         "vpn:basic vpn operations, start, stop, status, list"
         "wallpaper:set the wallpaper"

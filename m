@@ -1,18 +1,40 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-if [ -L $0 ]; then
-    pushd `readlink $0 | xargs dirname` > /dev/null
-else
-    pushd `dirname $0` > /dev/null
-fi
+[ -L $0 ] && pushd `readlink $0 | xargs dirname` > /dev/null \
+    || pushd `dirname $0` > /dev/null
 export MPATH=`pwd -P`
 popd > /dev/null
+
+
+confirm () {
+    read -r -p "${1:-Are you sure? [y/N]} " response
+    case $response in
+        [yY][eE][sS]|[yY])
+            true
+            ;;
+        *)
+            false
+            ;;
+    esac
+}
+
+update_mcli(){
+    INSTALL_DIR=${MPATH} ${MPATH}/install.sh
+}
+
+uninstall_mcli(){
+    confirm "Do you want to uninstall m-cli? [y/n]: " \
+        && sudo rm -rf ${MPATH} 2>/dev/null \
+        && sudo rm -f "/usr/local/bin/m" 2>/dev/null \
+        && echo "Done !"
+}
+
 
 usage(){
 
     cat <<__EOF__
 
-  Swiss Army Knife for Mac OS X ! 
+  Swiss Army Knife for macOS ! 
 
 
 usage:  m [OPTIONS] COMMAND [help]
@@ -31,17 +53,13 @@ __EOF__
     exit 1
 }
 
+
 case $1 in
     --update)
-        INSTALL_DIR=${MPATH} ${MPATH}/install.sh
-        exit 0
+        update_mcli && exit 0
         ;;
     --uninstall)
-        confirm "Do you want to uninstall m-cli? [y/n]: " \
-            && sudo rm -rf ${MPATH} 2>/dev/null \
-            && sudo rm -f "/usr/local/bin/m" 2>/dev/null \
-            && echo "Done !"
-        exit 0
+        uninstall_mcli && exit 0
         ;;
 esac
 
@@ -53,5 +71,4 @@ ${MPATH}/plugins/${COMMAND} "$@"
 
 
 
-# vim: set ts=4 sw=4 softtabstop=4 expandtab
-
+# vim: ts=4 sw=4 softtabstop=4 expandtab

@@ -1,11 +1,12 @@
-#!/bin/sh
+#!/usr/bin/env bash
+
 # TODO:
 # * include a function to delete older directories by days or mins
 # * include a function to delete newest directories by days or mins
 
 help(){
     cat<<__EOF__
-    usage: m dir [ tree | delete | help ]
+    usage: m dir [ tree | size | delete | help ]
 
     Examples:
       m dir tree        # tree view of folders in the current path
@@ -13,6 +14,13 @@ help(){
 
       m dir delete empty          # delete empty folders recursively in the current path
       m dir delete empty /path    # delete empty folders recursively in a specific path
+
+      m dir delete dsfiles        # delete .DS_Store files recursively in the current path
+      m dir delete dsfiles /path  # delete .DS_Store files recursively in a specific path
+
+      m dir size        # calculate current folder size
+      m dir size /path  # calculate folder size in a specific path
+
 __EOF__
 
 }
@@ -44,12 +52,30 @@ delete_empty(){
 }
 
 
+delete_dsfiles(){
+    DIRS="${@:-.}"
+    echo "Files to be deleted: "
+    find "${DIRS}" -type f -name .DS_Store -print
+    confirm && find "${DIRS}" -type f -name .DS_Store -print -delete
+}
+
+
+folder_size(){
+    dir="${@:-.}"
+    echo "Folder size:"
+    du -sh "${dir}"
+}
+
 
 delete(){
     case "$1" in
         empty)
             shift;
             delete_empty "$@"
+            ;;
+        dsfiles)
+            shift;
+            delete_dsfiles "$@"
             ;;
         *)
             help && exit 1
@@ -71,9 +97,13 @@ case "$1" in
         shift;
         delete "$@"
         ;;
+    size)
+        shift
+        folder_size "$@"
+        ;;
     *)
         help
         ;;
 esac
 
-# vim: set ts=4 sw=4 softtabstop=4 expandtab
+# vim: ts=4 sw=4 softtabstop=4 expandtab

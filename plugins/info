@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 
 help(){
@@ -6,7 +6,7 @@ help(){
     usage: m info [ help ]
 
     Examples:
-      m info        #  print Mac OS X operating system version information
+      m info        #  print macOS operating system version information
 __EOF__
 }
 
@@ -19,4 +19,4 @@ case $1 in
         ;;
 esac
 
-# vim: set ts=4 sw=4 softtabstop=4 expandtab
+# vim: ts=4 sw=4 softtabstop=4 expandtab

@@ -1,8 +1,8 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 help(){
     cat<<__EOF__
-    usage: m dock [ showdelay | autohide | magnification | position | addblankspace | addrecentitems | help ]
+    usage: m dock [ showdelay | autohide | magnification | position | addblankspace | addrecentitems | prune | help ]
 
     Examples:
       m dock showdelay x.x          # Changes how long the Dock takes to show up when auto-hide is enabled
@@ -16,6 +16,7 @@ help(){
       m dock addblankspace          # Add a blank space (separator) to the Dock
       m dock addrecentitems         # Add a stack containg your recent items to the Dock
                                     #  (You can change the stack's type by right clicking on it)
+      m dock prune                  # remove all items from dock
 __EOF__
 }
 
@@ -107,6 +108,12 @@ add_recent_items(){
     killall Dock
 }
 
+prune(){
+    echo "remove all items from stack"
+    defaults write com.apple.dock persistent-apps '()'
+    killall Dock
+}
+
 case $1 in
     help)
         help
@@ -135,9 +142,13 @@ case $1 in
         shift
         add_recent_items
         ;;
+    prune)
+        shift
+        prune
+        ;;
     *)
         help
         ;;
 esac
 
-# vim: set ts=4 sw=4 softtabstop=4 expandtab
+# vim: ts=4 sw=4 softtabstop=4 expandtab

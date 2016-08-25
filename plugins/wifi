@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 
 _W_DEVICE=${_W_DEVICE:-en0}
@@ -10,7 +10,7 @@ help(){
     Examples:
       m wifi status                  # wifi status
       m wifi scan                    # scan wifi
-      m wifi showpassword ESSID      # show wifi network password
+      m wifi showpassword [ESSID]    # show wifi network password (default: current)
       m wifi history                 # wifi connection history
       m wifi off                     # turn off your wifi
       m wifi on                      # turn on your wifi
@@ -31,8 +31,13 @@ wifi_history(){
 }
 
 wifi_showpassword(){
-    [ -z "$1" ] && help && exit 1
-    security find-generic-password -D "AirPort network password" -a $1 -gw
+    if [ -z "$1" ]
+    then
+        ssid="`/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I | awk '/ SSID/ {print substr($0, index($0, $2))}'`"
+    else
+        ssid=$1
+    fi
+    security find-generic-password -D "AirPort network password" -a "$ssid" -gw
 }
 
 wifi_off(){
@@ -83,4 +88,4 @@ case $1 in
         ;;
 esac
 
-# vim: set ts=4 sw=4 softtabstop=4 expandtab
+# vim: ts=4 sw=4 softtabstop=4 expandtab

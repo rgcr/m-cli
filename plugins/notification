@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+help(){
+    cat<<__EOF__
+    usage: m notification [ showcenter | help ]
+
+    Examples:
+      m notification showcenter      # get the current status
+      m notification showcenter YES  # enable the notification center
+      m notification showcenter NO   # disable the notification center
+__EOF__
+}
+
+showcenter(){
+    case $1 in
+        [yY][eE][sS])
+            echo "Enable notification center: YES"
+            launchctl load -w /System/Library/LaunchAgents/com.apple.notificationcenterui.plist
+            killall NotificationCenter
+            echo "Restart your computer for this to take effect"
+            ;;
+        [nN][oO])
+            echo "Enable notification center: NO"
+            launchctl unload -w /System/Library/LaunchAgents/com.apple.notificationcenterui.plist
+            killall NotificationCenter
+            ;;
+        *)
+            ps -A | grep apsd | grep -v grep &>/dev/null
+            if [ $? -eq 0 ]; then
+                CENTER_STATUS="enabled"
+            else
+                CENTER_STATUS="disabled"
+            fi
+            echo "Notification Center: $CENTER_STATUS"
+            ;;
+    esac
+}
+
+case $1 in
+    help)
+        help
+        ;;
+    showcenter)
+        shift
+        showcenter "$@"
+        ;;
+    *)
+        help
+        ;;
+esac
+
+# vim: ts=4 sw=4 softtabstop=4 expandtab
