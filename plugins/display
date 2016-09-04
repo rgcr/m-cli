@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+help(){
+    cat<<__EOF__
+    usage: m display [ status | help ]
+
+    Example:
+      m display status   # status of displays
+      m display help     # show usage
+__EOF__
+}
+
+display_status(){
+    system_profiler SPDisplaysDataType
+}
+
+case $1 in
+    help)
+        help
+        ;;
+    status)
+        display_status
+        ;;
+    *)
+        help
+        ;;
+esac
+
+# vim: ts=4 sw=4 softtabstop=4 expandtab

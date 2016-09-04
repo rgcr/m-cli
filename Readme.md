@@ -127,6 +127,15 @@ usage:  m [OPTIONS] COMMAND [help]
 
 ```
 
+#### Display:
+```
+    usage: m display [ status | help ]
+
+    Example:
+      m display status   # status of displays
+      m display help     # show usage
+```
+
 #### Dns:
 ```
     usage:  m dns [ flush | help ]
