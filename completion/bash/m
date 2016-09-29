@@ -21,14 +21,17 @@ _m_sub () {
                 repair format reformat rename help
             )
             ;;
+        display)
+            subcommands=(status help)
+            ;;
         dns)
-            subcommands=(flush)
+            subcommands=(flush help)
             ;;
         dock)
             subcommands=(
                 showdelay autohide magnification
                 position addblankspace addrecentitems
-                prune
+                prune help
             )
             ;;
         finder)

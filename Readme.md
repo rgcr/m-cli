@@ -49,6 +49,7 @@ usage:  m [OPTIONS] COMMAND [help]
         bluetooth
         dir
         disk
+        display
         dns
         dock
         finder

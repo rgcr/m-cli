@@ -383,6 +383,12 @@ function _m_cmd {
         disk)
             _m_disk
             ;;
+        display)
+            _m_solo \
+                $sub \
+                "status:status of displays" \
+                help
+            ;;
         dns)
             _m_solo \
                 $sub \
@@ -567,6 +573,7 @@ function _m {
         "bluetooth:manage bluetooth status"
         "dir:show and delete dir trees"
         "disk:manage disks and volumes"
+        "display:display settings"
         "dns:manage dns"
         "dock:manage dock"
         "finder:manage finder properties"

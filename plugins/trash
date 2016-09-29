@@ -15,7 +15,7 @@ clean_trash(){
     [ ! -e "$HOME/.Trash"  ] && echo "Trash not found" && exit 1
     sudo chflags -R nouchg $HOME/.Trash/* 2>/dev/null
     sudo rm -rf $HOME/.Trash/* 2>/dev/null
-
+    echo "Done!"
 }
 
 case $1 in

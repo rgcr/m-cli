@@ -66,6 +66,10 @@ complete -f -c m -n '__fish_m_using_command disk' -a "reformat" -d 'reformat a v
 complete -f -c m -n '__fish_m_using_command disk' -a "rename" -d 'rename a volume'
 complete -f -c m -n '__fish_m_using_command disk' -a "help" -d 'Show help'
 
+complete -f -c m -n '__fish_m_needs_command' -a display -d 'Display settings'
+complete -f -c m -n '__fish_m_using_command display' -a "status" -d 'status of displays'
+complete -f -c m -n '__fish_m_using_command display' -a "help" -d 'Show help'
+
 complete -f -c m -n '__fish_m_needs_command' -a dns -d 'Manage dns'
 complete -f -c m -n '__fish_m_using_command dns' -a "flush" -d 'flushes local DNS'
 complete -f -c m -n '__fish_m_using_command dns' -a "help" -d 'Show help'
