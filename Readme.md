@@ -49,6 +49,7 @@ usage:  m [OPTIONS] COMMAND [help]
         bluetooth
         dir
         disk
+        display
         dns
         dock
         finder
@@ -125,6 +126,15 @@ usage:  m [OPTIONS] COMMAND [help]
       m disk reformat /Volumes/myvol                      # reformat a volume
       m disk rename CURRENTNAME NEWNAME                   # rename a volume
 
+```
+
+#### Display:
+```
+    usage: m display [ status | help ]
+
+    Example:
+      m display status   # status of displays
+      m display help     # show usage
 ```
 
 #### Dns:
