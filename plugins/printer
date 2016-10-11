@@ -6,6 +6,8 @@ help(){
 
     Examples:
       m printer settings    # printer settings
+      m printer name # Display printer names on system
+      m printer queue # Display items in printer queue on system
       m printer drivers   # display all printer drivers
       m printer web   # enable and show web interface
 __EOF__
