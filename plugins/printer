@@ -2,7 +2,7 @@
 
 help(){
     cat<<__EOF__
-    usage: m printer [ settings | drivers | web | help ]
+    usage: m printer [ settings | name | queue | drivers | web | help ]
 
     Examples:
       m printer settings    # printer settings
@@ -17,6 +17,12 @@ case $1 in
         ;;
     settings)
         /usr/bin/lpoptions -l
+        ;;
+    name)
+        lpstat -p | awk '{print $2}'
+        ;;
+    queue)
+        lpstat -p | awk '{print $2}' | xargs -n1 lpq -P
         ;;
     drivers)
         lpinfo -m
