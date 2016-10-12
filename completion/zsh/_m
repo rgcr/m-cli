@@ -530,6 +530,8 @@ function _m_cmd {
         volume)
             _m_solo \
                 $sub \
+                "up:increase the volume" \
+                "down:decrease the volume" \
                 "mute:set mute" \
                 "unmute:unset mute" \
                 "ismute:check the volume status" \

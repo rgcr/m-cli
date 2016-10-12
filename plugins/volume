@@ -3,10 +3,14 @@
 
 help(){
     cat<<__EOF__
-    usage:  m volume [ level(0-100) | mute | unmute | ismute ]
+    usage:  m volume [ level(0-100) | change(-n|+n) | up | down | mute | unmute | ismute ]
 
     Examples:
       m volume 70     # set the volume to 70 %
+      m volume +5     # increase the volume by 5 (up to 100)
+      m volume -10    # decrease the volume by 5 (down to 0)
+      m volume up     # increase the volume by 6.25
+      m volume down   # decrease the volume by 6.25
       m volume        # get the volume level
       m volume mute   # set mute
       m volume unmute # unset mute
@@ -35,6 +39,11 @@ set_vol(){
     echo "Vol: $1"
 }
 
+adj_vol(){
+    osascript -e "set volume output volume (get output volume of (get volume settings) $1)"
+    get_vol
+}
+
 get_vol(){
     VALUE=$(osascript -e "output volume of (get volume settings)")
     echo "Vol: $VALUE"
@@ -43,6 +52,15 @@ get_vol(){
 case $1 in
     [0-9]*)
         set_vol $1
+        ;;
+    +[0-9]*|-[0-9]*)
+        adj_vol $1
+        ;;
+    up)
+        adj_vol +6.25
+        ;;
+    down)
+        adj_vol -6.25
         ;;
     mute)
         mute
