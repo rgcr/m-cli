@@ -515,7 +515,6 @@ usage:  m [OPTIONS] COMMAND [help]
 
 ## TODO:
 * Add more plugins
-* Add a brew formula
 * Improve the help
 * Improve the installation script
 
