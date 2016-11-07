@@ -59,6 +59,7 @@ usage:  m [OPTIONS] COMMAND [help]
         info
         lock
         ntp
+        printer
         network
         nosleep
         notification
@@ -287,6 +288,18 @@ usage:  m [OPTIONS] COMMAND [help]
       m ntp enable                          # enable clock to use network time
       m ntp disable                         # disable clock to use network time
       m ntp set timehost1.net.sap.corp      # set network time server
+```
+
+#### Printer:
+```
+    usage: m printer [ settings | name | queue | drivers | web | help ]
+
+    Examples:
+      m printer settings    # Printer settings
+      m printer name        # Display printer names on system
+      m printer queue       # Display items in printer queue on system
+      m printer drivers     # Display all printer drivers
+      m printer web         # Enable and show web interface
 ```
 
 #### Network:

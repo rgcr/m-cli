@@ -67,6 +67,9 @@ _m_sub () {
         ntp)
             subcommands=(status enable disable set help)
             ;;
+        printer)
+            subcommands=(settings name queue drivers web help)
+            ;;
         restart)
             subcommands=(-f help)
             ;;
@@ -209,7 +212,7 @@ _m () {
     local cur
     local commands=(
         help battery bluetooth dir disk dns dock finder firewall gatekeeper group hostname
-        info lock network nosleep notification ntp restart safeboot screensaver service
+        info lock network nosleep notification ntp printer restart safeboot screensaver service
         shutdown sleep timezone trash user update volume vpn wallpaper wifi
     )
 

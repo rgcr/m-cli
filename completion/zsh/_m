@@ -460,6 +460,16 @@ function _m_cmd {
                 "set:set network time server" \
                 help
             ;;
+        printer)
+            _m_solo \
+                $sub \
+                "settings:display printer settings" \
+                "name:display printer names on system" \
+                "queue:display items in printer queue on system" \
+                "drivers:display all printer drivers" \
+                "web:enable and show web interface" \
+                help
+            ;;
         restart)
             _m_solo \
                 $sub \
@@ -587,6 +597,7 @@ function _m {
         "nosleep:prevent sleeping"
         "notification:manage the notification settings"
         "ntp:manage the network time service"
+        "printer:display information about the printers"
         "restart:restart computer"
         "safeboot:manage safeboot"
         "screensaver:launch and manage the screensaver"
