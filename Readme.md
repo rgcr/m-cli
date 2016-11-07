@@ -115,17 +115,17 @@ usage:  m [OPTIONS] COMMAND [help]
 
       m disk ejectall                           # eject all mountable volumes
 
-      m disk verify volume  /Volume/MyVol       # verify volume
+      m disk verify volume /Volume/MyVol        # verify volume
       m disk verify disk /dev/disk0             # verify disk
 
       m disk repair volume /Volume/MyVol        # repair volume
       m disk repair disk /dev/disk0             # repair disk
 
-      m disk format MS-DOS MYNAME  /dev/disk2             # format the entire disk with a windows format (MS-DOS)
-      m disk format volume MS-DOS MYNAME /Volumes/myvol   # format the volume with a windows format(MS-DOS)
+      m disk format MS-DOS MYNAME /dev/disk2              # format the entire disk with a windows format (MS-DOS)
+      m disk format volume MS-DOS MYNAME /Volumes/myvol   # format the volume with a windows format (MS-DOS)
 
-      m disk reformat /Volumes/myvol                      # reformat a volume
-      m disk rename CURRENTNAME NEWNAME                   # rename a volume
+      m disk reformat /Volumes/myvol            # reformat a volume
+      m disk rename CURRENTNAME NEWNAME         # rename a volume
 
 ```
 
