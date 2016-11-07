@@ -451,10 +451,14 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Volume:
 ```
-    usage:  m volume [ level(0-100) | mute | unmute | ismute ]
+    usage:  m volume [ level(0-100) | change(-n|+n) | up | down | mute | unmute | ismute ]
 
     Examples:
       m volume 70     # set the volume to 70 %
+      m volume +5     # increase the volume by 5 (up to 100)
+      m volume -10    # decrease the volume by 5 (down to 0)
+      m volume up     # increase the volume by 6.25
+      m volume down   # decrease the volume by 6.25
       m volume        # get the volume level
       m volume mute   # set mute
       m volume unmute # unset mute

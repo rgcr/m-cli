@@ -208,6 +208,8 @@ complete -f -c m -n '__fish_m_using_command update' -a "install" -d 'install upd
 complete -f -c m -n '__fish_m_using_command update' -a "help" -d 'Show help'
 
 complete -f -c m -n '__fish_m_needs_command' -a volume -d "Manage the sound's volume"
+complete -f -c m -n '__fish_m_using_command volume' -a "up" -d 'increase the volume'
+complete -f -c m -n '__fish_m_using_command volume' -a "down" -d 'decrease the volume'
 complete -f -c m -n '__fish_m_using_command volume' -a "mute" -d 'set mute'
 complete -f -c m -n '__fish_m_using_command volume' -a "unmute" -d 'unset mute'
 complete -f -c m -n '__fish_m_using_command volume' -a "ismute" -d 'check the volume status'

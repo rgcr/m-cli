@@ -103,7 +103,7 @@ _m_sub () {
             subcommands=(ls install help)
             ;;
         volume)
-            subcommands=(mute unmute ismute help)
+            subcommands=(up down mute unmute ismute help)
             ;;
         vpn)
             subcommands=(list status stop start help)
