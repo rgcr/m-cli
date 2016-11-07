@@ -148,6 +148,13 @@ complete -f -c m -n '__fish_m_using_command ntp' -a "disable" -d 'disable clock 
 complete -f -c m -n '__fish_m_using_command ntp' -a "set" -d 'set network time server'
 complete -f -c m -n '__fish_m_using_command ntp' -a "help" -d 'Show help'
 
+complete -f -c m -n '__fish_m_needs_command' -a printer -d 'Display information about the printers'
+complete -f -c m -n '__fish_m_using_command printer' -a "settings" -d 'Display printer settings'
+complete -f -c m -n '__fish_m_using_command printer' -a "name" -d 'Display printer names on system'
+complete -f -c m -n '__fish_m_using_command printer' -a "queue" -d 'Display items in printer queue on system'
+complete -f -c m -n '__fish_m_using_command printer' -a "drivers" -d 'Display all printer drivers'
+complete -f -c m -n '__fish_m_using_command printer' -a "web" -d 'Enable and show web interface'
+
 ## XXX: Add completion for restart options
 complete -f -c m -n '__fish_m_needs_command' -a restart -d 'Restart computer'
 complete -f -c m -n '__fish_m_using_command restart' -a "help" -d 'Show help'

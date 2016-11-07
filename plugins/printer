@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+help(){
+    cat<<__EOF__
+
+    usage: m printer [ settings | name | queue | drivers | web | help ]
+
+    Examples:
+      m printer settings    # Printer settings
+      m printer name        # Display printer names on system
+      m printer queue       # Display items in printer queue on system
+      m printer drivers     # Display all printer drivers
+      m printer web         # Enable and show web interface
+
+__EOF__
+}
+
+case $1 in
+    help)
+        help
+        ;;
+    settings)
+        /usr/bin/lpoptions -l
+        ;;
+    name)
+        lpstat -p | awk '{print $2}'
+        ;;
+    queue)
+        lpstat -p | awk '{print $2}' | xargs -n1 lpq -P
+        ;;
+    drivers)
+        lpinfo -m
+        ;;
+    web)
+        cupsctl WebInterface=yes && open http://localhost:631/printers
+        ;;
+    *)
+        help
+        ;;
+esac
+
+# vim: ts=4 sw=4 softtabstop=4 expandtab
