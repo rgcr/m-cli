@@ -182,7 +182,7 @@ complete -f -c m -n '__fish_m_using_command service' -a "help" -d 'Show help'
 complete -f -c m -n '__fish_m_needs_command' -a shutdown -d 'Shutdown computer'
 complete -f -c m -n '__fish_m_using_command shutdown' -a "help" -d 'Show help'
 
-complete -f -c m -n '__fish_m_needs_command' -a sleep -d ''
+complete -f -c m -n '__fish_m_needs_command' -a sleep -d 'Sleep computer'
 complete -f -c m -n '__fish_m_using_command sleep' -a "help" -d 'Show help'
 
 complete -f -c m -n '__fish_m_needs_command' -a timezone -d 'Manage timezone'
