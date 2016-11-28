@@ -3,12 +3,13 @@
 
 help(){
     cat<<__EOF__
-    usage: m screensaver [ askforpassword | help ]
+    usage: m screensaver [ status | askforpassword | help ]
 
     Examples:
       m screensaver                         # launch screensaver
 
-      m screensaver askforpassword          #  get the current status
+      m screensaver status                  #  get the current status
+      m screensaver askforpassword          #  get password requirement to unlock
       m screensaver askforpassword YES      #  enable password requirement to unlock
       m screensaver askforpassword NO       #  disable password requirement to unlock
 __EOF__
@@ -35,6 +36,19 @@ askforpassword(){
     esac
 }
 
+status(){
+    VALUE=$(osascript -e 'tell application "System Events"' \
+        -e 'get running of screen saver preferences' \
+        -e 'end tell')
+    if [ "${VALUE}" == 'true' ]; then
+        echo 'Screensaver is running: YES'
+    elif [ "${VALUE}" == 'false' ]; then
+        echo 'Screensaver is running: NO'
+    else
+        echo 'Screensaver is running: ERROR'
+    fi
+}
+
 
 case $1 in
     help)
@@ -43,6 +57,9 @@ case $1 in
     askforpassword)
         shift
         askforpassword $@
+        ;;
+    status)
+        status
         ;;
     *)
         open /System/Library/Frameworks/ScreenSaver.framework/Versions/A/Resources/ScreenSaverEngine.app

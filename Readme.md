@@ -356,12 +356,13 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Screensaver:
 ```
-    usage: m screensaver [ askforpassword | help ]
+    usage: m screensaver [ status | askforpassword | help ]
 
     Examples:
       m screensaver                         # launch screensaver
 
-      m screensaver askforpassword          #  get the current status
+      m screensaver status                  #  get the current status
+      m screensaver askforpassword          #  get password requirement to unlock
       m screensaver askforpassword YES      #  enable password requirement to unlock
       m screensaver askforpassword NO       #  disable password requirement to unlock
 ```
