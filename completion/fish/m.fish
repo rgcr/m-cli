@@ -167,6 +167,7 @@ complete -f -c m -n '__fish_m_using_command safeboot' -a "help" -d 'Show help'
 
 ## XXX: Add completion for screensaver options
 complete -f -c m -n '__fish_m_needs_command' -a screensaver -d 'Launch and manage the screensaver properties'
+complete -f -c m -n '__fish_m_using_command screensaver' -a "status" -d 'get the current status'
 complete -f -c m -n '__fish_m_using_command screensaver' -a "askforpassword" -d 'get,enable or disable password requirement to unlock'
 complete -f -c m -n '__fish_m_using_command screensaver' -a "help" -d 'Show help'
 
