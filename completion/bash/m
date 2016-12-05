@@ -77,7 +77,7 @@ _m_sub () {
             subcommands=(status enable disable help)
             ;;
         screensaver)
-            subcommands=(askforpassword help)
+            subcommands=(status askforpassword help)
             ;;
         service)
             subcommands=(
