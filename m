@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
-[ -L $0 ] && pushd `readlink $0 | xargs dirname` > /dev/null \
-    || pushd `dirname $0` > /dev/null
-export MPATH=`pwd -P`
-popd > /dev/null
+[ -L ${0} ] && pushd $(readlink $0 | xargs dirname) >/dev/null \
+    || pushd $(dirname ${0}) >/dev/null
+export MPATH=$(pwd -P)
+popd >/dev/null
 
 
 confirm () {
     read -r -p "${1:-Are you sure? [y/N]} " response
-    case $response in
+    case ${response} in
         [yY][eE][sS]|[yY])
             true
             ;;
