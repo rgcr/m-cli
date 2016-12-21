@@ -57,6 +57,7 @@ usage:  m [OPTIONS] COMMAND [help]
         gatekeeper
         hostname
         info
+		itunes
         lock
         ntp
         printer
@@ -269,6 +270,25 @@ usage:  m [OPTIONS] COMMAND [help]
 
     Examples:
       m info        #  print macOS operating system version information
+```
+
+### Itunes:
+```
+   usage: m itunes [ status | play | pause | next | prev | mute | unmute | vol up | vol down | vol #| stop | quit | help ]
+
+    Examples:
+      m itunes status       # Show status
+      m itunes play         # Play track
+      m itunes pause        # Pause track
+      m itunes next         # Play next track
+      m itunes prev         # Play previous track
+      m itunes mute         # Mute iTunes
+      m itunes unmute       # Unmute iTunes
+      m itunes vol up       # Volume Up
+      m itunes vol down     # Volume Down
+      m itunes vol #        # Set volume level
+      m itunes stop         # Stop track
+      m itunes quit         # Quit iTunes
 ```
 
 #### Lock:
