@@ -15,6 +15,7 @@ help(){
       m wifi off                     # turn off your wifi
       m wifi on                      # turn on your wifi
       m wifi connect ESSID PASSWORD  # join a wifi network
+      m wifi connect ESSID           # join a wifi network (prompt for password)
 __EOF__
 }
 
@@ -49,10 +50,14 @@ wifi_on(){
 }
 
 connect_network(){
-    [ -z "$1" -o -z "$2" ] && help
+    [ "$#" -lt 1  ] && help
     NETWORK="$1"
-    shift
-    networksetup -setairportnetwork "${_W_DEVICE}" "${NETWORK}" "$@"
+    if [ "$#" -eq 1  ]; then
+        read -s -r -p "Password: " PASSWORD
+    elif [ "$#" -eq 2 ]; then
+        PASSWORD="$2"
+    fi
+    networksetup -setairportnetwork "${_W_DEVICE}" "${NETWORK}" "${PASSWORD}"
 }
 
 case $1 in

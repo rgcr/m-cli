@@ -493,6 +493,7 @@ usage:  m [OPTIONS] COMMAND [help]
     Examples:
       m vpn ls                              # list VPN connections
 
+      m vpn start                           # interactive mode
       m vpn start VPN                       # start vpn connection named VPN
       m vpn start VPN USER                  # start a vpn connection with a given user
       m vpn start VPN USER PASS             # start a vpn connection with a given user and password
@@ -523,6 +524,7 @@ usage:  m [OPTIONS] COMMAND [help]
       m wifi off                     # turn off your wifi
       m wifi on                      # turn on your wifi
       m wifi connect ESSID PASSWORD  # join a wifi network
+      m wifi connect ESSID           # join a wifi network (prompt for password)
 
 ```
 

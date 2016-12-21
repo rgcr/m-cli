@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+_VPN=""
+_USER="--user"
+_PASSWORD="--password"
+_SECRET="--secret"
 
 help(){
     cat<<__EOF__
@@ -8,6 +12,7 @@ help(){
     Examples:
       m vpn ls                              # list VPN connections
 
+      m vpn start                           # interactive mode
       m vpn start VPN                       # start vpn connection named VPN
       m vpn start VPN USER                  # start a vpn connection with a given user
       m vpn start VPN USER PASS             # start a vpn connection with a given user and password
@@ -23,22 +28,74 @@ list_vpns(){
     scutil --nc list
 }
 
-start_vpn(){
-    [ -z "$1" ] && help && exit 1;
+ask_parameters(){
+    printf "\n"
+    read -r -p "Vpn: " __VPN
+    printf "\n"
+    read -r -p "Username [press <enter> to skip]: " __USER
+    printf "\n"
+    read -s -r -p "Password [press <enter> to skip]: " __PASSWORD
+    printf "\n\n"
+    read -s -r -p "Secret [press <enter> to skip]: " __SECRET
+    printf "\n"
 
-    if [ $# -eq 4 ]; then
+    [ -z "${__SECRET}" ] && {
+        _SECRET=""
+    } || {
+        _SECRET="${_SECRET} ${__SECRET}"
+    }
+
+    [ -z "${__PASSWORD}" ] && {
+        _PASSWORD=""
+    } || {
+        _PASSWORD="${_PASSWORD} ${__PASSWORD}"
+    }
+
+    [ -z "${__USER}" ] && {
+        _USER=""
+    } || {
+        _USER="${_USER} ${__USER}"
+    }
+
+    [ -z "${__VPN}" ] && {
+        _VPN=""
+    } || {
+        _VPN="${__VPN}"
+    }
+}
+
+start_vpn(){
+
+    if [ "$#" -eq 4 ]; then
         # vpn user pass secret
-        scutil --nc start "$1" --user "$2" --password "$3" --secret "$4"
-    elif [ $# -eq 3 ]; then
+        _SECRET="${_SECRET} ${4}"
+        _PASSWORD="${_PASSWORD} ${3}"
+        _USER="${_USER} ${2}"
+        _VPN="${1}"
+    elif [ "$#" -eq 3 ]; then
         # vpn user password
-        scutil --nc start "$1" --user "$2" --password "$3"
-    elif [ $# -eq 2 ]; then
+        _SECRET=""
+        _PASSWORD="${_PASSWORD} ${3}"
+        _USER="${_USER} ${2}"
+        _VPN="${1}"
+    elif [ "$#" -eq 2 ]; then
         # vpn user
-        scutil --nc start "$1" --user "$2"
-    else
+        _SECRET=""
+        _PASSWORD=""
+        _USER="${_USER} ${2}"
+        _VPN="${1}"
+    elif [ "$#" -eq 1 ]; then
         # vpn
-        scutil --nc start "$1"
+        _SECRET=""
+        _PASSWORD=""
+        _USER=""
+        _VPN="${1}"
+    else
+        ask_parameters
     fi
+
+    scutil --nc start "${_VPN}" "${_USER}" "${_PASSWORD}" "${_SECRET}"
+
 }
 
 stop_vpn(){
