@@ -295,15 +295,24 @@ function _m_nosleep {
     case $CURRENT in
         3)
             args=(
-                "until:until timeout or specified script ends"
+                "until:until timeout, pid or specified script ends"
                 help
             )
             ;;
         4)
             if [[ ${words[3]} == until ]]; then
-                _path_files
+                #_alternative "pids:process IDs:($process)" \
+                    _alternative "args:custom args:((pid:'no sleep until a process ends'))" \
+                    "files:filenames:{_path_files}"
             fi
             ;;
+        5)
+            if [[ ${words[4]} == pid ]]; then
+                _alternative "args:custom args:($(ps -A -o pid=))"
+            fi
+            ;;
+
+
     esac
 
     _describe 'nosleep commands' opts -- args

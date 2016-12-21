@@ -8,6 +8,8 @@ help(){
     Examples:
       m nosleep until 3600            # no sleep until 3600 seconds
       m nosleep until my_script.sh    # no sleep until the script ends
+
+      m nosleep until pid 64377       # no sleep until the process id ends
 __EOF__
 }
 
@@ -15,10 +17,16 @@ __EOF__
 nosleep_until(){
     case $1 in
         [0-9]*)
-            caffeinate -u -t $1
+            caffeinate -u -t "${1}"
+            ;;
+        pid)
+            shift # remove "pid" arg
+            [ "$#" -lt 1 ] && help && exit 1
+            caffeinate -w "${1}"
             ;;
         *)
-            [ ! -z "$1" ] && caffeinate $@
+            #caffeinate "$@"
+            help && exit 1
             ;;
     esac
 

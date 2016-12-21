@@ -342,6 +342,8 @@ usage:  m [OPTIONS] COMMAND [help]
     Examples:
       m nosleep until 3600            # no sleep until 3600 seconds
       m nosleep until my_script.sh    # no sleep until the script ends
+
+      m nosleep until pid 64377       # no sleep until the process id ends
 ```
 
 #### Notification:

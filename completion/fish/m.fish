@@ -147,7 +147,7 @@ complete -f -c m -n '__fish_m_using_command network' -a "location" -d 'get or se
 complete -f -c m -n '__fish_m_using_command network' -a "help" -d 'Show help'
 
 complete -f -c m -n '__fish_m_needs_command' -a nosleep -d 'Prevent sleeping'
-complete -f -c m -n '__fish_m_using_command nosleep' -a "until" -d 'until timeout or specified script ends'
+complete -f -c m -n '__fish_m_using_command nosleep' -a "until" -d 'until timeout, pid or specified script ends'
 complete -f -c m -n '__fish_m_using_command nosleep' -a "help" -d 'Show help'
 
 complete -f -c m -n '__fish_m_needs_command' -a notification -d 'Manage the Notification Settings'
