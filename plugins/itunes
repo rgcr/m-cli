@@ -53,17 +53,17 @@ case $1 in
         ;;
     vol)
         vol=`osascript -e 'tell application "iTunes" to sound volume as integer'`
-        if [ $2 = "up" ]; then
-            newvol=$(( vol+10 ))
-        fi
 
-        if [ $2 = "down" ]; then
-            newvol=$(( vol-10 ))
-        fi
-
-        if [ $2 -gt 0 ]; then
-            newvol=$2
-        fi
+        case "$2" in
+            up)
+                newvol=$(( vol+10 ))    ;;
+            down)
+                newvol=$(( vol-10 ))    ;;
+            [0-9]*)
+                newvol=$2               ;;
+            *)
+                help  && exit 1         ;;
+        esac
         osascript -e "tell application \"iTunes\" to set sound volume to $newvol"
         ;;
     stop)
