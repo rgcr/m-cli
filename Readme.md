@@ -188,11 +188,12 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Display:
 ```
-    usage: m display [ status | help ]
+    usage: m display [ status | lightsensor | help ]
 
     Example:
-      m display status   # status of displays
-      m display help     # show usage
+      m display status                       # status of displays
+      m display autobrightness [ YES | NO ]  # whether to enable the ambient light sensor
+                                             # to automatically darken/brighten the screen
 ```
 
 #### Dns:

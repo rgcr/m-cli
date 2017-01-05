@@ -1,17 +1,41 @@
 #!/usr/bin/env bash
 
+declare path_to_plist="/Library/Preferences/com.apple.iokit.AmbientLightSensor"
+
 help(){
     cat<<__EOF__
-    usage: m display [ status | help ]
+    usage: m display [ status | autobrightness | help ]
 
     Example:
-      m display status   # status of displays
-      m display help     # show usage
+      m display status                       # status of displays
+      m display autobrightness [ YES | NO ]  # whether to enable the ambient light sensor
+                                             # to automatically darken/brighten the screen
 __EOF__
 }
 
 display_status(){
     system_profiler SPDisplaysDataType
+}
+
+autobrightness() {
+    case $1 in
+        [yY][eE][sS])
+            sudo defaults write "${path_to_plist}" "Automatic Display Enabled" -int 1
+            echo "Display autobrightness: YES"
+            ;;
+        [nN][oO])
+            sudo defaults write "${path_to_plist}" "Automatic Display Enabled" -int 0
+            echo "Display autobrightness: NO"
+            ;;
+        *)
+            VALUE=$(sudo defaults read "${path_to_plist}" "Automatic Display Enabled")
+            if [ "${VALUE}" -eq 1 ]; then
+                echo "Display autobrightness: YES"
+            else
+                echo "Display autobrightness: NO"
+            fi
+            ;;
+    esac
 }
 
 case $1 in
@@ -20,6 +44,9 @@ case $1 in
         ;;
     status)
         display_status
+        ;;
+    autobrightness)
+        autobrightness $@
         ;;
     *)
         help
