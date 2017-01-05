@@ -2,12 +2,14 @@
 
 help(){
     cat<<__EOF__
-    usage: m dock [ enable | disable | showdelay | autohide | magnification | position | addblankspace | addrecentitems | prune | help ]
+    usage: m dock [ enable | disable | autohidedelay | autohidespeed | autohide | magnification | position | addblankspace | addrecentitems | prune | help ]
 
     Examples:
       m dock enable                 # Shows the Dock
       m dock disable                # Causes the Dock to be hidden and never reappear
-      m dock showdelay x.x          # Changes how long the Dock takes to show up when auto-hide is enabled
+      m dock autohidedelay x.x      # Changes how long the Dock takes to show up when auto-hide is enabled
+      m dock autohidespeed x.x      # Changes how long the Dock takes to slide into/out of view after the
+                                    # delay has expired
       m dock autohide YES           # Enable Dock's auto hide feature
       m dock autohide NO            # Disable Dock's auto hide feature
       m dock magnification YES      # Turn magnification on
@@ -32,18 +34,36 @@ disable(){
   show_delay 999999
 }
 
-show_delay(){
+auto_hide_speed(){
     case $1 in
         [0-9][.][0-9])
-            echo "New Auto-Hide time: "$1
+            echo "New Auto-Hide speed: "$1
             defaults write com.apple.dock autohide-time-modifier -float $1
             ;;
         [0-9])
-            echo "New Auto-Hide time: "$1
+            echo "New Auto-Hide speed: "$1
             defaults write com.apple.dock autohide-time-modifier -int $1
             ;;
         *)
-            echo "Current Auto-Hide time: $(defaults read com.apple.dock autohide-time-modifier 2>/dev/null)"
+            echo "Current Auto-Hide speed: $(defaults read com.apple.dock autohide-time-modifier 2>/dev/null)"
+            exit 0
+            ;;
+    esac
+    killall Dock
+}
+
+auto_hide_delay(){
+    case $1 in
+        [0-9][.][0-9])
+            echo "New Auto-Hide delay: "$1
+            defaults write com.apple.dock autohide-delay -float $1
+            ;;
+        [0-9])
+            echo "New Auto-Hide delay: "$1
+            defaults write com.apple.dock autohide-delay -int $1
+            ;;
+        *)
+            echo "Current Auto-Hide delay: $(defaults read com.apple.dock autohide-delay 2>/dev/null)"
             exit 0
             ;;
     esac
@@ -143,7 +163,15 @@ case $1 in
         ;;
     showdelay)
         shift
-        show_delay $@
+        auto_hide_speed $@
+        ;;
+    autohidedelay)
+        shift
+        auto_hide_delay $@
+        ;;
+    autohidespeed)
+        shift
+        auto_hide_speed $@
         ;;
     autohide)
         shift
