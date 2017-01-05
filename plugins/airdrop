@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+help(){
+    cat<<__EOF__
+    usage: m airdrop [ onlywifi | help ]
+
+    Examples:
+      m airdrop onlywifi YES      #  allow airdropping only via WIFI
+      m airdrop onlywifi NO       #  allow airdropping via any network interface
+__EOF__
+}
+
+onlywifi(){
+    case $1 in
+        [yY][eE][sS])
+            defaults write com.apple.NetworkBrowser BrowseAllInterfaces -bool true
+            echo "Airdrop onlywifi: YES"
+            ;;
+        [nN][oO])
+            defaults write com.apple.NetworkBrowser BrowseAllInterfaces -bool false
+            echo "Airdrop onlywifi: NO"
+            ;;
+        *)
+            VALUE=$(defaults read com.apple.NetworkBrowser BrowseAllInterfaces)
+            if [ "${VALUE}" -eq 1 ]; then
+                echo "Airdrop onlywifi: YES"
+            else
+                echo "Airdrop onlywifi: NO"
+            fi
+            ;;
+    esac
+}
+
+case $1 in
+    help)
+        help
+        ;;
+    onlywifi)
+        shift
+        onlywifi $@
+        ;;
+    *)
+        help
+        ;;
+esac
+
+# vim: ts=4 sw=4 softtabstop=4 expandtab

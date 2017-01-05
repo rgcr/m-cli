@@ -45,6 +45,7 @@ usage:  m [OPTIONS] COMMAND [help]
 
     COMMANDS:
         help
+        airdrop
         battery
         bluetooth
         dir
@@ -57,7 +58,7 @@ usage:  m [OPTIONS] COMMAND [help]
         gatekeeper
         hostname
         info
-		itunes
+        itunes
         lock
         ntp
         printer
@@ -79,6 +80,15 @@ usage:  m [OPTIONS] COMMAND [help]
         wallpaper
         wifi
 
+```
+
+####  Airdrop:
+```
+    usage: m airdrop [ onlywifi | help ]
+
+    Examples:
+      m airdrop onlywifi YES      #  allow airdropping only via WIFI
+      m airdrop onlywifi NO       #  allow airdropping via any network interface
 ```
 
 ####  Battery:
