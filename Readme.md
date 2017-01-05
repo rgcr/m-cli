@@ -207,9 +207,11 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Dock:
 ```
-    usage: m dock [ showdelay | autohide | magnification | position | addblankspace | addrecentitems | prune | help ]
+    usage: m dock [ enable | disable | autohide | magnification | position | addblankspace | addrecentitems | prune | help ]
 
     Examples:
+      m dock enable                 # Shows the Dock
+      m dock disable                # Causes the Dock to be hidden and never reappear
       m dock showdelay x.x          # Changes how long the Dock takes to show up when auto-hide is enabled
       m dock autohide YES           # Enable Dock's auto hide feature
       m dock autohide NO            # Disable Dock's auto hide feature
