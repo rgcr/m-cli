@@ -210,6 +210,7 @@ usage:  m [OPTIONS] COMMAND [help]
     usage: m dock [
                     enable              |
                     disable             |
+                    activeindicators    |
                     bounceonappactivity |
                     bounceonapplaunch   |
                     autohidedelay       |
@@ -228,6 +229,7 @@ usage:  m [OPTIONS] COMMAND [help]
     Examples:
       m dock enable                 # Shows the Dock
       m dock disable                # Causes the Dock to be hidden and never reappear
+      m dock activeindicators YES   # Show the active indicators under the app icons
       m dock bounceonappactivity    # Bounce an app's icon when it has activity
       m dock bounceonapplaunch      # Bounce an app's icon when it is launching
       m dock autohidedelay x.x      # Changes how long the Dock takes to show up when auto-hide is enabled
