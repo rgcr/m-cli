@@ -149,6 +149,12 @@ usage:  m [OPTIONS] COMMAND [help]
       m bluetooth disable   # turn off bluetooth
 ```
 
+#### Debug Mode:
+```
+    usage: m debugmode [ enable | disable ]  # whether extra debugging options should
+                                             # be exposed for various applications
+```
+
 
 ####  Disk:
 ```
