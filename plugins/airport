@@ -1,0 +1,189 @@
+#!/usr/bin/env bash
+
+declare path_to_airport_binary="/System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport"
+
+help(){
+    cat<<__EOF__
+    usage: m airport [
+                       disconnectonlogout   |
+                       preferrednetworks    |
+                       nonpreferrednetworks |
+                       rememberrecents      |
+                       secureadhocnetworks  |
+                       securechangenetworks |
+                       securetogglepower    |
+                       help
+                     ]
+
+    Examples:
+      m airport disconnectonlogout   [ YES | NO ]     #  whether to disconnect from wifi when logging out
+      m airport rememberrecents      [ YES | NO ]     #  whether to remember recent networks
+
+      m airport preferrednetworks    [                #  what to do when preferred networks are available
+                                       Automatic |
+                                       Preferred |
+                                       Ranked    |
+                                       Recent    |
+                                       Strongest
+                                     ]
+
+      m airport nonpreferrednetworks [                #  how to join non-preferred networks if preferred
+                                       Prompt      |  #  networks are unavailable
+                                       JoinOpen    |
+                                       KeepLooking |
+                                       DoNothing
+                                     ]
+
+      m airport secureadhocnetworks  [ YES | NO ]     #  whether a password is required to create a
+                                                      #  computer-to-computer network
+      m airport securechangenetworks [ YES | NO ]     #  whether a password is required to change
+                                                      #  networks
+      m airport securetogglepower    [ YES | NO ]     #  whether a password is required to turn
+                                                      #  wi-fi on or off
+__EOF__
+}
+
+disconnectonlogout(){
+    case $1 in
+        [yY][eE][sS])
+            sudo "${path_to_airport_binary}" prefs DisconnectOnLogout="YES"
+            echo "Airport disconnectonlogout: YES"
+            ;;
+        [nN][oO])
+            sudo "${path_to_airport_binary}" prefs DisconnectOnLogout="NO"
+            echo "Airport disconnectonlogout: NO"
+            ;;
+        *)
+            sudo "${path_to_airport_binary}" prefs DisconnectOnLogout
+            ;;
+    esac
+}
+
+nonpreferrednetworks(){
+    [ -n "$1" ] && sudo "${path_to_airport_binary}" prefs JoinModeFallback="$1"
+
+    sudo "${path_to_airport_binary}" prefs JoinModeFallback
+}
+
+preferrednetworks(){
+    [ -n "$1" ] && sudo "${path_to_airport_binary}" prefs JoinMode="$1"
+
+    sudo "${path_to_airport_binary}" prefs JoinMode
+}
+
+rememberrecents(){
+    case $1 in
+        [yY][eE][sS])
+            sudo "${path_to_airport_binary}" prefs RememberRecentNetworks="YES"
+            echo "Airport rememberrecents: YES"
+            ;;
+        [nN][oO])
+            sudo "${path_to_airport_binary}" prefs RememberRecentNetworks="NO"
+            echo "Airport rememberrecents: NO"
+            ;;
+        *)
+            sudo "${path_to_airport_binary}" prefs RememberRecentNetworks
+            ;;
+    esac
+}
+
+secureadhocnetworks(){
+    case $1 in
+        [yY][eE][sS])
+            sudo "${path_to_airport_binary}" prefs RememberRecentNetworks="YES"
+            echo "Airport secureadhocnetworks: YES"
+            ;;
+        [nN][oO])
+            sudo "${path_to_airport_binary}" prefs RequireAdminIBSS="NO"
+            echo "Airport secureadhocnetworks: NO"
+            ;;
+        *)
+            sudo "${path_to_airport_binary}" prefs RequireAdminIBSS
+            ;;
+    esac
+}
+
+securechangenetworks(){
+    case $1 in
+        [yY][eE][sS])
+            sudo "${path_to_airport_binary}" prefs RequireAdminNetworkChange="YES"
+            echo "Airport securechangenetworks: YES"
+            ;;
+        [nN][oO])
+            sudo "${path_to_airport_binary}" prefs RequireAdminNetworkChange="NO"
+            echo "Airport securechangenetworks: NO"
+            ;;
+        *)
+            sudo "${path_to_airport_binary}" prefs RequireAdminNetworkChange
+            ;;
+    esac
+}
+
+securechangenetworks(){
+    case $1 in
+        [yY][eE][sS])
+            sudo "${path_to_airport_binary}" prefs RequireAdminNetworkChange="YES"
+            echo "Airport securechangenetworks: YES"
+            ;;
+        [nN][oO])
+            sudo "${path_to_airport_binary}" prefs RequireAdminNetworkChange="NO"
+            echo "Airport securechangenetworks: NO"
+            ;;
+        *)
+            sudo "${path_to_airport_binary}" prefs RequireAdminNetworkChange
+            ;;
+    esac
+}
+
+securetogglepower(){
+    case $1 in
+        [yY][eE][sS])
+            sudo "${path_to_airport_binary}" prefs RequireAdminPowerToggle="YES"
+            echo "Airport securetogglepower: YES"
+            ;;
+        [nN][oO])
+            sudo "${path_to_airport_binary}" prefs RequireAdminPowerToggle="NO"
+            echo "Airport securetogglepower: NO"
+            ;;
+        *)
+            sudo "${path_to_airport_binary}" prefs RequireAdminPowerToggle
+            ;;
+    esac
+}
+
+case $1 in
+    help)
+        help
+        ;;
+    disconnectonlogout)
+        shift
+        disconnectonlogout $@
+        ;;
+    nonpreferrednetworks)
+        shift
+        preferrednetworks $@
+        ;;
+    preferrednetworks)
+        shift
+        preferrednetworks $@
+        ;;
+    rememberrecents)
+        shift
+        rememberrecents $@
+        ;;
+    secureadhocnetworks)
+        shift
+        secureadhocnetworks $@
+        ;;
+    securechangenetworks)
+        shift
+        securechangenetworks $@
+        ;;
+    securetogglepower)
+        shift
+        securetogglepower $@
+        ;;
+    *)
+        help
+        ;;
+esac

@@ -91,6 +91,46 @@ usage:  m [OPTIONS] COMMAND [help]
       m airdrop onlywifi NO       #  allow airdropping via any network interface
 ```
 
+####  Airport:
+```
+    usage: m airport [
+                       disconnectonlogout   |
+                       preferrednetworks    |
+                       nonpreferrednetworks |
+                       rememberrecents      |
+                       secureadhocnetworks  |
+                       securechangenetworks |
+                       securetogglepower    |
+                       help
+                     ]
+
+    Examples:
+      m airport disconnectonlogout   [ YES | NO ]     #  whether to disconnect from wifi when logging out
+      m airport rememberrecents      [ YES | NO ]     #  whether to remember recent networks
+
+      m airport preferrednetworks    [                #  what to do when preferred networks are available
+                                       Automatic |
+                                       Preferred |
+                                       Ranked    |
+                                       Recent    |
+                                       Strongest
+                                     ]
+
+      m airport nonpreferrednetworks [                #  how to join non-preferred networks if preferred
+                                       Prompt      |  #  networks are unavailable
+                                       JoinOpen    |
+                                       KeepLooking |
+                                       DoNothing
+                                     ]
+
+      m airport secureadhocnetworks  [ YES | NO ]     #  whether a password is required to create a
+                                                      #  computer-to-computer network
+      m airport securechangenetworks [ YES | NO ]     #  whether a password is required to change
+                                                      #  networks
+      m airport securetogglepower    [ YES | NO ]     #  whether a password is required to turn
+                                                      #  wi-fi on or off
+```
+
 ####  Battery:
 ```
     usage: m battery [ status | help ]
