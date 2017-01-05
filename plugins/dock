@@ -109,8 +109,13 @@ add_recent_items(){
 }
 
 prune(){
-    echo "remove all items from stack"
-    defaults write com.apple.dock persistent-apps '()'
+    echo "remove all items from the Dock"
+    defaults write com.apple.dock checked-for-launchpad -bool true
+    defaults write com.apple.dock persistent-apps -array ""
+    defaults write com.apple.dock persistent-others -array ""
+
+    rm -f ${HOME}/Library/Application\ Support/Dock/*.db 2> /dev/null
+
     killall Dock
 }
 
