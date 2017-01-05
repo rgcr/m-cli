@@ -207,7 +207,7 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Dock:
 ```
-    usage: m dock [ enable | disable | autohidedelay | autohidespeed | autohide | magnification | magnificationsize | position | addblankspace | addrecentitems | prune | help ]
+    usage: m dock [ enable | disable | autohidedelay | autohidespeed | autohide | magnification | magnificationsize | iconsize | position | addblankspace | addrecentitems | prune | help ]
 
     Examples:
       m dock enable                 # Shows the Dock
@@ -220,6 +220,7 @@ usage:  m [OPTIONS] COMMAND [help]
       m dock magnification YES      # Turn magnification on
       m dock magnification NO       # Turn magnification off
       m dock magnificationsize x    # Set the max size of the icons as the cursor gets closer to them
+      m dock iconsize x             # Set the size of the icons when the dock is at rest
       m dock position BOTTOM        # Change Dock's position to the bottom of the screen
       m dock position LEFT          # Change Dock's position to the left of the screen
       m dock position RIGHT         # Change Dock's position to the right of the screen
