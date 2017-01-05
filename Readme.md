@@ -207,7 +207,23 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Dock:
 ```
-    usage: m dock [ enable | disable | bounceonappactivity | bounceonapplaunch | autohidedelay | autohidespeed | autohide | magnification | magnificationsize | iconsize | position | addblankspace | addrecentitems | prune | help ]
+    usage: m dock [
+                    enable              |
+                    disable             |
+                    bounceonappactivity |
+                    bounceonapplaunch   |
+                    autohidedelay       |
+                    autohidespeed       |
+                    autohide            |
+                    magnification       |
+                    magnificationsize   |
+                    iconsize            |
+                    position            |
+                    addblankspace       |
+                    addrecentitems      |
+                    prune               |
+                    help
+                  ]
 
     Examples:
       m dock enable                 # Shows the Dock
