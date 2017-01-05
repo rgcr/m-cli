@@ -2,11 +2,13 @@
 
 help(){
     cat<<__EOF__
-    usage: m dock [ enable | disable | autohidedelay | autohidespeed | autohide | magnification | magnificationsize | iconsize | position | addblankspace | addrecentitems | prune | help ]
+    usage: m dock [ enable | disable | bounceonappactivity | bounceonapplaunch | autohidedelay | autohidespeed | autohide | magnification | magnificationsize | iconsize | position | addblankspace | addrecentitems | prune | help ]
 
     Examples:
       m dock enable                 # Shows the Dock
       m dock disable                # Causes the Dock to be hidden and never reappear
+      m dock bounceonappactivity    # Bounce an app's icon when it has activity
+      m dock bounceonapplaunch      # Bounce an app's icon when it is launching
       m dock autohidedelay x.x      # Changes how long the Dock takes to show up when auto-hide is enabled
       m dock autohidespeed x.x      # Changes how long the Dock takes to slide into/out of view after the
                                     # delay has expired
@@ -34,6 +36,50 @@ enable(){
 disable(){
   auto_hide "YES"
   show_delay 999999
+}
+
+bounce_on_app_activity(){
+    case $1 in
+        [yY][eE][sS])
+            echo "Bounce on App Activity: YES"
+            defaults write com.apple.dock no-bouncing -bool "NO"
+            ;;
+        [nN][oO])
+            echo "Bounce on App Activity: NO"
+            defaults write com.apple.dock no-bouncing -bool "YES"
+            ;;
+        *)
+            VALUE=$(defaults read com.apple.dock no-bouncing)
+            if [ "${VALUE}" -eq 1 ]; then
+                echo "Bounce on App Activity: NO"
+            else
+                echo "Bounce on App Activity: YES"
+            fi
+            ;;
+    esac
+    killall Dock
+}
+
+bounce_on_app_launch(){
+    case $1 in
+        [yY][eE][sS])
+            echo "Bounce on App Launch: YES"
+            defaults write com.apple.dock launchanim -bool "YES"
+            ;;
+        [nN][oO])
+            echo "Bounce on App Launch: NO"
+            defaults write com.apple.dock launchanim -bool "NO"
+            ;;
+        *)
+            VALUE=$(defaults read com.apple.dock launchanim)
+            if [ "${VALUE}" -eq 1 ]; then
+                echo "Bounce on App Launch: YES"
+            else
+                echo "Bounce on App Launch: NO"
+            fi
+            ;;
+    esac
+    killall Dock
 }
 
 auto_hide_speed(){
@@ -190,6 +236,14 @@ case $1 in
         ;;
     disable)
         disable
+        ;;
+    bounceonappactivity)
+        shift
+        bounce_on_app_activity $@
+        ;;
+    bounceonapplaunch)
+        shift
+        bounce_on_app_launch $@
         ;;
     showdelay)
         shift

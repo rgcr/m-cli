@@ -207,11 +207,13 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Dock:
 ```
-    usage: m dock [ enable | disable | autohidedelay | autohidespeed | autohide | magnification | magnificationsize | iconsize | position | addblankspace | addrecentitems | prune | help ]
+    usage: m dock [ enable | disable | bounceonappactivity | bounceonapplaunch | autohidedelay | autohidespeed | autohide | magnification | magnificationsize | iconsize | position | addblankspace | addrecentitems | prune | help ]
 
     Examples:
       m dock enable                 # Shows the Dock
       m dock disable                # Causes the Dock to be hidden and never reappear
+      m dock bounceonappactivity    # Bounce an app's icon when it has activity
+      m dock bounceonapplaunch      # Bounce an app's icon when it is launching
       m dock autohidedelay x.x      # Changes how long the Dock takes to show up when auto-hide is enabled
       m dock autohidespeed x.x      # Changes how long the Dock takes to slide into/out of view after the
                                     # delay has expired
