@@ -54,6 +54,7 @@ usage:  m [OPTIONS] COMMAND [help]
         dns
         dock
         finder
+        filevault
         firewall
         gatekeeper
         hostname
@@ -280,6 +281,16 @@ usage:  m [OPTIONS] COMMAND [help]
       m dir size        # calculate current folder size
       m dir size /path  # calculate folder size in a specific path
 
+```
+
+#### File Vault:
+```
+    usage: m filevault [ status | enable | disable | help ]
+
+    Examples:
+      m filevault status    # FileVault Status
+      m filevault enable    # Enable FileVault
+      m filevault disable   # Disable FileVault
 ```
 
 #### Finder:

@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+declare command="$(basename "$0")"
+declare subcommand="$1"
+
+[ $# -gt 0 ] && shift
+
+help(){
+    cat<<__EOF__
+    usage: m filevault [ status | enable | disable | help ]
+
+    Examples:
+      m filevault status    # FileVault Status
+      m filevault enable    # Enable FileVault
+      m filevault disable   # Disable FileVault
+__EOF__
+}
+
+case "${subcommand}" in
+    help)
+        help
+        ;;
+    status)
+        sudo fdesetup status "$@"
+        ;;
+    enable)
+        sudo fdesetup enable "$@"
+        ;;
+    disable)
+        sudo fdesetup disable "$@"
+        ;;
+    *)
+        help
+        ;;
+esac
+
+# vim: ts=4 sw=4 softtabstop=4 expandtab
