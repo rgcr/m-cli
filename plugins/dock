@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/defaults.sh"
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/helpers.sh"
+
 help(){
     cat<<__EOF__
     usage: m dock [
@@ -57,14 +60,9 @@ disable(){
 }
 
 active_indicators(){
-    case $1 in
-        [yY][eE][sS])
-            defaults write com.apple.dock show-process-indicators -bool "true"
-            ;;
-        [nN][oO])
-            defaults write com.apple.dock show-process-indicators -bool "false"
-            ;;
-    esac
+    local choice="$(_mcli_yes_no_to_boolean "$1")"
+
+    defaults write com.apple.dock show-process-indicators -bool "${choice}"
 
     [ -n "$1" ] && killall Dock
 
@@ -74,14 +72,9 @@ active_indicators(){
 }
 
 bounce_on_app_activity(){
-    case $1 in
-        [yY][eE][sS])
-            defaults write com.apple.dock no-bouncing -bool "NO"
-            ;;
-        [nN][oO])
-            defaults write com.apple.dock no-bouncing -bool "YES"
-            ;;
-    esac
+    local choice="$(_mcli_yes_no_to_inverted_boolean "$1")"
+
+    defaults write com.apple.dock no-bouncing -bool "${choice}"
 
     [ -n "$1" ] && killall Dock
 
@@ -91,14 +84,9 @@ bounce_on_app_activity(){
 }
 
 bounce_on_app_launch(){
-    case $1 in
-        [yY][eE][sS])
-            defaults write com.apple.dock launchanim -bool "YES"
-            ;;
-        [nN][oO])
-            defaults write com.apple.dock launchanim -bool "NO"
-            ;;
-    esac
+    local choice="$(_mcli_yes_no_to_inverted_boolean "$1")"
+
+    defaults write com.apple.dock launchanim -bool "${choice}"
 
     [ -n "$1" ] && killall Dock
 
@@ -142,14 +130,9 @@ auto_hide_delay(){
 }
 
 auto_hide(){
-    case $1 in
-        [yY][eE][sS])
-            defaults write com.apple.dock autohide -boolean YES
-            ;;
-        [nN][oO])
-            defaults write com.apple.dock autohide -boolean NO
-            ;;
-    esac
+    local choice="$(_mcli_yes_no_to_boolean "$1")"
+
+    defaults write com.apple.dock autohide -bool "${choice}"
 
     [ -n "$1" ] && killall Dock
 
@@ -159,14 +142,9 @@ auto_hide(){
 }
 
 magnify(){
-    case $1 in
-        [yY][eE][sS])
-            defaults write com.apple.dock magnification -boolean YES
-            ;;
-        [nN][oO])
-            defaults write com.apple.dock magnification -boolean NO
-            ;;
-    esac
+    local choice="$(_mcli_yes_no_to_yes_no "$1")"
+
+    defaults write com.apple.dock magnification -boolean "${choice}"
 
     [ -n "$1" ] && killall Dock
 

@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/defaults.sh"
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/helpers.sh"
+
 help(){
     cat<<__EOF__
     usage: m airdrop [ onlywifi | help ]
@@ -11,14 +14,9 @@ __EOF__
 }
 
 onlywifi(){
-    case $1 in
-        [yY][eE][sS])
-            defaults write com.apple.NetworkBrowser BrowseAllInterfaces -bool true
-            ;;
-        [nN][oO])
-            defaults write com.apple.NetworkBrowser BrowseAllInterfaces -bool false
-            ;;
-    esac
+    local choice="$(_mcli_yes_no_to_boolean "$1")"
+
+    defaults write com.apple.NetworkBrowser BrowseAllInterfaces -bool "${choice}"
 
     value="$(_mcli_read_boolean "com.apple.NetworkBrowser" "BrowseAllInterfaces")"
 

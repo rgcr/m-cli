@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/defaults.sh"
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/helpers.sh"
 
 help(){
     cat<<__EOF__
@@ -16,14 +18,9 @@ __EOF__
 }
 
 askforpassword(){
-    case $1 in
-        [yY][eE][sS])
-            defaults write com.apple.screensaver askForPassword -int 1
-            ;;
-        [nN][oO])
-            defaults write com.apple.screensaver askForPassword -int 0
-            ;;
-    esac
+    local choice="$(_mcli_yes_no_to_integer "$1")"
+
+    defaults write com.apple.screensaver askForPassword -int "${choice}"
 
     value="$(_mcli_read_boolean "com.apple.screensaver" "askForPassword")"
 
@@ -31,16 +28,13 @@ askforpassword(){
 }
 
 status(){
-    VALUE=$(osascript -e 'tell application "System Events"' \
-        -e 'get running of screen saver preferences' \
-        -e 'end tell')
-    if [ "${VALUE}" == 'true' ]; then
-        echo 'Screensaver is running: YES'
-    elif [ "${VALUE}" == 'false' ]; then
-        echo 'Screensaver is running: NO'
-    else
-        echo 'Screensaver is running: ERROR'
-    fi
+    local value=$(osascript -e 'tell application "System Events"' \
+                            -e 'get running of screen saver preferences' \
+                            -e 'end tell')
+
+    value="$(_mcli_yes_no_to_yes_no "${value}")"
+
+    echo "Screensaver is running: ${value}"
 }
 
 

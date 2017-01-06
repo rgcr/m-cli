@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/defaults.sh"
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/helpers.sh"
+
 help(){
     cat<<__EOF__
     usage: m notification [ showcenter | help ]
@@ -12,28 +15,15 @@ __EOF__
 }
 
 showcenter(){
-    case $1 in
-        [yY][eE][sS])
-            echo "Enable notification center: YES"
-            launchctl load -w /System/Library/LaunchAgents/com.apple.notificationcenterui.plist
-            killall NotificationCenter
-            echo "Restart your computer for this to take effect"
-            ;;
-        [nN][oO])
-            echo "Enable notification center: NO"
-            launchctl unload -w /System/Library/LaunchAgents/com.apple.notificationcenterui.plist
-            killall NotificationCenter
-            ;;
-        *)
-            ps -A | grep apsd | grep -v grep &>/dev/null
-            if [ $? -eq 0 ]; then
-                CENTER_STATUS="enabled"
-            else
-                CENTER_STATUS="disabled"
-            fi
-            echo "Notification Center: $CENTER_STATUS"
-            ;;
-    esac
+    local choice="$(_mcli_yes_no_to_load_unload $1)"
+
+    launchctl "${choice}" -w /System/Library/LaunchAgents/com.apple.notificationcenterui.plist
+
+    [ -n "${choice}" ] && killall NotificationCenter && echo "Restart your computer for this to take effect"
+
+    value="$(_mcli_exit_status_to_enabled_disabled "ps -A | grep apsd | grep -v grep")"
+
+    echo "Notification Center ${value}"
 }
 
 case $1 in

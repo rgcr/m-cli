@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/defaults.sh"
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/helpers.sh"
+
 declare path_to_plist="/Library/Preferences/com.apple.iokit.AmbientLightSensor"
 
 help(){
@@ -18,16 +21,11 @@ display_status(){
 }
 
 autobrightness() {
-    case $1 in
-        [yY][eE][sS])
-            sudo defaults write "${path_to_plist}" "Automatic Display Enabled" -int 1
-            ;;
-        [nN][oO])
-            sudo defaults write "${path_to_plist}" "Automatic Display Enabled" -int 0
-            ;;
-    esac
+    local choice="$(_mcli_yes_no_to_integer "$1")"
 
-    value="$(_mcli_read_boolean "${path_to_plist}" "Automatic Display Enabled" "sudo")"
+    defaults write "${path_to_plist}" "Automatic Display Enabled" -int "${choice}"
+
+    value="$(_mcli_read_boolean "${path_to_plist}" "Automatic Display Enabled")"
 
     echo "Display autobrightness: ${value}"
 }

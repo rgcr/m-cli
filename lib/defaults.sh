@@ -6,17 +6,20 @@ _mcli_read() {
     [ -n "${domain}" ] && [ -n "${key}" ] || return 1
     [[ -n "${sudo}" ]] && sudo="sudo"
 
-    echo "$(${sudo} defaults read "${domain}" "${key}")"
+    echo "$(${sudo} defaults read "${domain}" "${key}" 2> /dev/null)"
 }
 
-_mcli_read_boolean() {
+_mcli_read_boolean_as_yes_no() {
     local value="$(_mcli_read $@)"
 
-    if [ "${value}" -eq 1 ]; then
-        echo "YES"
-    else
-        echo "NO"
-    fi
+    case "${value}" in
+        0|[nN][oO]|[fF][aA][lL][sS][eE])
+            echo "NO"
+            ;;
+        1|[yY][eE][sS]|[tT][rU][eE])
+            echo "YES"
+            ;;
+    esac
 }
 
 _mcli_read_number() {

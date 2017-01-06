@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/defaults.sh"
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/helpers.sh"
+
 declare path_to_airport_binary="/System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport"
 
 help(){
@@ -44,19 +47,13 @@ __EOF__
 }
 
 disconnectonlogout(){
-    case $1 in
-        [yY][eE][sS])
-            sudo "${path_to_airport_binary}" prefs DisconnectOnLogout="YES"
-            echo "Airport disconnectonlogout: YES"
-            ;;
-        [nN][oO])
-            sudo "${path_to_airport_binary}" prefs DisconnectOnLogout="NO"
-            echo "Airport disconnectonlogout: NO"
-            ;;
-        *)
-            sudo "${path_to_airport_binary}" prefs DisconnectOnLogout
-            ;;
-    esac
+    local choice="$(_mcli_yes_no_to_yes_no "$1")"
+
+    sudo "${path_to_airport_binary}" prefs DisconnectOnLogout="${choice}"
+
+    value="$(sudo "${path_to_airport_binary}" prefs DisconnectOnLogout)"
+
+    echo "Airport disconnectonlogout: ${value}"
 }
 
 nonpreferrednetworks(){
@@ -72,83 +69,43 @@ preferrednetworks(){
 }
 
 rememberrecents(){
-    case $1 in
-        [yY][eE][sS])
-            sudo "${path_to_airport_binary}" prefs RememberRecentNetworks="YES"
-            echo "Airport rememberrecents: YES"
-            ;;
-        [nN][oO])
-            sudo "${path_to_airport_binary}" prefs RememberRecentNetworks="NO"
-            echo "Airport rememberrecents: NO"
-            ;;
-        *)
-            sudo "${path_to_airport_binary}" prefs RememberRecentNetworks
-            ;;
-    esac
+    local choice="$(_mcli_yes_no_to_yes_no "$1")"
+
+    sudo "${path_to_airport_binary}" prefs RememberRecentNetworks="${choice}"
+
+    value="$(sudo "${path_to_airport_binary}" prefs RememberRecentNetworks)"
+
+    echo "Airport rememberrecents: ${value}"
 }
 
 secureadhocnetworks(){
-    case $1 in
-        [yY][eE][sS])
-            sudo "${path_to_airport_binary}" prefs RememberRecentNetworks="YES"
-            echo "Airport secureadhocnetworks: YES"
-            ;;
-        [nN][oO])
-            sudo "${path_to_airport_binary}" prefs RequireAdminIBSS="NO"
-            echo "Airport secureadhocnetworks: NO"
-            ;;
-        *)
-            sudo "${path_to_airport_binary}" prefs RequireAdminIBSS
-            ;;
-    esac
+    local choice="$(_mcli_yes_no_to_yes_no "$1")"
+
+    sudo "${path_to_airport_binary}" prefs RequireAdminIBSS="${choice}"
+
+    value="$(sudo "${path_to_airport_binary}" prefs RequireAdminIBSS)"
+
+    echo "Airport secureadhocnetworks: ${value}"
 }
 
 securechangenetworks(){
-    case $1 in
-        [yY][eE][sS])
-            sudo "${path_to_airport_binary}" prefs RequireAdminNetworkChange="YES"
-            echo "Airport securechangenetworks: YES"
-            ;;
-        [nN][oO])
-            sudo "${path_to_airport_binary}" prefs RequireAdminNetworkChange="NO"
-            echo "Airport securechangenetworks: NO"
-            ;;
-        *)
-            sudo "${path_to_airport_binary}" prefs RequireAdminNetworkChange
-            ;;
-    esac
-}
+    local choice="$(_mcli_yes_no_to_yes_no "$1")"
 
-securechangenetworks(){
-    case $1 in
-        [yY][eE][sS])
-            sudo "${path_to_airport_binary}" prefs RequireAdminNetworkChange="YES"
-            echo "Airport securechangenetworks: YES"
-            ;;
-        [nN][oO])
-            sudo "${path_to_airport_binary}" prefs RequireAdminNetworkChange="NO"
-            echo "Airport securechangenetworks: NO"
-            ;;
-        *)
-            sudo "${path_to_airport_binary}" prefs RequireAdminNetworkChange
-            ;;
-    esac
+    sudo "${path_to_airport_binary}" prefs RequireAdminNetworkChange="${choice}"
+
+    value="$(sudo "${path_to_airport_binary}" prefs RequireAdminNetworkChange)"
+
+    echo "Airport securechangenetworks: ${value}"
 }
 
 securetogglepower(){
-    case $1 in
-        [yY][eE][sS])
-            sudo "${path_to_airport_binary}" prefs RequireAdminPowerToggle="YES"
-            echo "Airport securetogglepower: YES"
-            ;;
-        [nN][oO])
-            sudo "${path_to_airport_binary}" prefs RequireAdminPowerToggle="NO"
-            echo "Airport securetogglepower: NO"
-            ;;
-        *)
-            sudo "${path_to_airport_binary}" prefs RequireAdminPowerToggle
-            ;;
-    esac
+    local choice="$(_mcli_yes_no_to_yes_no "$1")"
+
+    sudo "${path_to_airport_binary}" prefs RequireAdminPowerToggle="${choice}"
+
+    value="$(sudo "${path_to_airport_binary}" prefs RequireAdminPowerToggle)"
+
+    echo "Airport securetogglepower: ${value}"
 }
 
 case $1 in
