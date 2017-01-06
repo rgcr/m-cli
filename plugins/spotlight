@@ -3,6 +3,11 @@
 source "$( dirname "${BASH_SOURCE[0]}" )/../lib/converters.sh"
 source "$( dirname "${BASH_SOURCE[0]}" )/../lib/keyboard_shortcuts.sh"
 
+declare command="$(basename "$0")"
+declare subcommand="$1"
+
+[ $# -gt 0 ] && shift
+
 help(){
     cat<<__EOF__
     usage: m spotlight [ shortcutkeys | help ]
@@ -19,9 +24,11 @@ shortcut_keys() {
     for keyboard_shortcut_id in "${spotlight_keyboard_shortcut_ids[@]}"; do
         _mcli_keyboard_shortcut_toggle $keyboard_shortcut_id $enabled
     done
+
+    echo "${command} ${subcommand}: ${enabled}"
 }
 
-case $1 in
+case "${subcommand}" in
     help)
         help
         ;;

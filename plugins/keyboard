@@ -3,6 +3,11 @@
 source "$( dirname "${BASH_SOURCE[0]}" )/../lib/defaults.sh"
 source "$( dirname "${BASH_SOURCE[0]}" )/../lib/converters.sh"
 
+declare command="$(basename "$0")"
+declare subcommand="$1"
+
+[ $# -gt 0 ] && shift
+
 help(){
     cat<<__EOF__
     usage: m keyboard [
@@ -40,7 +45,7 @@ accentedpress() {
                                               "ApplePressAndHoldEnabled" \
                                               "$1")"
 
-    echo "Keyboard Accented Press and Hold: ${value}"
+    echo "${command} ${subcommand}: ${value}"
 }
 
 spellchecking() {
@@ -50,7 +55,7 @@ spellchecking() {
 
     defaults write com.apple.messageshelper.MessageController SOInputLineSettings -dict-add "continuousSpellCheckingEnabled" -bool "${value}"
 
-    echo "Keyboard Spell Checking: ${value}"
+    echo "${command} ${subcommand}: ${value}"
 }
 
 textsubstitution() {
@@ -75,7 +80,7 @@ textsubstitution() {
 
     defaults write com.apple.messageshelper.MessageController SOInputLineSettings -dict-add "automaticQuoteSubstitutionEnabled" -bool "${value}"
 
-    echo "Keyboard Text Substitution: ${value}"
+    echo "${command} ${subcommand}: ${value}"
 }
 
 usefunctionkeys() {
@@ -83,7 +88,7 @@ usefunctionkeys() {
                                               "com.apple.keyboard.fnState" \
                                               "$1")"
 
-    echo "Keyboard Function Keys: ${value}"
+    echo "${command} ${subcommand}: ${value}"
 }
 
 inputfieldaccess() {
@@ -105,7 +110,7 @@ inputfieldaccess() {
                                     "AppleKeyboardUIMode" \
                                     "${mode}")"
 
-    echo "Keyboard Input Field Access: ${value}"
+    echo "${command} ${subcommand}: ${value}"
 }
 
 autodim() {
@@ -113,7 +118,7 @@ autodim() {
                                               "Automatic Keyboard Enabled" \
                                               "$1")"
 
-    echo "Keyboard Autodimming: ${value}"
+    echo "${command} ${subcommand}: ${value}"
 }
 
 autodimdelay() {
@@ -121,7 +126,7 @@ autodimdelay() {
                                     "Keyboard Dim Time" \
                                     "$1")"
 
-    echo "Keyboard Autodimming Delay: ${value}"
+    echo "${command} ${subcommand}: ${value}"
 }
 
 keyrepeatrate() {
@@ -129,7 +134,7 @@ keyrepeatrate() {
                                     "KeyRepeat" \
                                     "$1")"
 
-    echo "Keyboard Key Repeat Rate: ${value}"
+    echo "${command} ${subcommand}: ${value}"
 }
 
 keyrepeatdelay() {
@@ -137,10 +142,10 @@ keyrepeatdelay() {
                                     "InitialKeyRepeat" \
                                     "$1")"
 
-    echo "Keyboard Key Repeat Delay: ${value}"
+    echo "${command} ${subcommand}: ${value}"
 }
 
-case $1 in
+case "${subcommand}" in
     help)
         help
         ;;

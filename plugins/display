@@ -4,6 +4,10 @@ source "$( dirname "${BASH_SOURCE[0]}" )/../lib/defaults.sh"
 source "$( dirname "${BASH_SOURCE[0]}" )/../lib/converters.sh"
 
 declare path_to_plist="/Library/Preferences/com.apple.iokit.AmbientLightSensor"
+declare command="$(basename "$0")"
+declare subcommand="$1"
+
+[ $# -gt 0 ] && shift
 
 help(){
     cat<<__EOF__
@@ -25,10 +29,10 @@ autobrightness() {
                                               "Automatic Display Enabled" \
                                               "$1")"
 
-    echo "Display autobrightness: ${value}"
+    echo "${command} ${subcommand}: ${value}"
 }
 
-case $1 in
+case "${subcommand}" in
     help)
         help
         ;;

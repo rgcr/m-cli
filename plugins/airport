@@ -4,6 +4,10 @@ source "$( dirname "${BASH_SOURCE[0]}" )/../lib/defaults.sh"
 source "$( dirname "${BASH_SOURCE[0]}" )/../lib/converters.sh"
 
 declare path_to_airport_binary="/System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport"
+declare command="$(basename "$0")"
+declare subcommand="$1"
+
+[ $# -gt 0 ] && shift
 
 help(){
     cat<<__EOF__
@@ -53,19 +57,23 @@ disconnectonlogout(){
 
     value="$(sudo "${path_to_airport_binary}" prefs DisconnectOnLogout)"
 
-    echo "Airport disconnectonlogout: ${value}"
+    echo "${command} ${subcommand}: ${value}"
 }
 
 nonpreferrednetworks(){
     [ -n "$1" ] && sudo "${path_to_airport_binary}" prefs JoinModeFallback="$1"
 
-    sudo "${path_to_airport_binary}" prefs JoinModeFallback
+    value="$(sudo "${path_to_airport_binary}" prefs JoinModeFallback)"
+
+    echo "${command} ${subcommand}: ${value}"
 }
 
 preferrednetworks(){
     [ -n "$1" ] && sudo "${path_to_airport_binary}" prefs JoinMode="$1"
 
-    sudo "${path_to_airport_binary}" prefs JoinMode
+    value="$(sudo "${path_to_airport_binary}" prefs JoinMode)"
+
+    echo "${command} ${subcommand}: ${value}"
 }
 
 rememberrecents(){
@@ -75,7 +83,7 @@ rememberrecents(){
 
     value="$(sudo "${path_to_airport_binary}" prefs RememberRecentNetworks)"
 
-    echo "Airport rememberrecents: ${value}"
+    echo "${command} ${subcommand}: ${value}"
 }
 
 secureadhocnetworks(){
@@ -85,7 +93,7 @@ secureadhocnetworks(){
 
     value="$(sudo "${path_to_airport_binary}" prefs RequireAdminIBSS)"
 
-    echo "Airport secureadhocnetworks: ${value}"
+    echo "${command} ${subcommand}: ${value}"
 }
 
 securechangenetworks(){
@@ -95,7 +103,7 @@ securechangenetworks(){
 
     value="$(sudo "${path_to_airport_binary}" prefs RequireAdminNetworkChange)"
 
-    echo "Airport securechangenetworks: ${value}"
+    echo "${command} ${subcommand}: ${value}"
 }
 
 securetogglepower(){
@@ -105,39 +113,32 @@ securetogglepower(){
 
     value="$(sudo "${path_to_airport_binary}" prefs RequireAdminPowerToggle)"
 
-    echo "Airport securetogglepower: ${value}"
+    echo "${command} ${subcommand}: ${value}"
 }
 
-case $1 in
+case "${subcommand}" in
     help)
         help
         ;;
     disconnectonlogout)
-        shift
         disconnectonlogout $@
         ;;
     nonpreferrednetworks)
-        shift
         preferrednetworks $@
         ;;
     preferrednetworks)
-        shift
         preferrednetworks $@
         ;;
     rememberrecents)
-        shift
         rememberrecents $@
         ;;
     secureadhocnetworks)
-        shift
         secureadhocnetworks $@
         ;;
     securechangenetworks)
-        shift
         securechangenetworks $@
         ;;
     securetogglepower)
-        shift
         securetogglepower $@
         ;;
     *)

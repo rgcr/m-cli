@@ -47,7 +47,7 @@ fontname() {
     echo "Keyboard fontname: ${value}"
 }
 
-case $1 in
+case "${subcommand}" in
     help)
         help
         ;;

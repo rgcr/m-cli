@@ -3,6 +3,11 @@
 source "$( dirname "${BASH_SOURCE[0]}" )/../lib/defaults.sh"
 source "$( dirname "${BASH_SOURCE[0]}" )/../lib/converters.sh"
 
+declare command="$(basename "$0")"
+declare subcommand="$1"
+
+[ $# -gt 0 ] && shift
+
 help(){
     cat<<__EOF__
     usage: m dock [
@@ -72,9 +77,7 @@ active_indicators(){
                                               "show-process-indicators" \
                                               "$1")"
 
-    [ -n "$1" ] && killall Dock
-
-    echo "Dock activeindicators: ${value}"
+    echo "${command} ${subcommand}: ${value}"
 }
 
 bounce_on_app_activity(){
@@ -82,9 +85,7 @@ bounce_on_app_activity(){
                                                        "no-bouncing" \
                                                        "$1")"
 
-    [ -n "$1" ] && killall Dock
-
-    echo "Dock bounceonappactivity: ${value}"
+    echo "${command} ${subcommand}: ${value}"
 }
 
 bounce_on_app_launch(){
@@ -92,9 +93,7 @@ bounce_on_app_launch(){
                                               "launchanim" \
                                               "$1")"
 
-    [ -n "$1" ] && killall Dock
-
-    echo "Dock bounceonapplaunch: ${value}"
+    echo "${command} ${subcommand}: ${value}"
 }
 
 auto_hide_speed(){
@@ -102,9 +101,7 @@ auto_hide_speed(){
                                    "autohide-time-modifier" \
                                    "$1")"
 
-    [ -n "$1" ] && killall Dock
-
-    echo "Dock autohidespeed: ${value}"
+    echo "${command} ${subcommand}: ${value}"
 }
 
 auto_hide_delay(){
@@ -112,9 +109,7 @@ auto_hide_delay(){
                                    "autohide-delay" \
                                    "$1")"
 
-    [ -n "$1" ] && killall Dock
-
-    echo "Dock autohidedelay: ${value}"
+    echo "${command} ${subcommand}: ${value}"
 }
 
 auto_hide(){
@@ -122,9 +117,7 @@ auto_hide(){
                                               "autohide" \
                                               "$1")"
 
-    [ -n "$1" ] && killall Dock
-
-    echo "Dock autohide: ${value}"
+    echo "${command} ${subcommand}: ${value}"
 }
 
 full_screen_delay(){
@@ -132,9 +125,7 @@ full_screen_delay(){
                                               "autohide-fullscreen-delayed" \
                                               "$1")"
 
-    [ -n "$1" ] && killall Dock
-
-    echo "Dock full screen delay: ${value}"
+    echo "${command} ${subcommand}: ${value}"
 }
 
 itunes_notifications() {
@@ -146,9 +137,7 @@ itunes_notifications() {
                                               "notification-always-show-image" \
                                               "$1")"
 
-    [ -n "$1" ] && killall Dock
-
-    echo "Dock iTunes Notifications: ${value}"
+    echo "${command} ${subcommand}: ${value}"
 }
 
 hidden_app_dimming(){
@@ -156,9 +145,7 @@ hidden_app_dimming(){
                                               "showhidden" \
                                               "$1")"
 
-    [ -n "$1" ] && killall Dock
-
-    echo "Dock app dimming: ${value}"
+    echo "${command} ${subcommand}: ${value}"
 }
 
 magnify(){
@@ -166,9 +153,7 @@ magnify(){
                                               "magnification" \
                                               "$1")"
 
-    [ -n "$1" ] && killall Dock
-
-    echo "Dock magnification: ${value}"
+    echo "${command} ${subcommand}: ${value}"
 }
 
 magnification_size(){
@@ -176,9 +161,7 @@ magnification_size(){
                                    "largesize" \
                                    "$1")"
 
-    [ -n "$1" ] && killall Dock
-
-    echo "Dock magnificationsize: ${value}"
+    echo "${command} ${subcommand}: ${value}"
 }
 
 icon_size(){
@@ -186,9 +169,7 @@ icon_size(){
                                    "tilesize" \
                                    "$1")"
 
-    [ -n "$1" ] && killall Dock
-
-    echo "Dock iconsize: ${value}"
+    echo "${command} ${subcommand}: ${value}"
 }
 
 only_show_running(){
@@ -196,9 +177,7 @@ only_show_running(){
                                               "static-only" \
                                               "$1")"
 
-    [ -n "$1" ] && killall Dock
-
-    echo "Dock onlyshowrunning: ${value}"
+    echo "${command} ${subcommand}: ${value}"
 }
 
 dock_position(){
@@ -214,11 +193,9 @@ dock_position(){
             ;;
     esac
 
-    [ -n "$1" ] && killall Dock
-
     value="$(_mcli_read "com.apple.dock" "orientation")"
 
-    echo "Dock position: ${value}"
+    echo "${command} ${subcommand}: ${value}"
 }
 
 add_blank_space(){
@@ -244,7 +221,7 @@ prune(){
     killall Dock
 }
 
-case $1 in
+case "${subcommand}" in
     help)
         help
         ;;
@@ -255,80 +232,64 @@ case $1 in
         disable
         ;;
     activeindicators)
-        shift
         active_indicators $@
         ;;
     bounceonappactivity)
-        shift
         bounce_on_app_activity $@
         ;;
     bounceonapplaunch)
-        shift
         bounce_on_app_launch $@
         ;;
     showdelay)
-        shift
         auto_hide_speed $@
         ;;
     autohidedelay)
-        shift
         auto_hide_delay $@
         ;;
     autohidespeed)
-        shift
         auto_hide_speed $@
         ;;
     autohide)
-        shift
         auto_hide $@
         ;;
     fullscreendelay)
-        shift
         full_screen_delay $@
         ;;
     itunesnotifications)
-        shift
         itunes_notifications $@
         ;;
     magnification)
-        shift
         magnify $@
         ;;
     magnificationsize)
-        shift
         magnification_size $@
         ;;
     hiddenappdimming)
-        shift
         hidden_app_dimming $@
         ;;
     iconsize)
-        shift
         icon_size $@
         ;;
     onlyshowrunning)
-        shift
         only_show_running $@
         ;;
     position)
-        shift
         dock_position $@
         ;;
     addblankspace)
-        shift
         add_blank_space
         ;;
     addrecentitems)
-        shift
         add_recent_items
         ;;
     prune)
-        shift
         prune
         ;;
     *)
         help
         ;;
 esac
+
+[ -n "${subcommand}" ] && [ -n "$1" ] && killall Dock
 
 # vim: ts=4 sw=4 softtabstop=4 expandtab
