@@ -15,6 +15,7 @@ help(){
                     autohidespeed       |
                     autohide            |
                     fullscreendelay     |
+                    itunesnotifications |
                     magnification       |
                     magnificationsize   |
                     hiddenappdimming    |
@@ -39,6 +40,7 @@ help(){
       m dock autohide YES           # Enable Dock's auto hide feature
       m dock autohide NO            # Disable Dock's auto hide feature
       m dock fullscreendelay YES    # Whether to have a delay when showing the dock in full screen mode
+      m dock itunesnotifications NO # Whether to show iTunes notifications in the dock
       m dock magnification YES      # Turn magnification on
       m dock magnification NO       # Turn magnification off
       m dock magnificationsize x    # Set the max size of the icons as the cursor gets closer to them
@@ -133,6 +135,20 @@ full_screen_delay(){
     [ -n "$1" ] && killall Dock
 
     echo "Dock full screen delay: ${value}"
+}
+
+itunes_notifications() {
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.dock" \
+                                              "itunes-notifications" \
+                                              "$1")"
+
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.dock" \
+                                              "notification-always-show-image" \
+                                              "$1")"
+
+    [ -n "$1" ] && killall Dock
+
+    echo "Dock iTunes Notifications: ${value}"
 }
 
 hidden_app_dimming(){
@@ -269,6 +285,10 @@ case $1 in
     fullscreendelay)
         shift
         full_screen_delay $@
+        ;;
+    itunesnotifications)
+        shift
+        itunes_notifications $@
         ;;
     magnification)
         shift

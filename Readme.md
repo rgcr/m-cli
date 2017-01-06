@@ -217,6 +217,7 @@ usage:  m [OPTIONS] COMMAND [help]
                     autohidespeed       |
                     autohide            |
                     fullscreendelay     |
+                    itunesnotifications |
                     magnification       |
                     magnificationsize   |
                     hiddenappdimming    |
@@ -241,6 +242,7 @@ usage:  m [OPTIONS] COMMAND [help]
       m dock autohide YES           # Enable Dock's auto hide feature
       m dock autohide NO            # Disable Dock's auto hide feature
       m dock fullscreendelay YES    # Whether to have a delay when showing the dock in full screen mode
+      m dock itunesnotifications NO # Whether to show iTunes notifications in the dock
       m dock magnification YES      # Turn magnification on
       m dock magnification NO       # Turn magnification off
       m dock magnificationsize x    # Set the max size of the icons as the cursor gets closer to them
