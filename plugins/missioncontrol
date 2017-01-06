@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/defaults.sh"
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/converters.sh"
+
+declare command="$(basename "$0")"
+declare subcommand="$1"
+
+[ $# -gt 0 ] && shift
+
+help(){
+    cat<<__EOF__
+    usage: m missioncontrol [ showcenter | help ]
+
+    Examples:
+      m missioncontrol dashboardvisible   [ YES | NO ]  #
+      m missioncontrol groupwindowsbyapp  [ YES | NO ]  #
+      m missioncontrol animationspeed     x.x           #
+__EOF__
+}
+
+dashboardvisible(){
+    value="$(_mcli_defaults_yes_no_to_inverted_boolean "com.apple.dock" \
+                                                       "dashboard-in-overlay" \
+                                                       "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+groupwindowsbyapp(){
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.dock" \
+                                              "expose-group-by-app" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+animationspeed() {
+    value="$(_mcli_defaults_number "com.apple.dock" \
+                                   "expose-animation-duration" \
+                                   "$1")"
+    value="$(_mcli_defaults_number "com.apple.dock" \
+                                   "workspaces-edge-delay" \
+                                   "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+case "${subcommand}" in
+    help)
+        help
+        ;;
+    dashboardvisible)
+        dashboardvisible "$@"
+        ;;
+    groupwindowsbyapp)
+        groupwindowsbyapp "$@"
+        ;;
+    animationspeed)
+        animationspeed "$@"
+        ;;
+    *)
+        help
+        ;;
+esac
+
+[ -n "${subcommand}" ] && [ -n "$1" ] && killall Dock
+
+# vim: ts=4 sw=4 softtabstop=4 expandtab

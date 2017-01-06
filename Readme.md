@@ -63,6 +63,7 @@ usage:  m [OPTIONS] COMMAND [help]
         lock
         ntp
         printer
+        missioncontrol
         network
         nosleep
         notification
@@ -444,6 +445,16 @@ usage:  m [OPTIONS] COMMAND [help]
       m printer queue       # Display items in printer queue on system
       m printer drivers     # Display all printer drivers
       m printer web         # Enable and show web interface
+```
+
+#### Mission Control:
+```
+    usage: m missioncontrol [ showcenter | help ]
+
+    Examples:
+      m missioncontrol dashboardvisible   [ YES | NO ]  #
+      m missioncontrol groupwindowsbyapp  [ YES | NO ]  #
+      m missioncontrol animationspeed     x.x           #
 ```
 
 #### Network:
