@@ -511,6 +511,7 @@ usage:  m [OPTIONS] COMMAND [help]
       m screensaver askforpassword          #  get password requirement to unlock
       m screensaver askforpassword YES      #  enable password requirement to unlock
       m screensaver askforpassword NO       #  disable password requirement to unlock
+      m screensaver passworddelay x         #  the length of time before screensaver requires password
 ```
 
 #### Service:
