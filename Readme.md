@@ -472,12 +472,13 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Notification:
 ```
-    usage: m notification [ showcenter | help  ]
+    usage: m notification [ showcenter | help ]
 
     Examples:
       m notification showcenter      # get the current status
       m notification showcenter YES  # enable the notification center
       m notification showcenter NO   # disable the notification center
+      m notification bannertime x    # disable the notification center
 
 ```
 

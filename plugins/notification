@@ -16,6 +16,7 @@ help(){
       m notification showcenter      # get the current status
       m notification showcenter YES  # enable the notification center
       m notification showcenter NO   # disable the notification center
+      m notification bannertime x    # disable the notification center
 __EOF__
 }
 
@@ -29,12 +30,23 @@ showcenter(){
     echo "${command} ${subcommand}: ${value}"
 }
 
+bannertime(){
+    value="$(_mcli_defaults_string "com.apple.notificationcenterui" \
+                                   "bannerTime" \
+                                   "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
 case "${subcommand}" in
     help)
         help
         ;;
     showcenter)
         showcenter "$@"
+        ;;
+    bannertime)
+        bannertime "$@"
         ;;
     *)
         help

@@ -28,6 +28,18 @@ _mcli_read_number() {
     echo "${value}"
 }
 
+_mcli_read_string() {
+    local value="$(_mcli_read $@)"
+
+    echo "${value}"
+}
+
+_mcli_read_font() {
+    local value="$(_mcli_read $@)"
+
+    echo "${value}"
+}
+
 _mcli_read_inverted_boolean() {
     local value="$(_mcli_read_boolean $@)"
 
@@ -79,7 +91,20 @@ _mcli_defaults_font() {
       ${sudo} defaults write "${domain}" "${key}" -font "${transformed}"
     fi
 
-    _mcli_read_integer "${domain}" "${key}"
+    _mcli_read_font "${domain}" "${key}"
+}
+
+_mcli_defaults_string() {
+    local domain="$1"
+    local key="$2"
+    local new_value="$3"
+    local sudo="$4"
+
+    if [ -n "${new_value}" ]; then
+      ${sudo} defaults write "${domain}" "${key}" -string "${transformed}"
+    fi
+
+    _mcli_read_string "${domain}" "${key}"
 }
 
 _mcli_defaults_yes_no_to_type() {
