@@ -74,6 +74,7 @@ usage:  m [OPTIONS] COMMAND [help]
         sleep
         spotlight
         timezone
+        tooltip
         trash
         update
         user
@@ -565,6 +566,17 @@ usage:  m [OPTIONS] COMMAND [help]
       m timezone                    # get current timezone
       m timezone ls                 # list available timezones
       m timezone set Europe/Berlin  # set timezone
+```
+
+#### Tooltips:
+```
+    usage: m tooltips [ delay | autowrap | fontsize | fontname | help ]
+
+    Examples:
+      m tooltips delay    x             # Set the delay before the tooltip shows up
+      m tooltips autowrap [ YES | NO ]  # Whether tooltips should wrap
+      m tooltips fontsize x.x           # The size of the font in the tooltip
+      m tooltips fontname <font name>   # The name of the font in the tooltip
 ```
 
 #### Trash:

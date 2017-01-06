@@ -9,18 +9,6 @@ _mcli_read() {
     ${sudo} defaults read "${domain}" "${key}" 2> /dev/null
 }
 
-_mcli_write_integer() {
-    local domain="$1"
-    local key="$2"
-    local value="$3"
-    local sudo="$4"
-
-    [ -n "${domain}" ] && [ -n "${key}" ] && [ -n "${value}" ] || return 1
-    [[ -n "${sudo}" ]] && sudo="sudo"
-
-    ${sudo} defaults write "${domain}" "${key}" -int "${value}"
-}
-
 _mcli_read_boolean_as_yes_no() {
     local value="$(_mcli_read $@)"
 
@@ -77,6 +65,19 @@ _mcli_defaults_number() {
             ${sudo} defaults write "${domain}" "${key}" -int "${transformed}"
             ;;
     esac
+
+    _mcli_read_integer "${domain}" "${key}"
+}
+
+_mcli_defaults_font() {
+    local domain="$1"
+    local key="$2"
+    local new_value="$3"
+    local sudo="$4"
+
+    if [ -n "${new_value}" ]; then
+      ${sudo} defaults write "${domain}" "${key}" -font "${transformed}"
+    fi
 
     _mcli_read_integer "${domain}" "${key}"
 }
