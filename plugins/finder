@@ -25,37 +25,31 @@ __EOF__
 }
 
 hidden_files(){
-    local choice="$(_mcli_yes_no_to_boolean "$1")"
-
-    defaults write com.apple.finder AppleShowAllFiles -bool "${choice}"
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.finder" \
+                                              "AppleShowAllFiles" \
+                                              "$1")"
 
     [ -n "$1" ] && killall Finder
-
-    value="$(_mcli_read_boolean_as_yes_no "com.apple.finder" "AppleShowAllFiles")"
 
     echo "Finder showhiddenfiles: ${value}"
 }
 
 file_extensions(){
-    local choice="$(_mcli_yes_no_to_boolean "$1")"
-
-    defaults write NSGlobalDomain AppleShowAllExtensions -bool "${choice}"
+    value="$(_mcli_defaults_yes_no_to_boolean "NSGlobalDomain" \
+                                              "AppleShowAllExtensions" \
+                                              "$1")"
 
     [ -n "$1" ] && killall Finder
-
-    value="$(_mcli_read_boolean_as_yes_no "NSGlobalDomain" "AppleShowAllExtensions")"
 
     echo "Finder showextensions: ${value}"
 }
 
 desktop(){
-    local choice="$(_mcli_yes_no_to_boolean "$1")"
-
-    defaults write com.apple.finder CreateDesktop -bool "${choice}"
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.finder" \
+                                              "CreateDesktop" \
+                                              "$1")"
 
     [ -n "$1" ] && killall Finder
-
-    value="$(_mcli_read_boolean_as_yes_no "com.apple.finder" "CreateDesktop")"
 
     echo "Finder showdesktop: ${value}"
 }

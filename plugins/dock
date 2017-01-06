@@ -60,125 +60,93 @@ disable(){
 }
 
 active_indicators(){
-    local choice="$(_mcli_yes_no_to_boolean "$1")"
-
-    defaults write com.apple.dock show-process-indicators -bool "${choice}"
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.dock" \
+                                              "show-process-indicators" \
+                                              "$1")"
 
     [ -n "$1" ] && killall Dock
-
-    value="$(_mcli_read_boolean "com.apple.dock" "show-process-indicators")"
 
     echo "Dock activeindicators: ${value}"
 }
 
 bounce_on_app_activity(){
-    local choice="$(_mcli_yes_no_to_inverted_boolean "$1")"
-
-    defaults write com.apple.dock no-bouncing -bool "${choice}"
+    value="$(_mcli_defaults_yes_no_to_inverted_boolean "com.apple.dock" \
+                                                       "no-bouncing" \
+                                                       "$1")"
 
     [ -n "$1" ] && killall Dock
-
-    value="$(_mcli_read_inverted_boolean "com.apple.dock" "no-bouncing")"
 
     echo "Dock bounceonappactivity: ${value}"
 }
 
 bounce_on_app_launch(){
-    local choice="$(_mcli_yes_no_to_inverted_boolean "$1")"
-
-    defaults write com.apple.dock launchanim -bool "${choice}"
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.dock" \
+                                              "launchanim" \
+                                              "$1")"
 
     [ -n "$1" ] && killall Dock
-
-    value="$(_mcli_read_boolean "com.apple.dock" "launchanim")"
 
     echo "Dock bounceonapplaunch: ${value}"
 }
 
 auto_hide_speed(){
-    case $1 in
-        [0-9][.][0-9])
-            defaults write com.apple.dock autohide-time-modifier -float $1
-            ;;
-        [0-9])
-            defaults write com.apple.dock autohide-time-modifier -int $1
-            ;;
-    esac
+    value="$(_mcli_defaults_number "com.apple.dock" \
+                                   "autohide-time-modifier" \
+                                   "$1")"
 
     [ -n "$1" ] && killall Dock
-
-    value="$(_mcli_read_number "com.apple.dock" "autohide-time-modifier")"
 
     echo "Dock autohidespeed: ${value}"
 }
 
 auto_hide_delay(){
-    case $1 in
-        [0-9][.][0-9])
-            defaults write com.apple.dock autohide-delay -float $1
-            ;;
-        [0-9])
-            defaults write com.apple.dock autohide-delay -int $1
-            ;;
-    esac
+    value="$(_mcli_defaults_number "com.apple.dock" \
+                                   "autohide-delay" \
+                                   "$1")"
 
     [ -n "$1" ] && killall Dock
-
-    value="$(_mcli_read_number "com.apple.dock" "autohide-delay")"
 
     echo "Dock autohidedelay: ${value}"
 }
 
 auto_hide(){
-    local choice="$(_mcli_yes_no_to_boolean "$1")"
-
-    defaults write com.apple.dock autohide -bool "${choice}"
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.dock" \
+                                              "autohide" \
+                                              "$1")"
 
     [ -n "$1" ] && killall Dock
-
-    value="$(_mcli_read_boolean "com.apple.dock" "autohide")"
 
     echo "Dock autohide: ${value}"
 }
 
 magnify(){
-    local choice="$(_mcli_yes_no_to_yes_no "$1")"
-
-    defaults write com.apple.dock magnification -boolean "${choice}"
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.dock" \
+                                              "magnification" \
+                                              "$1")"
 
     [ -n "$1" ] && killall Dock
-
-    value="$(_mcli_read_boolean "com.apple.dock" "magnification")"
 
     echo "Dock magnification: ${value}"
 }
 
 magnification_size(){
-    case $1 in
-        [0-9]*)
-            defaults write com.apple.dock largesize -int "$1"
-            ;;
-    esac
+    value="$(_mcli_defaults_number "com.apple.dock" \
+                                   "largesize" \
+                                   "$1")"
 
     [ -n "$1" ] && killall Dock
-
-    value="$(_mcli_read_number "com.apple.dock" "largesize")"
 
     echo "Dock magnificationsize: ${value}"
 }
 
 icon_size(){
-    case $1 in
-        [0-9]*)
-            defaults write com.apple.dock tilesize -int "$1"
-            ;;
-    esac
+    value="$(_mcli_defaults_number "com.apple.dock" \
+                                   "tilesize" \
+                                   "$1")"
 
     [ -n "$1" ] && killall Dock
 
-    value="$(_mcli_read_number "com.apple.dock" "tilesize")"
-
-    echo "Dock tilesize: ${value}"
+    echo "Dock iconsize: ${value}"
 }
 
 dock_position(){

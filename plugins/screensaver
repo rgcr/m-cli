@@ -18,11 +18,9 @@ __EOF__
 }
 
 askforpassword(){
-    local choice="$(_mcli_yes_no_to_integer "$1")"
-
-    defaults write com.apple.screensaver askForPassword -int "${choice}"
-
-    value="$(_mcli_read_boolean "com.apple.screensaver" "askForPassword")"
+    value="$(_mcli_defaults_yes_no_to_integer "com.apple.screensaver" \
+                                              "askForPassword" \
+                                              "$1")"
 
     echo "Screensaver askforpassword: ${value}"
 }

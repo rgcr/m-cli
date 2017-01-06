@@ -21,11 +21,9 @@ display_status(){
 }
 
 autobrightness() {
-    local choice="$(_mcli_yes_no_to_integer "$1")"
-
-    defaults write "${path_to_plist}" "Automatic Display Enabled" -int "${choice}"
-
-    value="$(_mcli_read_boolean "${path_to_plist}" "Automatic Display Enabled")"
+    value="$(_mcli_defaults_yes_no_to_integer "${path_to_plist}" \
+                                              "Automatic Display Enabled" \
+                                              "$1")"
 
     echo "Display autobrightness: ${value}"
 }

@@ -49,13 +49,19 @@ _mcli_yes_no_to_load_unload() {
 }
 
 _mcli_yes_no_to_inverted_boolean() {
-    local choice="$(_mcli_yes_no_to_boolean $@)"
+    local choice="$1"
 
-    if [[ "${choice}" == "true" ]]; then
-        echo "false"
-    else
-        echo "true"
-    fi
+    case "${choice}" in
+        1|[yY][eE][sS]|[tT][rU][eE])
+            echo "false"
+            ;;
+        0|[nN][oO]|[fF][aA][lL][sS][eE])
+            echo "true"
+            ;;
+        *)
+            echo "ERROR"
+            ;;
+    esac
 }
 
 _mcli_yes_no_to_yes_no() {
@@ -83,6 +89,22 @@ _mcli_yes_no_to_integer() {
             ;;
         0|[nN][oO]|[fF][aA][lL][sS][eE])
             echo "0"
+            ;;
+        *)
+            echo "ERROR"
+            ;;
+    esac
+}
+
+_mcli_number_to_number() {
+    local choice="$1"
+
+    case "${choice}" in
+        [0-9][.][0-9])
+            echo "${choice}"
+            ;;
+        [0-9]*)
+            echo "${choice}"
             ;;
         *)
             echo "ERROR"
