@@ -1,0 +1,112 @@
+#!/usr/bin/env bash
+
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/defaults.sh"
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/converters.sh"
+
+declare command="$(basename "$0")"
+
+help(){
+    cat<<__EOF__
+    usage: m hotcorners set [ bottomleft | bottomright | topright | topleft ]
+                            [
+                              donothing              |
+                              missioncontrol         |
+                              showapplicationwindows |
+                              desktop                |
+                              startscreensaver       |
+                              disablescreensaver     |
+                              dashboard              |
+                              sleepdisplay           |
+                              launchpad              |
+                              notificationcenter
+                            ]
+__EOF__
+}
+
+set(){
+    local corner;
+    local action;
+    local modifier;
+
+    case "$1" in
+        bottomleft)
+            corner="bl"
+            ;;
+        bottomright)
+            corner="br"
+            ;;
+        topright)
+            corner="tr"
+            ;;
+        topleft)
+            corner="tl"
+            ;;
+        *)
+            corner="$1"
+            ;;
+    esac
+
+    case "$2" in
+        donothing)
+            action=0
+            ;;
+        missioncontrol)
+            action=2
+            ;;
+        showapplicationwindows)
+            action=3
+            ;;
+        desktop)
+            action=4
+            ;;
+        startscreensaver)
+            action=5
+            ;;
+        disablescreensaver)
+            action=6
+            ;;
+        dashboard)
+            action=7
+            ;;
+        sleepdisplay)
+            action=10
+            ;;
+        launchpad)
+            action=11
+            ;;
+        notificationcenter)
+            action=12
+            ;;
+        *)
+            action="$2"
+            ;;
+    esac
+
+    case $3 in
+        true)
+            modifier=1
+            ;;
+        *)
+            modifier=0
+            ;;
+    esac
+
+    defaults write com.apple.dock wvous-${corner}-corner   -integer $action
+    defaults write com.apple.dock wvous-${corner}-modifier -integer $modifier
+}
+
+case "${subcommand}" in
+    help)
+        help
+        ;;
+    set)
+        set "$@"
+        ;;
+    *)
+        help
+        ;;
+esac
+
+[ -n "${subcommand}" ] && [ -n "$1" ] && killall Dock
+
+# vim: ts=4 sw=4 softtabstop=4 expandtab

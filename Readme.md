@@ -57,6 +57,7 @@ usage:  m [OPTIONS] COMMAND [help]
         firewall
         gatekeeper
         hostname
+        hotcorners
         info
         itunes
         keyboard
@@ -356,6 +357,23 @@ usage:  m [OPTIONS] COMMAND [help]
       m hostname newhostname    # set a new hostname (computername, hostname, localhostname, netbiosname)
 
       m hostname help           # only shows this help
+```
+
+#### Hot Corners:
+```
+    usage: m hotcorners set [ bottomleft | bottomright | topright | topleft ]
+                            [
+                              donothing              |
+                              missioncontrol         |
+                              showapplicationwindows |
+                              desktop                |
+                              startscreensaver       |
+                              disablescreensaver     |
+                              dashboard              |
+                              sleepdisplay           |
+                              launchpad              |
+                              notificationcenter
+                            ]
 ```
 
 #### Info:
