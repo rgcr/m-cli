@@ -14,21 +14,15 @@ onlywifi(){
     case $1 in
         [yY][eE][sS])
             defaults write com.apple.NetworkBrowser BrowseAllInterfaces -bool true
-            echo "Airdrop onlywifi: YES"
             ;;
         [nN][oO])
             defaults write com.apple.NetworkBrowser BrowseAllInterfaces -bool false
-            echo "Airdrop onlywifi: NO"
-            ;;
-        *)
-            VALUE=$(defaults read com.apple.NetworkBrowser BrowseAllInterfaces)
-            if [ "${VALUE}" -eq 1 ]; then
-                echo "Airdrop onlywifi: YES"
-            else
-                echo "Airdrop onlywifi: NO"
-            fi
             ;;
     esac
+
+    value="$(_mcli_read_boolean "com.apple.NetworkBrowser" "BrowseAllInterfaces")"
+
+    echo "Airdrop onlywifi: ${value}"
 }
 
 case $1 in

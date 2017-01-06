@@ -21,21 +21,15 @@ autobrightness() {
     case $1 in
         [yY][eE][sS])
             sudo defaults write "${path_to_plist}" "Automatic Display Enabled" -int 1
-            echo "Display autobrightness: YES"
             ;;
         [nN][oO])
             sudo defaults write "${path_to_plist}" "Automatic Display Enabled" -int 0
-            echo "Display autobrightness: NO"
-            ;;
-        *)
-            VALUE=$(sudo defaults read "${path_to_plist}" "Automatic Display Enabled")
-            if [ "${VALUE}" -eq 1 ]; then
-                echo "Display autobrightness: YES"
-            else
-                echo "Display autobrightness: NO"
-            fi
             ;;
     esac
+
+    value="$(_mcli_read_boolean "${path_to_plist}" "Automatic Display Enabled" "sudo")"
+
+    echo "Display autobrightness: ${value}"
 }
 
 case $1 in

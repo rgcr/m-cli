@@ -59,189 +59,168 @@ disable(){
 active_indicators(){
     case $1 in
         [yY][eE][sS])
-            echo "Active Indicators: YES"
             defaults write com.apple.dock show-process-indicators -bool "true"
             ;;
         [nN][oO])
-            echo "Active Indicators: NO"
             defaults write com.apple.dock show-process-indicators -bool "false"
             ;;
-        *)
-            VALUE=$(defaults read com.apple.dock show-process-indicators)
-            if [ "${VALUE}" -eq 1 ]; then
-                echo "Active Indicators: YES"
-            else
-                echo "Active Indicators: NO"
-            fi
-            ;;
     esac
-    killall Dock
+
+    [ -n "$1" ] && killall Dock
+
+    value="$(_mcli_read_boolean "com.apple.dock" "show-process-indicators")"
+
+    echo "Dock activeindicators: ${value}"
 }
 
 bounce_on_app_activity(){
     case $1 in
         [yY][eE][sS])
-            echo "Bounce on App Activity: YES"
             defaults write com.apple.dock no-bouncing -bool "NO"
             ;;
         [nN][oO])
-            echo "Bounce on App Activity: NO"
             defaults write com.apple.dock no-bouncing -bool "YES"
             ;;
-        *)
-            VALUE=$(defaults read com.apple.dock no-bouncing)
-            if [ "${VALUE}" -eq 1 ]; then
-                echo "Bounce on App Activity: NO"
-            else
-                echo "Bounce on App Activity: YES"
-            fi
-            ;;
     esac
-    killall Dock
+
+    [ -n "$1" ] && killall Dock
+
+    value="$(_mcli_read_inverted_boolean "com.apple.dock" "no-bouncing")"
+
+    echo "Dock bounceonappactivity: ${value}"
 }
 
 bounce_on_app_launch(){
     case $1 in
         [yY][eE][sS])
-            echo "Bounce on App Launch: YES"
             defaults write com.apple.dock launchanim -bool "YES"
             ;;
         [nN][oO])
-            echo "Bounce on App Launch: NO"
             defaults write com.apple.dock launchanim -bool "NO"
             ;;
-        *)
-            VALUE=$(defaults read com.apple.dock launchanim)
-            if [ "${VALUE}" -eq 1 ]; then
-                echo "Bounce on App Launch: YES"
-            else
-                echo "Bounce on App Launch: NO"
-            fi
-            ;;
     esac
-    killall Dock
+
+    [ -n "$1" ] && killall Dock
+
+    value="$(_mcli_read_boolean "com.apple.dock" "launchanim")"
+
+    echo "Dock bounceonapplaunch: ${value}"
 }
 
 auto_hide_speed(){
     case $1 in
         [0-9][.][0-9])
-            echo "New Auto-Hide speed: "$1
             defaults write com.apple.dock autohide-time-modifier -float $1
             ;;
         [0-9])
-            echo "New Auto-Hide speed: "$1
             defaults write com.apple.dock autohide-time-modifier -int $1
             ;;
-        *)
-            echo "Current Auto-Hide speed: $(defaults read com.apple.dock autohide-time-modifier 2>/dev/null)"
-            exit 0
-            ;;
     esac
-    killall Dock
+
+    [ -n "$1" ] && killall Dock
+
+    value="$(_mcli_read_number "com.apple.dock" "autohide-time-modifier")"
+
+    echo "Dock autohidespeed: ${value}"
 }
 
 auto_hide_delay(){
     case $1 in
         [0-9][.][0-9])
-            echo "New Auto-Hide delay: "$1
             defaults write com.apple.dock autohide-delay -float $1
             ;;
         [0-9])
-            echo "New Auto-Hide delay: "$1
             defaults write com.apple.dock autohide-delay -int $1
             ;;
-        *)
-            echo "Current Auto-Hide delay: $(defaults read com.apple.dock autohide-delay 2>/dev/null)"
-            exit 0
-            ;;
     esac
-    killall Dock
+
+    [ -n "$1" ] && killall Dock
+
+    value="$(_mcli_read_number "com.apple.dock" "autohide-delay")"
+
+    echo "Dock autohidedelay: ${value}"
 }
 
 auto_hide(){
     case $1 in
         [yY][eE][sS])
-            echo "Auto Hide: YES"
             defaults write com.apple.dock autohide -boolean YES
             ;;
         [nN][oO])
-            echo "Auto Hide: No"
             defaults write com.apple.dock autohide -boolean NO
             ;;
-        *)
-            echo "Auto Hide: $(defaults read com.apple.dock autohide)"
-            exit 0
-            ;;
     esac
-    killall Dock
+
+    [ -n "$1" ] && killall Dock
+
+    value="$(_mcli_read_boolean "com.apple.dock" "autohide")"
+
+    echo "Dock autohide: ${value}"
 }
 
 magnify(){
     case $1 in
         [yY][eE][sS])
-            echo "Magnification: YES"
             defaults write com.apple.dock magnification -boolean YES
             ;;
         [nN][oO])
-            echo "Magnification: NO"
             defaults write com.apple.dock magnification -boolean NO
             ;;
-        *)
-            echo "Magnification: $(defaults read com.apple.dock magnification)"
-            exit 0
-            ;;
     esac
-    killall Dock
+
+    [ -n "$1" ] && killall Dock
+
+    value="$(_mcli_read_boolean "com.apple.dock" "magnification")"
+
+    echo "Dock magnification: ${value}"
 }
 
 magnification_size(){
     case $1 in
         [0-9]*)
-            echo "New magnification size: ${1}px"
             defaults write com.apple.dock largesize -int "$1"
             ;;
-        *)
-            echo "Current magnification size: $(defaults read com.apple.dock largesize 2>/dev/null)px"
-            exit 0
-            ;;
     esac
-    killall Dock
+
+    [ -n "$1" ] && killall Dock
+
+    value="$(_mcli_read_number "com.apple.dock" "largesize")"
+
+    echo "Dock magnificationsize: ${value}"
 }
 
 icon_size(){
     case $1 in
         [0-9]*)
-            echo "New icon size: ${1}px"
             defaults write com.apple.dock tilesize -int "$1"
             ;;
-        *)
-            echo "Current icon size: $(defaults read com.apple.dock tilesize 2>/dev/null)px"
-            exit 0
-            ;;
     esac
-    killall Dock
+
+    [ -n "$1" ] && killall Dock
+
+    value="$(_mcli_read_number "com.apple.dock" "tilesize")"
+
+    echo "Dock tilesize: ${value}"
 }
 
 dock_position(){
     case $1 in
         [bB][oO][tT][tT][oO][mM])
-            echo "Dock Position: BOTTOM"
             defaults write com.apple.dock orientation bottom
             ;;
         [lL][eE][fF][tT])
-            echo "Dock Position: LEFT"
             defaults write com.apple.dock orientation left
             ;;
         [rR][iI][gG][hH][tT])
-            echo "Dock Position: RIGHT"
             defaults write com.apple.dock orientation right
             ;;
-        *)
-            echo "Position: $(defaults read com.apple.dock orientation)"
-            exit 0
-            ;;
     esac
-    killall Dock
+
+    [ -n "$1" ] && killall Dock
+
+    value="$(_mcli_read "com.apple.dock" "orientation")"
+
+    echo "Dock position: ${value}"
 }
 
 add_blank_space(){

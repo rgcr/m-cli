@@ -19,21 +19,15 @@ askforpassword(){
     case $1 in
         [yY][eE][sS])
             defaults write com.apple.screensaver askForPassword -int 1
-            echo "Screensaver askforpassword: YES"
             ;;
         [nN][oO])
             defaults write com.apple.screensaver askForPassword -int 0
-            echo "Screensaver askforpassword: NO"
-            ;;
-        *)
-            VALUE=$(defaults read com.apple.screensaver askForPassword)
-            if [ "${VALUE}" -eq 1 ]; then
-                echo "Screensaver askforpassword: YES"
-            else
-                echo "Screensaver askforpassword: NO"
-            fi
             ;;
     esac
+
+    value="$(_mcli_read_boolean "com.apple.screensaver" "askForPassword")"
+
+    echo "Screensaver askforpassword: ${value}"
 }
 
 status(){
