@@ -218,6 +218,7 @@ usage:  m [OPTIONS] COMMAND [help]
                     autohide            |
                     magnification       |
                     magnificationsize   |
+                    hiddenappdimming    |
                     iconsize            |
                     position            |
                     addblankspace       |
@@ -240,6 +241,7 @@ usage:  m [OPTIONS] COMMAND [help]
       m dock magnification YES      # Turn magnification on
       m dock magnification NO       # Turn magnification off
       m dock magnificationsize x    # Set the max size of the icons as the cursor gets closer to them
+      m dock hiddenappdimming YES   # Show apps that have been hidden as semi-transparent
       m dock iconsize x             # Set the size of the icons when the dock is at rest
       m dock position BOTTOM        # Change Dock's position to the bottom of the screen
       m dock position LEFT          # Change Dock's position to the left of the screen
