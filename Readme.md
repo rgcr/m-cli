@@ -72,6 +72,7 @@ usage:  m [OPTIONS] COMMAND [help]
         service
         shutdown
         sleep
+        spotlight
         timezone
         trash
         update
@@ -546,6 +547,14 @@ usage:  m [OPTIONS] COMMAND [help]
 
     Examples:
       m sleep       #  put the mac to sleep
+```
+
+#### Spotlight:
+```
+    usage: m spotlight [ shortcutkeys | help ]
+
+    Examples:
+      m spotlight shortcutkeys [ YES | NO ] # Whether to enable the Cmd-Space shortcuts
 ```
 
 #### Timezone:
