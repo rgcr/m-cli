@@ -59,6 +59,7 @@ usage:  m [OPTIONS] COMMAND [help]
         hostname
         info
         itunes
+        keyboard
         lock
         ntp
         printer
@@ -379,6 +380,37 @@ usage:  m [OPTIONS] COMMAND [help]
       m itunes vol #        # Set volume level
       m itunes stop         # Stop track
       m itunes quit         # Quit iTunes
+```
+
+#### Keyboard:
+```
+    usage: m keyboard [
+                    accentedpress       |
+                    spellchecking       |
+                    textsubstitution    |
+                    usefunctionkeys     |
+                    inputfieldaccess    |
+                    autodim             |
+                    autodimdelay        |
+                    keyrepeatrate       |
+                    keyrepeatdelay      |
+                    help
+                  ]
+
+    Examples:
+      m keyboard accentedpress    [ YES | NO ]   # Whether to enable press and hold to show accented characters
+      m keyboard spellchecking    [ YES | NO ]   # Whether to enable spell check indication (red squiggly lines)
+      m keyboard textsubstitution [ YES | NO ]   # Whether to substitute quotes, dashes, spelling corrections, etc automatically
+      m keyboard usefunctionkeys  [ YES | NO ]   # Whether to use F1 function keys or alternate function keys (brightness, etc)
+      m keyboard inputfieldaccess [              # Specify which input fields can be tabbed through
+                                    BASIC                |
+                                    ALL_EXCEPT_DROPDOWNS |
+                                    ALL
+                                  ]
+      m keyboard autodim          [ YES | NO ]   # Whether to automatically dim the keyboard brightness when idle
+      m keyboard autodimdelay     2              # How long to wait before dimming the keyboard brightness
+      m keyboard keyrepeatrate    4              # How quickly a held key repeats
+      m keyboard keyrepeatdelay   1.2            # How long a key needs to be held before repeating
 ```
 
 #### Lock:
