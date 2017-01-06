@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 source "$( dirname "${BASH_SOURCE[0]}" )/../lib/defaults.sh"
-source "$( dirname "${BASH_SOURCE[0]}" )/../lib/helpers.sh"
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/converters.sh"
 
 help(){
     cat<<__EOF__
@@ -30,7 +30,7 @@ status(){
                             -e 'get running of screen saver preferences' \
                             -e 'end tell')
 
-    value="$(_mcli_yes_no_to_yes_no "${value}")"
+    value="$(_mcli_convert_yes_no_to_yes_no "${value}")"
 
     echo "Screensaver is running: ${value}"
 }

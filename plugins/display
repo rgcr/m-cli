@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 source "$( dirname "${BASH_SOURCE[0]}" )/../lib/defaults.sh"
-source "$( dirname "${BASH_SOURCE[0]}" )/../lib/helpers.sh"
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/converters.sh"
 
 declare path_to_plist="/Library/Preferences/com.apple.iokit.AmbientLightSensor"
 

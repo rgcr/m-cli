@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 source "$( dirname "${BASH_SOURCE[0]}" )/../lib/defaults.sh"
-source "$( dirname "${BASH_SOURCE[0]}" )/../lib/helpers.sh"
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/converters.sh"
 
 help(){
     cat<<__EOF__
@@ -15,13 +15,13 @@ __EOF__
 }
 
 showcenter(){
-    local choice="$(_mcli_yes_no_to_load_unload $1)"
+    local choice="$(_mcli_convert_yes_no_to_load_unload $1)"
 
     launchctl "${choice}" -w /System/Library/LaunchAgents/com.apple.notificationcenterui.plist
 
     [ -n "${choice}" ] && killall NotificationCenter && echo "Restart your computer for this to take effect"
 
-    value="$(_mcli_exit_status_to_enabled_disabled "ps -A | grep apsd | grep -v grep")"
+    value="$(_mcli_convert_exit_status_to_enabled_disabled "ps -A | grep apsd | grep -v grep")"
 
     echo "Notification Center ${value}"
 }

@@ -51,15 +51,15 @@ _mcli_read_inverted_boolean() {
 }
 
 _mcli_defaults_yes_no_to_integer() {
-    _mcli_defaults_yes_no_to_type "integer" "yes_no_to_boolean" $@
+    _mcli_defaults_yes_no_to_type "integer" "convert_yes_no_to_boolean" $@
 }
 
 _mcli_defaults_yes_no_to_boolean() {
-    _mcli_defaults_yes_no_to_type "boolean" "yes_no_to_boolean" $@
+    _mcli_defaults_yes_no_to_type "boolean" "convert_yes_no_to_boolean" $@
 }
 
 _mcli_defaults_yes_no_to_inverted_boolean() {
-    _mcli_defaults_yes_no_to_type "boolean" "yes_no_to_inverted_boolean" $@
+    _mcli_defaults_yes_no_to_type "boolean" "convert_yes_no_to_inverted_boolean" $@
 }
 
 _mcli_defaults_number() {
@@ -67,7 +67,7 @@ _mcli_defaults_number() {
     local key="$2"
     local new_value="$3"
     local sudo="$4"
-    local transformed="$(_mcli_number_to_number "${new_value}")"
+    local transformed="$(_mcli_convert_number_to_number "${new_value}")"
 
     case "${transformed}" in
         [0-9][.][0-9])

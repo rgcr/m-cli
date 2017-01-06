@@ -1,12 +1,4 @@
-_mcli_print_command_status() {
-    local command="$1"
-    local subcommand="$1"
-    local value="$1"
-
-    echo "${command} - ${subcommand}: ${value}"
-}
-
-_mcli_yes_no_to_boolean() {
+_mcli_convert_yes_no_to_boolean() {
     local choice="$1"
 
     case "${choice}" in
@@ -22,17 +14,17 @@ _mcli_yes_no_to_boolean() {
     esac
 }
 
-_mcli_exit_status_to_enabled_disabled() {
+_mcli_convert_exit_status_to_enabled_disabled() {
     local command="$1"
 
-    if eval("${command} &> /dev/null"); then
+    if eval "${command} &> /dev/null" ; then
       echo "enabled"
     else
       echo "disabled"
     fi
 }
 
-_mcli_yes_no_to_load_unload() {
+_mcli_convert_yes_no_to_load_unload() {
     local choice="$1"
 
     case "${choice}" in
@@ -48,7 +40,7 @@ _mcli_yes_no_to_load_unload() {
     esac
 }
 
-_mcli_yes_no_to_inverted_boolean() {
+_mcli_convert_yes_no_to_inverted_boolean() {
     local choice="$1"
 
     case "${choice}" in
@@ -64,7 +56,7 @@ _mcli_yes_no_to_inverted_boolean() {
     esac
 }
 
-_mcli_yes_no_to_yes_no() {
+_mcli_convert_yes_no_to_yes_no() {
     local choice="$1"
 
     case "${choice}" in
@@ -80,7 +72,7 @@ _mcli_yes_no_to_yes_no() {
     esac
 }
 
-_mcli_yes_no_to_integer() {
+_mcli_convert_yes_no_to_integer() {
     local choice="$1"
 
     case "${choice}" in
@@ -96,7 +88,7 @@ _mcli_yes_no_to_integer() {
     esac
 }
 
-_mcli_number_to_number() {
+_mcli_convert_number_to_number() {
     local choice="$1"
 
     case "${choice}" in
