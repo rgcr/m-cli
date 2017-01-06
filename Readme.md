@@ -216,6 +216,7 @@ usage:  m [OPTIONS] COMMAND [help]
                     autohidedelay       |
                     autohidespeed       |
                     autohide            |
+                    fullscreendelay     |
                     magnification       |
                     magnificationsize   |
                     hiddenappdimming    |
@@ -239,6 +240,7 @@ usage:  m [OPTIONS] COMMAND [help]
                                     # delay has expired
       m dock autohide YES           # Enable Dock's auto hide feature
       m dock autohide NO            # Disable Dock's auto hide feature
+      m dock fullscreendelay YES    # Whether to have a delay when showing the dock in full screen mode
       m dock magnification YES      # Turn magnification on
       m dock magnification NO       # Turn magnification off
       m dock magnificationsize x    # Set the max size of the icons as the cursor gets closer to them
