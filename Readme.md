@@ -220,6 +220,7 @@ usage:  m [OPTIONS] COMMAND [help]
                     magnificationsize   |
                     hiddenappdimming    |
                     iconsize            |
+                    onlyshowrunning     |
                     position            |
                     addblankspace       |
                     addrecentitems      |
@@ -243,6 +244,7 @@ usage:  m [OPTIONS] COMMAND [help]
       m dock magnificationsize x    # Set the max size of the icons as the cursor gets closer to them
       m dock hiddenappdimming YES   # Show apps that have been hidden as semi-transparent
       m dock iconsize x             # Set the size of the icons when the dock is at rest
+      m dock onlyshowrunning YES    # Only show the apps that are currently running.  Apps cannot be pinned.
       m dock position BOTTOM        # Change Dock's position to the bottom of the screen
       m dock position LEFT          # Change Dock's position to the left of the screen
       m dock position RIGHT         # Change Dock's position to the right of the screen

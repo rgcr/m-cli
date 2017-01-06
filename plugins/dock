@@ -18,6 +18,7 @@ help(){
                     magnificationsize   |
                     hiddenappdimming    |
                     iconsize            |
+                    onlyshowrunning     |
                     position            |
                     addblankspace       |
                     addrecentitems      |
@@ -41,6 +42,7 @@ help(){
       m dock magnificationsize x    # Set the max size of the icons as the cursor gets closer to them
       m dock hiddenappdimming YES   # Show apps that have been hidden as semi-transparent
       m dock iconsize x             # Set the size of the icons when the dock is at rest
+      m dock onlyshowrunning YES    # Only show the apps that are currently running.  Apps cannot be pinned.
       m dock position BOTTOM        # Change Dock's position to the bottom of the screen
       m dock position LEFT          # Change Dock's position to the left of the screen
       m dock position RIGHT         # Change Dock's position to the right of the screen
@@ -161,6 +163,16 @@ icon_size(){
     echo "Dock iconsize: ${value}"
 }
 
+only_show_running(){
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.dock" \
+                                              "static-only" \
+                                              "$1")"
+
+    [ -n "$1" ] && killall Dock
+
+    echo "Dock onlyshowrunning: ${value}"
+}
+
 dock_position(){
     case $1 in
         [bB][oO][tT][tT][oO][mM])
@@ -257,6 +269,10 @@ case $1 in
     iconsize)
         shift
         icon_size $@
+        ;;
+    onlyshowrunning)
+        shift
+        only_show_running $@
         ;;
     position)
         shift
