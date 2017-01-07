@@ -64,6 +64,7 @@ usage:  m [OPTIONS] COMMAND [help]
         info
         itunes
         keyboard
+        locale
         lock
         ntp
         printer
@@ -468,6 +469,15 @@ usage:  m [OPTIONS] COMMAND [help]
       m keyboard autodimdelay     2              # How long to wait before dimming the keyboard brightness
       m keyboard keyrepeatrate    4              # How quickly a held key repeats
       m keyboard keyrepeatdelay   1.2            # How long a key needs to be held before repeating
+```
+
+#### Locale:
+```
+    usage: m locale [ onlywifi | help ]
+
+    Examples:
+      m locale language <language_code>      # Specify the language to use (eg en_US)
+      m locale unit     [ metric | english ] # Specify the measurement unit
 ```
 
 #### Lock:
