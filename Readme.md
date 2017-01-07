@@ -805,16 +805,17 @@ usage:  m [OPTIONS] COMMAND [help]
     usage: m user [ list | ls | info | create | delete | help ]
 
     Examples:
-      m user ls                # list users
-      m user info demouser     # display user information
+      m user ls                                 # list users
+      m user info demouser                      # display user information
 
-      m user create            # create a user, it will ask you the below information
-                                    Username:
-                                    Full name:
-                                    Shell [/bin/bash]:
-                                    Password:
+      m user create                             # create a user, it will ask you the below information
+                                                     Username:
+                                                     Full name:
+                                                     Shell [/bin/bash]:
+                                                     Password:
 
-      m user delete demouser   # delete user
+      m user delete demouser                    # delete user
+      m user autologin [ disable | username ]   # who to autologin as or whether to disable autologin
 ```
 
 #### Volume:

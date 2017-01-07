@@ -20,6 +20,7 @@ help(){
                                                      Password:
 
       m user delete demouser                    # delete user
+      m user autologin [ disable | username ]   # who to autologin as or whether to disable autologin
 __EOF__
 }
 
@@ -99,7 +100,16 @@ user_delete(){
     fi
 }
 
+autologin(){
+    local username="$(if [[ "$1" != "disable" ]]; then echo "$1"; fi)"
 
+    if [ -z "${username}" ]; then
+        sudo defaults delete /Library/Preferences/com.apple.loginwindow autoLoginUser 2> /dev/null
+        sudo rm -f /etc/kcpassword
+    else
+        sudo defaults write /Library/Preferences/com.apple.loginwindow autoLoginUser -string "$username"
+    fi
+}
 
 case $1 in
     help)
@@ -116,6 +126,9 @@ case $1 in
         ;;
     delete)
         user_delete $@
+        ;;
+    autologin)
+        autologin $@
         ;;
     *)
         help
