@@ -47,11 +47,13 @@ usage:  m [OPTIONS] COMMAND [help]
         help
         airdrop
         airport
+        animations
         appearance
         battery
         bluetooth
         dashboard
         datetime
+        debugmode
         dir
         disk
         diskimages
@@ -59,10 +61,11 @@ usage:  m [OPTIONS] COMMAND [help]
         display
         dns
         dock
-        finder
         filevault
+        finder
         firewall
         gatekeeper
+        group
         hostname
         hotcorners
         info
@@ -72,13 +75,13 @@ usage:  m [OPTIONS] COMMAND [help]
         locale
         location
         lock
-        ntp
-        printer
         missioncontrol
         network
         nosleep
         notification
+        ntp
         power
+        printer
         restart
         safeboot
         screensaver
@@ -234,6 +237,24 @@ usage:  m [OPTIONS] COMMAND [help]
                                              # be exposed for various applications
 ```
 
+#### Dir:
+```
+    usage: m dir [ tree | size | delete | help ]
+
+    Examples:
+      m dir tree        # tree view of folders in the current path
+      m dir tree /path  # tree view of folders in a specific path
+
+      m dir delete empty          # delete empty folders recursively in the current path
+      m dir delete empty /path    # delete empty folders recursively in a specific path
+
+      m dir delete dsfiles        # delete .DS_Store files recursively in the current path
+      m dir delete dsfiles /path  # delete .DS_Store files recursively in a specific path
+
+      m dir size        # calculate current folder size
+      m dir size /path  # calculate folder size in a specific path
+
+```
 
 ####  Disk:
 ```
@@ -272,6 +293,16 @@ usage:  m [OPTIONS] COMMAND [help]
     Examples:
       m diskimages automount    [ YES | NO ] # Whether to automount disk images
       m diskimages verification [ YES | NO ] # Whether to verify disk image integrity
+```
+
+#### Disk Utility:
+```
+    usage: m diskutility [ advancedoptions | showhiddenpartitions | showunsupportednetworks | help ]
+
+    Examples:
+      m diskutility advancedoptions         [ YES | NO ]  # Whether to enable advanced disk utility options
+      m diskutility showhiddenpartitions    [ YES | NO ]  # Whether to show hidden partitions
+      m diskutility showunsupportednetworks [ YES | NO ]  # Whether to show unsupported networks
 ```
 
 #### Display:
@@ -344,35 +375,6 @@ usage:  m [OPTIONS] COMMAND [help]
       m dock addrecentitems         # Add a stack containg your recent items to the Dock
                                     # (You can change the stack's type by right clicking on it)
       m dock prune                  # Remove all items from dock
-```
-
-#### Dir:
-```
-    usage: m dir [ tree | size | delete | help ]
-
-    Examples:
-      m dir tree        # tree view of folders in the current path
-      m dir tree /path  # tree view of folders in a specific path
-
-      m dir delete empty          # delete empty folders recursively in the current path
-      m dir delete empty /path    # delete empty folders recursively in a specific path
-
-      m dir delete dsfiles        # delete .DS_Store files recursively in the current path
-      m dir delete dsfiles /path  # delete .DS_Store files recursively in a specific path
-
-      m dir size        # calculate current folder size
-      m dir size /path  # calculate folder size in a specific path
-
-```
-
-#### Disk Utility:
-```
-    usage: m diskutility [ advancedoptions | showhiddenpartitions | showunsupportednetworks | help ]
-
-    Examples:
-      m diskutility advancedoptions         [ YES | NO ]  # Whether to enable advanced disk utility options
-      m diskutility showhiddenpartitions    [ YES | NO ]  # Whether to show hidden partitions
-      m diskutility showunsupportednetworks [ YES | NO ]  # Whether to show unsupported networks
 ```
 
 #### File Vault:
@@ -577,30 +579,6 @@ usage:  m [OPTIONS] COMMAND [help]
       m lock      # lock session
 ```
 
-#### Ntp:
-```
-    usage: m ntp [ status | enable | disable | set | help ]
-
-    Examples:
-      m ntp status                          # status of the network time service
-      m ntp enable                          # enable clock to use network time
-      m ntp disable                         # disable clock to use network time
-      m ntp set timehost1.net.sap.corp      # set network time server
-```
-
-#### Printer:
-```
-    usage: m printer [ settings | name | queue | drivers | web | quitwhenfinished | help ]
-
-    Examples:
-      m printer settings                        # Printer settings
-      m printer name                            # Display printer names on system
-      m printer queue                           # Display items in printer queue on system
-      m printer drivers                         # Display all printer drivers
-      m printer web                             # Enable and show web interface
-      m printer quitwhenfinished [ YES | NO ]   # whether the print dialog should be closed when printing is finished
-```
-
 #### Mission Control:
 ```
     usage: m missioncontrol [ showcenter | help ]
@@ -616,12 +594,15 @@ usage:  m [OPTIONS] COMMAND [help]
     usage:  m network [ ls | list | location | help ]
 
     Examples:
-      m network ls                          # list network interfaces
-      m network location                    # get current location
-      m network location ls                 # list locations
-      m network location create XYZ         # create a location
-      m network location delete XYZ         # delete a location
-      m network location switch XYZ         # switch location
+      m network ls                            # list network interfaces
+      m network location                      # get current location
+      m network location ls                   # list locations
+      m network location create XYZ           # create a location
+      m network location delete XYZ           # delete a location
+      m network location switch XYZ           # switch location
+      m network defaultusername "your name"   # the default username when connecting (don't specify a name to disable)
+      m network wakeonethernet  [ YES | NO ]  # whether to allow the computer to wake up if it receives a special network packet
+      m network guestaccess     [ YES | NO ]  # whether to allow the guest user to access shared folders
 ```
 
 #### Nosleep:
@@ -645,6 +626,17 @@ usage:  m [OPTIONS] COMMAND [help]
       m notification showcenter NO   # disable the notification center
       m notification bannertime x    # disable the notification center
 
+```
+
+#### Ntp:
+```
+    usage: m ntp [ status | enable | disable | set | help ]
+
+    Examples:
+      m ntp status                          # status of the network time service
+      m ntp enable                          # enable clock to use network time
+      m ntp disable                         # disable clock to use network time
+      m ntp set timehost1.net.sap.corp      # set network time server
 ```
 
 #### Power:
@@ -672,6 +664,19 @@ usage:  m [OPTIONS] COMMAND [help]
       m power powerbuttonsleeps [ YES | NO ]                # Whether pressing the power button sleeps the system
       m power appnap            [ YES | NO ]                # Whether app nap is enabled
       m power restartonhang     [ YES | NO ]                # Whether to restart on system hang
+```
+
+#### Printer:
+```
+    usage: m printer [ settings | name | queue | drivers | web | quitwhenfinished | help ]
+
+    Examples:
+      m printer settings                        # Printer settings
+      m printer name                            # Display printer names on system
+      m printer queue                           # Display items in printer queue on system
+      m printer drivers                         # Display all printer drivers
+      m printer web                             # Enable and show web interface
+      m printer quitwhenfinished [ YES | NO ]   # whether the print dialog should be closed when printing is finished
 ```
 
 #### Restart:
