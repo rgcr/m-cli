@@ -68,6 +68,7 @@ usage:  m [OPTIONS] COMMAND [help]
         info
         itunes
         keyboard
+        launchpad
         locale
         lock
         ntp
@@ -526,6 +527,14 @@ usage:  m [OPTIONS] COMMAND [help]
       m keyboard autodimdelay     2              # How long to wait before dimming the keyboard brightness
       m keyboard keyrepeatrate    4              # How quickly a held key repeats
       m keyboard keyrepeatdelay   1.2            # How long a key needs to be held before repeating
+```
+
+#### Launchpad:
+```
+    usage: m launchpad [ prune | help ]
+
+    Examples:
+      m launchpad prune   # Remove all items from launchpad
 ```
 
 #### Locale:
