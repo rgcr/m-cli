@@ -1,0 +1,133 @@
+#!/usr/bin/env bash
+
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/defaults.sh"
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/converters.sh"
+
+declare command="$(basename "$0")"
+declare subcommand="$1"
+
+[ $# -gt 0 ] && shift
+
+help(){
+    cat<<__EOF__
+    usage: m sound [ startupchime | volumefeedback | ui | speechrecognition | speechtotext | voiceover | powerchime | help ]
+
+    Examples:
+      m sound startupchime        [ YES | NO ]          # whether the startup chime is used
+      m sound volumefeedback      [ YES | NO ]          # whether or not you hear feedback when the volume is changed
+      m sound ui                  [ YES | NO ] [ x.x ]  # whether the UI bleeps and bloops are used
+      m sound speechrecognition   [ YES | NO ]          # whether speech recognition is enabled
+      m sound speechtotext        [ YES | NO ]          # whether speech-to-text is enabled
+      m sound voiceover           [ YES | NO ]          # whether VoiceOver is enabled
+      m sound powerchime          [ YES | NO ]          # whether the chime is used when power is connected/disconnected
+__EOF__
+}
+
+startupchime(){
+    local choice="$(_mcli_convert_yes_no_to_boolean "$1")"
+
+    if [[ "${choice}" == "true" ]]; then
+        sudo nvram -d SystemAudioVolume
+    else
+        sudo nvram SystemAudioVolume=" "
+    fi
+}
+
+volumefeedback(){
+    value="$(_mcli_defaults_yes_no_to_integer "NSGlobalDomain" \
+                                              "com.apple.sound.beep.feedback" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+ui(){
+    value="$(_mcli_defaults_yes_no_to_integer "com.apple.systemsound" \
+                                              "com.apple.sound.uiaudio.enabled" \
+                                              "$1")"
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.finder" \
+                                              "FinderSounds" \
+                                              "$1")"
+    value="$(_mcli_defaults_number            "com.apple.systemsound" \
+                                              "com.apple.sound.beep.volume" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+speechrecognition(){
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.speech.recognition.AppleSpeechRecognition.prefs" \
+                                              "StartSpeakableItems" \
+                                              "$1" \
+                                              "sudo")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+speechtotext(){
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.speech.synthesis.general.prefs" \
+                                              "TalkingAlertsSpeakTextFlag" \
+                                              "$1" \
+                                              "sudo")"
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.speech.synthesis.general.prefs" \
+                                              "SpokenNotificationAppActivationFlag" \
+                                              "$1" \
+                                              "sudo")"
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.speech.synthesis.general.prefs" \
+                                              "SpokenUIUseSpeakingHotKeyFlag" \
+                                              "$1" \
+                                              "sudo")"
+    value="$(_mcli_defaults_delete            "com.apple.speech.synthesis.general.prefs" \
+                                              "TimeAnnouncementPrefs" \
+                                              "sudo")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+voiceover(){
+    local choice="$(_mcli_convert_yes_no_to_load_unload "$1")"
+
+    sudo sh -c "launchctl ${choice} -w /System/Library/LaunchAgents/com.apple.VoiceOver.plist 2> /dev/null"
+    sudo sh -c "launchctl ${choice} -w /System/Library/LaunchAgents/com.apple.ScreenReaderUIServer.plist 2> /dev/null"
+    sudo sh -c "launchctl ${choice} -w /System/Library/LaunchAgents/com.apple.scrod.plist 2> /dev/null"
+}
+
+powerchime(){
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.PowerChime" \
+                                              "ChimeOnAllHardware" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+case "${subcommand}" in
+    help)
+        help
+        ;;
+    startupchime)
+        startupchime "$@"
+        ;;
+    volumefeedback)
+        volumefeedback "$@"
+        ;;
+    ui)
+        ui "$@"
+        ;;
+    speechrecognition)
+        speechrecognition "$@"
+        ;;
+    speechtotext)
+        speechtotext "$@"
+        ;;
+    voiceover)
+        voiceover "$@"
+        ;;
+    powerchime)
+        powerchime "$@"
+        ;;
+    *)
+        help
+        ;;
+esac
+
+# vim: ts=4 sw=4 softtabstop=4 expandtab

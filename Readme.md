@@ -89,6 +89,7 @@ usage:  m [OPTIONS] COMMAND [help]
         service
         shutdown
         sleep
+        sound
         spotlight
         timemachine
         timezone
@@ -760,6 +761,20 @@ usage:  m [OPTIONS] COMMAND [help]
 
     Examples:
       m sleep       #  put the mac to sleep
+```
+
+#### Sound:
+```
+    usage: m sound [ startupchime | volumefeedback | ui | speechrecognition | speechtotext | voiceover | powerchime | help ]
+
+    Examples:
+      m sound startupchime        [ YES | NO ]          # whether the startup chime is used
+      m sound volumefeedback      [ YES | NO ]          # whether or not you hear feedback when the volume is changed
+      m sound ui                  [ YES | NO ] [ x.x ]  # whether the UI bleeps and bloops are used
+      m sound speechrecognition   [ YES | NO ]          # whether speech recognition is enabled
+      m sound speechtotext        [ YES | NO ]          # whether speech-to-text is enabled
+      m sound voiceover           [ YES | NO ]          # whether VoiceOver is enabled
+      m sound powerchime          [ YES | NO ]          # whether the chime is used when power is connected/disconnected
 ```
 
 #### Spotlight:

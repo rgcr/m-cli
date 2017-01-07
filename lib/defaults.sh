@@ -107,6 +107,18 @@ _mcli_defaults_string() {
     _mcli_read_string "${domain}" "${key}"
 }
 
+_mcli_defaults_delete() {
+    local domain="$1"
+    local key="$2"
+    local sudo="$3"
+
+    if [ -n "${sudo}" ]; then
+      ${sudo} sh -c "defaults delete '${domain}' '${key}' 2> /dev/null"
+    else
+      defaults delete "${domain}" "${key}" 2> /dev/null
+    fi
+}
+
 _mcli_defaults_yes_no_to_type() {
     local type="$1"
     local transformer="$2"
