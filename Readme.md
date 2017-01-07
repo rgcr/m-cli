@@ -52,6 +52,7 @@ usage:  m [OPTIONS] COMMAND [help]
         datetime
         dir
         disk
+        diskutility
         display
         dns
         dock
@@ -307,6 +308,16 @@ usage:  m [OPTIONS] COMMAND [help]
       m dir size        # calculate current folder size
       m dir size /path  # calculate folder size in a specific path
 
+```
+
+#### Disk Utility:
+```
+    usage: m diskutility [ advancedoptions | showhiddenpartitions | showunsupportednetworks | help ]
+
+    Examples:
+      m diskutility advancedoptions         [ YES | NO ]  # Whether to enable advanced disk utility options
+      m diskutility showhiddenpartitions    [ YES | NO ]  # Whether to show hidden partitions
+      m diskutility showunsupportednetworks [ YES | NO ]  # Whether to show unsupported networks
 ```
 
 #### File Vault:
