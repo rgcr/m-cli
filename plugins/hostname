@@ -19,16 +19,23 @@ show_hostname(){
     scutil --get HostName | awk '{print "HostName: ", $1}'
     scutil --get LocalHostName | awk '{print "LocalHostName: ", $1}'
     defaults read /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName | awk '{print "NetBIOSName: " $1}'
-
 }
 
 
 set_hostname(){
-    echo "Changing hostname to: $1"
-    sudo scutil --set ComputerName "$1" && \
-        sudo scutil --set HostName "$1" && \
-        sudo scutil --set LocalHostName "$1" && \
-        sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "$1"
+    local hostname="$1"
+
+    echo "Changing hostname to: ${hostname}"
+
+    sudo sh -c "hostname '${hostname}'"
+    sudo sh -c "scutil --set ComputerName '${hostname}'"
+    sudo sh -c "scutil --set HostName '${hostname}'"
+    sudo sh -c "scutil --set LocalHostName '${hostname}'"
+    sudo sh -c "/usr/sbin/systemsetup -setcomputername '${hostname}' &> /dev/null"
+    sudo sh -c "/usr/sbin/systemsetup -setlocalsubnetname '${hostname}' &> /dev/null"
+
+    sudo sh -c "defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string '${hostname}'"
+    sudo sh -c "defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server ServerDescription -string '${hostname}'"
 }
 
 
