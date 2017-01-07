@@ -802,20 +802,23 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### User
 ```
-    usage: m user [ list | ls | info | create | delete | help ]
+    usage: m user [ list | ls | info | create | delete | autologin | fastswitching | guest | loginattemptsbeforehint | help ]
 
     Examples:
-      m user ls                                 # list users
-      m user info demouser                      # display user information
+      m user ls                                              # list users
+      m user info demouser                                   # display user information
 
-      m user create                             # create a user, it will ask you the below information
-                                                     Username:
-                                                     Full name:
-                                                     Shell [/bin/bash]:
-                                                     Password:
+      m user create                                          # create a user, it will ask you the below information
+                                                                  Username:
+                                                                  Full name:
+                                                                  Shell [/bin/bash]:
+                                                                  Password:
 
-      m user delete demouser                    # delete user
-      m user autologin [ disable | username ]   # who to autologin as or whether to disable autologin
+      m user delete demouser                                 # delete user
+      m user autologin                [ disable | username ] # who to autologin as or whether to disable autologin
+      m user fastswitching            [ YES | NO ]           # whether to enable fast user switching
+      m user guest                    [ YES | NO ]           # whether to enable the guest user
+      m user loginattemptsbeforehint  x                      # the number of failed attempts before hint is shown
 ```
 
 #### Volume:
