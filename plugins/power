@@ -24,6 +24,8 @@ help(){
                      powernap          |
                      powerbuttonsleeps |
                      appnapp           |
+                     restartonhang     |
+                     persistmemory     |
                      help
                    ]
 
@@ -39,6 +41,7 @@ help(){
       m power powerbuttonsleeps [ YES | NO ]                # Whether pressing the power button sleeps the system
       m power appnap            [ YES | NO ]                # Whether app nap is enabled
       m power restartonhang     [ YES | NO ]                # Whether to restart on system hang
+      m power persistmemory     [ YES | NO ]                # Whether RAM contains working memory when sleeping ("NO" is more secure)
 __EOF__
 }
 
@@ -85,6 +88,19 @@ restartonhang(){
     value="$(_mcli_convert_yes_no_to_on_off "$1")"
 
     sudo /usr/sbin/systemsetup -setrestartfreeze "${value}"
+}
+
+persistmemory(){
+    local choice="$(_mcli_convert_yes_no_to_boolean "$1")"
+    local value
+
+    if [[ "${choice}" == "true" ]]; then
+        value="3"
+    else
+        value="25"
+    fi
+
+    sudo pmset -a hibernatemode "${value}"
 }
 
 case "${subcommand}" in
