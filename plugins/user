@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/defaults.sh"
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/converters.sh"
+
+declare login_pref_path="/Library/Preferences/com.apple.loginwindow"
+
 declare command="$(basename "$0")"
 declare subcommand="$1"
 
@@ -10,17 +15,19 @@ help(){
     usage: m user [ list | ls | info | create | delete | help ]
 
     Examples:
-      m user ls                                 # list users
-      m user info demouser                      # display user information
+      m user ls                                       # list users
+      m user info demouser                            # display user information
 
-      m user create                             # create a user, it will ask you the below information
-                                                     Username:
-                                                     Full name:
-                                                     Shell [/bin/bash]:
-                                                     Password:
+      m user create                                   # create a user, it will ask you the below information
+                                                           Username:
+                                                           Full name:
+                                                           Shell [/bin/bash]:
+                                                           Password:
 
-      m user delete demouser                    # delete user
-      m user autologin [ disable | username ]   # who to autologin as or whether to disable autologin
+      m user delete demouser                          # delete user
+      m user autologin         [ disable | username ] # who to autologin as or whether to disable autologin
+      m user fastswitching     [ YES | NO ]           # whether to enable fast user switching
+      m user guest             [ YES | NO ]           # whether to enable the guest user
 __EOF__
 }
 
@@ -111,6 +118,22 @@ autologin(){
     fi
 }
 
+fastswitching(){
+    value="$(_mcli_defaults_yes_no_to_boolean "NSGlobalDomain" \
+                                              "MultipleSessionEnabled" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+guest(){
+    value="$(_mcli_defaults_yes_no_to_integer "${login_pref_path}" \
+                                              "GuestEnabled" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
 case $1 in
     help)
         help
@@ -129,6 +152,12 @@ case $1 in
         ;;
     autologin)
         autologin $@
+        ;;
+    fastswitching)
+        fastswitching $@
+        ;;
+    guest)
+        guest $@
         ;;
     *)
         help
