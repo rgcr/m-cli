@@ -52,6 +52,7 @@ usage:  m [OPTIONS] COMMAND [help]
         datetime
         dir
         disk
+        diskimages
         diskutility
         display
         dns
@@ -218,6 +219,15 @@ usage:  m [OPTIONS] COMMAND [help]
       m disk reformat /Volumes/myvol            # reformat a volume
       m disk rename CURRENTNAME NEWNAME         # rename a volume
 
+```
+
+#### Disk Images:
+```
+    usage: m diskimages [ automount | verification | help ]
+
+    Examples:
+      m diskimages automount    [ YES | NO ] # Whether to automount disk images
+      m diskimages verification [ YES | NO ] # Whether to verify disk image integrity
 ```
 
 #### Display:
