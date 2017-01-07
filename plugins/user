@@ -1,21 +1,25 @@
 #!/usr/bin/env bash
 
+declare command="$(basename "$0")"
+declare subcommand="$1"
+
+[ $# -gt 0 ] && shift
 
 help(){
     cat<<__EOF__
     usage: m user [ list | ls | info | create | delete | help ]
 
     Examples:
-      m user ls                # list users
-      m user info demouser     # display user information
+      m user ls                                 # list users
+      m user info demouser                      # display user information
 
-      m user create            # create a user, it will ask you the below information
-                                    Username:
-                                    Full name:
-                                    Shell [/bin/bash]:
-                                    Password:
+      m user create                             # create a user, it will ask you the below information
+                                                     Username:
+                                                     Full name:
+                                                     Shell [/bin/bash]:
+                                                     Password:
 
-      m user delete demouser   # delete user
+      m user delete demouser                    # delete user
 __EOF__
 }
 
@@ -47,11 +51,6 @@ groups_user_belongs(){
 }
 
 user_create(){
-
-    #SECONDARY_GROUPS=""  # for a non-admin user
-    #SECONDARY_GROUPS="admin _lpadmin _appserveradm _appserverusr" # for an admin user
-
-
     LAST_ID=$(dscl . -list /Users UniqueID | awk '{print $2}' | sort -n | tail -1)
     LAST_ID=$(expr $LAST_ID + 1)
 
@@ -110,15 +109,12 @@ case $1 in
         user_ls
         ;;
     info)
-        shift
         user_info $@
         ;;
     create)
-        shift
         user_create
         ;;
     delete)
-        shift
         user_delete $@
         ;;
     *)
