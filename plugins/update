@@ -13,11 +13,12 @@ help(){
     usage: m update [ list | install | help ]
 
     Examples:
-      m update list                                                        # list available updates
-      m update install           all                                       # install all the available updates
-      m update install           iTunesX-12.4.1 RAWCameraUpdate6.20-6.20   # install specific updates
-      m update automaticinstall  [ YES | NO ]                              # whether automatic installs should be enabled
-      m update automaticdownload [ YES | NO ]                              # whether automatic downloads should be enabled
+      m update list                                                           # list available updates
+      m update install           all                                          # install all the available updates
+      m update install           iTunesX-12.4.1 RAWCameraUpdate6.20-6.20      # install specific updates
+      m update automaticinstall  [ YES | NO ]                                 # whether automatic installs should be enabled
+      m update automaticdownload [ YES | NO ]                                 # whether automatic downloads should be enabled
+      m update interval          [ daily | weekly | biweekly | monthly | x ]  # how often to check for updates
 
 __EOF__
 }
@@ -65,6 +66,30 @@ automaticdownload(){
     echo "${command} ${subcommand}: ${value}"
 }
 
+interval(){
+    local interval
+
+    case "$1" in
+        daily)
+            interval="1";;
+        weekly)
+            interval="7";;
+        biweekly)
+            interval="14";;
+        monthly)
+            interval="30";;
+        *)
+            interval="$1";;
+    esac
+
+    value="$(_mcli_defaults_yes_no_to_integer "${path_to_update_prefs}" \
+                                              "ScheduleFrequency" \
+                                              "${interval}" \
+                                              "sudo")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
 case $1 in
     help)
         help
@@ -80,6 +105,9 @@ case $1 in
         ;;
     automaticdownload)
         automaticdownload "$@"
+        ;;
+    interval)
+        interval "$@"
         ;;
     *)
         help
