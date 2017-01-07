@@ -70,6 +70,7 @@ usage:  m [OPTIONS] COMMAND [help]
         keyboard
         launchpad
         locale
+        location
         lock
         ntp
         printer
@@ -544,6 +545,15 @@ usage:  m [OPTIONS] COMMAND [help]
     Examples:
       m locale language <language_code>      # Specify the language to use (eg en_US)
       m locale unit     [ metric | english ] # Specify the measurement unit
+```
+
+#### Location:
+```
+    usage: m location [ prune | help ]
+
+    Examples:
+      m location enable    # Enable the location service
+      m location diable    # Disable the location service
 ```
 
 #### Lock:
