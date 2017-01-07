@@ -2,7 +2,7 @@ _mcli_convert_yes_no_to_boolean() {
     local choice="$1"
 
     case "${choice}" in
-        1|[yY][eE][sS]|[tT][rU][eE])
+        1|[yY][eE][sS]|[tT][rR][uU][eE])
             echo "true"
             ;;
         0|[nN][oO]|[fF][aA][lL][sS][eE])
@@ -18,7 +18,7 @@ _mcli_convert_yes_no_to_on_off() {
     local choice="$1"
 
     case "${choice}" in
-        1|[yY][eE][sS]|[tT][rU][eE])
+        1|[yY][eE][sS]|[tT][rR][uU][eE])
             echo "on"
             ;;
         0|[nN][oO]|[fF][aA][lL][sS][eE])
@@ -34,7 +34,7 @@ _mcli_convert_yes_no_to_enabled_disabled() {
     local choice="$1"
 
     case "${choice}" in
-        1|[yY][eE][sS]|[tT][rU][eE])
+        1|[yY][eE][sS]|[tT][rR][uU][eE])
             echo "enabled"
             ;;
         0|[nN][oO]|[fF][aA][lL][sS][eE])
@@ -60,7 +60,7 @@ _mcli_convert_yes_no_to_load_unload() {
     local choice="$1"
 
     case "${choice}" in
-        1|[yY][eE][sS]|[tT][rU][eE])
+        1|[yY][eE][sS]|[tT][rR][uU][eE])
             echo "load"
             ;;
         0|[nN][oO]|[fF][aA][lL][sS][eE])
@@ -76,7 +76,7 @@ _mcli_convert_yes_no_to_inverted_boolean() {
     local choice="$1"
 
     case "${choice}" in
-        1|[yY][eE][sS]|[tT][rU][eE])
+        1|[yY][eE][sS]|[tT][rR][uU][eE])
             echo "false"
             ;;
         0|[nN][oO]|[fF][aA][lL][sS][eE])
@@ -92,7 +92,7 @@ _mcli_convert_yes_no_to_yes_no() {
     local choice="$1"
 
     case "${choice}" in
-        1|[yY][eE][sS]|[tT][rU][eE])
+        1|[yY][eE][sS]|[tT][rR][uU][eE])
             echo "YES"
             ;;
         0|[nN][oO]|[fF][aA][lL][sS][eE])
@@ -108,7 +108,7 @@ _mcli_convert_yes_no_to_integer() {
     local choice="$1"
 
     case "${choice}" in
-        1|[yY][eE][sS]|[tT][rU][eE])
+        1|[yY][eE][sS]|[tT][rR][uU][eE])
             echo "1"
             ;;
         0|[nN][oO]|[fF][aA][lL][sS][eE])
