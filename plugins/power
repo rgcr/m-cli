@@ -38,6 +38,7 @@ help(){
       m power powernap          [ YES | NO ] [ YES | NO ]   # Whether power nap is enabled
       m power powerbuttonsleeps [ YES | NO ]                # Whether pressing the power button sleeps the system
       m power appnap            [ YES | NO ]                # Whether app nap is enabled
+      m power restartonhang     [ YES | NO ]                # Whether to restart on system hang
 __EOF__
 }
 
@@ -80,6 +81,12 @@ appnapp(){
     echo "${command} ${subcommand}: ${value}"
 }
 
+restartonhang(){
+    value="$(_mcli_convert_yes_no_to_on_off "$1")"
+
+    sudo /usr/sbin/systemsetup -setrestartfreeze "${value}"
+}
+
 case "${subcommand}" in
     help)
         help
@@ -104,6 +111,9 @@ case "${subcommand}" in
         ;;
     appnapp)
         appnapp "$@"
+        ;;
+    restartonhang)
+        restartonhang "$@"
         ;;
     *)
         help

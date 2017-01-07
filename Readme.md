@@ -657,6 +657,7 @@ usage:  m [OPTIONS] COMMAND [help]
       m power powernap          [ YES | NO ] [ YES | NO ]   # Whether power nap is enabled
       m power powerbuttonsleeps [ YES | NO ]                # Whether pressing the power button sleeps the system
       m power appnap            [ YES | NO ]                # Whether app nap is enabled
+      m power restartonhang     [ YES | NO ]                # Whether to restart on system hang
 ```
 
 #### Restart:
