@@ -111,10 +111,10 @@ autologin(){
     local username="$(if [[ "$1" != "disable" ]]; then echo "$1"; fi)"
 
     if [ -z "${username}" ]; then
-        sudo defaults delete /Library/Preferences/com.apple.loginwindow autoLoginUser 2> /dev/null
+        sudo defaults delete "${login_pref_path}" autoLoginUser 2> /dev/null
         sudo rm -f /etc/kcpassword
     else
-        sudo defaults write /Library/Preferences/com.apple.loginwindow autoLoginUser -string "$username"
+        sudo defaults write "${login_pref_path}" autoLoginUser -string "$username"
     fi
 }
 
