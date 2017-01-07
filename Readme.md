@@ -379,12 +379,13 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### File Vault:
 ```
-    usage: m filevault [ status | enable | disable | help ]
+    usage: m filevault [ status | enable | disable | standbykey | help ]
 
     Examples:
-      m filevault status    # FileVault Status
-      m filevault enable    # Enable FileVault
-      m filevault disable   # Disable FileVault
+      m filevault status                    # FileVault Status
+      m filevault enable                    # Enable FileVault
+      m filevault disable                   # Disable FileVault
+      m filevault standbykey [ YES | NO ]   # Whether to keep the filevault key in memory during sleep
 ```
 
 #### Finder:

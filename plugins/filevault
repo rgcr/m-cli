@@ -7,13 +7,20 @@ declare subcommand="$1"
 
 help(){
     cat<<__EOF__
-    usage: m filevault [ status | enable | disable | help ]
+    usage: m filevault [ status | enable | disable | standbykey | help ]
 
     Examples:
-      m filevault status    # FileVault Status
-      m filevault enable    # Enable FileVault
-      m filevault disable   # Disable FileVault
+      m filevault status                    # FileVault Status
+      m filevault enable                    # Enable FileVault
+      m filevault disable                   # Disable FileVault
+      m filevault standbykey [ YES | NO ]   # Whether to keep the filevault key in memory during sleep
 __EOF__
+}
+
+standbykey(){
+    choice="$(_mcli_convert_yes_no_to_integer "$1")"
+
+    sudo pmset -a destroyfvkeyonstandby "${choice}"
 }
 
 case "${subcommand}" in
@@ -28,6 +35,9 @@ case "${subcommand}" in
         ;;
     disable)
         sudo fdesetup disable "$@"
+        ;;
+    standbykey)
+        standbykey "$@"
         ;;
     *)
         help
