@@ -818,6 +818,8 @@ usage:  m [OPTIONS] COMMAND [help]
       m user autologin                [ disable | username ] # who to autologin as or whether to disable autologin
       m user fastswitching            [ YES | NO ]           # whether to enable fast user switching
       m user guest                    [ YES | NO ]           # whether to enable the guest user
+      m user showsecure               [ YES | NO ]           # whether to show secure users on the login screen (such as root)
+      m user loginpoweroptions        [ YES | NO ]           # whether to show power options during login
       m user loginattemptsbeforehint  x                      # the number of failed attempts before hint is shown
 ```
 

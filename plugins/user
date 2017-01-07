@@ -29,6 +29,7 @@ help(){
       m user fastswitching            [ YES | NO ]           # whether to enable fast user switching
       m user guest                    [ YES | NO ]           # whether to enable the guest user
       m user showsecure               [ YES | NO ]           # whether to show secure users on the login screen (such as root)
+      m user loginpoweroptions        [ YES | NO ]           # whether to show power options during login
       m user loginattemptsbeforehint  x                      # the number of failed attempts before hint is shown
 __EOF__
 }
@@ -146,6 +147,15 @@ showsecure(){
     echo "${command} ${subcommand}: ${value}"
 }
 
+loginpoweroptions(){
+    value="$(_mcli_defaults_yes_no_to_inverted_boolean "${login_pref_path}" \
+                                                       "PowerOffDisabled" \
+                                                       "$1" \
+                                                       "sudo")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
 loginattemptsbeforehint(){
     value="$(_mcli_defaults_number "${login_pref_path}" \
                                    "RetriesUntilHint" \
@@ -182,6 +192,9 @@ case $1 in
         ;;
     showsecure)
         showsecure $@
+        ;;
+    loginpoweroptions)
+        loginpoweroptions $@
         ;;
     loginattemptsbeforehint)
         loginattemptsbeforehint $@
