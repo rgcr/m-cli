@@ -14,6 +14,22 @@ _mcli_convert_yes_no_to_boolean() {
     esac
 }
 
+_mcli_convert_yes_no_to_on_off() {
+    local choice="$1"
+
+    case "${choice}" in
+        1|[yY][eE][sS]|[tT][rU][eE])
+            echo "on"
+            ;;
+        0|[nN][oO]|[fF][aA][lL][sS][eE])
+            echo "off"
+            ;;
+        *)
+            echo "ERROR"
+            ;;
+    esac
+}
+
 _mcli_convert_yes_no_to_enabled_disabled() {
     local choice="$1"
 

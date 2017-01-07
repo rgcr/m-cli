@@ -49,6 +49,7 @@ usage:  m [OPTIONS] COMMAND [help]
         battery
         bluetooth
         dashboard
+        datetime
         dir
         disk
         display
@@ -165,6 +166,18 @@ usage:  m [OPTIONS] COMMAND [help]
     Examples:
       m dashboard enable    # Enable the dashboard
       m dashboard disable   # Disable the dashboard
+```
+
+#### Date and Time:
+```
+    usage: m datetime [ 24hourclock | usentpserver | ntpserver | international | menubarformat | help ]
+
+    Examples:
+      m datetime 24hourclock    [ YES | NO ] # Whether to show the time using a 24 hour clock
+      m datetime usentpserver   [ YES | NO ] # Whether the current date time can be set via NTP
+      m datetime ntpserver      hostname     # The NTP server to use to set the time
+      m datetime international  [ YES ]      # Sets the date/time formats to the international standard
+      m datetime menubarformat  format       # Sets format of the clock in the menu bar
 ```
 
 #### Debug Mode:
