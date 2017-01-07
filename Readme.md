@@ -590,14 +590,15 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Printer:
 ```
-    usage: m printer [ settings | name | queue | drivers | web | help ]
+    usage: m printer [ settings | name | queue | drivers | web | quitwhenfinished | help ]
 
     Examples:
-      m printer settings    # Printer settings
-      m printer name        # Display printer names on system
-      m printer queue       # Display items in printer queue on system
-      m printer drivers     # Display all printer drivers
-      m printer web         # Enable and show web interface
+      m printer settings                        # Printer settings
+      m printer name                            # Display printer names on system
+      m printer queue                           # Display items in printer queue on system
+      m printer drivers                         # Display all printer drivers
+      m printer web                             # Enable and show web interface
+      m printer quitwhenfinished [ YES | NO ]   # whether the print dialog should be closed when printing is finished
 ```
 
 #### Mission Control:
