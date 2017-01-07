@@ -46,6 +46,8 @@ usage:  m [OPTIONS] COMMAND [help]
     COMMANDS:
         help
         airdrop
+        airport
+        appearance
         battery
         bluetooth
         dashboard
@@ -143,6 +145,34 @@ usage:  m [OPTIONS] COMMAND [help]
                                                       #  networks
       m airport securetogglepower    [ YES | NO ]     #  whether a password is required to turn
                                                       #  wi-fi on or off
+```
+
+#### Appearance:
+```
+    usage: m appearance [ inputfocusring | darkmode | transparency | antialiasthreshold | sidebariconsize | maincolor | highlightcolor | help ]
+
+    Examples:
+      m appearance inputfocusring     [ YES | NO ]                # Whether to show the focus ring when an input gains focus
+      m appearance darkmode           [ YES | NO ]                # Whether to use dark versions of interface elements
+      m appearance transparency       [ YES | NO ]                # Whether to allow the OS to make certain elements semi-transparent
+      m appearance antialiasthreshold x                           # The threshold above which antialiasing is turned on
+      m appearance sidebariconsize    [ small | medium | large ]  # The size of the icons in various window sidebars
+      m appearance maincolor          [ blue | graphite ]         # The color used for the majority of the interface elements
+      m appearance highlightcolor     [                           # The color used for the majority of the interface elements
+                                        graphite  | cayenne    | asparagus  | clover    |
+                                        teal      | midnight   | plum       | tin       |
+                                        nickel    | mocha      | fern       | moss      |
+                                        ocean     | eggplant   | maroon     | steel     |
+                                        aluminum  | maraschino | lemon      | spring    |
+                                        turquoise | blueberry  | magenta    | iron      |
+                                        magnesium | tangerine  | lime       | seafoam   |
+                                        aqua      | grape      | strawberry | tungsten  |
+                                        silver    | salmon     | banana     | flora     |
+                                        ice       | orchid     | bubblegum  | lead      |
+                                        mercery   | cantaloupe | honeydew   | spindrift |
+                                        sky       | lavender   | carnation  | licorice  |
+                                        snow
+                                      ]
 ```
 
 ####  Battery:
