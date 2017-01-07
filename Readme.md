@@ -149,12 +149,24 @@ usage:  m [OPTIONS] COMMAND [help]
                                                       #  wi-fi on or off
 ```
 
-#### Appearance:
+#### Animations:
 ```
-    usage: m appearance [ inputfocusring | darkmode | transparency | antialiasthreshold | sidebariconsize | maincolor | highlightcolor | help ]
+    usage: m animations [ mail | inputs | finder | fullscreen | windows | quicklook | help ]
 
     Examples:
-      m appearance inputfocusring     [ YES | NO ]                # Whether to show the focus ring when an input gains focus
+      m animations mail       [ YES | NO ]          # Whether to use animations in mail
+      m animations inputs     [ YES | NO ]          # Whether to use animations interacting with inputs
+      m animations finder     [ YES | NO ]          # Whether to use animations in finder/desktop
+      m animations fullscreen [ YES | NO ]          # Whether to use animations in fullscreen
+      m animations windows    [ YES | NO ] [ x.x ]  # Whether to use animations when opening, closing or resizing windows (with optional speed factor)
+      m animations quicklook  [ YES | NO ] [ x.x ]  # Whether to use animations when using quicklook
+```
+
+#### Appearance:
+```
+    usage: m appearance [ darkmode | transparency | antialiasthreshold | sidebariconsize | maincolor | highlightcolor | help ]
+
+    Examples:
       m appearance darkmode           [ YES | NO ]                # Whether to use dark versions of interface elements
       m appearance transparency       [ YES | NO ]                # Whether to allow the OS to make certain elements semi-transparent
       m appearance antialiasthreshold x                           # The threshold above which antialiasing is turned on

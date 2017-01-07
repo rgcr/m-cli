@@ -10,10 +10,9 @@ declare subcommand="$1"
 
 help(){
     cat<<__EOF__
-    usage: m appearance [ inputfocusring | darkmode | transparency | antialiasthreshold | sidebariconsize | maincolor | highlightcolor | help ]
+    usage: m appearance [ darkmode | transparency | antialiasthreshold | sidebariconsize | maincolor | highlightcolor | help ]
 
     Examples:
-      m appearance inputfocusring     [ YES | NO ]                # Whether to show the focus ring when an input gains focus
       m appearance darkmode           [ YES | NO ]                # Whether to use dark versions of interface elements
       m appearance transparency       [ YES | NO ]                # Whether to allow the OS to make certain elements semi-transparent
       m appearance antialiasthreshold x                           # The threshold above which antialiasing is turned on
@@ -35,14 +34,6 @@ help(){
                                         snow
                                       ]
 __EOF__
-}
-
-inputfocusring(){
-    value="$(_mcli_defaults_yes_no_to_boolean "NSGlobalDomain" \
-                                              "NSUseAnimatedFocusRing" \
-                                              "$1")"
-
-    echo "${command} ${subcommand}: ${value}"
 }
 
 darkmode(){
@@ -221,9 +212,6 @@ case "${subcommand}" in
     help)
         help
         ;;
-    inputfocusring)
-        inputfocusring "$@"
-        ;;
     darkmode)
         darkmode "$@"
         ;;
@@ -238,6 +226,9 @@ case "${subcommand}" in
         ;;
     maincolor)
         maincolor "$@"
+        ;;
+    highlightcolor)
+        highlightcolor "$@"
         ;;
     *)
         help
