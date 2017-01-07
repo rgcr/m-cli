@@ -1,0 +1,113 @@
+#!/usr/bin/env bash
+
+declare command="$(basename "$0")"
+declare subcommand="$1"
+
+[ $# -gt 0 ] && shift
+
+_set_power_setting(){
+    local setting="$1"
+    local battery_value="$2"
+    local plugged_value="$2"
+
+    sudo pmset -b "${setting}" "${battery_value}"
+    sudo pmset -c "${setting}" "${plugged_value}"
+}
+
+help(){
+    cat<<__EOF__
+    usage: m power [
+                     disksleeptime     |
+                     displaysleeptime  |
+                     hibernationdelay  |
+                     sleepdelay        |
+                     powernap          |
+                     powerbuttonsleeps |
+                     appnapp           |
+                     help
+                   ]
+
+    Every command that has two entries requires both the battery setting and the
+    plugged setting (in that order).
+
+    Examples:
+      m power disksleeptime     x x                         # Time until disks sleep
+      m power displaysleeptime  x x                         # Time until displays sleep
+      m power hibernationdelay  x x                         # Time until system hibernates
+      m power sleepdelay        x x                         # Time until system sleeps
+      m power powernap          [ YES | NO ] [ YES | NO ]   # Whether power nap is enabled
+      m power powerbuttonsleeps [ YES | NO ]                # Whether pressing the power button sleeps the system
+      m power appnap            [ YES | NO ]                # Whether app nap is enabled
+__EOF__
+}
+
+disksleeptime(){
+  _set_power_setting "disksleep" "$1" "$2"
+}
+
+displaysleeptime(){
+  _set_power_setting "displaysleep" "$1" "$2"
+}
+
+hibernationdelay(){
+  _set_power_setting "standbydelay" "$1" "$2"
+}
+
+sleepdelay(){
+  _set_power_setting "sleep" "$1" "$2"
+}
+
+powernap(){
+  battery_value="$(_mcli_convert_yes_no_to_integer "$1")"
+  plugged_value="$(_mcli_convert_yes_no_to_integer "$2")"
+
+  _set_power_setting "powernap" "${battery_value}" "${plugged_value}"
+}
+
+powerbuttonsleeps(){
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.loginwindow" \
+                                              "PowerButtonSleepsSystem" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+appnapp(){
+    value="$(_mcli_defaults_yes_no_to_inverted_boolean "NSGlobalDomain" \
+                                                       "NSAppSleepDisabled" \
+                                                       "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+case "${subcommand}" in
+    help)
+        help
+        ;;
+    disksleeptime)
+        disksleeptime "$@"
+        ;;
+    displaysleeptime)
+        displaysleeptime "$@"
+        ;;
+    hibernationdelay)
+        hibernationdelay "$@"
+        ;;
+    sleepdelay)
+        sleepdelay "$@"
+        ;;
+    powernap)
+        powernap "$@"
+        ;;
+    powerbuttonsleeps)
+        powerbuttonsleeps "$@"
+        ;;
+    appnapp)
+        appnapp "$@"
+        ;;
+    *)
+        help
+        ;;
+esac
+
+# vim: ts=4 sw=4 softtabstop=4 expandtab

@@ -69,6 +69,7 @@ usage:  m [OPTIONS] COMMAND [help]
         network
         nosleep
         notification
+        power
         restart
         safeboot
         screensaver
@@ -520,6 +521,32 @@ usage:  m [OPTIONS] COMMAND [help]
       m notification showcenter NO   # disable the notification center
       m notification bannertime x    # disable the notification center
 
+```
+
+#### Power:
+```
+    usage: m power [
+                     disksleeptime     |
+                     displaysleeptime  |
+                     hibernationdelay  |
+                     sleepdelay        |
+                     powernap          |
+                     powerbuttonsleeps |
+                     appnapp           |
+                     help
+                   ]
+
+    Every command that has two entries requires both the battery setting and the
+    plugged setting (in that order).
+
+    Examples:
+      m power disksleeptime     x x                         # Time until disks sleep
+      m power displaysleeptime  x x                         # Time until displays sleep
+      m power hibernationdelay  x x                         # Time until system hibernates
+      m power sleepdelay        x x                         # Time until system sleeps
+      m power powernap          [ YES | NO ] [ YES | NO ]   # Whether power nap is enabled
+      m power powerbuttonsleeps [ YES | NO ]                # Whether pressing the power button sleeps the system
+      m power appnap            [ YES | NO ]                # Whether app nap is enabled
 ```
 
 #### Restart:
