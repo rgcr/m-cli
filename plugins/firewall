@@ -5,17 +5,18 @@ help(){
     usage: m firewall [ status | enable | disable | list | add | remove | help ]
 
     Examples:
-      m firewall status                # Show status
-      m firewall enable                # Enable firewall
-      m firewall disable               # Disable firewall
-      m firewall list                  # List applications handled by firewall
-      m firewall add /path/to/file     # Add app to firewall
-      m firewall remove /path/to/file  # Remove app from firewall
-
+      m firewall status                            # Show status
+      m firewall enable                            # Enable firewall
+      m firewall disable                           # Disable firewall
+      m firewall list                              # List applications handled by firewall
+      m firewall autoallowsignedapps  [ YES | NO ] # Whether to allow signed applications automatically
+      m firewall blockall             [ YES | NO ] # Whether to block all incoming connections
+      m firewall logging              [ YES | NO ] # Whether to enable firewall logging
+      m firewall stealth              [ YES | NO ] # Whether to respond to pings
+      m firewall add /path/to/file                 # Add app to firewall
+      m firewall remove /path/to/file              # Remove app from firewall
 __EOF__
 }
-
-
 
 case $1 in
     help)
@@ -30,16 +31,36 @@ case $1 in
     disable)
         sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate off
         ;;
+    autoallowsignedapps)
+        choice="$(_mcli_convert_yes_no_to_on_off "$1")"
+
+        sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setallowsigned "${choice}"
+        ;;
+    blockall)
+        choice="$(_mcli_convert_yes_no_to_on_off "$1")"
+
+        sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setblockall "${choice}"
+        ;;
+    logging)
+        choice="$(_mcli_convert_yes_no_to_on_off "$1")"
+
+        sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setloggingmode "${choice}"
+        ;;
+    stealth)
+        choice="$(_mcli_convert_yes_no_to_on_off "$1")"
+
+        sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setstealthmode "${choice}"
+        ;;
     list)
         sudo /usr/libexec/ApplicationFirewall/socketfilterfw --list
         ;;
     add)
         [ -z "$2" ] && help && exit 1
-        sudo /usr/libexec/ApplicationFirewall/socketfilterfw --add $2
+        sudo /usr/libexec/ApplicationFirewall/socketfilterfw --add "$2"
         ;;
     remove)
         [ -z "$2" ] && help && exit 1
-        sudo /usr/libexec/ApplicationFirewall/socketfilterfw --remove $2
+        sudo /usr/libexec/ApplicationFirewall/socketfilterfw --remove "$2"
         ;;
     *)
         help

@@ -354,13 +354,16 @@ usage:  m [OPTIONS] COMMAND [help]
     usage: m firewall [ status | enable | disable | list | add | remove | help ]
 
     Examples:
-       m firewall status                # Show status
-       m firewall enable                # Enable firewall
-       m firewall disable               # Disable firewall
-       m firewall list                  # List applications handled by firewall
-       m firewall add /path/to/file     # Add app to firewall
-       m firewall remove /path/to/file  # Remove app from firewall
-
+      m firewall status                            # Show status
+      m firewall enable                            # Enable firewall
+      m firewall disable                           # Disable firewall
+      m firewall list                              # List applications handled by firewall
+      m firewall autoallowsignedapps  [ YES | NO ] # Whether to allow signed applications automatically
+      m firewall blockall             [ YES | NO ] # Whether to block all incoming connections
+      m firewall logging              [ YES | NO ] # Whether to enable firewall logging
+      m firewall stealth              [ YES | NO ] # Whether to respond to pings
+      m firewall add /path/to/file                 # Add app to firewall
+      m firewall remove /path/to/file              # Remove app from firewall
 ```
 
 #### Gatekeeper:
