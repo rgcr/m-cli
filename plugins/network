@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+declare command="$(basename "$0")"
+declare subcommand="$1"
+
+[ $# -gt 0 ] && shift
 
 help(){
     cat<<__EOF__
@@ -12,6 +16,7 @@ help(){
       m network location create XYZ         # create a location
       m network location delete XYZ         # delete a location
       m network location switch XYZ         # switch location
+      m network defaultusername "your name" # the default username when connecting (don't specify a name to disable)
 __EOF__
 
 }
@@ -26,6 +31,18 @@ list_netservices(){
             printf "${line}\n"
         fi
     done
+}
+
+defaultusername(){
+    local username="$1"
+
+    if [ -n "$1" ]; then
+        defaults write com.apple.NetworkAuthorization UseDefaultName -bool true
+        defaults write com.apple.NetworkAuthorization DefaultName "${username}"
+    else
+        defaults delete com.apple.NetworkAuthorization UseDefaultName
+        defaults delete com.apple.NetworkAuthorization DefaultName
+    fi
 }
 
 
@@ -53,9 +70,7 @@ location(){
     esac
 }
 
-
-
-case $1 in
+case "${subcommand}" in
     help)
         help
         ;;
@@ -63,8 +78,10 @@ case $1 in
         list_netservices
         ;;
     location)
-        shift
         location $@
+        ;;
+    defaultusername)
+        defaultusername $@
         ;;
     *)
         help
