@@ -28,6 +28,7 @@ help(){
       m user autologin                [ disable | username ] # who to autologin as or whether to disable autologin
       m user fastswitching            [ YES | NO ]           # whether to enable fast user switching
       m user guest                    [ YES | NO ]           # whether to enable the guest user
+      m user showsecure               [ YES | NO ]           # whether to show secure users on the login screen (such as root)
       m user loginattemptsbeforehint  x                      # the number of failed attempts before hint is shown
 __EOF__
 }
@@ -130,7 +131,17 @@ fastswitching(){
 guest(){
     value="$(_mcli_defaults_yes_no_to_integer "${login_pref_path}" \
                                               "GuestEnabled" \
-                                              "$1")"
+                                              "$1" \
+                                              "sudo")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+showsecure(){
+    value="$(_mcli_defaults_yes_no_to_inverted_boolean "${login_pref_path}" \
+                                                       "Hide500Users" \
+                                                       "$1" \
+                                                       "sudo")"
 
     echo "${command} ${subcommand}: ${value}"
 }
@@ -138,7 +149,8 @@ guest(){
 loginattemptsbeforehint(){
     value="$(_mcli_defaults_number "${login_pref_path}" \
                                    "RetriesUntilHint" \
-                                   "$1")"
+                                   "$1" \
+                                   "sudo")"
 
     echo "${command} ${subcommand}: ${value}"
 }
@@ -167,6 +179,9 @@ case $1 in
         ;;
     guest)
         guest $@
+        ;;
+    showsecure)
+        showsecure $@
         ;;
     loginattemptsbeforehint)
         loginattemptsbeforehint $@
