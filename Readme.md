@@ -783,11 +783,12 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Trash:
 ```
-    usage: m trash [ status | clean | help ]
+    usage: m trash [ status | clean | warn | help ]
 
     Examples:
-      m trash status    # get trash info
-      m trash clean     # clean trash
+      m trash status                  # get trash info
+      m trash clean                   # clean trash
+      m trash warn      [ YES | NO ]  # warn when emptying trash
 ```
 
 #### Update

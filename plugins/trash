@@ -3,11 +3,12 @@
 
 help(){
     cat<<__EOF__
-    usage: m trash [ status | clean | help ]
+    usage: m trash [ status | clean | warn | help ]
 
     Examples:
-      m trash status    # get trash info
-      m trash clean     # clean trash
+      m trash status                  # get trash info
+      m trash clean                   # clean trash
+      m trash warn      [ YES | NO ]  # warn when emptying trash
 __EOF__
 }
 
@@ -18,12 +19,25 @@ clean_trash(){
     echo "Done!"
 }
 
+warn() {
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.finder" \
+                                              "WarnOnEmptyTrash" \
+                                              "$1")"
+
+    [ -n "$1" ] && killall Finder
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
 case $1 in
     help)
         help
         ;;
     clean)
         clean_trash
+        ;;
+    warn)
+        warn
         ;;
     status)
         du -ch $HOME/.Trash/* 2>/dev/null | tail -n 1 | awk '{print "Size: ", $1}'
