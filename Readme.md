@@ -77,6 +77,7 @@ usage:  m [OPTIONS] COMMAND [help]
         restart
         safeboot
         screensaver
+        scrolling
         service
         shutdown
         sleep
@@ -620,7 +621,7 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Screensaver:
 ```
-    usage: m screensaver [ status | askforpassword | help ]
+    usage: m screensaver [ status | askforpassword | passworddelay | help ]
 
     Examples:
       m screensaver                         # launch screensaver
@@ -630,6 +631,18 @@ usage:  m [OPTIONS] COMMAND [help]
       m screensaver askforpassword YES      #  enable password requirement to unlock
       m screensaver askforpassword NO       #  disable password requirement to unlock
       m screensaver passworddelay x         #  the length of time before screensaver requires password
+```
+
+#### Scrolling:
+```
+    usage: m scrolling [ direction | barvisibility | bounce | autoscrolldelay | momentum | help ]
+
+    Examples:
+      m scrolling direction       [ natural | inverted ]          # What direction the content moves when swiping
+      m scrolling barvisibility   [ onlywhenscrolling | always ]  # When to show scroll bars
+      m scrolling bounce          [ YES | NO ]                    # Whether to bounce at the end of scrolling
+      m scrolling autoscrolldelay x                               # Set the delay before the windows contents begins to scroll when you drag content to the edge
+      m scrolling momentum        [ YES | NO ]                    # Whether to use momentum when scrolling
 ```
 
 #### Service:
