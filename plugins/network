@@ -10,13 +10,15 @@ help(){
     usage:  m network [ ls | list | location | help ]
 
     Examples:
-      m network ls                          # list network interfaces
-      m network location                    # get current location
-      m network location ls                 # list locations
-      m network location create XYZ         # create a location
-      m network location delete XYZ         # delete a location
-      m network location switch XYZ         # switch location
-      m network defaultusername "your name" # the default username when connecting (don't specify a name to disable)
+      m network ls                            # list network interfaces
+      m network location                      # get current location
+      m network location ls                   # list locations
+      m network location create XYZ           # create a location
+      m network location delete XYZ           # delete a location
+      m network location switch XYZ           # switch location
+      m network defaultusername "your name"   # the default username when connecting (don't specify a name to disable)
+      m network wakeonethernet  [ YES | NO ]  # whether to allow the computer to wake up if it receives a special network packet
+      m network guestaccess     [ YES | NO ]  # whether to allow the guest user to access shared folders
 __EOF__
 
 }
@@ -45,6 +47,23 @@ defaultusername(){
     fi
 }
 
+wakeonethernet(){
+    choice="$(_mcli_convert_yes_no_to_integer "$1")"
+
+    sudo pmset -a womp "${choice}"
+    sudo pmset -a ring "${choice}"
+}
+
+guestaccess(){
+    value="$(_mcli_defaults_yes_no_to_boolean "/Library/Preferences/com.apple.AppleFileServer" \
+                                              "guestAccess" \
+                                              "$1")"
+    value="$(_mcli_defaults_yes_no_to_boolean "/Library/Preferences/com.apple.smb.server" \
+                                              "AllowGuestAccess" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
 
 location(){
     case $1 in
@@ -82,6 +101,12 @@ case "${subcommand}" in
         ;;
     defaultusername)
         defaultusername $@
+        ;;
+    wakeonethernet)
+        wakeonethernet $@
+        ;;
+    guestaccess)
+        guestaccess $@
         ;;
     *)
         help
