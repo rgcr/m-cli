@@ -15,17 +15,19 @@ help(){
     usage: m finder [ showhiddenfiles | showfileextensions | showdesktop | help ]
 
     Examples:
-      m finder showhiddenfiles           # get the current status
-      m finder showhiddenfiles YES       # show hidden files
-      m finder showhiddenfiles NO        # don't show hidden files
+      m finder showhiddenfiles              # get the current status
+      m finder showhiddenfiles YES          # show hidden files
+      m finder showhiddenfiles NO           # don't show hidden files
 
-      m finder showextensions            # get the current status
-      m finder showextensions YES        # show all file extensions
-      m finder showextensions NO         # don't show all file extensions
+      m finder showextensions               # get the current status
+      m finder showextensions YES           # show all file extensions
+      m finder showextensions NO            # don't show all file extensions
 
-      m finder showdesktop               # get the current desktop status
-      m finder showdesktop YES           # enable the desktop
-      m finder showdesktop NO            # disable the desktop
+      m finder showdesktop                  # get the current desktop status
+      m finder showdesktop YES              # enable the desktop
+      m finder showdesktop NO               # disable the desktop
+
+      m finder remotedsstore [ YES | NO ]   # whether to allow dsstore files to be created on remote volumes
 __EOF__
 }
 
@@ -53,6 +55,18 @@ desktop(){
     echo "${command} ${subcommand}: ${value}"
 }
 
+remotedsstore(){
+    local choice="$(_mcli_defaults_yes_no_to_boolean "$1")"
+
+    if [[ "${choice}" == "true" ]]; then
+        defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
+        defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
+    else
+        defaults delete com.apple.desktopservices DSDontWriteNetworkStores
+        defaults delete com.apple.desktopservices DSDontWriteUSBStores
+    fi
+}
+
 case "${subcommand}" in
     help)
         help
@@ -65,6 +79,9 @@ case "${subcommand}" in
         ;;
     showdesktop)
         desktop "$@"
+        ;;
+    remotedsstore)
+        remotedsstore "$@"
         ;;
     *)
         help

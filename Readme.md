@@ -387,21 +387,22 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Finder:
 ```
-    usage: m finder [ showhiddenfiles | showfileextensions | showdesktop | help  ]
+    usage: m finder [ showhiddenfiles | showfileextensions | showdesktop | help ]
 
     Examples:
-      m finder showhiddenfiles           # get the current status
-      m finder showhiddenfiles YES       # show hidden files
-      m finder showhiddenfiles NO        # no show hidden files
+      m finder showhiddenfiles              # get the current status
+      m finder showhiddenfiles YES          # show hidden files
+      m finder showhiddenfiles NO           # don't show hidden files
 
-      m finder showextensions            # get the current status
-      m finder showextensions YES        # show all file extensions
-      m finder showextensions NO         # don't show all file extensions
+      m finder showextensions               # get the current status
+      m finder showextensions YES           # show all file extensions
+      m finder showextensions NO            # don't show all file extensions
 
-      m finder showdesktop               # get the current desktop status
-      m finder showdesktop YES           # enable the desktop
-      m finder showdesktop NO            # disable the desktop
+      m finder showdesktop                  # get the current desktop status
+      m finder showdesktop YES              # enable the desktop
+      m finder showdesktop NO               # disable the desktop
 
+      m finder remotedsstore [ YES | NO ]   # whether to allow dsstore files to be created on remote volumes
 ```
 
 #### Firewall:
