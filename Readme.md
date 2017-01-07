@@ -421,23 +421,25 @@ usage:  m [OPTIONS] COMMAND [help]
       m info        #  print macOS operating system version information
 ```
 
-### Itunes:
+### iTunes:
 ```
-   usage: m itunes [ status | play | pause | next | prev | mute | unmute | vol up | vol down | vol #| stop | quit | help ]
+    usage: m itunes [ status | play | pause | next | prev | mute | unmute | vol up | vol down | vol # | stop | quit | autobackup | mediakeys | help ]
 
     Examples:
-      m itunes status       # Show status
-      m itunes play         # Play track
-      m itunes pause        # Pause track
-      m itunes next         # Play next track
-      m itunes prev         # Play previous track
-      m itunes mute         # Mute iTunes
-      m itunes unmute       # Unmute iTunes
-      m itunes vol up       # Volume Up
-      m itunes vol down     # Volume Down
-      m itunes vol #        # Set volume level
-      m itunes stop         # Stop track
-      m itunes quit         # Quit iTunes
+      m itunes status                   # Show status
+      m itunes play                     # Play track
+      m itunes pause                    # Pause track
+      m itunes next                     # Play next track
+      m itunes prev                     # Play previous track
+      m itunes mute                     # Mute iTunes
+      m itunes unmute                   # Unmute iTunes
+      m itunes vol up                   # Volume Up
+      m itunes vol down                 # Volume Down
+      m itunes vol #                    # Set volume level
+      m itunes stop                     # Stop track
+      m itunes quit                     # Quit iTunes
+      m itunes autobackup [ YES | NO ]  # Whether to backup devices after sync
+      m itunes mediakeys  [ YES | NO ]  # Whether to enable iTunes media keys
 ```
 
 #### Keyboard:

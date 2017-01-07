@@ -1,28 +1,55 @@
 #!/usr/bin/env bash
 
+declare command="$(basename "$0")"
+declare subcommand="$1"
+
+[ $# -gt 0 ] && shift
+
 help () {
     cat<<__EOF__
-    usage: m itunes [ status | play | pause | next | prev | mute | unmute | vol up | vol down | vol # | stop | quit | help ]
+    usage: m itunes [ status | play | pause | next | prev | mute | unmute | vol up | vol down | vol # | stop | quit | autobackup | mediakeys | help ]
 
     Examples:
-      m itunes status       # Show status
-      m itunes play         # Play track
-      m itunes pause        # Pause track
-      m itunes next         # Play next track
-      m itunes prev         # Play previous track
-      m itunes mute         # Mute iTunes
-      m itunes unmute       # Unmute iTunes
-      m itunes vol up       # Volume Up
-      m itunes vol down     # Volume Down
-      m itunes vol #        # Set volume level
-      m itunes stop         # Stop track
-      m itunes quit         # Quit iTunes
+      m itunes status                   # Show status
+      m itunes play                     # Play track
+      m itunes pause                    # Pause track
+      m itunes next                     # Play next track
+      m itunes prev                     # Play previous track
+      m itunes mute                     # Mute iTunes
+      m itunes unmute                   # Unmute iTunes
+      m itunes vol up                   # Volume Up
+      m itunes vol down                 # Volume Down
+      m itunes vol #                    # Set volume level
+      m itunes stop                     # Stop track
+      m itunes quit                     # Quit iTunes
+      m itunes autobackup [ YES | NO ]  # Whether to backup devices after sync 
+      m itunes mediakeys  [ YES | NO ]  # Whether to enable iTunes media keys
 __EOF__
+}
+
+autobackup(){
+    value="$(_mcli_defaults_yes_no_to_inverted_boolean "com.apple.iTunes" \
+                                                       "AutomaticDeviceBackupsDisabled" \
+                                                       "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+mediakeys(){
+    value="$(_mcli_convert_yes_no_to_load_unload "$1")"
+
+    launchctl ${value} -w /System/Library/LaunchAgents/com.apple.rcd.plist 2> /dev/null
 }
 
 case $1 in
     help)
         help
+        ;;
+    autobackup)
+        autobackup "$@"
+        ;;
+    mediakeys)
+        mediakeys "$@"
         ;;
     status)
         state=`osascript -e 'tell application "iTunes" to player state as string'`
