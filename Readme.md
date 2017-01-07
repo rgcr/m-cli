@@ -78,6 +78,7 @@ usage:  m [OPTIONS] COMMAND [help]
         shutdown
         sleep
         spotlight
+        timemachine
         timezone
         tooltip
         trash
@@ -635,6 +636,17 @@ usage:  m [OPTIONS] COMMAND [help]
 
     Examples:
       m spotlight shortcutkeys [ YES | NO ] # Whether to enable the Cmd-Space shortcuts
+```
+
+#### Time Machine:
+```
+    usage: m timemachine [ enable | disable | help ]
+
+    Examples:
+      m timemachine usenewdisks          [ YES | NO ]  # Whether to use new disks for backups
+      m timemachine useallnetworkvolumes [ YES | NO ]  # Whether to use unsupported network volumes for backups
+      m timemachine localbackups         [ YES | NO ]  # Whether to enable local backups
+      m timemachine addexclusion         path          # Specify a path to be excluded from backups
 ```
 
 #### Timezone:
