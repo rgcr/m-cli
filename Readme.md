@@ -54,6 +54,7 @@ usage:  m [OPTIONS] COMMAND [help]
         dashboard
         datetime
         debugmode
+        dialog
         dir
         disk
         diskimages
@@ -236,6 +237,14 @@ usage:  m [OPTIONS] COMMAND [help]
 ```
     usage: m debugmode [ enable | disable ]  # whether extra debugging options should
                                              # be exposed for various applications
+```
+
+#### Dialog:
+```
+    usage: m dialogs [ autoexpand | help ]
+
+    Examples:
+      m dialogs autoexpand  [ YES | NO ]  # Whether print, save and other dialogs auto-expand
 ```
 
 #### Dir:
