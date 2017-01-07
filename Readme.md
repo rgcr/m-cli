@@ -822,6 +822,7 @@ usage:  m [OPTIONS] COMMAND [help]
       m user showsecure               [ YES | NO ]           # whether to show secure users on the login screen (such as root)
       m user loginpoweroptions        [ YES | NO ]           # whether to show power options during login
       m user loginattemptsbeforehint  x                      # the number of failed attempts before hint is shown
+      m user loginmessage             "Your message"         # the custom text to show on the login screen (enter nothing to remove message)
 ```
 
 #### Volume:

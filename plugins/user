@@ -31,6 +31,7 @@ help(){
       m user showsecure               [ YES | NO ]           # whether to show secure users on the login screen (such as root)
       m user loginpoweroptions        [ YES | NO ]           # whether to show power options during login
       m user loginattemptsbeforehint  x                      # the number of failed attempts before hint is shown
+      m user loginmessage             "Your message"         # the custom text to show on the login screen (enter nothing to remove message)
 __EOF__
 }
 
@@ -165,6 +166,34 @@ loginattemptsbeforehint(){
     echo "${command} ${subcommand}: ${value}"
 }
 
+loginmessage(){
+    local message="$1"
+    local kextdir="/System/Library/Extensions"
+    local eficachedir="/System/Library/Caches/com.apple.corestorage/EFILoginLocalizations"
+
+    if [ -n "${message}" ]; then
+        sudo defaults write /Library/Preferences/com.apple.loginwindow LoginwindowText -string "$message"
+        sudo nvram good-samaritan-message="$message"
+    else
+        sudo sh -c "defaults delete /Library/Preferences/com.apple.loginwindow LoginwindowText 2> /dev/null"
+        sudo sh -c "nvram -d good-samaritan-message 2> /dev/null"
+    fi
+
+    # The CoreStorage kext cache needs to be updated so the recovery message
+    # is displayed on the FDE pre-boot screen.
+    #
+    # The CS cache can be updated directly by touching $eficachedir, if it exists.
+    # Otherwise you will need to touch $kextdir to generate it.
+
+    # Refresh system kext cache
+    sudo mkdir -p $kextdir 2> /dev/null
+
+    # Refresh CoreStorage EFI Cache
+    sudo mkdir -p $eficachedir 2> /dev/null
+
+    sudo touch $eficachedir
+}
+
 case $1 in
     help)
         help
@@ -198,6 +227,9 @@ case $1 in
         ;;
     loginattemptsbeforehint)
         loginattemptsbeforehint $@
+        ;;
+    loginmessage)
+        loginmessage $@
         ;;
     *)
         help
