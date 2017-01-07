@@ -252,8 +252,8 @@ usage:  m [OPTIONS] COMMAND [help]
     usage: m dir [ tree | size | delete | help ]
 
     Examples:
-      m dir tree        # tree view of folders in the current path
-      m dir tree /path  # tree view of folders in a specific path
+      m dir tree                  # tree view of folders in the current path
+      m dir tree /path            # tree view of folders in a specific path
 
       m dir delete empty          # delete empty folders recursively in the current path
       m dir delete empty /path    # delete empty folders recursively in a specific path
@@ -261,9 +261,11 @@ usage:  m [OPTIONS] COMMAND [help]
       m dir delete dsfiles        # delete .DS_Store files recursively in the current path
       m dir delete dsfiles /path  # delete .DS_Store files recursively in a specific path
 
-      m dir size        # calculate current folder size
-      m dir size /path  # calculate folder size in a specific path
+      m dir size                  # calculate current folder size
+      m dir size /path            # calculate folder size in a specific path
 
+      m dir show /path            # remove hidden flag from a directory
+      m dir hide /path            # add hidden flag to a directory
 ```
 
 ####  Disk:
