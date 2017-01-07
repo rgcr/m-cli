@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/defaults.sh"
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/keyboard_shortcuts.sh"
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/converters.sh"
+
+declare command="$(basename "$0")"
+declare subcommand="$1"
+
+[ $# -gt 0 ] && shift
+
+_mcli_toggle_dashboard_keyboard_shortcuts(){
+    local enabled="$1"
+    local dashboard_keyboard_shortcut_ids=(62 63)
+
+    for keyboard_shortcut_id in "${dashboard_keyboard_shortcut_ids[@]}"; do
+        _mcli_keyboard_shortcut_toggle "${keyboard_shortcut_id}" "${enabled}"
+    done
+}
+
+help(){
+    cat<<__EOF__
+    usage: m dashboard [ enable | disable | help ]
+
+    Examples:
+      m dashboard enable    # Enable the dashboard
+      m dashboard disable   # Disable the dashboard
+__EOF__
+}
+
+enable(){
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.dashboard" \
+                                              "mcx-disabled" \
+                                              "NO")"
+
+    _mcli_toggle_dashboard_keyboard_shortcuts "${value}"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+disable(){
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.dashboard" \
+                                              "mcx-disabled" \
+                                              "YES")"
+
+    _mcli_toggle_dashboard_keyboard_shortcuts "${value}"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+case "${subcommand}" in
+    help)
+        help
+        ;;
+    enable)
+        enable "$@"
+        ;;
+    disable)
+        disable "$@"
+        ;;
+    *)
+        help
+        ;;
+esac
+
+# vim: ts=4 sw=4 softtabstop=4 expandtab

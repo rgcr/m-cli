@@ -48,6 +48,7 @@ usage:  m [OPTIONS] COMMAND [help]
         airdrop
         battery
         bluetooth
+        dashboard
         dir
         disk
         display
@@ -154,6 +155,15 @@ usage:  m [OPTIONS] COMMAND [help]
       m bluetooth status    # bluetooth status
       m bluetooth enable    # turn on bluetooth
       m bluetooth disable   # turn off bluetooth
+```
+
+#### Dashboard:
+```
+    usage: m dashboard [ enable | disable | help ]
+
+    Examples:
+      m dashboard enable    # Enable the dashboard
+      m dashboard disable   # Disable the dashboard
 ```
 
 #### Debug Mode:
