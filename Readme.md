@@ -797,9 +797,11 @@ usage:  m [OPTIONS] COMMAND [help]
     usage: m update [ list | install | help ]
 
     Examples:
-      m update list                                                 # list available updates
-      m update install all                                          # install all the available updates
-      m update install iTunesX-12.4.1 RAWCameraUpdate6.20-6.20      # install specific updates
+      m update list                                                        # list available updates
+      m update install           all                                       # install all the available updates
+      m update install           iTunesX-12.4.1 RAWCameraUpdate6.20-6.20   # install specific updates
+      m update automaticinstall  [ YES | NO ]                              # whether automatic installs should be enabled
+      m update automaticdownload [ YES | NO ]                              # whether automatic downloads should be enabled
 ```
 
 #### User

@@ -1,18 +1,26 @@
 #!/usr/bin/env bash
 
+declare path_to_update_prefs="/Library/Preferences/com.apple.SoftwareUpdate"
+declare path_to_appstore_prefs="/Library/Preferences/com.apple.commerce"
+
+declare command="$(basename "$0")"
+declare subcommand="$1"
+
+[ $# -gt 0 ] && shift
+
 help(){
     cat<<__EOF__
     usage: m update [ list | install | help ]
 
-
     Examples:
-      m update list                                                 # list available updates
-      m update install all                                          # install all the available updates
-      m update install iTunesX-12.4.1 RAWCameraUpdate6.20-6.20      # install specific updates
+      m update list                                                        # list available updates
+      m update install           all                                       # install all the available updates
+      m update install           iTunesX-12.4.1 RAWCameraUpdate6.20-6.20   # install specific updates
+      m update automaticinstall  [ YES | NO ]                              # whether automatic installs should be enabled
+      m update automaticdownload [ YES | NO ]                              # whether automatic downloads should be enabled
 
 __EOF__
 }
-
 
 install_updates(){
     # at least one package
@@ -27,6 +35,35 @@ install_updates(){
     esac
 }
 
+automaticinstall(){
+    value="$(_mcli_defaults_yes_no_to_integer "${path_to_update_prefs}" \
+                                              "ConfigDataInstall" \
+                                              "$1" \
+                                              "sudo")"
+    value="$(_mcli_defaults_yes_no_to_integer "${path_to_update_prefs}" \
+                                              "CriticalUpdateInstall" \
+                                              "$1" \
+                                              "sudo")"
+    value="$(_mcli_defaults_yes_no_to_integer "${path_to_appstore_prefs}" \
+                                              "AutoUpdate" \
+                                              "$1" \
+                                              "sudo")"
+    value="$(_mcli_defaults_yes_no_to_integer "${path_to_appstore_prefs}" \
+                                              "AutoUpdateRestartRequired" \
+                                              "$1" \
+                                              "sudo")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+automaticdownload(){
+    value="$(_mcli_defaults_yes_no_to_integer "${path_to_update_prefs}" \
+                                              "AutomaticDownload" \
+                                              "$1" \
+                                              "sudo")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
 
 case $1 in
     help)
@@ -36,8 +73,13 @@ case $1 in
         sudo softwareupdate --list
         ;;
     install)
-        shift
         install_updates "$@"
+        ;;
+    automaticinstall)
+        automaticinstall "$@"
+        ;;
+    automaticdownload)
+        automaticdownload "$@"
         ;;
     *)
         help
