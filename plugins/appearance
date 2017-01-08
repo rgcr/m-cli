@@ -102,9 +102,6 @@ maincolor(){
         graphite)
             color="6"
             ;;
-        *)
-            color="$1"
-            ;;
     esac
 
     value="$(_mcli_defaults_number "NSGlobalDomain" \
@@ -217,8 +214,6 @@ highlightcolor(){
             color="0.000000 0.000000 0.000000";;
         snow)
             color="1.000000 1.000000 1.000000";;
-        *)
-            color="$1";;
     esac
 
     value="$(_mcli_defaults_string            "NSGlobalDomain" \
