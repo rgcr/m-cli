@@ -24,11 +24,11 @@ help(){
       m service unload <service_name>               # unload a service
 
     Examples:
-      m service --ls com.apple.sessionlogoutd       # show information about a specific service
-      m service start com.apple.sessionlogoutd      # start a service
-      m service stop com.apple.sessionlogoutd       # stop a service
-      m service load com.apple.sessionlogoutd       # load a service
-      m service unload com.apple.sessionlogoutd     # unload a service
+      m service --ls com.apple.sessionlogoutd
+      m service start com.apple.sessionlogoutd
+      m service stop com.apple.sessionlogoutd
+      m service load com.apple.sessionlogoutd
+      m service unload com.apple.sessionlogoutd
 
 __EOF__
 }
