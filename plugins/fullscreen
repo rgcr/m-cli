@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/defaults.sh"
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/converters.sh"
+
+declare command="$(basename "$0")"
+declare subcommand="$1"
+
+[ $# -gt 0 ] && shift
+
+help(){
+    cat<<__EOF__
+    usage: m fullscreen [ sortbymostrecentlyused | switchonactivation | separatedisplays | help ]
+
+    Examples:
+      m fullscreen sortbymostrecentlyused [ YES | NO ]   # Whether to the full screen apps reorder based on activity
+      m fullscreen switchonactivation     [ YES | NO ]   # Whether to switch to full screen app when activating the application (say by clicking in the dock)
+      m fullscreen separatedisplays       [ YES | NO ]   # Whether each display has its own set of full screen apps
+
+__EOF__
+}
+
+sortbymostrecentlyused() {
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.dock" \
+                                              "mru-spaces" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+switchonactivation() {
+    value="$(_mcli_defaults_yes_no_to_boolean "NSGlobalDomain" \
+                                              "AppleSpacesSwitchOnActivate" \
+                                              "$1")"
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.dock" \
+                                              "workspaces-auto-swoosh" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+separatedisplays() {
+    value="$(_mcli_defaults_yes_no_to_inverted_boolean "com.apple.spaces" \
+                                                       "spans-displays" \
+                                                       "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+case "${subcommand}" in
+    help)
+        help
+        ;;
+    sortbymostrecentlyused)
+        sortbymostrecentlyused
+        ;;
+    switchonactivation)
+        switchonactivation
+        ;;
+    separatedisplays)
+        separatedisplays
+        ;;
+    *)
+        help
+        ;;
+esac
+
+# vim: ts=4 sw=4 softtabstop=4 expandtab

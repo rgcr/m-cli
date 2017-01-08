@@ -65,6 +65,7 @@ usage:  m [OPTIONS] COMMAND [help]
         filevault
         finder
         firewall
+        fullscreen
         gatekeeper
         group
         hostname
@@ -437,6 +438,16 @@ usage:  m [OPTIONS] COMMAND [help]
       m firewall stealth              [ YES | NO ] # Whether to respond to pings
       m firewall add /path/to/file                 # Add app to firewall
       m firewall remove /path/to/file              # Remove app from firewall
+```
+
+#### Full Screen:
+```
+    usage: m fullscreen [ sortbymostrecentlyused | switchonactivation | separatedisplays | help ]
+
+    Examples:
+      m fullscreen sortbymostrecentlyused [ YES | NO ]   # Whether to the full screen apps reorder based on activity
+      m fullscreen switchonactivation     [ YES | NO ]   # Whether to switch to full screen app when activating the application (say by clicking in the dock)
+      m fullscreen separatedisplays       [ YES | NO ]   # Whether each display has its own set of full screen apps
 ```
 
 #### Gatekeeper:
