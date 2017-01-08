@@ -527,6 +527,12 @@ usage:  m [OPTIONS] COMMAND [help]
       m lock      # lock session
 ```
 
+#### Login Items:
+```
+    Usage:
+      m loginitems add <path_to_app> [ YES | NO ]  # Add a login item.  Optionally specifying wheither it should be hidden.
+```
+
 #### Menubar:
 ```
     Usage:
