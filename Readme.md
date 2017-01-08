@@ -485,19 +485,20 @@ usage:  m [OPTIONS] COMMAND [help]
 #### Keyboard:
 ```
     Usage:
-      m keyboard accentedpress    [ YES | NO ]   # Whether to enable press and hold to show accented characters
-      m keyboard spellchecking    [ YES | NO ]   # Whether to enable spell check indication (red squiggly lines)
-      m keyboard textsubstitution [ YES | NO ]   # Whether to substitute quotes, dashes, spelling corrections, etc automatically
-      m keyboard usefunctionkeys  [ YES | NO ]   # Whether to use F1 function keys or alternate function keys (brightness, etc)
-      m keyboard inputfieldaccess [              # Specify which input fields can be tabbed through
+      m keyboard accentedpress    [ YES | NO ]                # Whether to enable press and hold to show accented characters
+      m keyboard spellchecking    [ YES | NO ]                # Whether to enable spell check indication (red squiggly lines)
+      m keyboard textsubstitution [ YES | NO ]                # Whether to substitute quotes, dashes, spelling corrections, etc automatically
+      m keyboard usefunctionkeys  [ YES | NO ]                # Whether to use F1 function keys or alternate function keys (brightness, etc)
+      m keyboard inputfieldaccess [                           # Specify which input fields can be tabbed through
                                     basic              |
                                     allexceptdropdowns |
                                     all
                                   ]
-      m keyboard autodim          [ YES | NO ]   # Whether to automatically dim the keyboard brightness when idle
-      m keyboard autodimdelay     x              # How long to wait before dimming the keyboard brightness
-      m keyboard keyrepeatrate    x              # How quickly a held key repeats
-      m keyboard keyrepeatdelay   x.x            # How long a key needs to be held before repeating
+      m keyboard autodim          [ YES | NO ]                # Whether to automatically dim the keyboard brightness when idle
+      m keyboard autodimdelay     x                           # How long to wait before dimming the keyboard brightness
+      m keyboard keyrepeatrate    x                           # How quickly a held key repeats
+      m keyboard keyrepeatdelay   x.x                         # How long a key needs to be held before repeating
+      m keyboard toggleshortcut   [ ON | OFF ] <shortcut_id>  # Toggle a shortcut by its ID either on or off
 ```
 
 #### Launchpad:
