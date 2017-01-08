@@ -1,0 +1,122 @@
+#!/usr/bin/env bash
+
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/defaults.sh"
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/converters.sh"
+
+declare command="$(basename "$0")"
+declare subcommand="$1"
+
+[ $# -gt 0 ] && shift
+
+help(){
+    cat<<__EOF__
+    usage: m system [ quarantine | automaticapptermination | documentversioning | crashreporter | savetoicloudbydefault | savewindowsonquit | help ]
+
+    Examples:
+      m system quarantine                 [ YES | NO ]   # Whether to enable app quarantine
+      m system automaticapptermination    [ YES | NO ]   # Whether to enable automatic app termination
+      m system documentversioning         [ YES | NO ]   # Whether to enable document versioning
+      m system crashreporter              [ YES | NO ]   # Whether to enable the crash reporter
+      m system savetoicloudbydefault      [ YES | NO ]   # Whether to save to iCloud by default
+      m system savewindowsonquit          [ YES | NO ]   # Whether to save window state
+
+__EOF__
+}
+
+quarantine() {
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.LaunchServices" \
+                                              "LSQuarantine" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+automaticapptermination() {
+    value="$(_mcli_defaults_yes_no_to_inverted_boolean "NSGlobalDomain" \
+                                                       "NSDisableAutomaticTermination" \
+                                                       "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+documentversioning(){
+    local choice="$(_mcli_convert_yes_no_to_boolean "$1")"
+
+    defaults write NSGlobalDomain ApplePersistence -bool "${choice}"
+
+    if [[ "${choice}" == "true" ]]; then
+        sudo mkdir /.DocumentRevisions-V100 2> /dev/null
+        defaults delete NSGlobalDomain AutosavingDelay 2> /dev/null
+    else
+        sudo rm -rf /.DocumentRevisions-V1*
+        defaults write NSGlobalDomain AutosavingDelay -int 0
+    fi
+}
+
+crashreporter(){
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.SubmitDiagInfo" \
+                                              "AutoSubmit" \
+                                              "$1")"
+    _mcli_defaults_string                     "com.apple.CrashReporter" \
+                                              "DialogType" \
+                                              "server"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+savetoicloudbydefault(){
+    value="$(_mcli_defaults_yes_no_to_boolean "NSGlobalDomain" \
+                                              "NSDocumentSaveNewDocumentsToCloud" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+savewindowsonquit(){
+    value="$(_mcli_defaults_yes_no_to_boolean "NSGlobalDomain" \
+                                              "NSQuitAlwaysKeepsWindows" \
+                                              "$1")"
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.systempreferences" \
+                                              "NSQuitAlwaysKeepsWindows" \
+                                              "$1")"
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.loginwindow" \
+                                              "LoginwindowLaunchesRelaunchApps" \
+                                              "$1")"
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.loginwindow" \
+                                              "TALLogoutSavesState" \
+                                              "$1")"
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.Preview" \
+                                              "NSQuitAlwaysKeepsWindows" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+case "${subcommand}" in
+    help)
+        help
+        ;;
+    quarantine)
+        quarantine "$@"
+        ;;
+    automaticapptermination)
+        automaticapptermination "$@"
+        ;;
+    documentversioning)
+        documentversioning "$@"
+        ;;
+    crashreporter)
+        crashreporter "$@"
+        ;;
+    savetoicloudbydefault)
+        savetoicloudbydefault "$@"
+        ;;
+    savewindowsonquit)
+        savewindowsonquit "$@"
+        ;;
+    *)
+        help
+        ;;
+esac
+
+# vim: ts=4 sw=4 softtabstop=4 expandtab

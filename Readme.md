@@ -93,6 +93,7 @@ usage:  m [OPTIONS] COMMAND [help]
         sleep
         sound
         spotlight
+        system
         timemachine
         timezone
         tooltip
@@ -814,6 +815,19 @@ usage:  m [OPTIONS] COMMAND [help]
 
     Examples:
       m spotlight shortcutkeys [ YES | NO ] # Whether to enable the Cmd-Space shortcuts
+```
+
+#### System:
+```
+    usage: m system [ quarantine | automaticapptermination | documentversioning | crashreporter | savetoicloudbydefault | savewindowsonquit | help ]
+
+    Examples:
+      m system quarantine                 [ YES | NO ]   # Whether to enable app quarantine
+      m system automaticapptermination    [ YES | NO ]   # Whether to enable automatic app termination
+      m system documentversioning         [ YES | NO ]   # Whether to enable document versioning
+      m system crashreporter              [ YES | NO ]   # Whether to enable the crash reporter
+      m system savetoicloudbydefault      [ YES | NO ]   # Whether to save to iCloud by default
+      m system savewindowsonquit          [ YES | NO ]   # Whether to save window state
 ```
 
 #### Time Machine:
