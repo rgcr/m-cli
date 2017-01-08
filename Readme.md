@@ -594,6 +594,15 @@ usage:  m [OPTIONS] COMMAND [help]
       m lock      # lock session
 ```
 
+#### Menubar:
+```
+    usage: m menubar [ autohide | airplay | help ]
+
+    Examples:
+      m menubar autohide [ YES | NO ]   # Whether to autohide the menu bar
+      m menubar airplay  [ YES | NO ]   # Whether to show the airplay options in the menu bar
+```
+
 #### Mission Control:
 ```
     usage: m missioncontrol [ showcenter | help ]
