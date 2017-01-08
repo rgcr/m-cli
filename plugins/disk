@@ -1,8 +1,16 @@
 #!/usr/bin/env bash
 
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/defaults.sh"
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/converters.sh"
+
+declare command="$(basename "$0")"
+declare subcommand="$1"
+
+[ $# -gt 0 ] && shift
+
 help(){
     cat<<__EOF__
-    usage: m disk [ ls | list | info | fs | filesystems | ejectall | verify | repair | help ]
+    usage: m disk [ ls | list | info | fs | filesystems | ejectall | verify | repair | remotesharing | help ]
 
     Examples:
       m disk ls                                 # list disks
@@ -27,6 +35,8 @@ help(){
 
       m disk reformat /Volumes/myvol            # reformat a volume
       m disk rename CURRENTNAME NEWNAME         # rename a volume
+
+      m disk remotesharing [ YES | NO ]         # whether disks are allowed to be shared remotely
 
 __EOF__
 }
@@ -107,45 +117,54 @@ rename(){
 
 }
 
+remotesharing(){
+    local loaded="$(_mcli_convert_yes_no_to_load_unload "$1")"
+
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.NetworkBrowser" \
+                                              "ODSSupported" \
+                                              "$1")"
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.NetworkBrowser" \
+                                              "EnableODiskBrowsing" \
+                                              "$1")"
+
+    sudo sh -c "launchctl $loaded -w /System/Library/LaunchDaemons/com.apple.ODSAgent.plist 2> /dev/null"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
 case $1 in
     help)
         help
         ;;
     list|ls)
-        shift
         disk_ls "$@"
         ;;
     info)
-        shift
         disk_info "$@"
         ;;
     filesystems|fs)
-        shift
         list_filesystems
         ;;
     ejectall)
-        shift
         ejectall
         ;;
     verify)
-        shift
         verify "$@"
         ;;
     repair)
-        shift
         repair "$@"
         ;;
     format)
-        shift
         format "$@"
         ;;
     reformat)
-        shift
         reformat "$@"
         ;;
     rename)
-        shift
         rename "$@"
+        ;;
+    remotesharing)
+        remotesharing "$@"
         ;;
     *)
         help

@@ -272,9 +272,9 @@ usage:  m [OPTIONS] COMMAND [help]
       m dir hide /path            # add hidden flag to a directory
 ```
 
-####  Disk:
+#### Disk:
 ```
-    usage: m disk [ ls | list | info | fs | filesystems | ejectall | verify | repair | help ]
+    usage: m disk [ ls | list | info | fs | filesystems | ejectall | verify | repair | remotesharing | help ]
 
     Examples:
       m disk ls                                 # list disks
@@ -299,6 +299,8 @@ usage:  m [OPTIONS] COMMAND [help]
 
       m disk reformat /Volumes/myvol            # reformat a volume
       m disk rename CURRENTNAME NEWNAME         # rename a volume
+
+      m disk remotesharing [ YES | NO ]         # whether disks are allowed to be shared remotely
 
 ```
 
