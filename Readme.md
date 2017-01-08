@@ -105,6 +105,7 @@ usage:  m [OPTIONS] COMMAND [help]
         vpn
         wallpaper
         wifi
+        windows
 
 ```
 
@@ -985,6 +986,14 @@ usage:  m [OPTIONS] COMMAND [help]
       m wifi connect ESSID PASSWORD  # join a wifi network
       m wifi connect ESSID           # join a wifi network (prompt for password)
 
+```
+
+#### Windows:
+```
+    usage: m windows [ miniturizeondoubleclick | help ]
+
+    Examples:
+      m windows miniturizeondoubleclick [ YES | NO ]   # Whether to miniturize windows on a double click of the title bar
 ```
 
 ## Contributing

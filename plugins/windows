@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/defaults.sh"
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/converters.sh"
+
+declare command="$(basename "$0")"
+declare subcommand="$1"
+
+[ $# -gt 0 ] && shift
+
+help(){
+    cat<<__EOF__
+    usage: m windows [ miniturizeondoubleclick | help ]
+
+    Examples:
+      m windows miniturizeondoubleclick [ YES | NO ]   # Whether to miniturize windows on a double click of the title bar
+
+__EOF__
+}
+
+miniturizeondoubleclick() {
+    value="$(_mcli_defaults_yes_no_to_integer "NSGlobalDomain" \
+                                              "AppleMiniaturizeOnDoubleClick" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+case "${subcommand}" in
+    help)
+        help
+        ;;
+    miniturizeondoubleclick)
+        miniturizeondoubleclick "$@"
+        ;;
+    *)
+        help
+        ;;
+esac
+
+# vim: ts=4 sw=4 softtabstop=4 expandtab
