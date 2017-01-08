@@ -2,6 +2,9 @@ _mcli_convert_yes_no_to_boolean() {
     local choice="$1"
 
     case "${choice}" in
+        "")
+            echo ""
+            ;;
         1|[yY][eE][sS]|[tT][rR][uU][eE])
             echo "true"
             ;;
@@ -18,6 +21,9 @@ _mcli_convert_yes_no_to_on_off() {
     local choice="$1"
 
     case "${choice}" in
+        "")
+            echo ""
+            ;;
         1|[yY][eE][sS]|[tT][rR][uU][eE])
             echo "on"
             ;;
@@ -34,6 +40,9 @@ _mcli_convert_yes_no_to_enabled_disabled() {
     local choice="$1"
 
     case "${choice}" in
+        "")
+            echo ""
+            ;;
         1|[yY][eE][sS]|[tT][rR][uU][eE])
             echo "enabled"
             ;;
@@ -60,6 +69,9 @@ _mcli_convert_yes_no_to_load_unload() {
     local choice="$1"
 
     case "${choice}" in
+        "")
+            echo ""
+            ;;
         1|[yY][eE][sS]|[tT][rR][uU][eE])
             echo "load"
             ;;
@@ -76,6 +88,9 @@ _mcli_convert_yes_no_to_inverted_boolean() {
     local choice="$1"
 
     case "${choice}" in
+        "")
+            echo ""
+            ;;
         1|[yY][eE][sS]|[tT][rR][uU][eE])
             echo "false"
             ;;
@@ -92,6 +107,9 @@ _mcli_convert_yes_no_to_yes_no() {
     local choice="$1"
 
     case "${choice}" in
+        "")
+            echo ""
+            ;;
         1|[yY][eE][sS]|[tT][rR][uU][eE])
             echo "YES"
             ;;
@@ -108,6 +126,9 @@ _mcli_convert_yes_no_to_integer() {
     local choice="$1"
 
     case "${choice}" in
+        "")
+            echo ""
+            ;;
         1|[yY][eE][sS]|[tT][rR][uU][eE])
             echo "1"
             ;;
@@ -124,6 +145,9 @@ _mcli_convert_number_to_number() {
     local choice="$1"
 
     case "${choice}" in
+        "")
+            echo ""
+            ;;
         [0-9][.][0-9])
             echo "${choice}"
             ;;
