@@ -35,6 +35,7 @@ help(){
       m disk rename CURRENTNAME NEWNAME                 # rename a volume
 
       m disk remotesharing [ YES | NO ]                 # whether disks are allowed to be shared remotely
+      m disk autoplay      [ YES | NO ]                 # whether the system should open a window when a drive is inserted
 
 __EOF__
 }
@@ -132,6 +133,38 @@ remotesharing(){
     echo "${command} ${subcommand}: ${value}"
 }
 
+autoplay(){
+    local choice="$(_mcli_convert_yes_no_to_boolean "$1")"
+    local inverted_choice="$(_mcli_convert_yes_no_to_inverted_boolean "$1")"
+    local action;
+
+    case "$1" in
+        [nN][oO])
+            action="1"
+            ;;
+        [yY][eE][sS])
+            action="2"
+            ;;
+    esac
+
+    # Blank CD automatic action.
+    sudo defaults write /Library/Preferences/com.apple.digihub com.apple.digihub.blank.cd.appeared -dict action "${action}"
+
+    # Music CD automatic action.
+    sudo defaults write /Library/Preferences/com.apple.digihub com.apple.digihub.cd.music.appeared -dict action "${action}"
+
+    # Picture CD automatic action.
+    sudo defaults write /Library/Preferences/com.apple.digihub com.apple.digihub.cd.picture.appeared -dict action "${action}"
+
+    # Blank DVD automatic action.
+    sudo defaults write /Library/Preferences/com.apple.digihub com.apple.digihub.blank.dvd.appeared -dict action "${action}"
+
+    # Video DVD automatic action.
+    sudo defaults write /Library/Preferences/com.apple.digihub com.apple.digihub.dvd.video.appeared -dict action "${action}"
+
+    echo "${command} ${subcommand}: ${choice}"
+}
+
 case "${subcommand}" in
     help)
         help
@@ -165,6 +198,9 @@ case "${subcommand}" in
         ;;
     remotesharing)
         remotesharing "$@"
+        ;;
+    autoplay)
+        autoplay "$@"
         ;;
     *)
         help

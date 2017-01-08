@@ -275,7 +275,7 @@ usage:  m [OPTIONS] COMMAND [help]
       m disk rename CURRENTNAME NEWNAME                 # rename a volume
 
       m disk remotesharing [ YES | NO ]                 # whether disks are allowed to be shared remotely
-
+      m disk autoplay      [ YES | NO ]                 # whether the system should open a window when a drive is inserted
 ```
 
 #### Disk Images:
