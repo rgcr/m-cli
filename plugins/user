@@ -192,7 +192,7 @@ loginmessage(){
     sudo touch $eficachedir
 }
 
-case $1 in
+case "${subcommand}" in
     help)
         help
         ;;

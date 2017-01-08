@@ -3,6 +3,9 @@
 declare path_to_update_prefs="/Library/Preferences/com.apple.SoftwareUpdate"
 declare path_to_appstore_prefs="/Library/Preferences/com.apple.commerce"
 
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/defaults.sh"
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/converters.sh"
+
 declare command="$(basename "$0")"
 declare subcommand="$1"
 
@@ -91,7 +94,7 @@ interval(){
     echo "${command} ${subcommand}: ${value}"
 }
 
-case $1 in
+case "${subcommand}" in
     help)
         help
         ;;

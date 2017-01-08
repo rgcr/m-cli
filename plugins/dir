@@ -100,7 +100,7 @@ hide(){
     chflags hidden "$1"
 }
 
-case "$1" in
+case "${subcommand}" in
     help)
         help
         ;;

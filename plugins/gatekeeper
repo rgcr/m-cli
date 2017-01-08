@@ -2,6 +2,11 @@
 
 # TODO: add more functionalities
 
+declare command="$(basename "$0")"
+declare subcommand="$1"
+
+[ $# -gt 0 ] && shift
+
 help(){
     cat<<__EOF__
     Usage:
@@ -51,15 +56,12 @@ case $1 in
         spctl --status
         ;;
     list|ls)
-        shift
         gk_list "$*"
         ;;
     enable)
-        shift
         enable "$*"
         ;;
     disable)
-        shift
         disable "$*"
         ;;
     *)

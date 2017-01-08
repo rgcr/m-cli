@@ -130,7 +130,7 @@ remotesharing(){
     echo "${command} ${subcommand}: ${value}"
 }
 
-case $1 in
+case "${subcommand}" in
     help)
         help
         ;;

@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-declare path_to_plistbuddy="/usr/libexec/PlistBuddy"
-
 source "$( dirname "${BASH_SOURCE[0]}" )/../lib/defaults.sh"
 source "$( dirname "${BASH_SOURCE[0]}" )/../lib/converters.sh"
 

@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/defaults.sh"
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/converters.sh"
+
+declare command="$(basename "$0")"
+declare subcommand="$1"
+
+[ $# -gt 0 ] && shift
+
 help(){
     cat<<__EOF__
     Usage:
@@ -50,16 +58,14 @@ _toggle_debug_mode(){
     defaults write com.apple.Backup IncludeDebugMenu -bool "${enabled}"
 }
 
-case $1 in
+case "${subcommand}" in
     help)
         help
         ;;
     enable)
-        shift
         _toggle_debug_mode "true"
         ;;
     disable)
-        shift
         _toggle_debug_mode "false"
         ;;
     *)

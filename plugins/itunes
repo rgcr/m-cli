@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/defaults.sh"
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/converters.sh"
+
 declare command="$(basename "$0")"
 declare subcommand="$1"
 
@@ -39,7 +42,7 @@ mediakeys(){
     launchctl ${value} -w /System/Library/LaunchAgents/com.apple.rcd.plist 2> /dev/null
 }
 
-case $1 in
+case "${subcommand}" in
     help)
         help
         ;;
