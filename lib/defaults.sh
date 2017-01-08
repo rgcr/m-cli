@@ -13,10 +13,10 @@ _mcli_read_boolean_as_yes_no() {
     local value="$(_mcli_read $@)"
 
     case "${value}" in
-        0|[nN][oO]|[fF][aA][lL][sS][eE])
+        0|[nN][oO]|[oO][fF][fF]|[fF][aA][lL][sS][eE])
             echo "NO"
             ;;
-        1|[yY][eE][sS]|[tT][rU][eE])
+        1|[yY][eE][sS]|[oO][nN]|[tT][rR][rU][eE])
             echo "YES"
             ;;
     esac
