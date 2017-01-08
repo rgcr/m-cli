@@ -13,8 +13,12 @@ _set_power_setting(){
     local battery_value="$2"
     local plugged_value="$2"
 
-    sudo pmset -b "${setting}" "${battery_value}"
-    sudo pmset -c "${setting}" "${plugged_value}"
+    if [ -n "${battery_value}" ] && [ -n "${plugged_value}" ]; then
+        sudo pmset -b "${setting}" "${battery_value}"
+        sudo pmset -c "${setting}" "${plugged_value}"
+    else
+        sudo pmset -g | grep "[[:space:]]${setting}[[:space:]]"
+    fi
 }
 
 help(){
@@ -77,7 +81,11 @@ appnapp(){
 restartonhang(){
     value="$(_mcli_convert_yes_no_to_on_off "$1")"
 
+    if [ -n "${value}" ]; then
     sudo /usr/sbin/systemsetup -setrestartfreeze "${value}"
+    else
+      sudo /usr/sbin/systemsetup -getrestartfreeze
+    fi
 }
 
 persistmemory(){

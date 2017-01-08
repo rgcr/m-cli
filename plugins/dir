@@ -93,10 +93,14 @@ delete(){
 }
 
 show(){
+    [ -z "$1" ] && help && return
+
     chflags nohidden "$1"
 }
 
 hide(){
+    [ -z "$1" ] && help && return
+
     chflags hidden "$1"
 }
 

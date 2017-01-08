@@ -26,7 +26,7 @@ startupchime(){
 
     if [[ "${choice}" == "true" ]]; then
         sudo nvram -d SystemAudioVolume
-    else
+    elif [[ "${choice}" == "false" ]]; then
         sudo nvram SystemAudioVolume=" "
     fi
 }
@@ -84,6 +84,8 @@ speechtotext(){
 
 voiceover(){
     local choice="$(_mcli_convert_yes_no_to_load_unload "$1")"
+
+    [ -z "${choice}" ] && return
 
     sudo sh -c "launchctl ${choice} -w /System/Library/LaunchAgents/com.apple.VoiceOver.plist 2> /dev/null"
     sudo sh -c "launchctl ${choice} -w /System/Library/LaunchAgents/com.apple.ScreenReaderUIServer.plist 2> /dev/null"

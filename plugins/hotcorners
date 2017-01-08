@@ -94,6 +94,8 @@ set(){
             ;;
     esac
 
+    [ -z "${corner}" ] || [ -z "${action}" ] || [ -z "${modifier}" ] && help && return
+
     defaults write com.apple.dock wvous-${corner}-corner   -integer $action
     defaults write com.apple.dock wvous-${corner}-modifier -integer $modifier
 }

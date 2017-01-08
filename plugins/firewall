@@ -40,22 +40,38 @@ case "${subcommand}" in
     autoallowsignedapps)
         choice="$(_mcli_convert_yes_no_to_on_off "$1")"
 
+        if [ -n "${choice}" ]; then
         sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setallowsigned "${choice}"
+        else
+          sudo /usr/libexec/ApplicationFirewall/socketfilterfw --getallowsigned
+        fi
         ;;
     blockall)
         choice="$(_mcli_convert_yes_no_to_on_off "$1")"
 
+        if [ -n "${choice}" ]; then
         sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setblockall "${choice}"
+        else
+          sudo /usr/libexec/ApplicationFirewall/socketfilterfw --getblockall
+        fi
         ;;
     logging)
         choice="$(_mcli_convert_yes_no_to_on_off "$1")"
 
+        if [ -n "${choice}" ]; then
         sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setloggingmode "${choice}"
+        else
+          sudo /usr/libexec/ApplicationFirewall/socketfilterfw --getloggingmode
+        fi
         ;;
     stealth)
         choice="$(_mcli_convert_yes_no_to_on_off "$1")"
 
+        if [ -n "${choice}" ]; then
         sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setstealthmode "${choice}"
+        else
+          sudo /usr/libexec/ApplicationFirewall/socketfilterfw --getstealthmode
+        fi
         ;;
     list)
         sudo /usr/libexec/ApplicationFirewall/socketfilterfw --list

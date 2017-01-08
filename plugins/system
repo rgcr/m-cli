@@ -47,7 +47,7 @@ documentversioning(){
     if [[ "${choice}" == "true" ]]; then
         sudo mkdir /.DocumentRevisions-V100 2> /dev/null
         defaults delete NSGlobalDomain AutosavingDelay 2> /dev/null
-    else
+    elif [[ "${choice}" == "false" ]]; then
         sudo rm -rf /.DocumentRevisions-V1*
         defaults write NSGlobalDomain AutosavingDelay -int 0
     fi

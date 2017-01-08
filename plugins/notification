@@ -26,7 +26,9 @@ disable(){
 }
 
 showcenter(){
-    local choice="$(_mcli_convert_yes_no_to_load_unload $1)"
+    [ -z "$1" ] && help && return
+
+    local choice="$(_mcli_convert_yes_no_to_load_unload "$1")"
 
     launchctl "${choice}" -w /System/Library/LaunchAgents/com.apple.notificationcenterui.plist
 

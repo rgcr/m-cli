@@ -37,6 +37,8 @@ autobackup(){
 }
 
 mediakeys(){
+    [ -z "$1" ] && help && return
+
     value="$(_mcli_convert_yes_no_to_load_unload "$1")"
 
     launchctl ${value} -w /System/Library/LaunchAgents/com.apple.rcd.plist 2> /dev/null

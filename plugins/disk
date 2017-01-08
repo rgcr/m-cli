@@ -116,6 +116,8 @@ rename(){
 }
 
 remotesharing(){
+    [ -z "$1" ] && help && exit 1
+
     local loaded="$(_mcli_convert_yes_no_to_load_unload "$1")"
 
     value="$(_mcli_defaults_yes_no_to_boolean "com.apple.NetworkBrowser" \

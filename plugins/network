@@ -46,13 +46,21 @@ defaultusername(){
         defaults delete com.apple.NetworkAuthorization UseDefaultName
         defaults delete com.apple.NetworkAuthorization DefaultName
     fi
+
+    defaults read com.apple.NetworkAuthorization UseDefaultName
+    defaults read com.apple.NetworkAuthorization DefaultName
 }
 
 wakeonethernet(){
     choice="$(_mcli_convert_yes_no_to_integer "$1")"
 
+    if [ -n "${choice}" ]; then
     sudo pmset -a womp "${choice}"
     sudo pmset -a ring "${choice}"
+    fi
+
+    sudo pmset -g | grep womp
+    sudo pmset -g | grep ring
 }
 
 guestaccess(){
