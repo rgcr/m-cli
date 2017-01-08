@@ -39,9 +39,22 @@ _mcli_read_inverted_boolean() {
 
     if [[ "${value}" == "YES" ]]; then
         echo "NO"
-    else
+    elif [[ "${value}" == "NO" ]]; then
         echo "YES"
+    else
+        echo "ERROR"
     fi
+}
+
+_mcli_invert_boolean() {
+    case "$1" in
+        0|[nN][oO]|[oO][fF][fF]|[fF][aA][lL][sS][eE])
+            echo "YES"
+            ;;
+        1|[yY][eE][sS]|[oO][nN]|[tT][rR][rU][eE])
+            echo "NO"
+            ;;
+    esac
 }
 
 _mcli_defaults_yes_no_to_integer() {
@@ -53,7 +66,9 @@ _mcli_defaults_yes_no_to_boolean() {
 }
 
 _mcli_defaults_yes_no_to_inverted_boolean() {
-    _mcli_defaults_yes_no_to_type "boolean" "convert_yes_no_to_inverted_boolean" "$@"
+    local result="$(_mcli_defaults_yes_no_to_type "boolean" "convert_yes_no_to_inverted_boolean" "$@")"
+
+    _mcli_invert_boolean "${result}"
 }
 
 _mcli_defaults_number() {
@@ -126,5 +141,9 @@ _mcli_defaults_yes_no_to_type() {
       ${sudo} defaults write "${domain}" "${key}" -${type} "${transformed}"
     fi
 
-    _mcli_read_boolean "${domain}" "${key}"
+    if [[ "${transformed}" != "ERROR" ]]; then
+      _mcli_read_boolean_as_yes_no "${domain}" "${key}" "${sudo}"
+    else
+      echo "ERROR"
+    fi
 }

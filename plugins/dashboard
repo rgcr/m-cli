@@ -43,7 +43,7 @@ disable(){
 
     _mcli_toggle_dashboard_keyboard_shortcuts "${value}"
 
-    echo "${command} ${subcommand}: ${value}"
+    echo "${command} enable: ${value}"
 }
 
 case "${subcommand}" in
