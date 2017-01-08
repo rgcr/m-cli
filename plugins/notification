@@ -17,6 +17,14 @@ help(){
 __EOF__
 }
 
+enable(){
+  showcenter "YES"
+}
+
+disable(){
+  showcenter "NO"
+}
+
 showcenter(){
     local choice="$(_mcli_convert_yes_no_to_load_unload $1)"
 
@@ -41,6 +49,12 @@ case "${subcommand}" in
         ;;
     showcenter)
         showcenter "$@"
+        ;;
+    enable)
+        enable "$@"
+        ;;
+    disable)
+        disable "$@"
         ;;
     bannertime)
         bannertime "$@"

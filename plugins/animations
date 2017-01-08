@@ -105,6 +105,9 @@ case "${subcommand}" in
     inputs)
         inputs "$@"
         ;;
+    finder)
+        finder "$@"
+        ;;
     fullscreen)
         fullscreen "$@"
         ;;

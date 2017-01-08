@@ -35,7 +35,7 @@ case $1 in
         clean_trash
         ;;
     warn)
-        warn
+        warn "$@"
         ;;
     status)
         du -ch $HOME/.Trash/* 2>/dev/null | tail -n 1 | awk '{print "Size: ", $1}'

@@ -37,7 +37,7 @@ case "${subcommand}" in
         display_status
         ;;
     autobrightness)
-        autobrightness $@
+        autobrightness "$@"
         ;;
     *)
         help

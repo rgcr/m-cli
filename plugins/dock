@@ -209,49 +209,49 @@ case "${subcommand}" in
         disable
         ;;
     activeindicators)
-        active_indicators $@
+        active_indicators "$@"
         ;;
     bounceonappactivity)
-        bounce_on_app_activity $@
+        bounce_on_app_activity "$@"
         ;;
     bounceonapplaunch)
-        bounce_on_app_launch $@
+        bounce_on_app_launch "$@"
         ;;
     showdelay)
-        auto_hide_speed $@
+        auto_hide_delay "$@"
         ;;
     autohidedelay)
-        auto_hide_delay $@
+        auto_hide_delay "$@"
         ;;
     autohidespeed)
-        auto_hide_speed $@
+        auto_hide_speed "$@"
         ;;
     autohide)
-        auto_hide $@
+        auto_hide "$@"
         ;;
     fullscreendelay)
-        full_screen_delay $@
+        full_screen_delay "$@"
         ;;
     itunesnotifications)
-        itunes_notifications $@
+        itunes_notifications "$@"
         ;;
     magnification)
-        magnify $@
+        magnify "$@"
         ;;
     magnificationsize)
-        magnification_size $@
+        magnification_size "$@"
         ;;
     hiddenappdimming)
-        hidden_app_dimming $@
+        hidden_app_dimming "$@"
         ;;
     iconsize)
-        icon_size $@
+        icon_size "$@"
         ;;
     onlyshowrunning)
-        only_show_running $@
+        only_show_running "$@"
         ;;
     position)
-        dock_position $@
+        dock_position "$@"
         ;;
     addblankspace)
         add_blank_space

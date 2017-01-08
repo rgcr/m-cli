@@ -112,11 +112,14 @@ case "${subcommand}" in
     powerbuttonsleeps)
         powerbuttonsleeps "$@"
         ;;
-    appnapp)
-        appnapp "$@"
+    appnap)
+        appnap "$@"
         ;;
     restartonhang)
         restartonhang "$@"
+        ;;
+    persistmemory)
+        persistmemory "$@"
         ;;
     *)
         help

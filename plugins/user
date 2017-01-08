@@ -200,34 +200,34 @@ case $1 in
         user_ls
         ;;
     info)
-        user_info $@
+        user_info "$@"
         ;;
     create)
         user_create
         ;;
     delete)
-        user_delete $@
+        user_delete "$@"
         ;;
     autologin)
-        autologin $@
+        autologin "$@"
         ;;
     fastswitching)
-        fastswitching $@
+        fastswitching "$@"
         ;;
     guest)
-        guest $@
+        guest "$@"
         ;;
     showsecure)
-        showsecure $@
+        showsecure "$@"
         ;;
     loginpoweroptions)
-        loginpoweroptions $@
+        loginpoweroptions "$@"
         ;;
     loginattemptsbeforehint)
-        loginattemptsbeforehint $@
+        loginattemptsbeforehint "$@"
         ;;
     loginmessage)
-        loginmessage $@
+        loginmessage "$@"
         ;;
     *)
         help

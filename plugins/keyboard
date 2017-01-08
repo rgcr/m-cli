@@ -137,31 +137,31 @@ case "${subcommand}" in
         help
         ;;
     accentedpress)
-        accentedpress $@
+        accentedpress "$@"
         ;;
     spellchecking)
-        spellchecking $@
+        spellchecking "$@"
         ;;
     textsubstitution)
-        textsubstitution $@
+        textsubstitution "$@"
         ;;
     usefunctionkeys)
-        usefunctionkeys $@
+        usefunctionkeys "$@"
         ;;
     inputfieldaccess)
-        inputfieldaccess $@
+        inputfieldaccess "$@"
         ;;
     autodim)
-        autodim $@
+        autodim "$@"
         ;;
     autodimdelay)
-        autodimdelay $@
+        autodimdelay "$@"
         ;;
     keyrepeatrate)
-        keyrepeatrate $@
+        keyrepeatrate "$@"
         ;;
     keyrepeatdelay)
-        keyrepeatdelay $@
+        keyrepeatdelay "$@"
         ;;
     *)
         help

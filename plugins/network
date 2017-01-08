@@ -95,16 +95,16 @@ case "${subcommand}" in
         list_netservices
         ;;
     location)
-        location $@
+        location "$@"
         ;;
     defaultusername)
-        defaultusername $@
+        defaultusername "$@"
         ;;
     wakeonethernet)
-        wakeonethernet $@
+        wakeonethernet "$@"
         ;;
     guestaccess)
-        guestaccess $@
+        guestaccess "$@"
         ;;
     *)
         help

@@ -10,7 +10,7 @@ _mcli_read() {
 }
 
 _mcli_read_boolean_as_yes_no() {
-    local value="$(_mcli_read $@)"
+    local value="$(_mcli_read "$@")"
 
     case "${value}" in
         0|[nN][oO]|[oO][fF][fF]|[fF][aA][lL][sS][eE])
@@ -23,25 +23,19 @@ _mcli_read_boolean_as_yes_no() {
 }
 
 _mcli_read_number() {
-    local value="$(_mcli_read $@)"
+    local value="$(_mcli_read "$@")"
 
     echo "${value}"
 }
 
 _mcli_read_string() {
-    local value="$(_mcli_read $@)"
-
-    echo "${value}"
-}
-
-_mcli_read_font() {
-    local value="$(_mcli_read $@)"
+    local value="$(_mcli_read "$@")"
 
     echo "${value}"
 }
 
 _mcli_read_inverted_boolean() {
-    local value="$(_mcli_read_boolean $@)"
+    local value="$(_mcli_read_boolean_as_yes_no "$@")"
 
     if [[ "${value}" == "YES" ]]; then
         echo "NO"
@@ -51,15 +45,15 @@ _mcli_read_inverted_boolean() {
 }
 
 _mcli_defaults_yes_no_to_integer() {
-    _mcli_defaults_yes_no_to_type "integer" "convert_yes_no_to_boolean" $@
+    _mcli_defaults_yes_no_to_type "integer" "convert_yes_no_to_integer" "$@"
 }
 
 _mcli_defaults_yes_no_to_boolean() {
-    _mcli_defaults_yes_no_to_type "boolean" "convert_yes_no_to_boolean" $@
+    _mcli_defaults_yes_no_to_type "boolean" "convert_yes_no_to_boolean" "$@"
 }
 
 _mcli_defaults_yes_no_to_inverted_boolean() {
-    _mcli_defaults_yes_no_to_type "boolean" "convert_yes_no_to_inverted_boolean" $@
+    _mcli_defaults_yes_no_to_type "boolean" "convert_yes_no_to_inverted_boolean" "$@"
 }
 
 _mcli_defaults_number() {

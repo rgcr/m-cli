@@ -49,16 +49,13 @@ case "${subcommand}" in
         help
         ;;
     delay)
-        delay
+        delay "$@"
         ;;
     autowrap)
-        autowrap
+        autowrap "$@"
         ;;
     fontsize)
-        fontsize
-        ;;
-    fontname)
-        fontname
+        fontsize "$@"
         ;;
     *)
         help

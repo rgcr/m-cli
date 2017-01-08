@@ -292,6 +292,9 @@ case "${subcommand}" in
     minimumplayablepreviewsize)
         minimumplayablepreviewsize "$@"
         ;;
+    datetype)
+        datetype "$@"
+        ;;
     defaultlocation)
         defaultlocation "$@"
         ;;

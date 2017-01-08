@@ -107,25 +107,25 @@ case "${subcommand}" in
         help
         ;;
     disconnectonlogout)
-        disconnectonlogout $@
+        disconnectonlogout "$@"
         ;;
     nonpreferrednetworks)
-        preferrednetworks $@
+        nonpreferrednetworks "$@"
         ;;
     preferrednetworks)
-        preferrednetworks $@
+        preferrednetworks "$@"
         ;;
     rememberrecents)
-        rememberrecents $@
+        rememberrecents "$@"
         ;;
     secureadhocnetworks)
-        secureadhocnetworks $@
+        secureadhocnetworks "$@"
         ;;
     securechangenetworks)
-        securechangenetworks $@
+        securechangenetworks "$@"
         ;;
     securetogglepower)
-        securetogglepower $@
+        securetogglepower "$@"
         ;;
     *)
         help

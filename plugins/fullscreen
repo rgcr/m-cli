@@ -50,13 +50,13 @@ case "${subcommand}" in
         help
         ;;
     sortbymostrecentlyused)
-        sortbymostrecentlyused
+        sortbymostrecentlyused "$@"
         ;;
     switchonactivation)
-        switchonactivation
+        switchonactivation "$@"
         ;;
     separatedisplays)
-        separatedisplays
+        separatedisplays "$@"
         ;;
     *)
         help
