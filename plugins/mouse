@@ -1,0 +1,605 @@
+#!/usr/bin/env bash
+
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/defaults.sh"
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/converters.sh"
+
+declare command="$(basename "$0")"
+declare subcommand="$1"
+
+[ $# -gt 0 ] && shift
+
+help(){
+    cat<<__EOF__
+    Usage:
+      onefingersingletap          [ YES | NO ]
+      twofingersingletap          [ YES | NO ]
+      threefingersingletap        [ lookupdefinition | disable ]
+      onefingerdoubletap          [ smartzoom | missioncontrol | disable ]
+      twofingerdoubletap          [ smartzoom | missioncontrol | disable ]
+      twofingerhorizontalswipe    [ switchpages | switchspaces | horizontalscroll | disable ]
+      threefingerhorizontalswipe  [ switchpages | switchapps | disable ]
+      fourfingerhorizontalswipe   [ switchapps | disable ]
+      threefingerverticalswipe    [ missioncontrol | expose | disable ]
+      fourfingerverticalswipe     [ missioncontrol | expose | disable ]
+      threefingerdrag             [ YES | NO ]
+      twofingerpinch              [ YES | NO ]
+      fourfingerpinch             [ launchpad | disable ]
+      swipefromrightedge          [ notificationcenter | disable ]
+      rotation                    [ YES | NO ]
+      dragging                    [ YES | NO ]
+      shaketoenlarge              [ YES | NO ]
+
+      mousemovement               x.x x.x
+      trackpadmovement            x.x x.x
+__EOF__
+}
+
+onefingersingletap(){
+    # Toggle Tap-To-Click on Internal Touchpad
+    value="$(_mcli_defaults_yes_no_to_integer "NSGlobalDomain" \
+                                              "com.apple.mouse.tapBehavior" \
+                                              "$1")"
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.AppleMultitouchTrackpad" \
+                                              "Clicking" \
+                                              "$1")"
+
+    # Toggle Tap-To-Click on External Touchpad
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.driver.AppleBluetoothMultitouch.trackpad" \
+                                              "Clicking" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+twofingersingletap(){
+    # Toggle Secondary "Right" Click on Internal Touchpad
+    value="$(_mcli_defaults_yes_no_to_boolean "NSGlobalDomain" \
+                                              "com.apple.trackpad.enableSecondaryClick" \
+                                              "$1" \
+                                              "sudo")"
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.AppleMultitouchTrackpad" \
+                                              "TrackpadRightClick" \
+                                              "$1")"
+
+    # Toggle Secondary "Right" Click on External Touchpad
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.driver.AppleBluetoothMultitouch.trackpad" \
+                                              "TrackpadRightClick" \
+                                              "$1")"
+
+    local mode="$(if [[ "${value}" == "true" ]]; then
+                    echo "TwoButton";
+                  elif [[ "${value}" == "false" ]]; then
+                    echo "OneButton";
+                  fi)"
+
+    # Toggle Secondary "Right" Click on Magic Mouse
+    value="$(_mcli_defaults_string            "com.apple.driver.AppleBluetoothMultitouch.mouse" \
+                                              "MouseButtonMode" \
+                                              "${mode}")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+threefingersingletap(){
+    local mode
+
+    case "$1" in
+        lookupdefinition)
+            mode="2";;
+        disabled)
+            mode="0";;
+        *)
+            mode="$1";;
+    esac
+
+    # For Internal Trackpad
+    value="$(_mcli_defaults_number "NSGlobalDomain" \
+                                   "com.apple.trackpad.threeFingerTapGesture" \
+                                   "${mode}" \
+                                   "sudo")"
+    value="$(_mcli_defaults_number "com.apple.AppleMultitouchTrackpad" \
+                                   "TrackpadThreeFingerTapGesture" \
+                                   "${mode}")"
+
+    # For External Trackpad
+    value="$(_mcli_defaults_number "com.apple.driver.AppleBluetoothMultitouch.trackpad" \
+                                   "TrackpadThreeFingerTapGesture" \
+                                   "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+onefingerdoubletap(){
+    local mode
+
+    case "$1" in
+        smartzoom)
+            mode="1";;
+        missioncontrol)
+            mode="3";;
+        disabled)
+            mode="0";;
+        *)
+            mode="$1";;
+    esac
+
+    value="$(_mcli_defaults_number "com.apple.driver.AppleBluetoothMultitouch.mouse" \
+                                   "MouseOneFingerDoubleTapGesture" \
+                                   "${mode}")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+twofingerdoubletap(){
+    local mode
+
+    case $1 in
+        smartzoom)
+            mode="1";;
+        missioncontrol)
+            mode="3";;
+        disabled)
+            mode="0";;
+        *)
+            mode="$1";;
+    esac
+
+    # Internal Trackpad
+    value="$(_mcli_defaults_number "NSGlobalDomain" \
+                                   "com.apple.trackpad.twoFingerDoubleTapGesture" \
+                                   "${mode}" \
+                                   "sudo")"
+    value="$(_mcli_defaults_number "com.apple.AppleMultitouchTrackpad" \
+                                   "TrackpadTwoFingerDoubleTapGesture" \
+                                   "${mode}")"
+
+    # External Trackpad
+    value="$(_mcli_defaults_number "com.apple.driver.AppleBluetoothMultitouch.trackpad" \
+                                   "TrackpadTwoFingerDoubleTapGesture" \
+                                   "${mode}")"
+
+    # External Mouse
+    value="$(_mcli_defaults_number "com.apple.driver.AppleBluetoothMultitouch.mouse" \
+                                   "MouseTwoFingerDoubleTapGesture" \
+                                   "${mode}")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+twofingerhorizontalswipe(){
+    local mode
+    local navigatewithscrolls="NO"
+
+    case $1 in
+        disabled)
+            mode="0";;
+        horizontalscroll)
+            mode="0";;
+        switchpages)
+            mode="1";;
+        switchspaces)
+            mode="2";;
+        *)
+            mode="$1";;
+    esac
+
+    # Internal/External Trackpads
+    [[ "${mode}" == "1" ]] && navigatewithscrolls="YES"
+
+    value="$(_mcli_defaults_yes_no_to_boolean "NSGlobalDomain" \
+                                              "AppleEnableSwipeNavigateWithScrolls" \
+                                              "${navigatewithscrolls}")"
+
+    # External Mouse
+    value="$(_mcli_defaults_number "com.apple.driver.AppleBluetoothMultitouch.mouse" \
+                                   "MouseTwoFingerHorizSwipeGesture" \
+                                   "${mode}")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+threefingerhorizontalswipe(){
+    local mode;
+
+    case "$1" in
+        disabled)
+            mode="0";;
+        switchpages)
+            mode="1";;
+        switchapps)
+            mode="2";;
+        *)
+            mode="$1";;
+    esac
+
+    # Internal Trackpad
+    value="$(_mcli_defaults_number "NSGlobalDomain" \
+                                   "com.apple.trackpad.threeFingerHorizSwipeGesture" \
+                                   "${mode}" \
+                                   "sudo")"
+    value="$(_mcli_defaults_number "com.apple.AppleMultitouchTrackpad" \
+                                   "TrackpadThreeFingerHorizSwipeGesture" \
+                                   "${mode}")"
+
+    # External Trackpad
+    value="$(_mcli_defaults_number "com.apple.driver.AppleBluetoothMultitouch.trackpad" \
+                                   "TrackpadThreeFingerHorizSwipeGesture" \
+                                   "${mode}")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+fourfingerhorizontalswipe(){
+    local mode;
+
+    case "$1" in
+        switchapps)
+            mode="2";;
+        disabled)
+            mode="0";;
+        *)
+            mode="$1";;
+    esac
+
+    # Internal Trackpad
+    value="$(_mcli_defaults_number "NSGlobalDomain" \
+                                   "com.apple.trackpad.fourFingerHorizSwipeGesture" \
+                                   "${mode}" \
+                                   "sudo")"
+    value="$(_mcli_defaults_number "com.apple.AppleMultitouchTrackpad" \
+                                   "TrackpadFourFingerHorizSwipeGesture" \
+                                   "${mode}")"
+
+    # External Trackpad
+    value="$(_mcli_defaults_number "com.apple.driver.AppleBluetoothMultitouch.trackpad" \
+                                   "TrackpadFourFingerHorizSwipeGesture" \
+                                   "${mode}")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+threefingerverticalswipe(){
+    local mode;
+    local missioncontrolenabled="NO";
+    local exposeenabled="NO";
+
+    case "$1" in
+        missioncontrol)
+            mode="2";;
+        expose)
+            mode="2";;
+        disabled)
+            mode="1";;
+        *)
+            mode="$1";;
+    esac
+
+    [[ "$1" == "missioncontrol" ]] && missioncontrolenabled="YES"
+    [[ "$1" == "expose" ]] && exposeenabled="YES"
+
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.dock" \
+                                              "showMissionControlGestureEnabled" \
+                                              "${missioncontrolenabled}")"
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.dock" \
+                                              "showAppExposeGestureEnabled" \
+                                              "${exposeenabled}")"
+
+    # Internal Trackpad
+    value="$(_mcli_defaults_number "NSGlobalDomain" \
+                                   "com.apple.trackpad.threeFingerVertSwipeGesture" \
+                                   "${mode}" \
+                                   "sudo")"
+    value="$(_mcli_defaults_number "com.apple.AppleMultitouchTrackpad" \
+                                   "TrackpadThreeFingerVertSwipeGesture" \
+                                   "${mode}")"
+
+    # External Trackpad
+    value="$(_mcli_defaults_number "com.apple.driver.AppleBluetoothMultitouch.trackpad" \
+                                   "TrackpadThreeFingerVertSwipeGesture" \
+                                   "${mode}")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+fourfingerverticalswipe(){
+    local mode;
+    local missioncontrolenabled="NO";
+    local exposeenabled="NO";
+
+    case "$1" in
+        missioncontrol)
+            mode="2";;
+        expose)
+            mode="2";;
+        disabled)
+            mode="1";;
+        *)
+            mode="$1";;
+    esac
+
+    [[ "$1" == "missioncontrol" ]] && missioncontrolenabled="YES"
+    [[ "$1" == "expose" ]] && exposeenabled="YES"
+
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.dock" \
+                                              "showMissionControlGestureEnabled" \
+                                              "${missioncontrolenabled}")"
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.dock" \
+                                              "showAppExposeGestureEnabled" \
+                                              "${exposeenabled}")"
+
+    # Internal Trackpad
+    value="$(_mcli_defaults_number "NSGlobalDomain" \
+                                   "com.apple.trackpad.fourFingerVertSwipeGesture" \
+                                   "${mode}" \
+                                   "sudo")"
+    value="$(_mcli_defaults_number "com.apple.AppleMultitouchTrackpad" \
+                                   "TrackpadFourFingerVertSwipeGesture" \
+                                   "${mode}")"
+
+    # External Trackpad
+    value="$(_mcli_defaults_number "com.apple.driver.AppleBluetoothMultitouch.trackpad" \
+                                   "TrackpadFourFingerVertSwipeGesture" \
+                                   "${mode}")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+threefingerdrag(){
+    # Internal Trackpad
+    value="$(_mcli_defaults_yes_no_to_boolean "NSGlobalDomain" \
+                                              "com.apple.trackpad.threeFingerDragGesture" \
+                                              "$1" \
+                                              "sudo")"
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.AppleMultitouchTrackpad" \
+                                              "TrackpadThreeFingerDrag" \
+                                              "$1")"
+
+    # External Trackpad
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.driver.AppleBluetoothMultitouch.trackpad" \
+                                              "TrackpadThreeFingerDrag" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+twofingerpinch(){
+    # Internal Trackpad
+    value="$(_mcli_defaults_yes_no_to_boolean "NSGlobalDomain" \
+                                              "com.apple.trackpad.pinchGesture" \
+                                              "$1" \
+                                              "sudo")"
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.AppleMultitouchTrackpad" \
+                                              "TrackpadPinch" \
+                                              "$1")"
+
+    # External Trackpad
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.driver.AppleBluetoothMultitouch.trackpad" \
+                                              "TrackpadPinch" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+fourfingerpinch(){
+    local mode;
+    local launchpadenabled="NO";
+
+    case "$1" in
+        launchpad)
+            mode="2";;
+        disabled)
+            mode="0";;
+        *)
+            mode="$1";;
+    esac
+
+    [[ "$1" == "launchpad" ]] && launchpadenabled="YES"
+
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.dock" \
+                                              "showLaunchpadGestureEnabled" \
+                                              "${launchpadenabled}")"
+
+    # Internal Trackpad
+    value="$(_mcli_defaults_number "NSGlobalDomain" \
+                                   "com.apple.trackpad.fourFingerPinchSwipeGesture" \
+                                   "${mode}" \
+                                   "sudo")"
+    value="$(_mcli_defaults_number "NSGlobalDomain" \
+                                   "com.apple.trackpad.fiveFingerPinchSwipeGesture" \
+                                   "${mode}" \
+                                   "sudo")"
+    value="$(_mcli_defaults_number "com.apple.AppleMultitouchTrackpad" \
+                                   "TrackpadFourFingerPinchGesture" \
+                                   "${mode}")"
+    value="$(_mcli_defaults_number "com.apple.AppleMultitouchTrackpad" \
+                                   "TrackpadFiveFingerPinchGesture" \
+                                   "${mode}")"
+
+    # External Trackpad
+    value="$(_mcli_defaults_number "com.apple.driver.AppleBluetoothMultitouch.trackpad" \
+                                   "TrackpadFourFingerPinchGesture" \
+                                   "${mode}")"
+    value="$(_mcli_defaults_number "com.apple.driver.AppleBluetoothMultitouch.trackpad" \
+                                   "TrackpadFiveFingerPinchGesture" \
+                                   "${mode}")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+swipefromrightedge(){
+    local mode
+
+    case "$1" in
+        notificationcenter)
+            mode="3";;
+        disabled)
+            mode="0";;
+        *)
+            mode="$1";;
+    esac
+
+    # Internal Trackpad
+    value="$(_mcli_defaults_number "NSGlobalDomain" \
+                                   "com.apple.trackpad.twoFingerFromRightEdgeSwipeGesture" \
+                                   "${mode}" \
+                                   "sudo")"
+    value="$(_mcli_defaults_number "com.apple.AppleMultitouchTrackpad" \
+                                   "TrackpadTwoFingerFromRightEdgeSwipeGesture" \
+                                   "${mode}")"
+
+    # External Trackpad
+    value="$(_mcli_defaults_number "com.apple.driver.AppleBluetoothMultitouch.trackpad" \
+                                   "TrackpadTwoFingerFromRightEdgeSwipeGesture" \
+                                   "${mode}")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+rotation(){
+    # Internal Trackpad
+    value="$(_mcli_defaults_yes_no_to_boolean "NSGlobalDomain" \
+                                              "com.apple.trackpad.rotateGesture" \
+                                              "$1" \
+                                              "sudo")"
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.AppleMultitouchTrackpad" \
+                                              "TrackpadRotate" \
+                                              "$1")"
+
+    # External Trackpad
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.driver.AppleBluetoothMultitouch.trackpad" \
+                                              "TrackpadRotate" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+dragging(){
+    # Internal Trackpad
+    value="$(_mcli_defaults_yes_no_to_integer "com.apple.AppleMultitouchTrackpad" \
+                                              "Dragging" \
+                                              "$1")"
+
+    # External Trackpad
+    value="$(_mcli_defaults_yes_no_to_integer "com.apple.driver.AppleBluetoothMultitouch.trackpad" \
+                                              "Dragging" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+shaketoenlarge(){
+    value="$(_mcli_defaults_yes_no_to_boolean "NSGlobalDomain" \
+                                              "CGDisableCursorLocationMagnification" \
+                                              "$1" \
+                                              "sudo")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+mousemovement(){
+    local scaling="$1"
+    local scrolling_speed="$2"
+
+    # Sets the Speed With Which Mouse Movement Moves the Cursor
+    value="$(_mcli_defaults_number "NSGlobalDomain" \
+                                   "com.apple.mouse.scaling" \
+                                   "${scaling}")"
+
+    # Sets the Speed With Which the Mouse Scrolls Content
+    value="$(_mcli_defaults_number "NSGlobalDomain" \
+                                   "com.apple.mouse.scrolling" \
+                                   "${scrolling_speed}")"
+}
+
+trackpadmovement(){
+    local scaling="$1"
+    local scrolling_speed="$2"
+
+    # Sets the Speed With Which Trackpad Movement Moves the Cursor
+    value="$(_mcli_defaults_number "NSGlobalDomain" \
+                                   "com.apple.trackpad.scaling" \
+                                   "${scaling}" \
+                                   "sudo")"
+
+    # Sets the Speed With Which the Trackpad Scrolls Content
+    value="$(_mcli_defaults_number "NSGlobalDomain" \
+                                   "com.apple.trackpad.scrolling" \
+                                   "${scrolling_speed}" \
+                                   "sudo")"
+}
+
+case "${subcommand}" in
+    help)
+        help
+        ;;
+    onefingersingletap)
+        onefingersingletap "$@"
+        ;;
+    twofingersingletap)
+        twofingersingletap "$@"
+        ;;
+    threefingersingletap)
+        threefingersingletap "$@"
+        ;;
+    onefingerdoubletap)
+        onefingerdoubletap "$@"
+        ;;
+    twofingerdoubletap)
+        twofingerdoubletap "$@"
+        ;;
+    twofingerhorizontalswipe)
+        twofingerhorizontalswipe "$@"
+        ;;
+    threefingerhorizontalswipe)
+        threefingerhorizontalswipe "$@"
+        ;;
+    fourfingerhorizontalswipe)
+        fourfingerhorizontalswipe "$@"
+        ;;
+    threefingerverticalswipe)
+        threefingerverticalswipe "$@"
+        ;;
+    fourfingerverticalswipe)
+        fourfingerverticalswipe "$@"
+        ;;
+    threefingerdrag)
+        threefingerdrag "$@"
+        ;;
+    twofingerpinch)
+        twofingerpinch "$@"
+        ;;
+    fourfingerpinch)
+        fourfingerpinch "$@"
+        ;;
+    fourfingerpull)
+        fourfingerpull "$@"
+        ;;
+    fivefingerpinch)
+        fivefingerpinch "$@"
+        ;;
+    swipefromrightedge)
+        swipefromrightedge "$@"
+        ;;
+    rotation)
+        rotation "$@"
+        ;;
+    dragging)
+        dragging "$@"
+        ;;
+    shaketoenlarge)
+        shaketoenlarge "$@"
+        ;;
+    mousemovement)
+        mousemovement "$@"
+        ;;
+    trackpadmovement)
+        trackpadmovement "$@"
+        ;;
+    *)
+        help
+        ;;
+esac
+
+[ -n "${subcommand}" ] && [ -n "$1" ] && killall NotificationCenter && echo "Restart your computer for this to take effect"
+
+# vim: ts=4 sw=4 softtabstop=4 expandtab

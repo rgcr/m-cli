@@ -78,6 +78,7 @@ usage:  m [OPTIONS] COMMAND [help]
         location
         lock
         missioncontrol
+        mouse
         network
         nosleep
         notification
@@ -538,6 +539,31 @@ usage:  m [OPTIONS] COMMAND [help]
       m missioncontrol dashboardvisible   [ YES | NO ]  #
       m missioncontrol groupwindowsbyapp  [ YES | NO ]  #
       m missioncontrol animationspeed     x.x           #
+```
+
+#### Mouse:
+```
+    Usage:
+      onefingersingletap          [ YES | NO ]
+      twofingersingletap          [ YES | NO ]
+      threefingersingletap        [ lookupdefinition | disable ]
+      onefingerdoubletap          [ smartzoom | missioncontrol | disable ]
+      twofingerdoubletap          [ smartzoom | missioncontrol | disable ]
+      twofingerhorizontalswipe    [ switchpages | switchspaces | horizontalscroll | disable ]
+      threefingerhorizontalswipe  [ switchpages | switchapps | disable ]
+      fourfingerhorizontalswipe   [ switchapps | disable ]
+      threefingerverticalswipe    [ missioncontrol | expose | disable ]
+      fourfingerverticalswipe     [ missioncontrol | expose | disable ]
+      threefingerdrag             [ YES | NO ]
+      twofingerpinch              [ YES | NO ]
+      fourfingerpinch             [ launchpad | disable ]
+      swipefromrightedge          [ notificationcenter | disable ]
+      rotation                    [ YES | NO ]
+      dragging                    [ YES | NO ]
+      shaketoenlarge              [ YES | NO ]
+
+      mousemovement               x.x x.x
+      trackpadmovement            x.x x.x
 ```
 
 #### Network:
