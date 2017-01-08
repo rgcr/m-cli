@@ -55,6 +55,25 @@ _mcli_convert_yes_no_to_enabled_disabled() {
     esac
 }
 
+_mcli_convert_yes_no_to_enable_disable() {
+    local choice="$1"
+
+    case "${choice}" in
+        "")
+            echo ""
+            ;;
+        1|[yY][eE][sS]|[oO][nN]|[tT][rR][rU][eE])
+            echo "enable"
+            ;;
+        0|[nN][oO]|[oO][fF][fF]|[fF][aA][lL][sS][eE])
+            echo "disable"
+            ;;
+        *)
+            echo "ERROR"
+            ;;
+    esac
+}
+
 _mcli_convert_exit_status_to_enabled_disabled() {
     local command="$1"
 

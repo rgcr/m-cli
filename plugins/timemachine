@@ -36,7 +36,7 @@ useallnetworkvolumes(){
 }
 
 localbackups(){
-    value="$(_mcli_convert_yes_no_to_enabled_disabled "$1")"
+    value="$(_mcli_convert_yes_no_to_enable_disable "$1")"
 
     sudo tmutil ${value}local
 }
