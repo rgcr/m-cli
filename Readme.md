@@ -85,6 +85,7 @@ usage:  m [OPTIONS] COMMAND [help]
         printer
         restart
         safeboot
+        screencapture
         screensaver
         scrolling
         service
@@ -712,6 +713,22 @@ usage:  m [OPTIONS] COMMAND [help]
       m safeboot status     # get the boot args
       m safeboot enable     # enable safe boot
       m safeboot disable    # disable safeboot
+```
+
+#### Screen Capture:
+```
+    usage: m screencapture [ help ]
+
+    Examples:
+      m screencapture type        [             # Specify the type of the screenshots
+                                    png  |
+                                    jpg  |
+                                    tiff |
+                                    pdf
+                                  ]
+      m screencapture location    /path         # The location the screenshots will be saved to
+      m screencapture filename    "prefix"      # The filename the screenshots will be saved under (suffixed by date)
+      m screencapture shadow      [ YES | NO ]  # Whether the screenshots will contain a drop shadow
 ```
 
 #### Screensaver:
