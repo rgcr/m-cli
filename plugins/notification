@@ -30,7 +30,7 @@ showcenter(){
 
     local choice="$(_mcli_convert_yes_no_to_load_unload "$1")"
 
-    launchctl "${choice}" -w /System/Library/LaunchAgents/com.apple.notificationcenterui.plist
+    sudo launchctl "${choice}" -w /System/Library/LaunchAgents/com.apple.notificationcenterui.plist
 
     value="$(_mcli_convert_exit_status_to_enabled_disabled "ps -A | grep apsd | grep -v grep")"
 

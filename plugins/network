@@ -66,10 +66,12 @@ wakeonethernet(){
 guestaccess(){
     value="$(_mcli_defaults_yes_no_to_boolean "/Library/Preferences/com.apple.AppleFileServer" \
                                               "guestAccess" \
-                                              "$1")"
+                                              "$1" \
+                                              "sudo")"
     value="$(_mcli_defaults_yes_no_to_boolean "/Library/Preferences/com.apple.smb.server" \
                                               "AllowGuestAccess" \
-                                              "$1")"
+                                              "$1" \
+                                              "sudo")"
 
     echo "${command} ${subcommand}: ${value}"
 }

@@ -60,7 +60,8 @@ barvisibility(){
 bounce(){
     value="$(_mcli_defaults_yes_no_to_boolean "/Library/Preferences/.GlobalPreferences" \
                                               "NSScrollViewRubberbanding" \
-                                              "$1")"
+                                              "$1" \
+                                              "sudo")"
 
     echo "${command} ${subcommand}: ${value}"
 }

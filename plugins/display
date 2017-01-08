@@ -24,7 +24,8 @@ display_status(){
 autobrightness() {
     value="$(_mcli_defaults_yes_no_to_integer "${path_to_plist}" \
                                               "Automatic Display Enabled" \
-                                              "$1")"
+                                              "$1" \
+                                              "sudo")"
 
     echo "${command} ${subcommand}: ${value}"
 }
