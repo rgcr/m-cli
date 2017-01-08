@@ -41,14 +41,6 @@ fontsize() {
     echo "${command} ${subcommand}: ${value}"
 }
 
-fontname() {
-    value="$(_mcli_defaults_font "NSGlobalDomain" \
-                                 "NSToolTipsFont" \
-                                 "$1")"
-
-    echo "${command} ${subcommand}: ${value}"
-}
-
 case "${subcommand}" in
     help)
         help

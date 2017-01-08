@@ -87,20 +87,7 @@ _mcli_defaults_number() {
             ;;
     esac
 
-    _mcli_read_integer "${domain}" "${key}"
-}
-
-_mcli_defaults_font() {
-    local domain="$1"
-    local key="$2"
-    local new_value="$3"
-    local sudo="$4"
-
-    if [ -n "${new_value}" ]; then
-      ${sudo} defaults write "${domain}" "${key}" -font "${transformed}"
-    fi
-
-    _mcli_read_font "${domain}" "${key}"
+    _mcli_read_number "${domain}" "${key}"
 }
 
 _mcli_defaults_string() {
