@@ -48,7 +48,7 @@ ui(){
                                               "$1")"
     _mcli_defaults_number                     "com.apple.systemsound" \
                                               "com.apple.sound.beep.volume" \
-                                              "$1")"
+                                              "$2"
 
     echo "${command} ${subcommand}: ${value}"
 }

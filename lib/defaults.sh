@@ -97,7 +97,7 @@ _mcli_defaults_string() {
     local sudo="$4"
 
     if [ -n "${new_value}" ]; then
-      ${sudo} defaults write "${domain}" "${key}" -string "${transformed}"
+      ${sudo} defaults write "${domain}" "${key}" -string "${new_value}"
     fi
 
     _mcli_read_string "${domain}" "${key}"

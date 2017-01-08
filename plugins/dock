@@ -41,12 +41,12 @@ __EOF__
 
 enable(){
   auto_hide "NO"
-  show_delay 0.25
+  auto_hide_delay 0.25
 }
 
 disable(){
   auto_hide "YES"
-  show_delay 999999
+  auto_hide_delay 999999
 }
 
 active_indicators(){

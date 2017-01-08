@@ -11,7 +11,7 @@ declare subcommand="$1"
 _set_power_setting(){
     local setting="$1"
     local battery_value="$2"
-    local plugged_value="$2"
+    local plugged_value="$3"
 
     if [ -n "${battery_value}" ] && [ -n "${plugged_value}" ]; then
         sudo pmset -b "${setting}" "${battery_value}"
