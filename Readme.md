@@ -409,19 +409,44 @@ usage:  m [OPTIONS] COMMAND [help]
     usage: m finder [ showhiddenfiles | showfileextensions | showdesktop | help ]
 
     Examples:
-      m finder showhiddenfiles              # get the current status
-      m finder showhiddenfiles YES          # show hidden files
-      m finder showhiddenfiles NO           # don't show hidden files
+      m finder showhiddenfiles                                          # get the current status
+      m finder showhiddenfiles YES                                      # show hidden files
+      m finder showhiddenfiles NO                                       # don't show hidden files
 
-      m finder showextensions               # get the current status
-      m finder showextensions YES           # show all file extensions
-      m finder showextensions NO            # don't show all file extensions
+      m finder showextensions                                           # get the current status
+      m finder showextensions YES                                       # show all file extensions
+      m finder showextensions NO                                        # don't show all file extensions
 
-      m finder showdesktop                  # get the current desktop status
-      m finder showdesktop YES              # enable the desktop
-      m finder showdesktop NO               # disable the desktop
+      m finder showdesktop                                              # get the current desktop status
+      m finder showdesktop YES                                          # enable the desktop
+      m finder showdesktop NO                                           # disable the desktop
 
-      m finder remotedsstore [ YES | NO ]   # whether to allow dsstore files to be created on remote volumes
+      m finder statusbar                         [ YES | NO ]           # whether to show the status bar
+      m finder posixtitlepath                    [ YES | NO ]           # whether to show the full POSIX title in the window title
+      m finder remotedsstore                     [ YES | NO ]           # whether to allow dsstore files to be created on remote volumes
+      m finder extensionchangewarning            [ YES | NO ]           # whether to show the warning when changing a file's extension
+      m finder quittable                         [ YES | NO ]           # whether to finder is quittable
+      m finder clickthroughdestroysselection     [ YES | NO ]           # whether, when clicking through to a finder window, the current selection is destroyed
+      m finder stoppreviewswhenselectionchanges  [ YES | NO ]           # whether to stop previews when selection changes
+      m finder stoppreviewswhenscrolling         [ YES | NO ]           # whether to stop previews when scrolling
+      m finder infopanesexpanded                 [ YES | NO ]           # whether the panes in the info panel are expanded
+      m finder showrecenttags                    [ YES | NO ]           # whether to show recent tags in the sidebar
+      m finder hidequicklookondeactivate         [ YES | NO ]           # whether quicklook is hidden if you switch to another app
+      m finder springing                         [ YES | NO ] [ x.x ]   # whether springing is enabled and how long it takes for an item to spring
+      m finder minimumplayablepreviewsize        x                      # the minimum size on which a preview will have a play button
+      m finder datetype                          [                      # whether to use relative or absolute dates when showing file dates
+                                                   absolute   |
+                                                   relative
+                                                 ]
+      m finder defaultlocation                   [                      # the location that new finder windows will open to by default
+                                                   computer   |
+                                                   volume     |
+                                                   desktop    |
+                                                   documents  |
+                                                   allmyfiles |
+                                                   home       |
+                                                   /path
+                                                 ]
 ```
 
 #### Firewall:

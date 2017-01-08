@@ -37,6 +37,7 @@ help(){
       m finder stoppreviewswhenscrolling         [ YES | NO ]           # whether to stop previews when scrolling
       m finder infopanesexpanded                 [ YES | NO ]           # whether the panes in the info panel are expanded
       m finder showrecenttags                    [ YES | NO ]           # whether to show recent tags in the sidebar
+      m finder hidequicklookondeactivate         [ YES | NO ]           # whether quicklook is hidden if you switch to another app
       m finder springing                         [ YES | NO ] [ x.x ]   # whether springing is enabled and how long it takes for an item to spring
       m finder minimumplayablepreviewsize        x                      # the minimum size on which a preview will have a play button
       m finder datetype                          [                      # whether to use relative or absolute dates when showing file dates
@@ -165,6 +166,14 @@ showrecenttags() {
     echo "${command} ${subcommand}: ${value}"
 }
 
+hidequicklookondeactivate() {
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.finder" \
+                                              "QLHidePanelOnDeactivate" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
 datetype() {
     local mode;
     local plist="/Users/$(whoami)/Library/Preferences/com.apple.finder.plist"
@@ -284,6 +293,9 @@ case "${subcommand}" in
         ;;
     showrecenttags)
         showrecenttags "$@"
+        ;;
+    hidequicklookondeactivate)
+        hidequicklookondeactivate "$@"
         ;;
     springing)
         springing "$@"
