@@ -10,9 +10,7 @@ declare subcommand="$1"
 
 help(){
     cat<<__EOF__
-    usage: m diskutility [ advancedoptions | showhiddenpartitions | showunsupportednetworks | help ]
-
-    Examples:
+    Usage:
       m diskutility advancedoptions         [ YES | NO ]  # Whether to enable advanced disk utility options
       m diskutility showhiddenpartitions    [ YES | NO ]  # Whether to show hidden partitions
       m diskutility showunsupportednetworks [ YES | NO ]  # Whether to show unsupported networks

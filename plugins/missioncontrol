@@ -10,9 +10,7 @@ declare subcommand="$1"
 
 help(){
     cat<<__EOF__
-    usage: m missioncontrol [ showcenter | help ]
-
-    Examples:
+    Usage:
       m missioncontrol dashboardvisible   [ YES | NO ]  #
       m missioncontrol groupwindowsbyapp  [ YES | NO ]  #
       m missioncontrol animationspeed     x.x           #

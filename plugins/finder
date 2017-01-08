@@ -12,21 +12,10 @@ declare subcommand="$1"
 
 help(){
     cat<<__EOF__
-    usage: m finder [ showhiddenfiles | showfileextensions | showdesktop | help ]
-
-    Examples:
-      m finder showhiddenfiles                                          # get the current status
-      m finder showhiddenfiles YES                                      # show hidden files
-      m finder showhiddenfiles NO                                       # don't show hidden files
-
-      m finder showextensions                                           # get the current status
-      m finder showextensions YES                                       # show all file extensions
-      m finder showextensions NO                                        # don't show all file extensions
-
-      m finder showdesktop                                              # get the current desktop status
-      m finder showdesktop YES                                          # enable the desktop
-      m finder showdesktop NO                                           # disable the desktop
-
+    Usage:
+      m finder showhiddenfiles                   [ YES | NO ]           # whether to show hidden files
+      m finder showextensions                    [ YES | NO ]           # whether to show all file extensions
+      m finder showdesktop                       [ YES | NO ]           # whether to enable the desktop
       m finder statusbar                         [ YES | NO ]           # whether to show the status bar
       m finder posixtitlepath                    [ YES | NO ]           # whether to show the full POSIX title in the window title
       m finder remotedsstore                     [ YES | NO ]           # whether to allow dsstore files to be created on remote volumes

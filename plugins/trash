@@ -3,9 +3,7 @@
 
 help(){
     cat<<__EOF__
-    usage: m trash [ status | clean | warn | help ]
-
-    Examples:
+    Usage:
       m trash status                  # get trash info
       m trash clean                   # clean trash
       m trash warn      [ YES | NO ]  # warn when emptying trash

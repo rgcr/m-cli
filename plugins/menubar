@@ -10,9 +10,7 @@ declare subcommand="$1"
 
 help(){
     cat<<__EOF__
-    usage: m menubar [ autohide | airplay | help ]
-
-    Examples:
+    Usage:
       m menubar autohide [ YES | NO ]   # Whether to autohide the menu bar
       m menubar airplay  [ YES | NO ]   # Whether to show the airplay options in the menu bar
 

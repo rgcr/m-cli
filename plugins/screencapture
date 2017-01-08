@@ -12,9 +12,7 @@ declare subcommand="$1"
 
 help(){
     cat<<__EOF__
-    usage: m screencapture [ help ]
-
-    Examples:
+    Usage:
       m screencapture type        [             # Specify the type of the screenshots
                                     png  |
                                     jpg  |

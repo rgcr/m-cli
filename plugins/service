@@ -10,19 +10,23 @@ LAUNCHCTLPATHS=( \
 
 help(){
     cat<<__EOF__
-    usage: m service [ --status-all | --list |  --ls | start | stop | load | unload | help ]
-
-
-    Examples:
+    Usage:
       m service --status-all                        # list all services
 
       m service --list                              # list all services
       m service --ls                                # list all services
-      m service --ls com.apple.sessionlogoutd       # show information about a specific service
+      m service --ls <service_name>                 # show information about a specific service
 
+      m service start <service_name>                # start a service
+      m service stop <service_name>                 # stop a service
+
+      m service load <service_name>                 # load a service
+      m service unload <service_name>               # unload a service
+
+    Examples:
+      m service --ls com.apple.sessionlogoutd       # show information about a specific service
       m service start com.apple.sessionlogoutd      # start a service
       m service stop com.apple.sessionlogoutd       # stop a service
-
       m service load com.apple.sessionlogoutd       # load a service
       m service unload com.apple.sessionlogoutd     # unload a service
 

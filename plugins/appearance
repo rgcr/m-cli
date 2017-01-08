@@ -10,15 +10,13 @@ declare subcommand="$1"
 
 help(){
     cat<<__EOF__
-    usage: m appearance [ darkmode | transparency | antialiasthreshold | sidebariconsize | maincolor | highlightcolor | help ]
-
-    Examples:
+    Usage:
       m appearance darkmode           [ YES | NO ]                # Whether to use dark versions of interface elements
       m appearance transparency       [ YES | NO ]                # Whether to allow the OS to make certain elements semi-transparent
       m appearance antialiasthreshold x                           # The threshold above which antialiasing is turned on
       m appearance sidebariconsize    [ small | medium | large ]  # The size of the icons in various window sidebars
       m appearance maincolor          [ blue | graphite ]         # The color used for the majority of the interface elements
-      m appearance highlightcolor     [                           # The color used for the majority of the interface elements
+      m appearance highlightcolor     [                           # The color used for highlights
                                         graphite  | cayenne    | asparagus  | clover    |
                                         teal      | midnight   | plum       | tin       |
                                         nickel    | mocha      | fern       | moss      |
@@ -33,6 +31,9 @@ help(){
                                         sky       | lavender   | carnation  | licorice  |
                                         snow
                                       ]
+
+    Examples:
+      m appearance antialiasthreshold 8                           # Only a font size of 8pt or above will be anti-aliased
 __EOF__
 }
 

@@ -12,9 +12,7 @@ declare subcommand="$1"
 
 help(){
     cat<<__EOF__
-    usage: m user [ list | ls | info | create | delete | autologin | fastswitching | guest | loginattemptsbeforehint | help ]
-
-    Examples:
+    Usage:
       m user ls                                              # list users
       m user info demouser                                   # display user information
 

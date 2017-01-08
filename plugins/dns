@@ -2,9 +2,7 @@
 
 help(){
     cat<<__EOF__
-    usage:  m dns [ flush | help ]
-
-    Examples:
+    Usage:
       m dns flush       # flushes local DNS
 __EOF__
 }

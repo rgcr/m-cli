@@ -11,9 +11,7 @@ declare subcommand="$1"
 
 help(){
     cat<<__EOF__
-    usage: m timemachine [ enable | disable | help ]
-
-    Examples:
+    Usage:
       m timemachine usenewdisks          [ YES | NO ]  # Whether to use new disks for backups
       m timemachine useallnetworkvolumes [ YES | NO ]  # Whether to use unsupported network volumes for backups
       m timemachine localbackups         [ YES | NO ]  # Whether to enable local backups

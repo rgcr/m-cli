@@ -10,9 +10,7 @@ declare subcommand="$1"
 
 help(){
     cat<<__EOF__
-    usage: m animations [ mail | help ]
-
-    Examples:
+    Usage:
       m animations mail       [ YES | NO ]          # Whether to use animations in mail
       m animations inputs     [ YES | NO ]          # Whether to use animations interacting with inputs
       m animations finder     [ YES | NO ]          # Whether to use animations in finder/desktop

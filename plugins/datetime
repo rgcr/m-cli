@@ -10,9 +10,7 @@ declare subcommand="$1"
 
 help(){
     cat<<__EOF__
-    usage: m datetime [ 24hourclock | usentpserver | ntpserver | international | menubarformat | help ]
-
-    Examples:
+    Usage:
       m datetime 24hourclock    [ YES | NO ] # Whether to show the time using a 24 hour clock
       m datetime usentpserver   [ YES | NO ] # Whether the current date time can be set via NTP
       m datetime ntpserver      hostname     # The NTP server to use to set the time

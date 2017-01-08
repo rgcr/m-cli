@@ -10,55 +10,32 @@ declare subcommand="$1"
 
 help(){
     cat<<__EOF__
-    usage: m dock [
-                    enable              |
-                    disable             |
-                    activeindicators    |
-                    bounceonappactivity |
-                    bounceonapplaunch   |
-                    autohidedelay       |
-                    autohidespeed       |
-                    autohide            |
-                    fullscreendelay     |
-                    itunesnotifications |
-                    magnification       |
-                    magnificationsize   |
-                    hiddenappdimming    |
-                    iconsize            |
-                    onlyshowrunning     |
-                    position            |
-                    addblankspace       |
-                    addrecentitems      |
-                    prune               |
-                    help
-                  ]
+    Usage:
+      m dock enable                             # Shows the Dock
+      m dock disable                            # Causes the Dock to be hidden and never reappear
+      m dock activeindicators     [ YES | NO ]  # Whether to show the active indicators under the app icons
+      m dock autohide             [ YES | NO ]  # Whether to enable Dock's auto hide feature
+      m dock autohidedelay        x.x           # Changes how long the Dock takes to show up when auto-hide is enabled
+      m dock autohidespeed        x.x           # Changes how long the Dock takes to slide into/out of view after the delay has expired
+      m dock bounceonappactivity  [ YES | NO ]  # Whether to bounce an app's icon when it has activity
+      m dock bounceonapplaunch    [ YES | NO ]  # Whether to bounce an app's icon when it is launching
+      m dock fullscreendelay      [ YES | NO ]  # Whether to have a delay when showing the dock in full screen mode
+      m dock hiddenappdimming     [ YES | NO ]  # Whether to show apps that have been hidden as semi-transparent
+      m dock iconsize             x             # Set the size of the icons when the dock is at rest
+      m dock itunesnotifications  [ YES | NO ]  # Whether to show iTunes notifications in the dock
+      m dock magnification        [ YES | NO ]  # Whether to turn magnification on
+      m dock magnificationsize    x             # Set the max size of the icons as the cursor gets closer to them
+      m dock onlyshowrunning      [ YES | NO ]  # Only show the apps that are currently running.  Apps cannot be pinned.
+      m dock position             [             # Change Dock's position to the bottom of the screen
+                                    BOTTOM |
+                                    LEFT   |
+                                    RIGHT
+                                  ]
+      m dock prune                              # Remove all items from dock
 
-    Examples:
-      m dock enable                 # Shows the Dock
-      m dock disable                # Causes the Dock to be hidden and never reappear
-      m dock activeindicators YES   # Show the active indicators under the app icons
-      m dock bounceonappactivity    # Bounce an app's icon when it has activity
-      m dock bounceonapplaunch      # Bounce an app's icon when it is launching
-      m dock autohidedelay x.x      # Changes how long the Dock takes to show up when auto-hide is enabled
-      m dock autohidespeed x.x      # Changes how long the Dock takes to slide into/out of view after the
-                                    # delay has expired
-      m dock autohide YES           # Enable Dock's auto hide feature
-      m dock autohide NO            # Disable Dock's auto hide feature
-      m dock fullscreendelay YES    # Whether to have a delay when showing the dock in full screen mode
-      m dock itunesnotifications NO # Whether to show iTunes notifications in the dock
-      m dock magnification YES      # Turn magnification on
-      m dock magnification NO       # Turn magnification off
-      m dock magnificationsize x    # Set the max size of the icons as the cursor gets closer to them
-      m dock hiddenappdimming YES   # Show apps that have been hidden as semi-transparent
-      m dock iconsize x             # Set the size of the icons when the dock is at rest
-      m dock onlyshowrunning YES    # Only show the apps that are currently running.  Apps cannot be pinned.
-      m dock position BOTTOM        # Change Dock's position to the bottom of the screen
-      m dock position LEFT          # Change Dock's position to the left of the screen
-      m dock position RIGHT         # Change Dock's position to the right of the screen
-      m dock addblankspace          # Add a blank space (separator) to the Dock
-      m dock addrecentitems         # Add a stack containg your recent items to the Dock
-                                    # (You can change the stack's type by right clicking on it)
-      m dock prune                  # Remove all items from dock
+      m dock addblankspace                      # Add a blank space (separator) to the Dock
+      m dock addrecentitems                     # Add a stack containg your recent items to the Dock
+                                                # (You can change the stack's type by right clicking on it)
 __EOF__
 }
 

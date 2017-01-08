@@ -2,9 +2,7 @@
 
 help(){
     cat<<__EOF__
-    usage: m group [ list | ls | info | adduser | removeuser | ismember | help ]
-
-    Examples:
+    Usage:
       m group list                          # get list of groups
       m group info mygroup                  # display group information
 

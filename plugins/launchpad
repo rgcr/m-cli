@@ -7,9 +7,7 @@ declare subcommand="$1"
 
 help(){
     cat<<__EOF__
-    usage: m launchpad [ prune | help ]
-
-    Examples:
+    Usage:
       m launchpad prune   # Remove all items from launchpad
 __EOF__
 }

@@ -7,9 +7,7 @@ declare subcommand="$1"
 
 help(){
     cat<<__EOF__
-    usage:  m network [ ls | list | location | help ]
-
-    Examples:
+    Usage:
       m network ls                            # list network interfaces
       m network location                      # get current location
       m network location ls                   # list locations

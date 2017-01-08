@@ -2,9 +2,7 @@
 
 help(){
     cat<<__EOF__
-    usage: m firewall [ status | enable | disable | list | add | remove | help ]
-
-    Examples:
+    Usage:
       m firewall status                            # Show status
       m firewall enable                            # Enable firewall
       m firewall disable                           # Disable firewall

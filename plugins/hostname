@@ -3,13 +3,9 @@
 
 help(){
     cat<<__EOF__
-    usage: m hostname [ help ]
-
-    Examples:
+    Usage:
       m hostname                # get the current hostname information (computername, hostname, localhostname and netbiosname)
-      m hostname newhostname    # set a new hostname (computername, hostname, localhostname, netbiosname)
-
-      m hostname help           # only shows this help
+      m hostname <newhostname>  # set a new hostname (computername, hostname, localhostname, netbiosname)
 __EOF__
 }
 

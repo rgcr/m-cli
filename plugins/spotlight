@@ -10,9 +10,7 @@ declare subcommand="$1"
 
 help(){
     cat<<__EOF__
-    usage: m spotlight [ shortcutkeys | help ]
-
-    Examples:
+    Usage:
       m spotlight shortcutkeys [ YES | NO ] # Whether to enable the Cmd-Space shortcuts
 __EOF__
 }

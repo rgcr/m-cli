@@ -10,13 +10,10 @@ declare subcommand="$1"
 
 help(){
     cat<<__EOF__
-    usage: m notification [ showcenter | help ]
-
-    Examples:
-      m notification showcenter      # get the current status
-      m notification showcenter YES  # enable the notification center
-      m notification showcenter NO   # disable the notification center
-      m notification bannertime x    # disable the notification center
+    Usage:
+      m notification enable                   # enable the notification center
+      m notification disable                  # disable the notification center
+      m notification bannertime x             # change the time that banners stay on the screen for
 __EOF__
 }
 

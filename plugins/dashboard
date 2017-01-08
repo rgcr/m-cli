@@ -20,9 +20,7 @@ _mcli_toggle_dashboard_keyboard_shortcuts(){
 
 help(){
     cat<<__EOF__
-    usage: m dashboard [ enable | disable | help ]
-
-    Examples:
+    Usage:
       m dashboard enable    # Enable the dashboard
       m dashboard disable   # Disable the dashboard
 __EOF__

@@ -10,10 +10,7 @@ declare subcommand="$1"
 
 help(){
     cat<<__EOF__
-
-    usage: m printer [ settings | name | queue | drivers | web | quitwhenfinished | help ]
-
-    Examples:
+    Usage:
       m printer settings                        # Printer settings
       m printer name                            # Display printer names on system
       m printer queue                           # Display items in printer queue on system

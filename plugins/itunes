@@ -7,9 +7,7 @@ declare subcommand="$1"
 
 help () {
     cat<<__EOF__
-    usage: m itunes [ status | play | pause | next | prev | mute | unmute | vol up | vol down | vol # | stop | quit | autobackup | mediakeys | help ]
-
-    Examples:
+    Usage:
       m itunes status                   # Show status
       m itunes play                     # Play track
       m itunes pause                    # Pause track
@@ -22,7 +20,7 @@ help () {
       m itunes vol #                    # Set volume level
       m itunes stop                     # Stop track
       m itunes quit                     # Quit iTunes
-      m itunes autobackup [ YES | NO ]  # Whether to backup devices after sync 
+      m itunes autobackup [ YES | NO ]  # Whether to backup devices after sync
       m itunes mediakeys  [ YES | NO ]  # Whether to enable iTunes media keys
 __EOF__
 }

@@ -3,12 +3,13 @@
 
 help(){
     cat<<__EOF__
-    usage: m timezone [ list | ls | set | help ]
+    Usage:
+      m timezone                        # get current timezone
+      m timezone ls                     # list available timezones
+      m timezone set <time_zone_name>   # set timezone
 
     Examples:
-      m timezone                    # get current timezone
-      m timezone ls                 # list available timezones
-      m timezone set Europe/Berlin  # set timezone
+      m timezone set Europe/Berlin
 __EOF__
 }
 

@@ -10,9 +10,7 @@ declare subcommand="$1"
 
 help(){
     cat<<__EOF__
-    usage: m system [ quarantine | automaticapptermination | documentversioning | crashreporter | savetoicloudbydefault | savewindowsonquit | help ]
-
-    Examples:
+    Usage:
       m system quarantine                 [ YES | NO ]   # Whether to enable app quarantine
       m system automaticapptermination    [ YES | NO ]   # Whether to enable automatic app termination
       m system documentversioning         [ YES | NO ]   # Whether to enable document versioning

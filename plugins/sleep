@@ -3,9 +3,7 @@
 
 help(){
     cat<<__EOF__
-    usage: m sleep [ help ]
-
-    Examples:
+    Usage:
       m sleep       #  put the mac to sleep
 __EOF__
 }

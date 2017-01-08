@@ -3,9 +3,7 @@
 
 help(){
     cat<<__EOF__
-    usage: m info [ help ]
-
-    Examples:
+    Usage:
       m info        #  print macOS operating system version information
 __EOF__
 }

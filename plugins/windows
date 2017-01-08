@@ -10,9 +10,7 @@ declare subcommand="$1"
 
 help(){
     cat<<__EOF__
-    usage: m windows [ miniturizeondoubleclick | help ]
-
-    Examples:
+    Usage:
       m windows miniturizeondoubleclick [ YES | NO ]   # Whether to miniturize windows on a double click of the title bar
 
 __EOF__

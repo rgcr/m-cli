@@ -10,15 +10,16 @@ declare subcommand="$1"
 
 help(){
     cat<<__EOF__
-    usage: m update [ list | install | help ]
-
-    Examples:
+    Usage:
       m update list                                                           # list available updates
-      m update install           all                                          # install all the available updates
-      m update install           iTunesX-12.4.1 RAWCameraUpdate6.20-6.20      # install specific updates
+      m update install           [ all | <package_name> ]                     # which updates to install
       m update automaticinstall  [ YES | NO ]                                 # whether automatic installs should be enabled
       m update automaticdownload [ YES | NO ]                                 # whether automatic downloads should be enabled
       m update interval          [ daily | weekly | biweekly | monthly | x ]  # how often to check for updates
+
+    Examples:
+      m update install           all                                          # install all the available updates
+      m update install           iTunesX-12.4.1 RAWCameraUpdate6.20-6.20      # install specific updates
 
 __EOF__
 }

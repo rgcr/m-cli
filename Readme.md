@@ -111,30 +111,23 @@ usage:  m [OPTIONS] COMMAND [help]
 
 ####  Airdrop:
 ```
-    usage: m airdrop [ onlywifi | help ]
+    Usage:
+      m airdrop onlywifi [ YES | NO ]       # Whether to allow all interfaces (or only wifi) to be airdropped to
 
     Examples:
-      m airdrop onlywifi YES      #  allow airdropping only via WIFI
-      m airdrop onlywifi NO       #  allow airdropping via any network interface
+      m airdrop onlywifi YES
 ```
 
 ####  Airport:
 ```
-    usage: m airport [
-                       disconnectonlogout   |
-                       preferrednetworks    |
-                       nonpreferrednetworks |
-                       rememberrecents      |
-                       secureadhocnetworks  |
-                       securechangenetworks |
-                       securetogglepower    |
-                       help
-                     ]
-
-    Examples:
+    Usage:
       m airport disconnectonlogout   [ YES | NO ]     #  whether to disconnect from wifi when logging out
-      m airport rememberrecents      [ YES | NO ]     #  whether to remember recent networks
-
+      m airport nonpreferrednetworks [                #  how to join non-preferred networks if preferred
+                                       Prompt      |  #  networks are unavailable
+                                       JoinOpen    |
+                                       KeepLooking |
+                                       DoNothing
+                                     ]
       m airport preferrednetworks    [                #  what to do when preferred networks are available
                                        Automatic |
                                        Preferred |
@@ -142,14 +135,7 @@ usage:  m [OPTIONS] COMMAND [help]
                                        Recent    |
                                        Strongest
                                      ]
-
-      m airport nonpreferrednetworks [                #  how to join non-preferred networks if preferred
-                                       Prompt      |  #  networks are unavailable
-                                       JoinOpen    |
-                                       KeepLooking |
-                                       DoNothing
-                                     ]
-
+      m airport rememberrecents      [ YES | NO ]     #  whether to remember recent networks
       m airport secureadhocnetworks  [ YES | NO ]     #  whether a password is required to create a
                                                       #  computer-to-computer network
       m airport securechangenetworks [ YES | NO ]     #  whether a password is required to change
@@ -160,9 +146,7 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Animations:
 ```
-    usage: m animations [ mail | inputs | finder | fullscreen | windows | quicklook | help ]
-
-    Examples:
+    Usage:
       m animations mail       [ YES | NO ]          # Whether to use animations in mail
       m animations inputs     [ YES | NO ]          # Whether to use animations interacting with inputs
       m animations finder     [ YES | NO ]          # Whether to use animations in finder/desktop
@@ -173,15 +157,13 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Appearance:
 ```
-    usage: m appearance [ darkmode | transparency | antialiasthreshold | sidebariconsize | maincolor | highlightcolor | help ]
-
-    Examples:
+    Usage:
       m appearance darkmode           [ YES | NO ]                # Whether to use dark versions of interface elements
       m appearance transparency       [ YES | NO ]                # Whether to allow the OS to make certain elements semi-transparent
       m appearance antialiasthreshold x                           # The threshold above which antialiasing is turned on
       m appearance sidebariconsize    [ small | medium | large ]  # The size of the icons in various window sidebars
       m appearance maincolor          [ blue | graphite ]         # The color used for the majority of the interface elements
-      m appearance highlightcolor     [                           # The color used for the majority of the interface elements
+      m appearance highlightcolor     [                           # The color used for highlights
                                         graphite  | cayenne    | asparagus  | clover    |
                                         teal      | midnight   | plum       | tin       |
                                         nickel    | mocha      | fern       | moss      |
@@ -196,6 +178,9 @@ usage:  m [OPTIONS] COMMAND [help]
                                         sky       | lavender   | carnation  | licorice  |
                                         snow
                                       ]
+
+    Examples:
+      m appearance antialiasthreshold 8                           # Only a font size of 8pt or above will be anti-aliased
 ```
 
 ####  Battery:
@@ -208,9 +193,7 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Bluetooth:
 ```
-    usage: m bluetooth [ status | enable | disable | help ]
-
-    Examples:
+    Usage:
       m bluetooth status    # bluetooth status
       m bluetooth enable    # turn on bluetooth
       m bluetooth disable   # turn off bluetooth
@@ -218,18 +201,14 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Dashboard:
 ```
-    usage: m dashboard [ enable | disable | help ]
-
-    Examples:
+    Usage:
       m dashboard enable    # Enable the dashboard
       m dashboard disable   # Disable the dashboard
 ```
 
 #### Date and Time:
 ```
-    usage: m datetime [ 24hourclock | usentpserver | ntpserver | international | menubarformat | help ]
-
-    Examples:
+    Usage:
       m datetime 24hourclock    [ YES | NO ] # Whether to show the time using a 24 hour clock
       m datetime usentpserver   [ YES | NO ] # Whether the current date time can be set via NTP
       m datetime ntpserver      hostname     # The NTP server to use to set the time
@@ -239,23 +218,20 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Debug Mode:
 ```
-    usage: m debugmode [ enable | disable ]  # whether extra debugging options should
-                                             # be exposed for various applications
+    Usage:
+      m debugmode enable    # whether extra debugging options should be exposed for various applications
+      m debugmode disable
 ```
 
 #### Dialog:
 ```
-    usage: m dialogs [ autoexpand | help ]
-
-    Examples:
+    Usage:
       m dialogs autoexpand  [ YES | NO ]  # Whether print, save and other dialogs auto-expand
 ```
 
 #### Dir:
 ```
-    usage: m dir [ tree | size | delete | help ]
-
-    Examples:
+    Usage:
       m dir tree                  # tree view of folders in the current path
       m dir tree /path            # tree view of folders in a specific path
 
@@ -274,50 +250,44 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Disk:
 ```
-    usage: m disk [ ls | list | info | fs | filesystems | ejectall | verify | repair | remotesharing | help ]
+    Usage:
+      m disk ls                                         # list disks
+      m disk list                                       # list disks
+      m disk list /dev/disk0                            # list a specific disk
 
-    Examples:
-      m disk ls                                 # list disks
-      m disk list                               # list disks
-      m disk list /dev/disk0                    # list a specific disk
+      m disk fs                                         # list available filesystems for formatting
+      m disk filesystems                                # list available filesystems for formatting
 
-      m disk fs                                 # list available filesystems for formatting
-      m disk filesystems                        # list available filesystems for formatting
+      m disk info /dev/disk0                            # display information
 
-      m disk info /dev/disk0                    # display information
+      m disk ejectall                                   # eject all mountable volumes
 
-      m disk ejectall                           # eject all mountable volumes
+      m disk verify volume /Volume/MyVol                # verify volume
+      m disk verify disk /dev/disk0                     # verify disk
 
-      m disk verify volume /Volume/MyVol        # verify volume
-      m disk verify disk /dev/disk0             # verify disk
+      m disk repair volume /Volume/MyVol                # repair volume
+      m disk repair disk /dev/disk0                     # repair disk
 
-      m disk repair volume /Volume/MyVol        # repair volume
-      m disk repair disk /dev/disk0             # repair disk
+      m disk format MS-DOS MYNAME /dev/disk2            # format the entire disk with a windows format (MS-DOS)
+      m disk format volume MS-DOS MYNAME /Volumes/myvol # format the volume with a windows format (MS-DOS)
 
-      m disk format MS-DOS MYNAME /dev/disk2              # format the entire disk with a windows format (MS-DOS)
-      m disk format volume MS-DOS MYNAME /Volumes/myvol   # format the volume with a windows format (MS-DOS)
+      m disk reformat /Volumes/myvol                    # reformat a volume
+      m disk rename CURRENTNAME NEWNAME                 # rename a volume
 
-      m disk reformat /Volumes/myvol            # reformat a volume
-      m disk rename CURRENTNAME NEWNAME         # rename a volume
-
-      m disk remotesharing [ YES | NO ]         # whether disks are allowed to be shared remotely
+      m disk remotesharing [ YES | NO ]                 # whether disks are allowed to be shared remotely
 
 ```
 
 #### Disk Images:
 ```
-    usage: m diskimages [ automount | verification | help ]
-
-    Examples:
+    Usage:
       m diskimages automount    [ YES | NO ] # Whether to automount disk images
       m diskimages verification [ YES | NO ] # Whether to verify disk image integrity
 ```
 
 #### Disk Utility:
 ```
-    usage: m diskutility [ advancedoptions | showhiddenpartitions | showunsupportednetworks | help ]
-
-    Examples:
+    Usage:
       m diskutility advancedoptions         [ YES | NO ]  # Whether to enable advanced disk utility options
       m diskutility showhiddenpartitions    [ YES | NO ]  # Whether to show hidden partitions
       m diskutility showunsupportednetworks [ YES | NO ]  # Whether to show unsupported networks
@@ -325,81 +295,51 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Display:
 ```
-    usage: m display [ status | lightsensor | help ]
-
-    Example:
+    Usage:
       m display status                       # status of displays
-      m display autobrightness [ YES | NO ]  # whether to enable the ambient light sensor
-                                             # to automatically darken/brighten the screen
+      m display autobrightness [ YES | NO ]  # whether to enable the ambient light sensor to automatically darken/brighten the screen
 ```
 
 #### Dns:
 ```
-    usage:  m dns [ flush | help ]
-
-    Examples:
+    Usage:
       m dns flush       # flushes local DNS
 
 ```
 
 #### Dock:
 ```
-    usage: m dock [
-                    enable              |
-                    disable             |
-                    activeindicators    |
-                    bounceonappactivity |
-                    bounceonapplaunch   |
-                    autohidedelay       |
-                    autohidespeed       |
-                    autohide            |
-                    fullscreendelay     |
-                    itunesnotifications |
-                    magnification       |
-                    magnificationsize   |
-                    hiddenappdimming    |
-                    iconsize            |
-                    onlyshowrunning     |
-                    position            |
-                    addblankspace       |
-                    addrecentitems      |
-                    prune               |
-                    help
-                  ]
+    Usage:
+      m dock enable                             # Shows the Dock
+      m dock disable                            # Causes the Dock to be hidden and never reappear
+      m dock activeindicators     [ YES | NO ]  # Whether to show the active indicators under the app icons
+      m dock autohide             [ YES | NO ]  # Whether to enable Dock's auto hide feature
+      m dock autohidedelay        x.x           # Changes how long the Dock takes to show up when auto-hide is enabled
+      m dock autohidespeed        x.x           # Changes how long the Dock takes to slide into/out of view after the delay has expired
+      m dock bounceonappactivity  [ YES | NO ]  # Whether to bounce an app's icon when it has activity
+      m dock bounceonapplaunch    [ YES | NO ]  # Whether to bounce an app's icon when it is launching
+      m dock fullscreendelay      [ YES | NO ]  # Whether to have a delay when showing the dock in full screen mode
+      m dock hiddenappdimming     [ YES | NO ]  # Whether to show apps that have been hidden as semi-transparent
+      m dock iconsize             x             # Set the size of the icons when the dock is at rest
+      m dock itunesnotifications  [ YES | NO ]  # Whether to show iTunes notifications in the dock
+      m dock magnification        [ YES | NO ]  # Whether to turn magnification on
+      m dock magnificationsize    x             # Set the max size of the icons as the cursor gets closer to them
+      m dock onlyshowrunning      [ YES | NO ]  # Only show the apps that are currently running.  Apps cannot be pinned.
+      m dock position             [             # Change Dock's position to the bottom of the screen
+                                    BOTTOM |
+                                    LEFT   |
+                                    RIGHT
+                                  ]
+      m dock prune                              # Remove all items from dock
 
-    Examples:
-      m dock enable                 # Shows the Dock
-      m dock disable                # Causes the Dock to be hidden and never reappear
-      m dock activeindicators YES   # Show the active indicators under the app icons
-      m dock bounceonappactivity    # Bounce an app's icon when it has activity
-      m dock bounceonapplaunch      # Bounce an app's icon when it is launching
-      m dock autohidedelay x.x      # Changes how long the Dock takes to show up when auto-hide is enabled
-      m dock autohidespeed x.x      # Changes how long the Dock takes to slide into/out of view after the
-                                    # delay has expired
-      m dock autohide YES           # Enable Dock's auto hide feature
-      m dock autohide NO            # Disable Dock's auto hide feature
-      m dock fullscreendelay YES    # Whether to have a delay when showing the dock in full screen mode
-      m dock itunesnotifications NO # Whether to show iTunes notifications in the dock
-      m dock magnification YES      # Turn magnification on
-      m dock magnification NO       # Turn magnification off
-      m dock magnificationsize x    # Set the max size of the icons as the cursor gets closer to them
-      m dock hiddenappdimming YES   # Show apps that have been hidden as semi-transparent
-      m dock iconsize x             # Set the size of the icons when the dock is at rest
-      m dock onlyshowrunning YES    # Only show the apps that are currently running.  Apps cannot be pinned.
-      m dock position BOTTOM        # Change Dock's position to the bottom of the screen
-      m dock position LEFT          # Change Dock's position to the left of the screen
-      m dock position RIGHT         # Change Dock's position to the right of the screen
-      m dock addblankspace          # Add a blank space (separator) to the Dock
-      m dock addrecentitems         # Add a stack containg your recent items to the Dock
-                                    # (You can change the stack's type by right clicking on it)
-      m dock prune                  # Remove all items from dock
+      m dock addblankspace                      # Add a blank space (separator) to the Dock
+      m dock addrecentitems                     # Add a stack containg your recent items to the Dock
+                                                # (You can change the stack's type by right clicking on it)
 ```
 
 #### File Vault:
 ```
-    usage: m filevault [ status | enable | disable | standbykey | help ]
-
-    Examples:
+    Usage:
       m filevault status                    # FileVault Status
       m filevault enable                    # Enable FileVault
       m filevault disable                   # Disable FileVault
@@ -408,21 +348,10 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Finder:
 ```
-    usage: m finder [ showhiddenfiles | showfileextensions | showdesktop | help ]
-
-    Examples:
-      m finder showhiddenfiles                                          # get the current status
-      m finder showhiddenfiles YES                                      # show hidden files
-      m finder showhiddenfiles NO                                       # don't show hidden files
-
-      m finder showextensions                                           # get the current status
-      m finder showextensions YES                                       # show all file extensions
-      m finder showextensions NO                                        # don't show all file extensions
-
-      m finder showdesktop                                              # get the current desktop status
-      m finder showdesktop YES                                          # enable the desktop
-      m finder showdesktop NO                                           # disable the desktop
-
+    Usage:
+      m finder showhiddenfiles                   [ YES | NO ]           # whether to show hidden files
+      m finder showextensions                    [ YES | NO ]           # whether to show all file extensions
+      m finder showdesktop                       [ YES | NO ]           # whether to enable the desktop
       m finder statusbar                         [ YES | NO ]           # whether to show the status bar
       m finder posixtitlepath                    [ YES | NO ]           # whether to show the full POSIX title in the window title
       m finder remotedsstore                     [ YES | NO ]           # whether to allow dsstore files to be created on remote volumes
@@ -453,9 +382,7 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Firewall:
 ```
-    usage: m firewall [ status | enable | disable | list | add | remove | help ]
-
-    Examples:
+    Usage:
       m firewall status                            # Show status
       m firewall enable                            # Enable firewall
       m firewall disable                           # Disable firewall
@@ -470,9 +397,7 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Full Screen:
 ```
-    usage: m fullscreen [ sortbymostrecentlyused | switchonactivation | separatedisplays | help ]
-
-    Examples:
+    Usage:
       m fullscreen sortbymostrecentlyused [ YES | NO ]   # Whether to the full screen apps reorder based on activity
       m fullscreen switchonactivation     [ YES | NO ]   # Whether to switch to full screen app when activating the application (say by clicking in the dock)
       m fullscreen separatedisplays       [ YES | NO ]   # Whether each display has its own set of full screen apps
@@ -480,9 +405,7 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Gatekeeper:
 ```
-    usage: m gatekeeper [ status | list | ls | enable | disable | create | help ]
-
-    Examples:
+    Usage:
       m gatekeeper status                               # gatekeeper status
       m gatekeeper list                                 # list rules
 
@@ -498,9 +421,7 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Group:
 ```
-    usage: m group [ list | ls | info | adduser | removeuser | ismember | help ]
-
-    Examples:
+    Usage:
       m group list                          # get list of groups
       m group info mygroup                  # display group information
 
@@ -513,45 +434,37 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Hostname:
 ```
-    usage: m hostname [ help ]
-
-    Examples:
+    Usage:
       m hostname                # get the current hostname information (computername, hostname, localhostname and netbiosname)
-      m hostname newhostname    # set a new hostname (computername, hostname, localhostname, netbiosname)
-
-      m hostname help           # only shows this help
+      m hostname <newhostname>  # set a new hostname (computername, hostname, localhostname, netbiosname)
 ```
 
 #### Hot Corners:
 ```
-    usage: m hotcorners set [ bottomleft | bottomright | topright | topleft ]
-                            [
-                              donothing              |
-                              missioncontrol         |
-                              showapplicationwindows |
-                              desktop                |
-                              startscreensaver       |
-                              disablescreensaver     |
-                              dashboard              |
-                              sleepdisplay           |
-                              launchpad              |
-                              notificationcenter
-                            ]
+    Usage:
+      m hotcorners set [ bottomleft | bottomright | topright | topleft ] [
+                                                                           donothing              |
+                                                                           missioncontrol         |
+                                                                           showapplicationwindows |
+                                                                           desktop                |
+                                                                           startscreensaver       |
+                                                                           disablescreensaver     |
+                                                                           dashboard              |
+                                                                           sleepdisplay           |
+                                                                           launchpad              |
+                                                                           notificationcenter
+                                                                         ]
 ```
 
 #### Info:
 ```
-    usage: m info [ help ]
-
-    Examples:
+    Usage:
       m info        #  print macOS operating system version information
 ```
 
 ### iTunes:
 ```
-    usage: m itunes [ status | play | pause | next | prev | mute | unmute | vol up | vol down | vol # | stop | quit | autobackup | mediakeys | help ]
-
-    Examples:
+    Usage:
       m itunes status                   # Show status
       m itunes play                     # Play track
       m itunes pause                    # Pause track
@@ -570,83 +483,58 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Keyboard:
 ```
-    usage: m keyboard [
-                    accentedpress       |
-                    spellchecking       |
-                    textsubstitution    |
-                    usefunctionkeys     |
-                    inputfieldaccess    |
-                    autodim             |
-                    autodimdelay        |
-                    keyrepeatrate       |
-                    keyrepeatdelay      |
-                    help
-                  ]
-
-    Examples:
+    Usage:
       m keyboard accentedpress    [ YES | NO ]   # Whether to enable press and hold to show accented characters
       m keyboard spellchecking    [ YES | NO ]   # Whether to enable spell check indication (red squiggly lines)
       m keyboard textsubstitution [ YES | NO ]   # Whether to substitute quotes, dashes, spelling corrections, etc automatically
       m keyboard usefunctionkeys  [ YES | NO ]   # Whether to use F1 function keys or alternate function keys (brightness, etc)
       m keyboard inputfieldaccess [              # Specify which input fields can be tabbed through
-                                    BASIC                |
-                                    ALL_EXCEPT_DROPDOWNS |
-                                    ALL
+                                    basic              |
+                                    allexceptdropdowns |
+                                    all
                                   ]
       m keyboard autodim          [ YES | NO ]   # Whether to automatically dim the keyboard brightness when idle
-      m keyboard autodimdelay     2              # How long to wait before dimming the keyboard brightness
-      m keyboard keyrepeatrate    4              # How quickly a held key repeats
-      m keyboard keyrepeatdelay   1.2            # How long a key needs to be held before repeating
+      m keyboard autodimdelay     x              # How long to wait before dimming the keyboard brightness
+      m keyboard keyrepeatrate    x              # How quickly a held key repeats
+      m keyboard keyrepeatdelay   x.x            # How long a key needs to be held before repeating
 ```
 
 #### Launchpad:
 ```
-    usage: m launchpad [ prune | help ]
-
-    Examples:
+    Usage:
       m launchpad prune   # Remove all items from launchpad
 ```
 
 #### Locale:
 ```
-    usage: m locale [ onlywifi | help ]
-
-    Examples:
+    Usage:
       m locale language <language_code>      # Specify the language to use (eg en_US)
       m locale unit     [ metric | english ] # Specify the measurement unit
 ```
 
 #### Location:
 ```
-    usage: m location [ prune | help ]
-
-    Examples:
+    Usage:
       m location enable    # Enable the location service
       m location diable    # Disable the location service
 ```
 
 #### Lock:
 ```
-    usage:  m lock [ help ]
-
-    Examples:
+    Usage:
       m lock      # lock session
 ```
 
 #### Menubar:
 ```
-    usage: m menubar [ autohide | airplay | help ]
-
-    Examples:
+    Usage:
       m menubar autohide [ YES | NO ]   # Whether to autohide the menu bar
       m menubar airplay  [ YES | NO ]   # Whether to show the airplay options in the menu bar
 ```
 
 #### Mission Control:
 ```
-    usage: m missioncontrol [ showcenter | help ]
-
-    Examples:
+    Usage:
       m missioncontrol dashboardvisible   [ YES | NO ]  #
       m missioncontrol groupwindowsbyapp  [ YES | NO ]  #
       m missioncontrol animationspeed     x.x           #
@@ -654,9 +542,7 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Network:
 ```
-    usage:  m network [ ls | list | location | help ]
-
-    Examples:
+    Usage:
       m network ls                            # list network interfaces
       m network location                      # get current location
       m network location ls                   # list locations
@@ -670,57 +556,42 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Nosleep:
 ```
-    usage: m nosleep [ until | help ]
+    Usage:
+      m nosleep until <number_of_seconds>   # no sleep until number of seconds elaspes
+      m nosleep until <script_path>         # no sleep until the script ends
+      m nosleep until pid <pid_id>          # no sleep until the process id ends
 
     Examples:
-      m nosleep until 3600            # no sleep until 3600 seconds
-      m nosleep until my_script.sh    # no sleep until the script ends
-
-      m nosleep until pid 64377       # no sleep until the process id ends
+      m nosleep until 3600
+      m nosleep until my_script.sh
+      m nosleep until pid 64377
 ```
 
 #### Notification:
 ```
-    usage: m notification [ showcenter | help ]
-
-    Examples:
-      m notification showcenter      # get the current status
-      m notification showcenter YES  # enable the notification center
-      m notification showcenter NO   # disable the notification center
-      m notification bannertime x    # disable the notification center
-
+    Usage:
+      m notification showcenter [ YES | NO ]  # whether to enable the notification center
+      m notification bannertime x             # disable the notification center
 ```
 
 #### Ntp:
 ```
-    usage: m ntp [ status | enable | disable | set | help ]
-
-    Examples:
+    Usage:
       m ntp status                          # status of the network time service
       m ntp enable                          # enable clock to use network time
       m ntp disable                         # disable clock to use network time
-      m ntp set timehost1.net.sap.corp      # set network time server
+      m ntp set <time_server_hostname>      # set network time server
+
+    Examples:
+      m ntp set timehost1.net.sap.corp
 ```
 
 #### Power:
 ```
-    usage: m power [
-                     disksleeptime     |
-                     displaysleeptime  |
-                     hibernationdelay  |
-                     sleepdelay        |
-                     powernap          |
-                     powerbuttonsleeps |
-                     appnapp           |
-                     restartonhang     |
-                     persistmemory     |
-                     help
-                   ]
+    Usage:
+      Every command that has two entries requires both the battery setting and the
+      plugged setting (in that order).
 
-    Every command that has two entries requires both the battery setting and the
-    plugged setting (in that order).
-
-    Examples:
       m power disksleeptime     x x                         # Time until disks sleep
       m power displaysleeptime  x x                         # Time until displays sleep
       m power hibernationdelay  x x                         # Time until system hibernates
@@ -734,9 +605,7 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Printer:
 ```
-    usage: m printer [ settings | name | queue | drivers | web | quitwhenfinished | help ]
-
-    Examples:
+    Usage:
       m printer settings                        # Printer settings
       m printer name                            # Display printer names on system
       m printer queue                           # Display items in printer queue on system
@@ -747,18 +616,14 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Restart:
 ```
-    usage:  m restart [ -f | --force | help ]
-
-    Examples:
-      m restart     # restart computer (needs confirmation)
-      m restart -f  # restart computer (without confirmation)
+    Usage:
+      m restart           # restart computer (needs confirmation)
+      m restart --force   # restart computer (without confirmation)
 ```
 
 #### Safeboot:
 ```
-    usage: m safeboot [ status | enable | disable | help ]
-
-    Examples:
+    Usage:
       m safeboot status     # get the boot args
       m safeboot enable     # enable safe boot
       m safeboot disable    # disable safeboot
@@ -766,9 +631,7 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Screen Capture:
 ```
-    usage: m screencapture [ help ]
-
-    Examples:
+    Usage:
       m screencapture type        [             # Specify the type of the screenshots
                                     png  |
                                     jpg  |
@@ -776,29 +639,22 @@ usage:  m [OPTIONS] COMMAND [help]
                                     pdf
                                   ]
       m screencapture location    /path         # The location the screenshots will be saved to
-      m screencapture filename    "prefix"      # The filename the screenshots will be saved under (suffixed by date)
+      m screencapture filename                  # The filename the screenshots will be saved under (suffixed by date)
       m screencapture shadow      [ YES | NO ]  # Whether the screenshots will contain a drop shadow
 ```
 
 #### Screensaver:
 ```
-    usage: m screensaver [ status | askforpassword | passworddelay | help ]
-
-    Examples:
-      m screensaver                         # launch screensaver
-
-      m screensaver status                  #  get the current status
-      m screensaver askforpassword          #  get password requirement to unlock
-      m screensaver askforpassword YES      #  enable password requirement to unlock
-      m screensaver askforpassword NO       #  disable password requirement to unlock
-      m screensaver passworddelay x         #  the length of time before screensaver requires password
+    Usage:
+      m screensaver                               # launch screensaver
+      m screensaver status                        #  get the current status
+      m screensaver askforpassword [ YES | NO ]   #  whether to enable password requirement to unlock
+      m screensaver passworddelay  x              #  the length of time before screensaver requires password
 ```
 
 #### Scrolling:
 ```
-    usage: m scrolling [ direction | barvisibility | bounce | autoscrolldelay | momentum | help ]
-
-    Examples:
+    Usage:
       m scrolling direction       [ natural | inverted ]          # What direction the content moves when swiping
       m scrolling barvisibility   [ onlywhenscrolling | always ]  # When to show scroll bars
       m scrolling bounce          [ YES | NO ]                    # Whether to bounce at the end of scrolling
@@ -808,46 +664,44 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Service:
 ```
-    usage: m service [ --status-all | --list |  --ls | start | stop | load | unload | help ]
-
-
-    Examples:
+    Usage:
       m service --status-all                        # list all services
 
       m service --list                              # list all services
       m service --ls                                # list all services
-      m service --ls com.apple.sessionlogoutd       # show information about a specific service
+      m service --ls <service_name>                 # show information about a specific service
 
-      m service start com.apple.sessionlogoutd      # start a service
-      m service stop com.apple.sessionlogoutd       # stop a service
+      m service start <service_name>                # start a service
+      m service stop <service_name>                 # stop a service
 
-      m service load com.apple.sessionlogoutd       # load a service
-      m service unload com.apple.sessionlogoutd     # unload a service
+      m service load <service_name>                 # load a service
+      m service unload <service_name>               # unload a service
+
+    Examples:
+      m service --ls com.apple.sessionlogoutd
+      m service start com.apple.sessionlogoutd
+      m service stop com.apple.sessionlogoutd
+      m service load com.apple.sessionlogoutd
+      m service unload com.apple.sessionlogoutd
 
 ```
 
 #### Shutdown:
 ```
-    usage:  m  shutdown [-f | --force | help ]
-
-    Examples:
+    Usage:
       m shutdown     # shutdown computer (needs confirmation)
       m shutdown -f  # shutdown computer (without confirmation)
 ```
 
 #### Sleep:
 ```
-    usage: m sleep [ help ]
-
-    Examples:
+    Usage:
       m sleep       #  put the mac to sleep
 ```
 
 #### Sound:
 ```
-    usage: m sound [ startupchime | volumefeedback | ui | speechrecognition | speechtotext | voiceover | powerchime | help ]
-
-    Examples:
+    Usage
       m sound startupchime        [ YES | NO ]          # whether the startup chime is used
       m sound volumefeedback      [ YES | NO ]          # whether or not you hear feedback when the volume is changed
       m sound ui                  [ YES | NO ] [ x.x ]  # whether the UI bleeps and bloops are used
@@ -859,17 +713,13 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Spotlight:
 ```
-    usage: m spotlight [ shortcutkeys | help ]
-
-    Examples:
+    Usage:
       m spotlight shortcutkeys [ YES | NO ] # Whether to enable the Cmd-Space shortcuts
 ```
 
 #### System:
 ```
-    usage: m system [ quarantine | automaticapptermination | documentversioning | crashreporter | savetoicloudbydefault | savewindowsonquit | help ]
-
-    Examples:
+    Usage:
       m system quarantine                 [ YES | NO ]   # Whether to enable app quarantine
       m system automaticapptermination    [ YES | NO ]   # Whether to enable automatic app termination
       m system documentversioning         [ YES | NO ]   # Whether to enable document versioning
@@ -880,9 +730,7 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Time Machine:
 ```
-    usage: m timemachine [ enable | disable | help ]
-
-    Examples:
+    Usage:
       m timemachine usenewdisks          [ YES | NO ]  # Whether to use new disks for backups
       m timemachine useallnetworkvolumes [ YES | NO ]  # Whether to use unsupported network volumes for backups
       m timemachine localbackups         [ YES | NO ]  # Whether to enable local backups
@@ -891,30 +739,26 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Timezone:
 ```
-    usage: m timezone [ list | ls | set | help ]
+    Usage:
+      m timezone                        # get current timezone
+      m timezone ls                     # list available timezones
+      m timezone set <time_zone_name>   # set timezone
 
     Examples:
-      m timezone                    # get current timezone
-      m timezone ls                 # list available timezones
-      m timezone set Europe/Berlin  # set timezone
+      m timezone set Europe/Berlin
 ```
 
 #### Tooltips:
 ```
-    usage: m tooltips [ delay | autowrap | fontsize | fontname | help ]
-
-    Examples:
+    Usage:
       m tooltips delay    x             # Set the delay before the tooltip shows up
       m tooltips autowrap [ YES | NO ]  # Whether tooltips should wrap
-      m tooltips fontsize x.x           # The size of the font in the tooltip
-      m tooltips fontname <font name>   # The name of the font in the tooltip
+      m tooltips fontsize x             # The size of the font in the tooltip
 ```
 
 #### Trash:
 ```
-    usage: m trash [ status | clean | warn | help ]
-
-    Examples:
+    Usage:
       m trash status                  # get trash info
       m trash clean                   # clean trash
       m trash warn      [ YES | NO ]  # warn when emptying trash
@@ -922,22 +766,21 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Update
 ```
-    usage: m update [ list | install | help ]
-
-    Examples:
+    Usage:
       m update list                                                           # list available updates
-      m update install           all                                          # install all the available updates
-      m update install           iTunesX-12.4.1 RAWCameraUpdate6.20-6.20      # install specific updates
+      m update install           [ all | <package_name> ]                     # which updates to install
       m update automaticinstall  [ YES | NO ]                                 # whether automatic installs should be enabled
       m update automaticdownload [ YES | NO ]                                 # whether automatic downloads should be enabled
       m update interval          [ daily | weekly | biweekly | monthly | x ]  # how often to check for updates
+
+    Examples:
+      m update install           all                                          # install all the available updates
+      m update install           iTunesX-12.4.1 RAWCameraUpdate6.20-6.20      # install specific updates
 ```
 
 #### User
 ```
-    usage: m user [ list | ls | info | create | delete | autologin | fastswitching | guest | loginattemptsbeforehint | help ]
-
-    Examples:
+    Usage:
       m user ls                                              # list users
       m user info demouser                                   # display user information
 
@@ -975,16 +818,14 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### VPN:
 ```
-    usage:  m vpn [ ls | list | start | stop | status | help ]
-
-    Examples:
+    Usage:
       m vpn ls                              # list VPN connections
 
       m vpn start                           # interactive mode
       m vpn start VPN                       # start vpn connection named VPN
       m vpn start VPN USER                  # start a vpn connection with a given user
       m vpn start VPN USER PASS             # start a vpn connection with a given user and password
-      m vpn start VPN USER PASS SECRET      # start a vpn connection with a given user, password, and secret
+      m vpn start VPN USER PASS SECRET      # start a vpn connection with a given user,password, and secret
 
       m vpn stop VPN                        # stop vpn connection named VPN
       m vpn status VPN                      # status vpn connection named VPN
@@ -993,17 +834,16 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Wallpaper:
 ```
-    usage: m wallpaper [ /path/to/file.jpg | help ]
+    Usage:
+      m wallpaper <path_to_wallpaper_image>  # set wallpaper
 
     Examples:
-      m wallpaper ./wallpapers/tree.jpg  # set wallpaper
+      m wallpaper ./wallpapers/tree.jpg
 ```
 
 #### Wifi:
 ```
-    usage:  m wifi [ scan | off | on | connect | help ]
-
-    Examples:
+    Usage:
       m wifi status                  # wifi status
       m wifi scan                    # scan wifi
       m wifi showpassword [ESSID]    # show wifi network password (default: current)
@@ -1017,9 +857,7 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Windows:
 ```
-    usage: m windows [ miniturizeondoubleclick | help ]
-
-    Examples:
+    Usage:
       m windows miniturizeondoubleclick [ YES | NO ]   # Whether to miniturize windows on a double click of the title bar
 ```
 

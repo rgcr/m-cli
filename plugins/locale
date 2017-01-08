@@ -10,9 +10,7 @@ declare subcommand="$1"
 
 help(){
     cat<<__EOF__
-    usage: m locale [ onlywifi | help ]
-
-    Examples:
+    Usage:
       m locale language <language_code>      # Specify the language to use (eg en_US)
       m locale unit     [ metric | english ] # Specify the measurement unit
 __EOF__

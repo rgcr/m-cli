@@ -7,19 +7,19 @@ declare command="$(basename "$0")"
 
 help(){
     cat<<__EOF__
-    usage: m hotcorners set [ bottomleft | bottomright | topright | topleft ]
-                            [
-                              donothing              |
-                              missioncontrol         |
-                              showapplicationwindows |
-                              desktop                |
-                              startscreensaver       |
-                              disablescreensaver     |
-                              dashboard              |
-                              sleepdisplay           |
-                              launchpad              |
-                              notificationcenter
-                            ]
+    Usage:
+      m hotcorners set [ bottomleft | bottomright | topright | topleft ] [
+                                                                           donothing              |
+                                                                           missioncontrol         |
+                                                                           showapplicationwindows |
+                                                                           desktop                |
+                                                                           startscreensaver       |
+                                                                           disablescreensaver     |
+                                                                           dashboard              |
+                                                                           sleepdisplay           |
+                                                                           launchpad              |
+                                                                           notificationcenter
+                                                                         ]
 __EOF__
 }
 

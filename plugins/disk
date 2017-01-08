@@ -10,33 +10,31 @@ declare subcommand="$1"
 
 help(){
     cat<<__EOF__
-    usage: m disk [ ls | list | info | fs | filesystems | ejectall | verify | repair | remotesharing | help ]
+    Usage:
+      m disk ls                                         # list disks
+      m disk list                                       # list disks
+      m disk list /dev/disk0                            # list a specific disk
 
-    Examples:
-      m disk ls                                 # list disks
-      m disk list                               # list disks
-      m disk list /dev/disk0                    # list a specific disk
+      m disk fs                                         # list available filesystems for formatting
+      m disk filesystems                                # list available filesystems for formatting
 
-      m disk fs                                 # list available filesystems for formatting
-      m disk filesystems                        # list available filesystems for formatting
+      m disk info /dev/disk0                            # display information
 
-      m disk info /dev/disk0                    # display information
+      m disk ejectall                                   # eject all mountable volumes
 
-      m disk ejectall                           # eject all mountable volumes
+      m disk verify volume /Volume/MyVol                # verify volume
+      m disk verify disk /dev/disk0                     # verify disk
 
-      m disk verify volume /Volume/MyVol        # verify volume
-      m disk verify disk /dev/disk0             # verify disk
+      m disk repair volume /Volume/MyVol                # repair volume
+      m disk repair disk /dev/disk0                     # repair disk
 
-      m disk repair volume /Volume/MyVol        # repair volume
-      m disk repair disk /dev/disk0             # repair disk
+      m disk format MS-DOS MYNAME /dev/disk2            # format the entire disk with a windows format (MS-DOS)
+      m disk format volume MS-DOS MYNAME /Volumes/myvol # format the volume with a windows format (MS-DOS)
 
-      m disk format MS-DOS MYNAME /dev/disk2              # format the entire disk with a windows format (MS-DOS)
-      m disk format volume MS-DOS MYNAME /Volumes/myvol   # format the volume with a windows format (MS-DOS)
+      m disk reformat /Volumes/myvol                    # reformat a volume
+      m disk rename CURRENTNAME NEWNAME                 # rename a volume
 
-      m disk reformat /Volumes/myvol            # reformat a volume
-      m disk rename CURRENTNAME NEWNAME         # rename a volume
-
-      m disk remotesharing [ YES | NO ]         # whether disks are allowed to be shared remotely
+      m disk remotesharing [ YES | NO ]                 # whether disks are allowed to be shared remotely
 
 __EOF__
 }

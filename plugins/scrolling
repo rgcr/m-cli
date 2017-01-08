@@ -10,9 +10,7 @@ declare subcommand="$1"
 
 help(){
     cat<<__EOF__
-    usage: m scrolling [ direction | barvisibility | bounce | autoscrolldelay | momentum | help ]
-
-    Examples:
+    Usage:
       m scrolling direction       [ natural | inverted ]          # What direction the content moves when swiping
       m scrolling barvisibility   [ onlywhenscrolling | always ]  # When to show scroll bars
       m scrolling bounce          [ YES | NO ]                    # Whether to bounce at the end of scrolling

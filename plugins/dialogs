@@ -7,9 +7,7 @@ declare subcommand="$1"
 
 help(){
     cat<<__EOF__
-    usage: m dialogs [ autoexpand | help ]
-
-    Examples:
+    Usage:
       m dialogs autoexpand  [ YES | NO ]  # Whether print, save and other dialogs auto-expand
 __EOF__
 }

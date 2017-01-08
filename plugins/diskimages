@@ -10,9 +10,7 @@ declare subcommand="$1"
 
 help(){
     cat<<__EOF__
-    usage: m diskimages [ automount | verification | help ]
-
-    Examples:
+    Usage:
       m diskimages automount    [ YES | NO ] # Whether to automount disk images
       m diskimages verification [ YES | NO ] # Whether to verify disk image integrity
 __EOF__

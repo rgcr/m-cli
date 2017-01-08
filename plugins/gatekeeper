@@ -4,9 +4,7 @@
 
 help(){
     cat<<__EOF__
-    usage: m gatekeeper [ status | list | ls | enable | disable | create | help ]
-
-    Examples:
+    Usage:
       m gatekeeper status                               # gatekeeper status
       m gatekeeper list                                 # list rules
 

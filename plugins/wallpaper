@@ -3,10 +3,11 @@
 
 help(){
     cat<<__EOF__
-    usage: m wallpaper [ /path/to/file.jpg | help ]
+    Usage:
+      m wallpaper <path_to_wallpaper_image>  # set wallpaper
 
     Examples:
-      m wallpaper ./wallpapers/tree.jpg  # set wallpaper
+      m wallpaper ./wallpapers/tree.jpg
 __EOF__
 }
 

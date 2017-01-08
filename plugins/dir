@@ -14,9 +14,7 @@ declare subcommand="$1"
 
 help(){
     cat<<__EOF__
-    usage: m dir [ tree | size | delete | help ]
-
-    Examples:
+    Usage:
       m dir tree                  # tree view of folders in the current path
       m dir tree /path            # tree view of folders in a specific path
 

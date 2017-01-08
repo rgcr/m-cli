@@ -10,11 +10,11 @@ declare subcommand="$1"
 
 help(){
     cat<<__EOF__
-    usage: m airdrop [ onlywifi | help ]
+    Usage:
+      m airdrop onlywifi [ YES | NO ]       # Whether to allow all interfaces (or only wifi) to be airdropped to
 
     Examples:
-      m airdrop onlywifi YES      #  allow airdropping only via WIFI
-      m airdrop onlywifi NO       #  allow airdropping via any network interface
+      m airdrop onlywifi YES
 __EOF__
 }
 

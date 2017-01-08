@@ -7,9 +7,7 @@ declare subcommand="$1"
 
 help(){
     cat<<__EOF__
-    usage: m filevault [ status | enable | disable | standbykey | help ]
-
-    Examples:
+    Usage:
       m filevault status                    # FileVault Status
       m filevault enable                    # Enable FileVault
       m filevault disable                   # Disable FileVault
