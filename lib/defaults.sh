@@ -70,7 +70,7 @@ _mcli_defaults_number() {
     local transformed="$(_mcli_convert_number_to_number "${new_value}")"
 
     case "${transformed}" in
-        [0-9][.][0-9])
+        [0-9]*[.][0-9]*)
             ${sudo} defaults write "${domain}" "${key}" -float "${transformed}"
             ;;
         [0-9]*)

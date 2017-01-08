@@ -148,7 +148,7 @@ _mcli_convert_number_to_number() {
         "")
             echo ""
             ;;
-        [0-9][.][0-9])
+        [0-9]*[.][0-9]*)
             echo "${choice}"
             ;;
         [0-9]*)
