@@ -93,9 +93,9 @@ inputfieldaccess() {
             ;;
     esac
 
-    value="$(_mcli_defaults_integer "NSGlobalDomain" \
-                                    "AppleKeyboardUIMode" \
-                                    "${mode}")"
+    value="$(_mcli_defaults_number "NSGlobalDomain" \
+                                   "AppleKeyboardUIMode" \
+                                   "${mode}")"
 
     echo "${command} ${subcommand}: ${value}"
 }
@@ -109,25 +109,25 @@ autodim() {
 }
 
 autodimdelay() {
-    value="$(_mcli_defaults_integer "com.apple.iokit.AmbientLightSensor" \
-                                    "Keyboard Dim Time" \
-                                    "$1")"
+    value="$(_mcli_defaults_number "com.apple.iokit.AmbientLightSensor" \
+                                   "Keyboard Dim Time" \
+                                   "$1")"
 
     echo "${command} ${subcommand}: ${value}"
 }
 
 keyrepeatrate() {
-    value="$(_mcli_defaults_integer "NSGlobalDomain" \
-                                    "KeyRepeat" \
-                                    "$1")"
+    value="$(_mcli_defaults_number "NSGlobalDomain" \
+                                   "KeyRepeat" \
+                                   "$1")"
 
     echo "${command} ${subcommand}: ${value}"
 }
 
 keyrepeatdelay() {
-    value="$(_mcli_defaults_integer "NSGlobalDomain" \
-                                    "InitialKeyRepeat" \
-                                    "$1")"
+    value="$(_mcli_defaults_number "NSGlobalDomain" \
+                                   "InitialKeyRepeat" \
+                                   "$1")"
 
     echo "${command} ${subcommand}: ${value}"
 }

@@ -27,9 +27,9 @@ __EOF__
 }
 
 enable(){
-    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.dashboard" \
-                                              "mcx-disabled" \
-                                              "NO")"
+    value="$(_mcli_defaults_yes_no_to_inverted_boolean "com.apple.dashboard" \
+                                                       "mcx-disabled" \
+                                                       "YES")"
 
     _mcli_toggle_dashboard_keyboard_shortcuts "${value}"
 
@@ -37,9 +37,9 @@ enable(){
 }
 
 disable(){
-    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.dashboard" \
-                                              "mcx-disabled" \
-                                              "YES")"
+    value="$(_mcli_defaults_yes_no_to_inverted_boolean "com.apple.dashboard" \
+                                                       "mcx-disabled" \
+                                                       "NO")"
 
     _mcli_toggle_dashboard_keyboard_shortcuts "${value}"
 

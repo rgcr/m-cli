@@ -206,9 +206,9 @@ springing(){
 }
 
 minimumplayablepreviewsize(){
-    value="$(_mcli_defaults_yes_no_to_integer "com.apple.finder" \
-                                              "QLInlinePreviewMinimumSupportedSize" \
-                                              "$1")"
+    value="$(_mcli_defaults_number "com.apple.finder" \
+                                   "QLInlinePreviewMinimumSupportedSize" \
+                                   "$1")"
 
     echo "${command} ${subcommand}: ${value}"
 }

@@ -18,9 +18,9 @@ __EOF__
 }
 
 delay() {
-    value="$(_mcli_defaults_yes_no_to_integer "NSGlobalDomain" \
-                                              "NSInitialToolTipDelay" \
-                                              "$1")"
+    value="$(_mcli_defaults_number "NSGlobalDomain" \
+                                   "NSInitialToolTipDelay" \
+                                   "$1")"
 
     echo "${command} ${subcommand}: ${value}"
 }
@@ -34,9 +34,9 @@ autowrap() {
 }
 
 fontsize() {
-    value="$(_mcli_defaults_yes_no_to_number "NSGlobalDomain" \
-                                             "NSToolTipsFontSize" \
-                                             "$1")"
+    value="$(_mcli_defaults_number "NSGlobalDomain" \
+                                   "NSToolTipsFontSize" \
+                                   "$1")"
 
     echo "${command} ${subcommand}: ${value}"
 }

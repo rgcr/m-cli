@@ -46,7 +46,7 @@ ui(){
     value="$(_mcli_defaults_yes_no_to_boolean "com.apple.finder" \
                                               "FinderSounds" \
                                               "$1")"
-    value="$(_mcli_defaults_number            "com.apple.systemsound" \
+    _mcli_defaults_number                     "com.apple.systemsound" \
                                               "com.apple.sound.beep.volume" \
                                               "$1")"
 

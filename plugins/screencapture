@@ -49,9 +49,9 @@ filename(){
 }
 
 shadow(){
-    value="$(_mcli_defaults_string "com.apple.screencapture" \
-                                   "disable-shadow" \
-                                   "$1")"
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.screencapture" \
+                                              "disable-shadow" \
+                                              "$1")"
 
     echo "${command} ${subcommand}: ${value}"
 }

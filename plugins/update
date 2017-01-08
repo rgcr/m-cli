@@ -86,10 +86,10 @@ interval(){
             interval="$1";;
     esac
 
-    value="$(_mcli_defaults_yes_no_to_integer "${path_to_update_prefs}" \
-                                              "ScheduleFrequency" \
-                                              "${interval}" \
-                                              "sudo")"
+    value="$(_mcli_defaults_number "${path_to_update_prefs}" \
+                                   "ScheduleFrequency" \
+                                   "${interval}" \
+                                   "sudo")"
 
     echo "${command} ${subcommand}: ${value}"
 }
