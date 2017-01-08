@@ -41,8 +41,14 @@ darkmode(){
     local choice="$(_mcli_convert_yes_no_to_boolean "$1")"
     local mode="$(if [[ "${choice}" == "true" ]]; then echo "Dark"; else echo "Light"; fi)"
 
-    defaults write NSGlobalDomain AppleInterfaceStyle "${mode}"
-    defaults write NSGlobalDomain NSFullScreenDarkMenu -boolean "${choice}"
+    value="$(_mcli_defaults_string            "NSGlobalDomain" \
+                                              "AppleInterfaceStyle" \
+                                              "${mode}")"
+    value="$(_mcli_defaults_yes_no_to_boolean "NSGlobalDomain" \
+                                              "NSFullScreenDarkMenu" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
 }
 
 transparency(){
@@ -76,8 +82,14 @@ sidebariconsize(){
             ;;
     esac
 
-    defaults write NSGlobalDomain NSTableViewDefaultSizeMode -integer "${size}"
-    defaults write NSGlobalDomain NSNavPanelIconViewIconSizeForOpenMode -integer "${size}"
+    value="$(_mcli_defaults_number "NSGlobalDomain" \
+                                   "NSTableViewDefaultSizeMode" \
+                                   "${size}")"
+    value="$(_mcli_defaults_number "NSGlobalDomain" \
+                                   "NSNavPanelIconViewIconSizeForOpenMode" \
+                                   "${size}")"
+
+    echo "${command} ${subcommand}: ${value}"
 }
 
 maincolor(){
@@ -95,7 +107,11 @@ maincolor(){
             ;;
     esac
 
-    defaults write NSGlobalDomain AppleAquaColorVariant -int $color
+    value="$(_mcli_defaults_number "NSGlobalDomain" \
+                                   "AppleAquaColorVariant" \
+                                   "${color}")"
+
+    echo "${command} ${subcommand}: ${value}"
 }
 
 highlightcolor(){
@@ -205,8 +221,14 @@ highlightcolor(){
             color="$1";;
     esac
 
-    defaults write NSGlobalDomain AppleHighlightColor -string "${color}"
-    defaults write com.apple.systempreferences AppleOtherHighlightColor -string "${color}"
+    value="$(_mcli_defaults_string            "NSGlobalDomain" \
+                                              "AppleHighlightColor" \
+                                              "${color}")"
+    value="$(_mcli_defaults_string            "com.apple.systempreferences" \
+                                              "AppleOtherHighlightColor" \
+                                              "${color}")"
+
+    echo "${command} ${subcommand}: ${value}"
 }
 
 case "${subcommand}" in

@@ -40,7 +40,9 @@ automaticapptermination() {
 documentversioning(){
     local choice="$(_mcli_convert_yes_no_to_boolean "$1")"
 
-    defaults write NSGlobalDomain ApplePersistence -bool "${choice}"
+    value="$(_mcli_defaults_yes_no_to_boolean "NSGlobalDomain" \
+                                              "ApplePersistence" \
+                                              "$1")"
 
     if [[ "${choice}" == "true" ]]; then
         sudo mkdir /.DocumentRevisions-V100 2> /dev/null
@@ -49,6 +51,8 @@ documentversioning(){
         sudo rm -rf /.DocumentRevisions-V1*
         defaults write NSGlobalDomain AutosavingDelay -int 0
     fi
+
+    echo "${command} ${subcommand}: ${value}"
 }
 
 crashreporter(){

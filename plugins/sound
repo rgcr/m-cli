@@ -63,6 +63,9 @@ speechrecognition(){
 }
 
 speechtotext(){
+    value="$(_mcli_defaults_delete            "com.apple.speech.synthesis.general.prefs" \
+                                              "TimeAnnouncementPrefs" \
+                                              "sudo")"
     value="$(_mcli_defaults_yes_no_to_boolean "com.apple.speech.synthesis.general.prefs" \
                                               "TalkingAlertsSpeakTextFlag" \
                                               "$1" \
@@ -74,9 +77,6 @@ speechtotext(){
     value="$(_mcli_defaults_yes_no_to_boolean "com.apple.speech.synthesis.general.prefs" \
                                               "SpokenUIUseSpeakingHotKeyFlag" \
                                               "$1" \
-                                              "sudo")"
-    value="$(_mcli_defaults_delete            "com.apple.speech.synthesis.general.prefs" \
-                                              "TimeAnnouncementPrefs" \
                                               "sudo")"
 
     echo "${command} ${subcommand}: ${value}"

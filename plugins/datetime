@@ -23,13 +23,18 @@ __EOF__
     local choice="$(_mcli_convert_yes_no_to_boolean "$1")"
     local hour_format="$(if [[ "${choice}" == "true" ]]; then echo "H"; else echo "h"; fi)"
 
-    defaults delete NSGlobalDomain AppleICUTimeFormatStrings > /dev/null 2&>1
+    defaults delete NSGlobalDomain AppleICUTimeFormatStrings &> /dev/null
 
     defaults write NSGlobalDomain AppleICUTimeFormatStrings -dict-add "1" "${hour_format}:mm"
     defaults write NSGlobalDomain AppleICUTimeFormatStrings -dict-add "2" "${hour_format}:mm:ss"
     defaults write NSGlobalDomain AppleICUTimeFormatStrings -dict-add "3" "${hour_format}:mm:ss z"
     defaults write NSGlobalDomain AppleICUTimeFormatStrings -dict-add "4" "${hour_format}:mm:ss zzzz"
-    defaults write NSGlobalDomain AppleICUForce24HourTime   -bool "${choice}"
+
+    value="$(_mcli_defaults_yes_no_to_boolean "NSGlobalDomain" \
+                                              "AppleICUForce24HourTime" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
 }
 
 usentpserver(){
