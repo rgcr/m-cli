@@ -142,10 +142,10 @@ infopanesexpanded() {
     local choice="$(_mcli_convert_yes_no_to_boolean "$1")"
 
     if [ -n "${choice}" ]; then
-    defaults write com.apple.finder FXInfoPanesExpanded -dict \
-        General    -boolean "${choice}" \
-        OpenWith   -boolean "${choice}" \
-        Privileges -boolean "${choice}"
+      defaults write com.apple.finder FXInfoPanesExpanded -dict \
+          General    -boolean "${choice}" \
+          OpenWith   -boolean "${choice}" \
+          Privileges -boolean "${choice}"
     fi
 
     defaults read com.apple.finder FXInfoPanesExpanded

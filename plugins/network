@@ -55,12 +55,10 @@ wakeonethernet(){
     choice="$(_mcli_convert_yes_no_to_integer "$1")"
 
     if [ -n "${choice}" ]; then
-    sudo pmset -a womp "${choice}"
-    sudo pmset -a ring "${choice}"
+      sudo pmset -a womp "${choice}"
     fi
 
     sudo pmset -g | grep womp
-    sudo pmset -g | grep ring
 }
 
 guestaccess(){

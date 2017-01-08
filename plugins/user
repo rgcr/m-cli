@@ -184,12 +184,12 @@ loginmessage(){
     # Otherwise you will need to touch $kextdir to generate it.
 
     # Refresh system kext cache
-    sudo mkdir -p $kextdir 2> /dev/null
+    sudo mkdir -p "${kextdir}" 2> /dev/null
 
     # Refresh CoreStorage EFI Cache
-    sudo mkdir -p $eficachedir 2> /dev/null
+    sudo mkdir -p "${eficachedir}" 2> /dev/null
 
-    sudo touch $eficachedir
+    sudo touch "${eficachedir}"
 }
 
 case "${subcommand}" in

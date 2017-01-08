@@ -70,7 +70,7 @@ powerbuttonsleeps(){
     echo "${command} ${subcommand}: ${value}"
 }
 
-appnapp(){
+appnap(){
     value="$(_mcli_defaults_yes_no_to_inverted_boolean "NSGlobalDomain" \
                                                        "NSAppSleepDisabled" \
                                                        "$1")"
@@ -82,7 +82,7 @@ restartonhang(){
     value="$(_mcli_convert_yes_no_to_on_off "$1")"
 
     if [ -n "${value}" ]; then
-    sudo /usr/sbin/systemsetup -setrestartfreeze "${value}"
+      sudo /usr/sbin/systemsetup -setrestartfreeze "${value}"
     else
       sudo /usr/sbin/systemsetup -getrestartfreeze
     fi

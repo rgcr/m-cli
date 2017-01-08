@@ -187,6 +187,7 @@ add_recent_items(){
     killall Dock
 }
 
+# shellcheck disable=SC2086
 prune(){
     echo "remove all items from the Dock"
     defaults write com.apple.dock checked-for-launchpad -bool true

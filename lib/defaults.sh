@@ -128,6 +128,7 @@ _mcli_defaults_delete() {
     fi
 }
 
+# shellcheck disable=SC2086
 _mcli_defaults_yes_no_to_type() {
     local type="$1"
     local transformer="$2"

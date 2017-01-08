@@ -22,7 +22,7 @@ shortcut_keys() {
     [ -z "$1" ] && help && return
 
     for keyboard_shortcut_id in "${spotlight_keyboard_shortcut_ids[@]}"; do
-        _mcli_keyboard_shortcut_toggle $keyboard_shortcut_id $enabled
+        _mcli_keyboard_shortcut_toggle "${keyboard_shortcut_id}" "${enabled}"
     done
 
     echo "${command} ${subcommand}: ${enabled}"
