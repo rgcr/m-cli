@@ -600,6 +600,4 @@ case "${subcommand}" in
         ;;
 esac
 
-[ -n "${subcommand}" ] && [ -n "$1" ] && killall NotificationCenter && echo "Restart your computer for this to take effect"
-
 # vim: ts=4 sw=4 softtabstop=4 expandtab
