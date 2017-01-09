@@ -21,6 +21,7 @@ help(){
       m finder remotedsstore                     [ YES | NO ]           # whether to allow dsstore files to be created on remote volumes
       m finder extensionchangewarning            [ YES | NO ]           # whether to show the warning when changing a file's extension
       m finder quittable                         [ YES | NO ]           # whether to finder is quittable
+      m finder foldersfirst                      [ YES | NO ]           # whether to show folders above all other files in finder
       m finder clickthroughdestroysselection     [ YES | NO ]           # whether, when clicking through to a finder window, the current selection is destroyed
       m finder stoppreviewswhenselectionchanges  [ YES | NO ]           # whether to stop previews when selection changes
       m finder stoppreviewswhenscrolling         [ YES | NO ]           # whether to stop previews when scrolling
@@ -109,6 +110,14 @@ extensionchangewarning() {
 quittable() {
     value="$(_mcli_defaults_yes_no_to_boolean "com.apple.finder" \
                                               "QuitMenuItem" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+foldersfirst() {
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.finder" \
+                                              "_FXSortFoldersFirst" \
                                               "$1")"
 
     echo "${command} ${subcommand}: ${value}"
@@ -271,6 +280,9 @@ case "${subcommand}" in
         ;;
     quittable)
         quittable "$@"
+        ;;
+    foldersfirst)
+        foldersfirst "$@"
         ;;
     clickthroughdestroysselection)
         clickthroughdestroysselection "$@"
