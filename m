@@ -51,11 +51,7 @@ __EOF__
         [ ! -L "$i" -a -f "$i"  ] && echo "        ${i##*/}"
     done
 
-    if [ "$COMMAND" == "help" ]; then
-        exit 0
-    else
-        exit 1
-    fi
+    [ "${COMMAND}" == "help" ] && exit 0 || exit 1
 }
 
 
