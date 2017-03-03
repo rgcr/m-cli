@@ -19,10 +19,9 @@ set_wallpaper(){
             osascript -e "tell application \"Finder\" to set desktop picture to POSIX file \"${1}\""
             ;;
         sqlite3)
-            DB_PATH="$HOME/Library/Application Support/Dock/desktoppicture.db"
-            current_path=$(sqlite3 -noheader -batch "$DB_PATH" 'select value from data limit 1')
+            current_path=$(sqlite3 -noheader -batch ${HOME}/Library/Application\ Support/Dock/desktoppicture.db 'select value from data limit 1')
             if [[ "$current_path" != "$1" ]]; then
-                sqlite3 "$DB_PATH" "update data set value = '${1}'" && killall Dock
+                sqlite3 ${HOME}/Library/Application\ Support/Dock/desktoppicture.db "update data set value = '${1}'" && killall Dock
             fi
             ;;
         *)
