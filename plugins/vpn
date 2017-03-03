@@ -94,7 +94,7 @@ start_vpn(){
         ask_parameters
     fi
 
-    scutil --nc start "${_VPN}" "${_USER}" "${_PASSWORD}" "${_SECRET}"
+    scutil --nc start ${_VPN} ${_USER} ${_PASSWORD} ${_SECRET}
 
 }
 
