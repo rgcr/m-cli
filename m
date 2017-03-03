@@ -50,7 +50,8 @@ __EOF__
     for i in ${MPATH}/plugins/*; do
         [ ! -L "$i" -a -f "$i"  ] && echo "        ${i##*/}"
     done
-    exit 1
+
+    [ "${COMMAND}" == "help" ] && exit 0 || exit 1
 }
 
 
