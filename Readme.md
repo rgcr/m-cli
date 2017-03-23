@@ -220,6 +220,17 @@ usage:  m [OPTIONS] COMMAND [help]
 
 ```
 
+#### Flightmode:
+```
+    usage:  m flightmode [ on | off | help ]
+
+    Examples:
+      m flightmode on                      # turn flightmode on
+      m flightmode off                     # turn flightmode off
+      
+
+```
+
 #### Gatekeeper:
 ```
     usage: m gatekeeper [ status | list | ls | enable | disable | create | help ]
