@@ -40,6 +40,9 @@ _m_sub () {
         firewall)
             subcommands=(status enable disable add remove list help)
             ;;
+        flightmode)
+            subcommands=(on off help)
+            ;;
         gatekeeper)
             subcommands=(status list enable disable create help)
             ;;
@@ -214,7 +217,7 @@ _m_dock() {
 _m () {
     local cur
     local commands=(
-        help battery bluetooth dir disk dns dock finder firewall gatekeeper group hostname
+        help battery bluetooth dir disk dns dock finder firewall flightmode gatekeeper group hostname
         info itunes lock network nosleep notification ntp printer restart safeboot screensaver service
         shutdown sleep timezone trash user update volume vpn wallpaper wifi
     )

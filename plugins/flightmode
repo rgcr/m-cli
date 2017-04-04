@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+
+_W_DEVICE=${_W_DEVICE:-en0}
+
+
+help(){
+    cat<<__EOF__
+    usage:  m flightmode [ on | off | help ]
+
+    Examples:
+
+      m flightmode off                     # turn flightmode off
+      m flightmode on                      # turn flightmode on
+
+__EOF__
+}
+
+
+
+flightmode_on(){
+    networksetup -setairportpower ${_W_DEVICE} off
+    sudo defaults write /Library/Preferences/com.apple.Bluetooth ControllerPowerState -int 0 && \
+            sudo killall -HUP blued
+}
+
+flightmode_off(){
+    networksetup -setairportpower ${_W_DEVICE} on
+    sudo defaults write /Library/Preferences/com.apple.Bluetooth ControllerPowerState -int 1 && \
+            sudo killall -HUP blued
+}
+
+
+
+case $1 in
+    help)
+        help
+        ;;
+
+    off)
+        flightmode_off
+        ;;
+    on)
+        flightmode_on
+        ;;
+
+    *)
+        help
+        ;;
+esac
+
+# vim: ts=4 sw=4 softtabstop=4 expandtab
