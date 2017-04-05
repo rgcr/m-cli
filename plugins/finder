@@ -1,136 +1,324 @@
 #!/usr/bin/env bash
 
-# TODO: add more functionalities
+declare path_to_plistbuddy="/usr/libexec/PlistBuddy"
+
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/defaults.sh"
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/converters.sh"
+
+declare command="$(basename "$0")"
+declare subcommand="$1"
+
+[ $# -gt 0 ] && shift
 
 help(){
     cat<<__EOF__
-    usage: m finder [ showhiddenfiles | showfileextensions | showdesktop | help ]
+    Usage:
+      m finder showhiddenfiles                   [ YES | NO ]           # whether to show hidden files
+      m finder showextensions                    [ YES | NO ]           # whether to show all file extensions
+      m finder showdesktop                       [ YES | NO ]           # whether to enable the desktop
+      m finder statusbar                         [ YES | NO ]           # whether to show the status bar
+      m finder posixtitlepath                    [ YES | NO ]           # whether to show the full POSIX title in the window title
+      m finder remotedsstore                     [ YES | NO ]           # whether to allow dsstore files to be created on remote volumes
+      m finder extensionchangewarning            [ YES | NO ]           # whether to show the warning when changing a file's extension
+      m finder quittable                         [ YES | NO ]           # whether to finder is quittable
+      m finder foldersfirst                      [ YES | NO ]           # whether to show folders above all other files in finder
+      m finder clickthroughdestroysselection     [ YES | NO ]           # whether, when clicking through to a finder window, the current selection is destroyed
+      m finder stoppreviewswhenselectionchanges  [ YES | NO ]           # whether to stop previews when selection changes
+      m finder stoppreviewswhenscrolling         [ YES | NO ]           # whether to stop previews when scrolling
+      m finder infopanesexpanded                 [ YES | NO ]           # whether the panes in the info panel are expanded
+      m finder showrecenttags                    [ YES | NO ]           # whether to show recent tags in the sidebar
+      m finder hidequicklookondeactivate         [ YES | NO ]           # whether quicklook is hidden if you switch to another app
+      m finder springing                         [ YES | NO ] [ x.x ]   # whether springing is enabled and how long it takes for an item to spring
+      m finder minimumplayablepreviewsize        x                      # the minimum size on which a preview will have a play button
+      m finder datetype                          [                      # whether to use relative or absolute dates when showing file dates
+                                                   absolute   |
+                                                   relative
+                                                 ]
+      m finder defaultlocation                   [                      # the location that new finder windows will open to by default
+                                                   computer   |
+                                                   volume     |
+                                                   desktop    |
+                                                   documents  |
+                                                   allmyfiles |
+                                                   home       |
+                                                   /path
+                                                 ]
 
-    Examples:
-      m finder showhiddenfiles           # get the current status
-      m finder showhiddenfiles YES       # show hidden files
-      m finder showhiddenfiles NO        # don't show hidden files
-
-      m finder showextensions            # get the current status
-      m finder showextensions YES        # show all file extensions
-      m finder showextensions NO         # don't show all file extensions
-
-      m finder showdesktop               # get the current desktop status
-      m finder showdesktop YES           # enable the desktop
-      m finder showdesktop NO            # disable the desktop
 __EOF__
 }
 
 hidden_files(){
-    case $1 in
-        [yY][eE][sS])
-            echo "Show hidden files: YES"
-            defaults write com.apple.finder AppleShowAllFiles -bool true
-            ;;
-        [nN][oO])
-            echo "Show hidden files: NO"
-            defaults write com.apple.finder AppleShowAllFiles -bool false
-            ;;
-        *)
-            HIDDEN_FILE_STATUS=$(defaults read com.apple.finder AppleShowAllFiles 2>/dev/null)
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.finder" \
+                                              "AppleShowAllFiles" \
+                                              "$1")"
 
-            case $HIDDEN_FILE_STATUS in
-                0|[nN][oO]|[fF][aA][lL][sS][eE])
-                    HIDDEN_FILE_STATUS="NO"
-                    ;;
-                1|[yY][eE][sS]|[tT][rU][eE])
-                    HIDDEN_FILE_STATUS="YES"
-                    ;;
-                *)
-                    echo "We can't read AppleShowAllFiles property" && exit 1
-                    ;;
-            esac
-
-            echo "Show hidden files: $HIDDEN_FILE_STATUS"
-            exit 0
-            ;;
-    esac
-    killall Finder
+    echo "${command} ${subcommand}: ${value}"
 }
 
 file_extensions(){
-    case $1 in
-        [yY][eE][sS])
-            echo "Show file extensions: YES"
-            defaults write NSGlobalDomain AppleShowAllExtensions -bool true
-            ;;
-        [nN][oO])
-            echo "Show file extensions: NO"
-            defaults write NSGlobalDomain AppleShowAllExtensions -bool false
-            ;;
-        *)
-            EXTENSION_STATUS=$(defaults read NSGlobalDomain AppleShowAllExtensions 2>/dev/null)
-            case $EXTENSION_STATUS in
-                0|[nN][oO]|[fF][aA][lL][sS][eE])
-                    EXTENSION_STATUS="NO"
-                    ;;
-                1|[yY][eE][sS]|[tT][rU][eE])
-                    EXTENSION_STATUS="YES"
-                    ;;
-                *)
-                    echo "We can't read AppleShowAllExtension property" && exit 1
-                    ;;
-            esac
-            echo "Show file extensions: $EXTENSION_STATUS"
-            exit 0
-            ;;
-    esac
-    killall Finder
+    value="$(_mcli_defaults_yes_no_to_boolean "NSGlobalDomain" \
+                                              "AppleShowAllExtensions" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
 }
 
 desktop(){
-    case $1 in
-        [yY][eE][sS])
-            echo "Enable desktop: YES"
-            defaults write com.apple.finder CreateDesktop -bool true
-            ;;
-        [nN][oO])
-            echo "Enable desktop: NO"
-            defaults write com.apple.finder CreateDesktop -bool false
-            ;;
-        *)
-            DESKTOP_STATUS=$(defaults read com.apple.finder CreateDesktop 2>/dev/null)
-            case $DESKTOP_STATUS in
-                0|[nN][oO]|[fF][aA][lL][sS][eE])
-                    DESKTOP_STATUS="disabled"
-                    ;;
-                1|[yY][eE][sS]|[tT][rU][eE])
-                    DESKTOP_STATUS="enabled"
-                    ;;
-                *)
-                    echo "We can't read CreateDesktop property" && exit 1
-                    ;;
-            esac
-            echo "Desktop: $DESKTOP_STATUS"
-            ;;
-    esac
-    killall Finder
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.finder" \
+                                              "CreateDesktop" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
 }
 
-case $1 in
+statusbar(){
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.finder" \
+                                              "ShowStatusBar" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+posixtitlepath(){
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.finder" \
+                                              "_FXShowPosixPathInTitle" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+remotedsstore(){
+    local choice="$(_mcli_defaults_yes_no_to_boolean "$1")"
+
+    if [[ "${choice}" == "true" ]]; then
+        defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
+        defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
+    else
+        defaults delete com.apple.desktopservices DSDontWriteNetworkStores
+        defaults delete com.apple.desktopservices DSDontWriteUSBStores
+    fi
+}
+
+extensionchangewarning() {
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.finder" \
+                                              "FXEnableExtensionChangeWarning" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+quittable() {
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.finder" \
+                                              "QuitMenuItem" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+foldersfirst() {
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.finder" \
+                                              "_FXSortFoldersFirst" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+clickthroughdestroysselection(){
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.finder" \
+                                              "ClickThroughDestroysSelection" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+stoppreviewswhenselectionchanges(){
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.finder" \
+                                              "AutoStopWhenSelectionChanges" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+stoppreviewswhenscrolling(){
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.finder" \
+                                              "AutoStopWhenScrollingOffBounds" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+infopanesexpanded() {
+    local choice="$(_mcli_convert_yes_no_to_boolean "$1")"
+
+    if [ -n "${choice}" ]; then
+      defaults write com.apple.finder FXInfoPanesExpanded -dict \
+          General    -boolean "${choice}" \
+          OpenWith   -boolean "${choice}" \
+          Privileges -boolean "${choice}"
+    fi
+
+    defaults read com.apple.finder FXInfoPanesExpanded
+}
+
+showrecenttags() {
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.finder" \
+                                              "ShowRecentTags" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+hidequicklookondeactivate() {
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.finder" \
+                                              "QLHidePanelOnDeactivate" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+datetype() {
+    local mode;
+    local plist="/Users/$(whoami)/Library/Preferences/com.apple.finder.plist"
+
+    case "$1" in
+    relative)
+        mode="true";;
+    absolute)
+        mode="false";;
+    *)
+        mode="$1";;
+    esac
+
+    $path_to_plistbuddy -c "Delete :FK_StandardViewSettings:ListViewSettings:useRelativeDates" "${plist}" 2> /dev/null
+    $path_to_plistbuddy -c "Add :FK_StandardViewSettings:ListViewSettings:useRelativeDates bool ${mode}" "${plist}"
+    $path_to_plistbuddy -c "Delete :FK_StandardViewSettings:ExtendedListViewSettings:useRelativeDates" "${plist}" 2> /dev/null
+    $path_to_plistbuddy -c "Add :FK_StandardViewSettings:ExtendedListViewSettings:useRelativeDates bool ${mode}" "${plist}"
+    $path_to_plistbuddy -c "Delete :StandardViewSettings:ListViewSettings:useRelativeDates" "${plist}" 2> /dev/null
+    $path_to_plistbuddy -c "Add :StandardViewSettings:ListViewSettings:useRelativeDates bool ${mode}" "${plist}"
+    $path_to_plistbuddy -c "Delete :StandardViewSettings:ExtendedListViewSettings:useRelativeDates" "${plist}" 2> /dev/null
+    $path_to_plistbuddy -c "Add :StandardViewSettings:ExtendedListViewSettings:useRelativeDates bool ${mode}" "${plist}"
+    $path_to_plistbuddy -c "Delete :ComputerViewSettings:ListViewSettings:useRelativeDates" "${plist}" 2> /dev/null
+    $path_to_plistbuddy -c "Add :ComputerViewSettings:ListViewSettings:useRelativeDates bool ${mode}" "${plist}"
+    $path_to_plistbuddy -c "Delete :ComputerViewSettings:ExtendedListViewSettings:useRelativeDates" "${plist}" 2> /dev/null
+    $path_to_plistbuddy -c "Add :ComputerViewSettings:ExtendedListViewSettings:useRelativeDates bool ${mode}" "${plist}"
+}
+
+springing(){
+    value="$(_mcli_defaults_yes_no_to_boolean "NSGlobalDomain" \
+                                              "com.apple.springing.enabled" \
+                                              "$1")"
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.dock" \
+                                              "enable-spring-load-actions-on-all-items" \
+                                              "$1")"
+
+    _mcli_defaults_number                     "NSGlobalDomain" \
+                                              "com.apple.springing.delay" \
+                                              "$2"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+minimumplayablepreviewsize(){
+    value="$(_mcli_defaults_number "com.apple.finder" \
+                                   "QLInlinePreviewMinimumSupportedSize" \
+                                   "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+defaultlocation(){
+  local mode;
+
+  case "$1" in
+      computer)
+          mode="PfCm";;
+      volume)
+          mode="PfVo";;
+      desktop)
+          mode="PfDe";;
+      documents)
+          mode="PfDo";;
+      allmyfiles)
+          mode="PfAF";;
+      home)
+          mode="PfHm";;
+      *)
+          mode="PfLo";;
+  esac
+
+  defaults write com.apple.finder NewWindowTarget "${mode}"
+
+  if [[ "${mode}" == "PfLo" ]]; then
+    defaults write com.apple.finder NewWindowTargetPath "$1"
+  fi
+}
+
+case "${subcommand}" in
     help)
         help
         ;;
     showhiddenfiles)
-        shift
         hidden_files "$@"
         ;;
     showextensions)
-        shift
         file_extensions "$@"
         ;;
     showdesktop)
-        shift
         desktop "$@"
+        ;;
+    statusbar)
+        statusbar "$@"
+        ;;
+    posixtitlepath)
+        posixtitlepath "$@"
+        ;;
+    remotedsstore)
+        remotedsstore "$@"
+        ;;
+    extensionchangewarning)
+        extensionchangewarning "$@"
+        ;;
+    quittable)
+        quittable "$@"
+        ;;
+    foldersfirst)
+        foldersfirst "$@"
+        ;;
+    clickthroughdestroysselection)
+        clickthroughdestroysselection "$@"
+        ;;
+    stoppreviewswhenselectionchanges)
+        stoppreviewswhenselectionchanges "$@"
+        ;;
+    stoppreviewswhenscrolling)
+        stoppreviewswhenscrolling "$@"
+        ;;
+    infopanesexpanded)
+        infopanesexpanded "$@"
+        ;;
+    showrecenttags)
+        showrecenttags "$@"
+        ;;
+    hidequicklookondeactivate)
+        hidequicklookondeactivate "$@"
+        ;;
+    springing)
+        springing "$@"
+        ;;
+    minimumplayablepreviewsize)
+        minimumplayablepreviewsize "$@"
+        ;;
+    datetype)
+        datetype "$@"
+        ;;
+    defaultlocation)
+        defaultlocation "$@"
         ;;
     *)
         help
         ;;
 esac
+
+[ -n "${subcommand}" ] && [ -n "$1" ] && killall Finder
 
 # vim: ts=4 sw=4 softtabstop=4 expandtab

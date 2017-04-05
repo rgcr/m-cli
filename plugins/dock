@@ -1,99 +1,178 @@
 #!/usr/bin/env bash
 
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/defaults.sh"
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/converters.sh"
+
+declare command="$(basename "$0")"
+declare subcommand="$1"
+
+[ $# -gt 0 ] && shift
+
 help(){
     cat<<__EOF__
-    usage: m dock [ showdelay | autohide | magnification | position | addblankspace | addrecentitems | prune | help ]
+    Usage:
+      m dock enable                             # Shows the Dock
+      m dock disable                            # Causes the Dock to be hidden and never reappear
+      m dock activeindicators     [ YES | NO ]  # Whether to show the active indicators under the app icons
+      m dock autohide             [ YES | NO ]  # Whether to enable Dock's auto hide feature
+      m dock autohidedelay        x.x           # Changes how long the Dock takes to show up when auto-hide is enabled
+      m dock autohidespeed        x.x           # Changes how long the Dock takes to slide into/out of view after the delay has expired
+      m dock bounceonappactivity  [ YES | NO ]  # Whether to bounce an app's icon when it has activity
+      m dock bounceonapplaunch    [ YES | NO ]  # Whether to bounce an app's icon when it is launching
+      m dock fullscreendelay      [ YES | NO ]  # Whether to have a delay when showing the dock in full screen mode
+      m dock hiddenappdimming     [ YES | NO ]  # Whether to show apps that have been hidden as semi-transparent
+      m dock iconsize             x             # Set the size of the icons when the dock is at rest
+      m dock itunesnotifications  [ YES | NO ]  # Whether to show iTunes notifications in the dock
+      m dock magnification        [ YES | NO ]  # Whether to turn magnification on
+      m dock magnificationsize    x             # Set the max size of the icons as the cursor gets closer to them
+      m dock onlyshowrunning      [ YES | NO ]  # Only show the apps that are currently running.  Apps cannot be pinned.
+      m dock position             [             # Change Dock's position to the bottom of the screen
+                                    BOTTOM |
+                                    LEFT   |
+                                    RIGHT
+                                  ]
+      m dock prune                              # Remove all items from dock
 
-    Examples:
-      m dock showdelay x.x          # Changes how long the Dock takes to show up when auto-hide is enabled
-      m dock autohide YES           # Enable Dock's auto hide feature
-      m dock autohide NO            # Disable Dock's auto hide feature
-      m dock magnification YES      # Turn magnification on
-      m dock magnification NO       # Turn magnification off
-      m dock position BOTTOM        # Change Dock's position to the bottom of the screen
-      m dock position LEFT          # Change Dock's position to the left of the screen
-      m dock position RIGHT         # Change Dock's position to the right of the screen
-      m dock addblankspace          # Add a blank space (separator) to the Dock
-      m dock addrecentitems         # Add a stack containg your recent items to the Dock
-                                    #  (You can change the stack's type by right clicking on it)
-      m dock prune                  # remove all items from dock
+      m dock addblankspace                      # Add a blank space (separator) to the Dock
+      m dock addrecentitems                     # Add a stack containg your recent items to the Dock
+                                                # (You can change the stack's type by right clicking on it)
 __EOF__
 }
 
-show_delay(){
-    case $1 in
-        [0-9][.][0-9])
-            echo "New Auto-Hide time: "$1
-            defaults write com.apple.dock autohide-time-modifier -float $1
-            ;;
-        [0-9])
-            echo "New Auto-Hide time: "$1
-            defaults write com.apple.dock autohide-time-modifier -int $1
-            ;;
-        *)
-            echo "Current Auto-Hide time: $(defaults read com.apple.dock autohide-time-modifier 2>/dev/null)"
-            exit 0
-            ;;
-    esac
-    killall Dock
+enable(){
+  auto_hide "NO"
+  auto_hide_delay 0.25
+}
+
+disable(){
+  auto_hide "YES"
+  auto_hide_delay 999999
+}
+
+active_indicators(){
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.dock" \
+                                              "show-process-indicators" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+bounce_on_app_activity(){
+    value="$(_mcli_defaults_yes_no_to_inverted_boolean "com.apple.dock" \
+                                                       "no-bouncing" \
+                                                       "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+bounce_on_app_launch(){
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.dock" \
+                                              "launchanim" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+auto_hide_speed(){
+    value="$(_mcli_defaults_number "com.apple.dock" \
+                                   "autohide-time-modifier" \
+                                   "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+auto_hide_delay(){
+    value="$(_mcli_defaults_number "com.apple.dock" \
+                                   "autohide-delay" \
+                                   "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
 }
 
 auto_hide(){
-    case $1 in
-        [yY][eE][sS])
-            echo "Auto Hide: YES"
-            defaults write com.apple.dock autohide -boolean YES
-            ;;
-        [nN][oO])
-            echo "Auto Hide: No"
-            defaults write com.apple.dock autohide -boolean NO
-            ;;
-        *)
-            echo "Auto Hide: $(defaults read com.apple.dock autohide)"
-            exit 0
-            ;;
-    esac
-    killall Dock
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.dock" \
+                                              "autohide" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+full_screen_delay(){
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.dock" \
+                                              "autohide-fullscreen-delayed" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+itunes_notifications() {
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.dock" \
+                                              "itunes-notifications" \
+                                              "$1")"
+
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.dock" \
+                                              "notification-always-show-image" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+hidden_app_dimming(){
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.dock" \
+                                              "showhidden" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
 }
 
 magnify(){
-    case $1 in
-        [yY][eE][sS])
-            echo "Magnification: YES"
-            defaults write com.apple.dock magnification -boolean YES
-            ;;
-        [nN][oO])
-            echo "Magnification: NO"
-            defaults write com.apple.dock magnification -boolean NO
-            ;;
-        *)
-            echo "Magnification: $(defaults read com.apple.dock magnification)"
-            exit 0
-            ;;
-    esac
-    killall Dock
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.dock" \
+                                              "magnification" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+magnification_size(){
+    value="$(_mcli_defaults_number "com.apple.dock" \
+                                   "largesize" \
+                                   "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+icon_size(){
+    value="$(_mcli_defaults_number "com.apple.dock" \
+                                   "tilesize" \
+                                   "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+only_show_running(){
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.dock" \
+                                              "static-only" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
 }
 
 dock_position(){
     case $1 in
         [bB][oO][tT][tT][oO][mM])
-            echo "Dock Position: BOTTOM"
             defaults write com.apple.dock orientation bottom
             ;;
         [lL][eE][fF][tT])
-            echo "Dock Position: LEFT"
             defaults write com.apple.dock orientation left
             ;;
         [rR][iI][gG][hH][tT])
-            echo "Dock Position: RIGHT"
             defaults write com.apple.dock orientation right
             ;;
-        *)
-            echo "Position: $(defaults read com.apple.dock orientation)"
-            exit 0
-            ;;
     esac
-    killall Dock
+
+    value="$(_mcli_read "com.apple.dock" "orientation")"
+
+    echo "${command} ${subcommand}: ${value}"
 }
 
 add_blank_space(){
@@ -108,47 +187,87 @@ add_recent_items(){
     killall Dock
 }
 
+# shellcheck disable=SC2086
 prune(){
-    echo "remove all items from stack"
-    defaults write com.apple.dock persistent-apps '()'
+    echo "remove all items from the Dock"
+    defaults write com.apple.dock checked-for-launchpad -bool true
+    defaults write com.apple.dock persistent-apps -array ""
+    defaults write com.apple.dock persistent-others -array ""
+
+    rm -f ${HOME}/Library/Application\ Support/Dock/*.db 2> /dev/null
+
     killall Dock
 }
 
-case $1 in
+case "${subcommand}" in
     help)
         help
         ;;
+    enable)
+        enable
+        ;;
+    disable)
+        disable
+        ;;
+    activeindicators)
+        active_indicators "$@"
+        ;;
+    bounceonappactivity)
+        bounce_on_app_activity "$@"
+        ;;
+    bounceonapplaunch)
+        bounce_on_app_launch "$@"
+        ;;
     showdelay)
-        shift
-        show_delay $@
+        auto_hide_delay "$@"
+        ;;
+    autohidedelay)
+        auto_hide_delay "$@"
+        ;;
+    autohidespeed)
+        auto_hide_speed "$@"
         ;;
     autohide)
-        shift
-        auto_hide $@
+        auto_hide "$@"
+        ;;
+    fullscreendelay)
+        full_screen_delay "$@"
+        ;;
+    itunesnotifications)
+        itunes_notifications "$@"
         ;;
     magnification)
-        shift
-        magnify $@
+        magnify "$@"
+        ;;
+    magnificationsize)
+        magnification_size "$@"
+        ;;
+    hiddenappdimming)
+        hidden_app_dimming "$@"
+        ;;
+    iconsize)
+        icon_size "$@"
+        ;;
+    onlyshowrunning)
+        only_show_running "$@"
         ;;
     position)
-        shift
-        dock_position $@
+        dock_position "$@"
         ;;
     addblankspace)
-        shift
         add_blank_space
         ;;
     addrecentitems)
-        shift
         add_recent_items
         ;;
     prune)
-        shift
         prune
         ;;
     *)
         help
         ;;
 esac
+
+[ -n "${subcommand}" ] && [ -n "$1" ] && killall Dock
 
 # vim: ts=4 sw=4 softtabstop=4 expandtab

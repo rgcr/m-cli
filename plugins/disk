@@ -1,32 +1,41 @@
 #!/usr/bin/env bash
 
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/defaults.sh"
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/converters.sh"
+
+declare command="$(basename "$0")"
+declare subcommand="$1"
+
+[ $# -gt 0 ] && shift
+
 help(){
     cat<<__EOF__
-    usage: m disk [ ls | list | info | fs | filesystems | ejectall | verify | repair | help ]
+    Usage:
+      m disk ls                                         # list disks
+      m disk list                                       # list disks
+      m disk list /dev/disk0                            # list a specific disk
 
-    Examples:
-      m disk ls                                 # list disks
-      m disk list                               # list disks
-      m disk list /dev/disk0                    # list a specific disk
+      m disk fs                                         # list available filesystems for formatting
+      m disk filesystems                                # list available filesystems for formatting
 
-      m disk fs                                 # list available filesystems for formatting
-      m disk filesystems                        # list available filesystems for formatting
+      m disk info /dev/disk0                            # display information
 
-      m disk info /dev/disk0                    # display information
+      m disk ejectall                                   # eject all mountable volumes
 
-      m disk ejectall                           # eject all mountable volumes
+      m disk verify volume /Volume/MyVol                # verify volume
+      m disk verify disk /dev/disk0                     # verify disk
 
-      m disk verify volume /Volume/MyVol        # verify volume
-      m disk verify disk /dev/disk0             # verify disk
+      m disk repair volume /Volume/MyVol                # repair volume
+      m disk repair disk /dev/disk0                     # repair disk
 
-      m disk repair volume /Volume/MyVol        # repair volume
-      m disk repair disk /dev/disk0             # repair disk
+      m disk format MS-DOS MYNAME /dev/disk2            # format the entire disk with a windows format (MS-DOS)
+      m disk format volume MS-DOS MYNAME /Volumes/myvol # format the volume with a windows format (MS-DOS)
 
-      m disk format MS-DOS MYNAME /dev/disk2              # format the entire disk with a windows format (MS-DOS)
-      m disk format volume MS-DOS MYNAME /Volumes/myvol   # format the volume with a windows format (MS-DOS)
+      m disk reformat /Volumes/myvol                    # reformat a volume
+      m disk rename CURRENTNAME NEWNAME                 # rename a volume
 
-      m disk reformat /Volumes/myvol            # reformat a volume
-      m disk rename CURRENTNAME NEWNAME         # rename a volume
+      m disk remotesharing [ YES | NO ]                 # whether disks are allowed to be shared remotely
+      m disk autoplay      [ YES | NO ]                 # whether the system should open a window when a drive is inserted
 
 __EOF__
 }
@@ -107,45 +116,91 @@ rename(){
 
 }
 
-case $1 in
+remotesharing(){
+    [ -z "$1" ] && help && exit 1
+
+    local loaded="$(_mcli_convert_yes_no_to_load_unload "$1")"
+
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.NetworkBrowser" \
+                                              "ODSSupported" \
+                                              "$1")"
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.NetworkBrowser" \
+                                              "EnableODiskBrowsing" \
+                                              "$1")"
+
+    sudo sh -c "launchctl $loaded -w /System/Library/LaunchDaemons/com.apple.ODSAgent.plist 2> /dev/null"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+autoplay(){
+    local choice="$(_mcli_convert_yes_no_to_boolean "$1")"
+    local inverted_choice="$(_mcli_convert_yes_no_to_inverted_boolean "$1")"
+    local action;
+
+    case "$1" in
+        [nN][oO])
+            action="1"
+            ;;
+        [yY][eE][sS])
+            action="2"
+            ;;
+    esac
+
+    # Blank CD automatic action.
+    sudo defaults write /Library/Preferences/com.apple.digihub com.apple.digihub.blank.cd.appeared -dict action "${action}"
+
+    # Music CD automatic action.
+    sudo defaults write /Library/Preferences/com.apple.digihub com.apple.digihub.cd.music.appeared -dict action "${action}"
+
+    # Picture CD automatic action.
+    sudo defaults write /Library/Preferences/com.apple.digihub com.apple.digihub.cd.picture.appeared -dict action "${action}"
+
+    # Blank DVD automatic action.
+    sudo defaults write /Library/Preferences/com.apple.digihub com.apple.digihub.blank.dvd.appeared -dict action "${action}"
+
+    # Video DVD automatic action.
+    sudo defaults write /Library/Preferences/com.apple.digihub com.apple.digihub.dvd.video.appeared -dict action "${action}"
+
+    echo "${command} ${subcommand}: ${choice}"
+}
+
+case "${subcommand}" in
     help)
         help
         ;;
     list|ls)
-        shift
         disk_ls "$@"
         ;;
     info)
-        shift
         disk_info "$@"
         ;;
     filesystems|fs)
-        shift
         list_filesystems
         ;;
     ejectall)
-        shift
         ejectall
         ;;
     verify)
-        shift
         verify "$@"
         ;;
     repair)
-        shift
         repair "$@"
         ;;
     format)
-        shift
         format "$@"
         ;;
     reformat)
-        shift
         reformat "$@"
         ;;
     rename)
-        shift
         rename "$@"
+        ;;
+    remotesharing)
+        remotesharing "$@"
+        ;;
+    autoplay)
+        autoplay "$@"
         ;;
     *)
         help

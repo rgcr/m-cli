@@ -3,13 +3,15 @@
 
 help(){
     cat<<__EOF__
-    usage: m nosleep [ until | help ]
+    Usage:
+      m nosleep until <number_of_seconds>   # no sleep until number of seconds elaspes
+      m nosleep until <script_path>         # no sleep until the script ends
+      m nosleep until pid <pid_id>          # no sleep until the process id ends
 
     Examples:
-      m nosleep until 3600            # no sleep until 3600 seconds
-      m nosleep until my_script.sh    # no sleep until the script ends
-
-      m nosleep until pid 64377       # no sleep until the process id ends
+      m nosleep until 3600
+      m nosleep until my_script.sh
+      m nosleep until pid 64377
 __EOF__
 }
 

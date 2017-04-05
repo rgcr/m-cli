@@ -1,62 +1,58 @@
 #!/usr/bin/env bash
 
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/defaults.sh"
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/converters.sh"
+
+declare command="$(basename "$0")"
+declare subcommand="$1"
+
+[ $# -gt 0 ] && shift
 
 help(){
     cat<<__EOF__
-    usage: m screensaver [ status | askforpassword | help ]
-
-    Examples:
-      m screensaver                         # launch screensaver
-
-      m screensaver status                  #  get the current status
-      m screensaver askforpassword          #  get password requirement to unlock
-      m screensaver askforpassword YES      #  enable password requirement to unlock
-      m screensaver askforpassword NO       #  disable password requirement to unlock
+    Usage:
+      m screensaver                               # launch screensaver
+      m screensaver status                        #  get the current status
+      m screensaver askforpassword [ YES | NO ]   #  whether to enable password requirement to unlock
+      m screensaver passworddelay  x              #  the length of time before screensaver requires password
 __EOF__
 }
 
 askforpassword(){
-    case $1 in
-        [yY][eE][sS])
-            defaults write com.apple.screensaver askForPassword -int 1
-            echo "Screensaver askforpassword: YES"
-            ;;
-        [nN][oO])
-            defaults write com.apple.screensaver askForPassword -int 0
-            echo "Screensaver askforpassword: NO"
-            ;;
-        *)
-            VALUE=$(defaults read com.apple.screensaver askForPassword)
-            if [ "${VALUE}" -eq 1 ]; then
-                echo "Screensaver askforpassword: YES"
-            else
-                echo "Screensaver askforpassword: NO"
-            fi
-            ;;
-    esac
+    value="$(_mcli_defaults_yes_no_to_integer "com.apple.screensaver" \
+                                              "askForPassword" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+passworddelay(){
+    value="$(_mcli_defaults_number "com.apple.screensaver" \
+                                   "askForPasswordDelay" \
+                                   "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
 }
 
 status(){
-    VALUE=$(osascript -e 'tell application "System Events"' \
-        -e 'get running of screen saver preferences' \
-        -e 'end tell')
-    if [ "${VALUE}" == 'true' ]; then
-        echo 'Screensaver is running: YES'
-    elif [ "${VALUE}" == 'false' ]; then
-        echo 'Screensaver is running: NO'
-    else
-        echo 'Screensaver is running: ERROR'
-    fi
+    local value=$(osascript -e 'tell application "System Events"' \
+                            -e 'get running of screen saver preferences' \
+                            -e 'end tell')
+
+    value="$(_mcli_convert_yes_no_to_enabled_disabled "${value}")"
+
+    echo "${command}: ${value}"
 }
 
-
-case $1 in
+case "${subcommand}" in
     help)
         help
         ;;
     askforpassword)
-        shift
         askforpassword $@
+        ;;
+    passworddelay)
+        passworddelay $@
         ;;
     status)
         status

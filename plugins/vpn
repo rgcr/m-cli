@@ -7,9 +7,7 @@ _SECRET="--secret"
 
 help(){
     cat<<__EOF__
-    usage:  m vpn [ ls | list | start | stop | status | help ]
-
-    Examples:
+    Usage:
       m vpn ls                              # list VPN connections
 
       m vpn start                           # interactive mode

@@ -3,9 +3,7 @@
 
 help(){
     cat<<__EOF__
-    usage:  m  shutdown [-f | --force | help ]
-
-    Examples:
+    Usage:
       m shutdown     # shutdown computer (needs confirmation)
       m shutdown -f  # shutdown computer (without confirmation)
 __EOF__

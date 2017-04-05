@@ -3,13 +3,14 @@
 
 help(){
     cat<<__EOF__
-    usage: m ntp [ status | enable | disable | set | help ]
-
-    Examples:
+    Usage:
       m ntp status                          # status of the network time service
       m ntp enable                          # enable clock to use network time
       m ntp disable                         # disable clock to use network time
-      m ntp set timehost1.net.sap.corp      # set network time server
+      m ntp set <time_server_hostname>      # set network time server
+
+    Examples:
+      m ntp set timehost1.net.sap.corp
 __EOF__
 }
 

@@ -3,9 +3,7 @@
 
 help(){
     cat<<__EOF__
-    usage: m safeboot [ status | enable | disable | help ]
-
-    Examples:
+    Usage:
       m safeboot status     # get the boot args
       m safeboot enable     # enable safe boot
       m safeboot disable    # disable safeboot

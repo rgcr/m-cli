@@ -5,9 +5,7 @@ _W_DEVICE=${_W_DEVICE:-en0}
 
 help(){
     cat<<__EOF__
-    usage:  m wifi [ scan | off | on | connect | help ]
-
-    Examples:
+    Usage:
       m wifi status                  # wifi status
       m wifi scan                    # scan wifi
       m wifi showpassword [ESSID]    # show wifi network password (default: current)

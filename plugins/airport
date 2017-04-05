@@ -1,0 +1,133 @@
+#!/usr/bin/env bash
+
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/defaults.sh"
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/converters.sh"
+
+declare path_to_airport_binary="/System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport"
+declare command="$(basename "$0")"
+declare subcommand="$1"
+
+[ $# -gt 0 ] && shift
+
+help(){
+    cat<<__EOF__
+    Usage:
+      m airport disconnectonlogout   [ YES | NO ]     #  whether to disconnect from wifi when logging out
+      m airport nonpreferrednetworks [                #  how to join non-preferred networks if preferred
+                                       Prompt      |  #  networks are unavailable
+                                       JoinOpen    |
+                                       KeepLooking |
+                                       DoNothing
+                                     ]
+      m airport preferrednetworks    [                #  what to do when preferred networks are available
+                                       Automatic |
+                                       Preferred |
+                                       Ranked    |
+                                       Recent    |
+                                       Strongest
+                                     ]
+      m airport rememberrecents      [ YES | NO ]     #  whether to remember recent networks
+      m airport secureadhocnetworks  [ YES | NO ]     #  whether a password is required to create a
+                                                      #  computer-to-computer network
+      m airport securechangenetworks [ YES | NO ]     #  whether a password is required to change
+                                                      #  networks
+      m airport securetogglepower    [ YES | NO ]     #  whether a password is required to turn
+                                                      #  wi-fi on or off
+__EOF__
+}
+
+disconnectonlogout(){
+    local choice="$(_mcli_convert_yes_no_to_yes_no "$1")"
+
+    sudo "${path_to_airport_binary}" prefs DisconnectOnLogout="${choice}"
+
+    value="$(sudo "${path_to_airport_binary}" prefs DisconnectOnLogout)"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+nonpreferrednetworks(){
+    [ -n "$1" ] && sudo "${path_to_airport_binary}" prefs JoinModeFallback="$1"
+
+    value="$(sudo "${path_to_airport_binary}" prefs JoinModeFallback)"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+preferrednetworks(){
+    [ -n "$1" ] && sudo "${path_to_airport_binary}" prefs JoinMode="$1"
+
+    value="$(sudo "${path_to_airport_binary}" prefs JoinMode)"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+rememberrecents(){
+    local choice="$(_mcli_convert_yes_no_to_yes_no "$1")"
+
+    sudo "${path_to_airport_binary}" prefs RememberRecentNetworks="${choice}"
+
+    value="$(sudo "${path_to_airport_binary}" prefs RememberRecentNetworks)"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+secureadhocnetworks(){
+    local choice="$(_mcli_convert_yes_no_to_yes_no "$1")"
+
+    sudo "${path_to_airport_binary}" prefs RequireAdminIBSS="${choice}"
+
+    value="$(sudo "${path_to_airport_binary}" prefs RequireAdminIBSS)"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+securechangenetworks(){
+    local choice="$(_mcli_convert_yes_no_to_yes_no "$1")"
+
+    sudo "${path_to_airport_binary}" prefs RequireAdminNetworkChange="${choice}"
+
+    value="$(sudo "${path_to_airport_binary}" prefs RequireAdminNetworkChange)"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+securetogglepower(){
+    local choice="$(_mcli_convert_yes_no_to_yes_no "$1")"
+
+    sudo "${path_to_airport_binary}" prefs RequireAdminPowerToggle="${choice}"
+
+    value="$(sudo "${path_to_airport_binary}" prefs RequireAdminPowerToggle)"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+case "${subcommand}" in
+    help)
+        help
+        ;;
+    disconnectonlogout)
+        disconnectonlogout "$@"
+        ;;
+    nonpreferrednetworks)
+        nonpreferrednetworks "$@"
+        ;;
+    preferrednetworks)
+        preferrednetworks "$@"
+        ;;
+    rememberrecents)
+        rememberrecents "$@"
+        ;;
+    secureadhocnetworks)
+        secureadhocnetworks "$@"
+        ;;
+    securechangenetworks)
+        securechangenetworks "$@"
+        ;;
+    securetogglepower)
+        securetogglepower "$@"
+        ;;
+    *)
+        help
+        ;;
+esac

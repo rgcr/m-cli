@@ -2,9 +2,7 @@
 
 help(){
     cat<<__EOF__
-    usage: m bluetooth [ status | enable | disable | help ]
-
-    Examples:
+    Usage:
       m bluetooth status    # bluetooth status
       m bluetooth enable    # turn on bluetooth
       m bluetooth disable   # turn off bluetooth

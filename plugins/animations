@@ -1,0 +1,125 @@
+#!/usr/bin/env bash
+
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/defaults.sh"
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/converters.sh"
+
+declare command="$(basename "$0")"
+declare subcommand="$1"
+
+[ $# -gt 0 ] && shift
+
+help(){
+    cat<<__EOF__
+    Usage:
+      m animations mail       [ YES | NO ]          # Whether to use animations in mail
+      m animations inputs     [ YES | NO ]          # Whether to use animations interacting with inputs
+      m animations finder     [ YES | NO ]          # Whether to use animations in finder/desktop
+      m animations fullscreen [ YES | NO ]          # Whether to use animations in fullscreen
+      m animations windows    [ YES | NO ] [ x.x ]  # Whether to use animations when opening, closing or resizing windows (with optional speed factor)
+      m animations quicklook  [ YES | NO ] [ x.x ]  # Whether to use animations when using quicklook
+__EOF__
+}
+
+mail(){
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.mail" \
+                                              "DisableReplyAnimations" \
+                                              "$1")"
+    value="$(_mcli_defaults_yes_no_to_boolean "com.apple.mail" \
+                                              "DisableSendAnimations" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+inputs() {
+    value="$(_mcli_defaults_yes_no_to_boolean "NSGlobalDomain" \
+                                              "NSUseAnimatedFocusRing" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+finder() {
+    value="$(_mcli_defaults_yes_no_to_inverted_boolean "com.apple.finder" \
+                                                       "DisableAllAnimations" \
+                                                       "$1")"
+    value="$(_mcli_defaults_yes_no_to_boolean          "com.apple.finder" \
+                                                       "AnimateInfoPanes" \
+                                                       "$1")"
+    value="$(_mcli_defaults_yes_no_to_boolean          "com.apple.finder" \
+                                                       "AnimateSnapToGrid" \
+                                                       "$1")"
+    value="$(_mcli_defaults_yes_no_to_boolean          "com.apple.finder" \
+                                                       "ZoomRects" \
+                                                       "$1")"
+    value="$(_mcli_defaults_yes_no_to_boolean          "com.apple.finder" \
+                                                       "AnimateWindowZoom" \
+                                                       "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+fullscreen(){
+    value="$(_mcli_defaults_yes_no_to_inverted_boolean "com.apple.dock" \
+                                                       "workspaces-swoosh-animation-off" \
+                                                       "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+windows() {
+    # Toggle Open/Close Window Animations
+    value="$(_mcli_defaults_yes_no_to_boolean "NSGlobalDomain" \
+                                              "NSAutomaticWindowAnimationsEnabled" \
+                                              "$1")"
+
+    # Sets the Length of Time in Seconds When a Window is Resized
+    _mcli_defaults_yes_no_to_number "NSGlobalDomain" \
+                                    "NSWindowResizeTime" \
+                                    "$2"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+quicklook() {
+    local choice="$(_mcli_convert_yes_no_to_boolean "$1")"
+    local duration="$2"
+
+    [[ "${choice}" == "false" ]] && duration="0"
+
+    # Sets the Length of Time in Seconds When a Window is Resized
+    value="$(_mcli_defaults_number "NSGlobalDomain" \
+                                   "QLPanelAnimationDuration" \
+                                   "${duration}")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+case "${subcommand}" in
+    help)
+        help
+        ;;
+    mail)
+        mail "$@"
+        ;;
+    inputs)
+        inputs "$@"
+        ;;
+    finder)
+        finder "$@"
+        ;;
+    fullscreen)
+        fullscreen "$@"
+        ;;
+    windows)
+        windows "$@"
+        ;;
+    quicklook)
+        quicklook "$@"
+        ;;
+    *)
+        help
+        ;;
+esac
+
+# vim: ts=4 sw=4 softtabstop=4 expandtab

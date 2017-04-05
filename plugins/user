@@ -1,21 +1,35 @@
 #!/usr/bin/env bash
 
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/defaults.sh"
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/converters.sh"
+
+declare login_pref_path="/Library/Preferences/com.apple.loginwindow"
+
+declare command="$(basename "$0")"
+declare subcommand="$1"
+
+[ $# -gt 0 ] && shift
 
 help(){
     cat<<__EOF__
-    usage: m user [ list | ls | info | create | delete | help ]
+    Usage:
+      m user ls                                              # list users
+      m user info demouser                                   # display user information
 
-    Examples:
-      m user ls                # list users
-      m user info demouser     # display user information
+      m user create                                          # create a user, it will ask you the below information
+                                                                  Username:
+                                                                  Full name:
+                                                                  Shell [/bin/bash]:
+                                                                  Password:
 
-      m user create            # create a user, it will ask you the below information
-                                    Username:
-                                    Full name:
-                                    Shell [/bin/bash]:
-                                    Password:
-
-      m user delete demouser   # delete user
+      m user delete demouser                                 # delete user
+      m user autologin                [ disable | username ] # who to autologin as or whether to disable autologin
+      m user fastswitching            [ YES | NO ]           # whether to enable fast user switching
+      m user guest                    [ YES | NO ]           # whether to enable the guest user
+      m user showsecure               [ YES | NO ]           # whether to show secure users on the login screen (such as root)
+      m user loginpoweroptions        [ YES | NO ]           # whether to show power options during login
+      m user loginattemptsbeforehint  x                      # the number of failed attempts before hint is shown
+      m user loginmessage             "Your message"         # the custom text to show on the login screen (enter nothing to remove message)
 __EOF__
 }
 
@@ -47,11 +61,6 @@ groups_user_belongs(){
 }
 
 user_create(){
-
-    #SECONDARY_GROUPS=""  # for a non-admin user
-    #SECONDARY_GROUPS="admin _lpadmin _appserveradm _appserverusr" # for an admin user
-
-
     LAST_ID=$(dscl . -list /Users UniqueID | awk '{print $2}' | sort -n | tail -1)
     LAST_ID=$(expr $LAST_ID + 1)
 
@@ -100,9 +109,90 @@ user_delete(){
     fi
 }
 
+autologin(){
+    local username="$(if [[ "$1" != "disable" ]]; then echo "$1"; fi)"
 
+    if [ -z "${username}" ]; then
+        sudo defaults delete "${login_pref_path}" autoLoginUser 2> /dev/null
+        sudo rm -f /etc/kcpassword
+    else
+        sudo defaults write "${login_pref_path}" autoLoginUser -string "$username"
+    fi
+}
 
-case $1 in
+fastswitching(){
+    value="$(_mcli_defaults_yes_no_to_boolean "NSGlobalDomain" \
+                                              "MultipleSessionEnabled" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+guest(){
+    value="$(_mcli_defaults_yes_no_to_integer "${login_pref_path}" \
+                                              "GuestEnabled" \
+                                              "$1" \
+                                              "sudo")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+showsecure(){
+    value="$(_mcli_defaults_yes_no_to_inverted_boolean "${login_pref_path}" \
+                                                       "Hide500Users" \
+                                                       "$1" \
+                                                       "sudo")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+loginpoweroptions(){
+    value="$(_mcli_defaults_yes_no_to_inverted_boolean "${login_pref_path}" \
+                                                       "PowerOffDisabled" \
+                                                       "$1" \
+                                                       "sudo")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+loginattemptsbeforehint(){
+    value="$(_mcli_defaults_number "${login_pref_path}" \
+                                   "RetriesUntilHint" \
+                                   "$1" \
+                                   "sudo")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+loginmessage(){
+    local message="$1"
+    local kextdir="/System/Library/Extensions"
+    local eficachedir="/System/Library/Caches/com.apple.corestorage/EFILoginLocalizations"
+
+    if [ -n "${message}" ]; then
+        sudo defaults write /Library/Preferences/com.apple.loginwindow LoginwindowText -string "$message"
+        sudo nvram good-samaritan-message="$message"
+    else
+        sudo sh -c "defaults delete /Library/Preferences/com.apple.loginwindow LoginwindowText 2> /dev/null"
+        sudo sh -c "nvram -d good-samaritan-message 2> /dev/null"
+    fi
+
+    # The CoreStorage kext cache needs to be updated so the recovery message
+    # is displayed on the FDE pre-boot screen.
+    #
+    # The CS cache can be updated directly by touching $eficachedir, if it exists.
+    # Otherwise you will need to touch $kextdir to generate it.
+
+    # Refresh system kext cache
+    sudo mkdir -p "${kextdir}" 2> /dev/null
+
+    # Refresh CoreStorage EFI Cache
+    sudo mkdir -p "${eficachedir}" 2> /dev/null
+
+    sudo touch "${eficachedir}"
+}
+
+case "${subcommand}" in
     help)
         help
         ;;
@@ -110,16 +200,34 @@ case $1 in
         user_ls
         ;;
     info)
-        shift
-        user_info $@
+        user_info "$@"
         ;;
     create)
-        shift
         user_create
         ;;
     delete)
-        shift
-        user_delete $@
+        user_delete "$@"
+        ;;
+    autologin)
+        autologin "$@"
+        ;;
+    fastswitching)
+        fastswitching "$@"
+        ;;
+    guest)
+        guest "$@"
+        ;;
+    showsecure)
+        showsecure "$@"
+        ;;
+    loginpoweroptions)
+        loginpoweroptions "$@"
+        ;;
+    loginattemptsbeforehint)
+        loginattemptsbeforehint "$@"
+        ;;
+    loginmessage)
+        loginmessage "$@"
         ;;
     *)
         help
