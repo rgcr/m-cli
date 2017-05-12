@@ -18,6 +18,9 @@ help(){
       m finder showdesktop               # get the current desktop status
       m finder showdesktop YES           # enable the desktop
       m finder showdesktop NO            # disable the desktop
+
+      m finder showpath YES              # show the current opened folder path on the top bar of the Finder window
+      m finder showpath NO               # show the current opened folder name on the top bar of the Finder window
 __EOF__
 }
 
@@ -112,6 +115,36 @@ desktop(){
     killall Finder
 }
 
+path(){
+    case $1 in
+        [yY][eE][sS])
+            echo "Show folder path: YES"
+            defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
+            ;;
+        [nN][oO])
+            echo "Show folder path: NO"
+            defaults write com.apple.finder _FXShowPosixPathInTitle -bool false
+            ;;
+        *)
+            EXTENSION_STATUS=$(defaults read NSGlobalDomain _FXShowPosixPathInTitle 2>/dev/null)
+            case $EXTENSION_STATUS in
+                0|[nN][oO]|[fF][aA][lL][sS][eE])
+                    EXTENSION_STATUS="NO"
+                    ;;
+                1|[yY][eE][sS]|[tT][rU][eE])
+                    EXTENSION_STATUS="YES"
+                    ;;
+                *)
+                    echo "We can't read _FXShowPosixPathInTitle property" && exit 1
+                    ;;
+            esac
+            echo "Show folder path: $EXTENSION_STATUS"
+            exit 0
+            ;;
+    esac
+    killall Finder
+}
+
 case $1 in
     help)
         help
@@ -127,6 +160,10 @@ case $1 in
     showdesktop)
         shift
         desktop "$@"
+        ;;
+    showpath)
+        shift
+        path "$@"
         ;;
     *)
         help

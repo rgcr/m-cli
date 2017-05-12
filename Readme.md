@@ -204,6 +204,9 @@ usage:  m [OPTIONS] COMMAND [help]
       m finder showdesktop YES           # enable the desktop
       m finder showdesktop NO            # disable the desktop
 
+      m finder showpath YES              # show the current opened folder path on the top bar of the Finder window
+      m finder showpath NO               # show the current opened folder name on the top bar of the Finder window
+
 ```
 
 #### Firewall:
