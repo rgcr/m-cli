@@ -4,7 +4,7 @@
 
 help(){
     cat<<__EOF__
-    usage: m finder [ showhiddenfiles | showfileextensions | showdesktop | help ]
+    usage: m finder [ showhiddenfiles | showfileextensions | showdesktop | showpath | help ]
 
     Examples:
       m finder showhiddenfiles           # get the current status
@@ -126,7 +126,7 @@ path(){
             defaults write com.apple.finder _FXShowPosixPathInTitle -bool false
             ;;
         *)
-            EXTENSION_STATUS=$(defaults read NSGlobalDomain _FXShowPosixPathInTitle 2>/dev/null)
+            EXTENSION_STATUS=$(defaults read com.apple.finder _FXShowPosixPathInTitle 2>/dev/null)
             case $EXTENSION_STATUS in
                 0|[nN][oO]|[fF][aA][lL][sS][eE])
                     EXTENSION_STATUS="NO"
