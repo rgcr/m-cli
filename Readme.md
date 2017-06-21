@@ -189,7 +189,7 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Finder:
 ```
-    usage: m finder [ showhiddenfiles | showfileextensions | showdesktop | help  ]
+    usage: m finder [ showhiddenfiles | showfileextensions | showdesktop | showpath | help  ]
 
     Examples:
       m finder showhiddenfiles           # get the current status
@@ -203,6 +203,9 @@ usage:  m [OPTIONS] COMMAND [help]
       m finder showdesktop               # get the current desktop status
       m finder showdesktop YES           # enable the desktop
       m finder showdesktop NO            # disable the desktop
+
+      m finder showpath YES              # show the current opened folder path on the top bar of the Finder window
+      m finder showpath NO               # show the current opened folder name on the top bar of the Finder window
 
 ```
 
