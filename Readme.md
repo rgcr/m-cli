@@ -53,6 +53,7 @@ usage:  m [OPTIONS] COMMAND [help]
         dock
         finder
         firewall
+        flightmode
         gatekeeper
         hostname
         info
