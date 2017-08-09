@@ -62,7 +62,7 @@ case $1 in
         status
         ;;
     *)
-        open /System/Library/Frameworks/ScreenSaver.framework/Versions/A/Resources/ScreenSaverEngine.app
+        open /System/Library/Frameworks/ScreenSaver.framework/Resources/ScreenSaverEngine.app
         ;;
 esac
 
