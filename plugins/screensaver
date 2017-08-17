@@ -49,6 +49,19 @@ status(){
     fi
 }
 
+screensaver(){
+    # ScreenSaverEngine.app was moved in 10.13 (High Sierra).
+    LOCATION_OLD='/System/Library/Frameworks/ScreenSaver.framework/Resources/ScreenSaverEngine.app'
+    LOCATION='/System/Library/CoreServices/ScreenSaverEngine.app'
+    if [ -e ${LOCATION} ]; then
+        open ${LOCATION}
+    elif [ -e ${LOCATION_OLD} ]; then
+        open ${LOCATION_OLD}
+    else
+        echo 'Could not find ScreenSaverEngine.app'
+    fi
+}
+
 
 case $1 in
     help)
@@ -62,7 +75,7 @@ case $1 in
         status
         ;;
     *)
-        open /System/Library/Frameworks/ScreenSaver.framework/Resources/ScreenSaverEngine.app
+        screensaver
         ;;
 esac
 
