@@ -430,6 +430,13 @@ function _m_cmd {
         firewall)
             _m_firewall
             ;;
+        flightmode)
+            _m_solo \
+                $sub \
+                "on:turn flightmode off" \
+                "off:turn flightmode on" \
+                help
+            ;;
         gatekeeper)
             _m_gatekeeper
             ;;
@@ -615,6 +622,7 @@ function _m {
         "dock:manage dock"
         "finder:manage finder properties"
         "firewall:manage firewall"
+        "flightmode:manage flightmode"
         "gatekeeper:manage gatekeeper (security for apps)"
         "group:manage groups"
         "hostname:displays or set the computer's hostname"

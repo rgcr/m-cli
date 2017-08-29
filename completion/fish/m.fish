@@ -101,6 +101,11 @@ complete -f -c m -n '__fish_m_using_command firewall' -a "add" -d 'Add app to fi
 complete -f -c m -n '__fish_m_using_command firewall' -a "remove" -d 'Remove app to firewall'
 complete -f -c m -n '__fish_m_using_command firewall' -a "help" -d 'Show help'
 
+complete -f -c m -n '__fish_m_needs_command' -a flightmode -d 'Manage flightmode'
+complete -f -c m -n '__fish_m_using_command flightmode' -a "on" -d 'Turn flightmode on'
+complete -f -c m -n '__fish_m_using_command flightmode' -a "off" -d 'Turn flightmode off'
+complete -f -c m -n '__fish_m_using_command flightmode' -a "help" -d 'Show help'
+
 complete -f -c m -n '__fish_m_needs_command' -a gatekeeper -d 'Manage gatekeeper (security for apps)'
 complete -f -c m -n '__fish_m_using_command gatekeeper' -a "status" -d 'gatekeeper status'
 complete -f -c m -n '__fish_m_using_command gatekeeper' -a "list" -d 'list rules'
