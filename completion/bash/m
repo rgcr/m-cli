@@ -99,6 +99,9 @@ _m_sub () {
         timezone)
             subcommands=(ls set help)
             ;;
+        touchbar)
+            subcommands=(reset help)
+            ;;
         trash)
             subcommands=(status clean help)
             ;;
@@ -219,7 +222,7 @@ _m () {
     local commands=(
         help battery bluetooth dir disk dns dock finder firewall flightmode gatekeeper group hostname
         info itunes lock network nosleep notification ntp printer restart safeboot screensaver service
-        shutdown sleep timezone trash user update volume vpn wallpaper wifi
+        shutdown sleep timezone touchbar trash user update volume vpn wallpaper wifi
     )
 
     COMPREPLY=()

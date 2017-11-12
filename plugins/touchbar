@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+help(){
+    cat<<__EOF__
+    usage:  m touchbar [ reset | help ]
+
+    Examples:
+      m touchbar reset       # reset touchbar
+__EOF__
+}
+
+
+resettouchbar(){
+    # Force a reset of the touchbar and the control strip
+    pkill "Touch Bar agent"
+    killall ControlStrip
+}
+
+
+case $1 in
+    help)
+        help
+        ;;
+    reset)
+        resettouchbar
+        ;;
+    *)
+        help
+        ;;
+esac
+
+# vim: ts=4 sw=4 softtabstop=4 expandtab

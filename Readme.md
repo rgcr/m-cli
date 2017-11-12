@@ -71,6 +71,7 @@ usage:  m [OPTIONS] COMMAND [help]
         shutdown
         sleep
         timezone
+        touchbar
         trash
         update
         user

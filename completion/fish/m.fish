@@ -12,7 +12,7 @@ function __fish_m_needs_command
             and continue
             switch $c
                 case "--update" "--uninstall"
-					return 1
+                    return 1
                 case "*"
                     echo $c
                     return 1
@@ -208,6 +208,10 @@ complete -f -c m -n '__fish_m_needs_command' -a timezone -d 'Manage timezone'
 complete -f -c m -n '__fish_m_using_command timezone' -a "list" -d 'list available timezones'
 complete -f -c m -n '__fish_m_using_command timezone' -a "set" -d 'set timezone'
 complete -f -c m -n '__fish_m_using_command timezone' -a "help" -d 'Show help'
+
+complete -f -c m -n '__fish_m_needs_command' -a touchbar -d 'Manage touchbar'
+complete -f -c m -n '__fish_m_using_command touchbar' -a "reset" -d 'reset the touchbar'
+complete -f -c m -n '__fish_m_using_command touchbar' -a "help" -d 'Show help'
 
 complete -f -c m -n '__fish_m_needs_command' -a trash -d 'Manage the trash'
 complete -f -c m -n '__fish_m_using_command trash' -a "status" -d 'get trash info'
