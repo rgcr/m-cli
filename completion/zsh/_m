@@ -552,6 +552,12 @@ function _m_cmd {
                 "set:set timezone" \
                 help
             ;;
+        touchbar)
+            _m_solo \
+                $sub \
+                "reset:reset the touchbar" \
+                help
+            ;;
         trash)
             _m_solo \
                 $sub \
@@ -641,6 +647,7 @@ function _m {
         "shutdown:shutdown computer"
         "sleep:put the computer to sleep"
         "timezone:manage timezone"
+        "touchbar:manage touchbar"
         "trash:manage the trash"
         "user:manage users"
         "update:manage macOS updates"
