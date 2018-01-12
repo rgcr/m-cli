@@ -14,9 +14,11 @@ case $1 in
     help)
         help
         ;;
-    *)
+    "" | 0)
         pmset sleepnow
         ;;
+		*)
+			 (sleep $1 ; pmset sleepnow ) & 
 esac
 
 # vim: ts=4 sw=4 softtabstop=4 expandtab
