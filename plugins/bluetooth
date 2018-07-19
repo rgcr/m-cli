@@ -11,6 +11,8 @@ help(){
 __EOF__
 }
 
+DAEMON=`[ -e /usr/sbin/bluetoothd ] && echo bluetoothd || echo blued`
+
 case $1 in
     help)
         help
@@ -21,11 +23,11 @@ case $1 in
         ;;
     enable)
         sudo defaults write /Library/Preferences/com.apple.Bluetooth ControllerPowerState -int 1 && \
-            sudo killall -HUP blued
+            sudo killall -HUP ${DAEMON}
         ;;
     disable)
         sudo defaults write /Library/Preferences/com.apple.Bluetooth ControllerPowerState -int 0 && \
-            sudo killall -HUP blued
+            sudo killall -HUP ${DAEMON}
         ;;
     *)
         help
