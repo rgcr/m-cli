@@ -42,7 +42,9 @@ complete -f -c m -n '__fish_m_using_command battery' -a "help" -d 'Show help'
 
 ## XXX:
 complete -f -c m -n '__fish_m_needs_command' -a bluetooth -d 'Manage bluetooth status'
+complete -f -c m -n '__fish_m_using_command bluetooth' -a "on" -d 'turn on bluetooth'
 complete -f -c m -n '__fish_m_using_command bluetooth' -a "enable" -d 'turn on bluetooth'
+complete -f -c m -n '__fish_m_using_command bluetooth' -a "off" -d 'turn off bluetooth'
 complete -f -c m -n '__fish_m_using_command bluetooth' -a "disable" -d 'turn off bluetooth'
 complete -f -c m -n '__fish_m_using_command bluetooth' -a "help" -d 'Show help'
 

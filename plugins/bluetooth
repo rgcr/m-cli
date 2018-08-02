@@ -2,14 +2,18 @@
 
 help(){
     cat<<__EOF__
-    usage: m bluetooth [ status | enable | disable | help ]
+    usage: m bluetooth [ status | on | enable | off | disable | help ]
 
     Examples:
       m bluetooth status    # bluetooth status
+      m bluetooth on        # turn on bluetooth
       m bluetooth enable    # turn on bluetooth
+      m bluetooth off       # turn off bluetooth
       m bluetooth disable   # turn off bluetooth
 __EOF__
 }
+
+DAEMON=`[ -e /usr/sbin/bluetoothd ] && echo bluetoothd || echo blued`
 
 case $1 in
     help)
@@ -19,13 +23,13 @@ case $1 in
         defaults read /Library/Preferences/com.apple.Bluetooth ControllerPowerState | \
             awk '{ if($1 != 0) {print "Bluetooth: ON"} else { print "Bluetooth: OFF" }  }'
         ;;
-    enable)
+    on|enable)
         sudo defaults write /Library/Preferences/com.apple.Bluetooth ControllerPowerState -int 1 && \
-            sudo killall -HUP blued
+            sudo killall -HUP ${DAEMON}
         ;;
-    disable)
+    off|disable)
         sudo defaults write /Library/Preferences/com.apple.Bluetooth ControllerPowerState -int 0 && \
-            sudo killall -HUP blued
+            sudo killall -HUP ${DAEMON}
         ;;
     *)
         help

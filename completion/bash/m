@@ -10,7 +10,7 @@ _m_sub () {
             subcommands=(status help)
             ;;
         bluetooth)
-            subcommands=(status enable disable help)
+            subcommands=(status on enable off disable help)
             ;;
         dir)
             subcommands=(tree size delete help)

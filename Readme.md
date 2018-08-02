@@ -91,11 +91,13 @@ usage:  m [OPTIONS] COMMAND [help]
 
 #### Bluetooth:
 ```
-    usage: m bluetooth [ status | enable | disable | help ]
+    usage: m bluetooth [ status | on | enable | off | disable | help ]
 
     Examples:
       m bluetooth status    # bluetooth status
+      m bluetooth on        # turn on bluetooth
       m bluetooth enable    # turn on bluetooth
+      m bluetooth off       # turn off bluetooth
       m bluetooth disable   # turn off bluetooth
 ```
 

@@ -382,7 +382,9 @@ function _m_cmd {
             _m_solo \
                 $sub \
                 "status:bluetooth status" \
+                "on:turn on bluetooth" \
                 "enable:turn on bluetooth" \
+                "off:turn off bluetooth" \
                 "disable:turn off bluetooth" \
                 help
             ;;
