@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-# TODO:
-# * include a function to delete older directories by days or mins
-# * include a function to delete newest directories by days or mins
-
 help(){
     cat<<__EOF__
     usage: m dir [ tree | size | delete | help ]
@@ -14,6 +10,11 @@ help(){
 
       m dir delete empty          # delete empty folders recursively in the current path
       m dir delete empty /path    # delete empty folders recursively in a specific path
+
+      m dir delete mtime {{time_ unit}}     # delete files by modification time (defaults to +1d)
+                                                e.g.
+                                                delete mtime +1d  - delete files older than 1 day
+                                                delete mtime -10s - delete files newer than 10 seconds
 
       m dir delete dsfiles        # delete .DS_Store files recursively in the current path
       m dir delete dsfiles /path  # delete .DS_Store files recursively in a specific path
@@ -67,11 +68,24 @@ folder_size(){
 }
 
 
+delete_mtime(){
+    mtime="${1:-+1h}"
+
+    echo "Files to be deleted by modification time: "
+    find . -mtime ${mtime} -type f
+    confirm && find . -mtime ${mtime} -type f -delete
+}
+
+
 delete(){
     case "$1" in
         empty)
             shift;
             delete_empty "$@"
+            ;;
+        mtime)
+            shift;
+            delete_mtime "$@"
             ;;
         dsfiles)
             shift;
@@ -92,6 +106,10 @@ case "$1" in
     tree)
         shift
         tree_dirs "$@"
+        ;;
+    delete)
+        shift;
+        delete "$@"
         ;;
     delete)
         shift;
