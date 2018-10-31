@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+help(){
+    cat<<__EOF__
+    
+    usage: m airdrop [ status | on | enable | off | disable | help ]
+
+    Examples:
+      m airdrop status    # airdrop status
+      m airdrop on        # turn on airdrop
+      m airdrop enable    # turn on airdrop
+      m airdrop off       # turn off airdrop
+      m airdrop disable   # turn off airdrop
+__EOF__
+}
+
+case $1 in
+    help)
+        help
+        ;;
+    status)
+        defaults read com.apple.NetworkBrowser DisableAirDrop | \
+            awk '{ if($1 != 0) {print "AirDrop: OFF"} else { print "AirDrop: ON" }  }'
+        ;;
+    on|enable)
+        defaults write com.apple.NetworkBrowser DisableAirDrop -bool NO && \
+            killall -HUP Finder
+        ;;
+    off|disable)
+        defaults write com.apple.NetworkBrowser DisableAirDrop -bool YES && \
+            killall -HUP Finder
+        ;;
+    *)
+        help
+        ;;
+esac
