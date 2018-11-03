@@ -375,6 +375,16 @@ function _m_cmd {
     case $sub in
         help)
             ;;
+        airdrop)
+            _m_solo \
+                $sub \
+                "status:airdrop status" \
+                "on:turn on airdrop" \
+                "enable:turn on airdrop" \
+                "off:turn off airdrop" \
+                "disable:turn off airdrop" \
+                help
+            ;;
         battery)
             _m_solo $sub "status:get the battery status" help
             ;;
@@ -621,6 +631,7 @@ function _m {
         help
         "--update:update m-cli to the latest version"
         "--uninstall:uninstall m-cli"
+        "airdrop:manage airdrop status"
         "battery:get the battery status"
         "bluetooth:manage bluetooth status"
         "dir:show and delete dir trees"

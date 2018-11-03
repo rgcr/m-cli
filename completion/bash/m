@@ -6,6 +6,9 @@ _m_sub () {
     case "$prev" in
         help)
             ;;
+        airdrop)
+            subcommands=(status on enable off disable help)
+            ;;
         battery)
             subcommands=(status help)
             ;;
@@ -220,7 +223,7 @@ _m_dock() {
 _m () {
     local cur
     local commands=(
-        help battery bluetooth dir disk dns dock finder firewall flightmode gatekeeper group hostname
+        help airdrop battery bluetooth dir disk dns dock finder firewall flightmode gatekeeper group hostname
         info itunes lock network nosleep notification ntp printer restart safeboot screensaver service
         shutdown sleep timezone touchbar trash user update volume vpn wallpaper wifi
     )
