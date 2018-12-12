@@ -1,31 +1,22 @@
 #!/usr/bin/env bash
-# Reference: Script Editor.app > Window > Library
 
 help () {
     cat<<__EOF__
-    usage: m itunes <option>
+    usage: m itunes [ status | play | pause | next | prev | mute | unmute | vol up | vol down | vol # | stop | quit | help ]
 
-    Option:
-      status                     # Show status
-      state                      # Get player state
-      progress                   # Get current progress of song (in sec)
-      play                       # Play track
-      pause                      # Pause track
-      next                       # Play next track
-      prev                       # Play previous track
-      mute                       # Mute iTunes
-      unmute                     # Unmute iTunes
-      repeat                     # Get repeat state
-      repeat [ one | all | off ] # Set repeat mode to one/all/off
-      shuffle                    # Toggles shuffle
-      vol up                     # Volume Up
-      vol down                   # Volume Down
-      vol #                      # Set volume level
-      stop                       # Stop track
-      quit                       # Quit iTunes
-
-    Example:
-      m itunes status
+    Examples:
+      m itunes status       # Show status
+      m itunes play         # Play track
+      m itunes pause        # Pause track
+      m itunes next         # Play next track
+      m itunes prev         # Play previous track
+      m itunes mute         # Mute iTunes
+      m itunes unmute       # Unmute iTunes
+      m itunes vol up       # Volume Up
+      m itunes vol down     # Volume Down
+      m itunes vol #        # Set volume level
+      m itunes stop         # Stop track
+      m itunes quit         # Quit iTunes
 __EOF__
 }
 
@@ -41,14 +32,6 @@ case $1 in
             track=`osascript -e 'tell application "iTunes" to name of current track as string'`
             echo "Current track $artist:  $track"
         fi
-        ;;
-    state)
-        state=`osascript -e 'tell application "iTunes" to player state as string'`
-        echo "$state"
-        ;;
-    progress)
-        actualProg=$(osascript -e 'tell application "iTunes" to get player position')
-        echo "$actualProg" | cut -d. -f1
         ;;
     play)
         osascript -e 'tell application "iTunes" to play'
@@ -67,27 +50,6 @@ case $1 in
         ;;
     unmute)
         osascript -e 'tell application "iTunes" to set mute to false'
-        ;;
-    repeat)
-        if [ "$2" = "" ]; then
-          osascript -e 'tell application "iTunes" to song repeat'
-        elif [ ! "$2" = "one" ] && [ ! "$2" = "all" ] && [ ! "$2" = "off" ]; then
-          echo "usage: m itunes repeat [ one | all | off ]"
-          exit 1
-        elif [ "$2" = "one" ]; then
-          osascript -e 'tell application "iTunes" to set song repeat to one'
-        elif [ "$2" = "all" ]; then
-          osascript -e 'tell application "iTunes" to set song repeat to all'
-        elif [ "$2" = "off" ]; then
-          osascript -e 'tell application "iTunes" to set song repeat to off'
-        fi
-        ;;
-    shuffle)
-        if [ "$(osascript -e 'tell application \"iTunes\" to get shuffle enabled')" = "true" ]; then
-          osascript -e 'tell application "iTunes" to set shuffle enabled to false'
-        else
-          osascript -e 'tell application "iTunes" to set shuffle enabled to true'
-        fi 
         ;;
     vol)
         vol=`osascript -e 'tell application "iTunes" to sound volume as integer'`
