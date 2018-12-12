@@ -469,12 +469,16 @@ function _m_cmd {
             _m_solo \
                 $sub \
                 "status:show status, current artist and track" \
+                "state:get player state" \
+                "progress:get current progress of song (in sec)" \
                 "play:start playing iTunes" \
                 "pause:pause iTunes" \
                 "next:go to the next track" \
                 "prev:go to the previous track" \
                 "mute:mute volume" \
                 "unmute:unmute volume" \
+                "repeat:set repeat mode (options: one, all, off) [empty arg to get]" \
+                "shuffle:toggle shuffle" \
                 "vol:increase and decrease volume" \
                 "stop:stop iTunes" \
                 "quit:quit iTunes" \
