@@ -11,23 +11,7 @@ __EOF__
 }
 
 set_wallpaper(){
-    # osascript is up to Mountain Lion (10.8.5)
-    # the next version of mountain lion is Mavericks (10.9)
-    METHOD=$(sw_vers -productVersion | awk -F'.' '{ if ($1 < 10 || $2 < 9) { print "osascript" } else{ print "sqlite3"  } }')
-    case $METHOD in
-        osascript)
-            osascript -e "tell application \"Finder\" to set desktop picture to POSIX file \"${1}\""
-            ;;
-        sqlite3)
-            current_path=$(sqlite3 -noheader -batch ${HOME}/Library/Application\ Support/Dock/desktoppicture.db 'select value from data limit 1')
-            if [[ "$current_path" != "$1" ]]; then
-                sqlite3 ${HOME}/Library/Application\ Support/Dock/desktoppicture.db "update data set value = '${1}'" && killall Dock
-            fi
-            ;;
-        *)
-            echo "I can't set the wallpaper" && exit 1
-            ;;
-    esac
+    osascript -e "tell application \"Finder\" to set desktop picture to \"${1}\" as POSIX file"
 }
 
 case $1 in
