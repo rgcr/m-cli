@@ -526,6 +526,9 @@ usage:  m [OPTIONS] COMMAND [help]
       m wifi status                  # wifi status
       m wifi scan                    # scan wifi
       m wifi showpassword [ESSID]    # show wifi network password (default: current)
+      m wifi ls                      # list known wifi networks
+      m wifi list                    # list known wifi networks
+      m wifi forget ESSID            # forget a wifi network
       m wifi history                 # wifi connection history
       m wifi off                     # turn off your wifi
       m wifi on                      # turn on your wifi
