@@ -11,6 +11,9 @@ help(){
       m wifi status                  # wifi status
       m wifi scan                    # scan wifi
       m wifi showpassword [ESSID]    # show wifi network password (default: current)
+      m wifi ls                      # list known wifi networks
+      m wifi list                    # list known wifi networks
+      m wifi forget ESSID            # forget a wifi network
       m wifi history                 # wifi connection history
       m wifi off                     # turn off your wifi
       m wifi on                      # turn on your wifi
@@ -60,6 +63,19 @@ connect_network(){
     networksetup -setairportnetwork "${_W_DEVICE}" "${NETWORK}" "${PASSWORD}"
 }
 
+wifi_list_known(){
+    networksetup -listpreferredwirelessnetworks ${_W_DEVICE} | grep -v ^Preferred
+}
+
+wifi_forget(){
+    if [ -z "$1" ]; then
+        help
+    else
+        NETWORK="$1"
+        sudo networksetup -removepreferredwirelessnetwork ${_W_DEVICE} "${NETWORK}"
+    fi
+}
+
 case $1 in
     help)
         help
@@ -76,6 +92,9 @@ case $1 in
     on)
         wifi_on
         ;;
+    list|ls)
+        wifi_list_known
+        ;;
     connect)
         shift
         connect_network "$@"
@@ -87,6 +106,10 @@ case $1 in
     showpassword)
         shift
         wifi_showpassword "$@"
+        ;;
+    forget)
+        shift
+        wifi_forget "$@"
         ;;
     *)
         help
