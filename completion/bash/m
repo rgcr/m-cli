@@ -125,7 +125,7 @@ _m_sub () {
             ;;
         wifi)
             subcommands=(
-                status scan showpassword history on off connect help
+                status scan showpassword ls list forget history on off connect help
             )
             ;;
     esac

@@ -615,6 +615,8 @@ function _m_cmd {
                 "status:wifi status" \
                 "scan:scan wifi" \
                 "showpassword:show wifi network password" \
+                "list:list known networks" \
+                "forget:forget a network" \
                 "history:wifi connection history" \
                 "off:turn off your wifi" \
                 "on:turn on your wifi" \
