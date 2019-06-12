@@ -385,6 +385,15 @@ function _m_cmd {
                 "disable:turn off airdrop" \
                 help
             ;;
+        appearance)
+            _m_solo \
+                $sub \
+                "darkmode:manage dark mode" \
+                "transparency:manage transparency" \
+                "antialiasthreshold:manage anti-alias threshold" \
+                "sidebariconsize:manage sidebar icon size" \
+                "maincolor:manage main UI color" \
+                "highlightcolor:manage UI highlight color"
         battery)
             _m_solo $sub "status:get the battery status" help
             ;;

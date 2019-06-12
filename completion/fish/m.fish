@@ -43,6 +43,13 @@ complete -f -c m -n '__fish_m_using_command airdrop' -a "off" -d 'turn off airdr
 complete -f -c m -n '__fish_m_using_command airdrop' -a "disable" -d 'turn off airdrop'
 complete -f -c m -n '__fish_m_using_command airdrop' -a "help" -d 'Show help'
 
+complete -f -c m -n '__fish_m_using_command appearance' -a "darkmode" -d 'Manage dark mode'
+complete -f -c m -n '__fish_m_using_command appearance' -a "transparency" -d 'Manage transparency'
+complete -f -c m -n '__fish_m_using_command appearance' -a "antialiasthreshold" -d 'Manage anti-alias threshold'
+complete -f -c m -n '__fish_m_using_command appearance' -a "sidebariconsize" -d 'Manage sidebar icon size'
+complete -f -c m -n '__fish_m_using_command appearance' -a "maincolor" -d 'Manage main UI color'
+complete -f -c m -n '__fish_m_using_command appearance' -a "highlightcolor" -d 'Manage UI highlight color'
+
 complete -f -c m -n '__fish_m_needs_command' -a battery -d 'Get the battery status'
 complete -f -c m -n '__fish_m_using_command battery' -a "status" -d 'Get status'
 complete -f -c m -n '__fish_m_using_command battery' -a "help" -d 'Show help'
