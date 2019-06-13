@@ -18,6 +18,9 @@ help(){
       m dir delete dsfiles        # delete .DS_Store files recursively in the current path
       m dir delete dsfiles /path  # delete .DS_Store files recursively in a specific path
 
+      m dir dsfiles on   # restore generation of .DS_Store
+      m dir dsfiles off  # prohibit generation of .DS_Store
+
       m dir size        # calculate current folder size
       m dir size /path  # calculate folder size in a specific path
 
@@ -83,6 +86,21 @@ delete(){
     esac
 }
 
+dsfiles(){
+    case "$1" in
+        on)
+            echo ".DS_Store will generate"
+            confirm && defaults delete com.apple.desktopservices DSDontWriteNetworkStores
+            ;;
+        off)
+            echo ".DS_Store will not generate"
+            confirm && defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool TRUE
+            ;;
+        *)
+            help && exit 1
+            ;;
+}
+
 
 
 case "$1" in
@@ -96,6 +114,10 @@ case "$1" in
     delete)
         shift;
         delete "$@"
+        ;;
+    dsfiles)
+        shift
+        dsfiles "$@"
         ;;
     size)
         shift

@@ -67,6 +67,7 @@ complete -f -c m -n '__fish_m_needs_command' -a dir -d 'Show and delete dir tree
 complete -f -c m -n '__fish_m_using_command dir' -a "tree" -d 'tree view of folders in the current or specified path'
 complete -f -c m -n '__fish_m_using_command dir' -a "size" -d 'calculate folder size'
 complete -f -c m -n '__fish_m_using_command dir' -a "delete" -d 'delete empty folders recursively in the current of specified path'
+complete -f -c m -n '__fish_m_using_command dir' -a "dsfiles" -d 'restore/prohibit generation of .DS_Store'
 complete -f -c m -n '__fish_m_using_command dir' -a "help" -d 'Show help'
 
 # XXX: Add completion for disk subcommands

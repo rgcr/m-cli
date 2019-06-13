@@ -149,6 +149,9 @@ _m_dir() {
         delete)
             choices=(empty dsfiles)
             ;;
+        dsfiles)
+            choices=(on off)
+            ;;
         empty)
             choices=(*)
             ;;

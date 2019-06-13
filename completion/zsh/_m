@@ -3,6 +3,7 @@
 function _m_dir {
     local -a opts args
     local delete_help="delete empty folders recursively in the current or specified path"
+    local dsfiles_help="restore/prohibit generation of .DS_Store"
     local cmd=dir
 
     case $CURRENT in
@@ -11,6 +12,7 @@ function _m_dir {
                 "tree:tree view of folders in the current or specified path"
                 "size:calculate folder size"
                 "delete:$delete_help"
+                "dsfiles:$dsfiles_help"
                 help
             )
             ;;
@@ -28,6 +30,12 @@ function _m_dir {
                     args=(
                         "empty:$delete_help"
                         "dsfiles:delete .DS_Store files recursively"
+                    )
+                    ;;
+                dsfiles)
+                    args=(
+                        "on:restore generation of .DS_Store"
+                        "off:prohibit generation of .DS_Store"
                     )
                     ;;
             esac
