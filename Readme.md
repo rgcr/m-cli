@@ -20,7 +20,7 @@
 
 * **Manual installation:**
 
-  `curl -fsSL https://raw.githubusercontent.com/rgcr/m-cli/master/install.sh | sh`
+  `curl -fsSL https://raw.githubusercontent.com/rgcr/m-cli/master/install.sh | sudo sh`
 
   You can also install it in a different path
 
