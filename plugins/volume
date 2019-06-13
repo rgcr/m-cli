@@ -8,7 +8,7 @@ help(){
     Examples:
       m volume 70     # set the volume to 70 %
       m volume +5     # increase the volume by 5 (up to 100)
-      m volume -10    # decrease the volume by 5 (down to 0)
+      m volume -10    # decrease the volume by 10 (down to 0)
       m volume up     # increase the volume by 6.25
       m volume down   # decrease the volume by 6.25
       m volume        # get the volume level
