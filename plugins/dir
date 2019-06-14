@@ -99,6 +99,7 @@ dsfiles(){
         *)
             help && exit 1
             ;;
+    esac
 }
 
 
