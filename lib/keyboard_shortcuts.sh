@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 _mcli_keyboard_shortcut_toggle(){
   local path_to_plistbuddy="/usr/libexec/PlistBuddy"
   local keyboard_shortcut_id="$1"
