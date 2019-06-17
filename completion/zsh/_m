@@ -497,6 +497,14 @@ function _m_cmd {
                 "quit:quit iTunes" \
                 help
             ;;
+        localhost)
+            _m_solo \
+                $sub \
+                "ls:list localhost records" \
+                "add:add localhost record" \
+                "remove:remove localhost record" \
+                help
+            ;;
         network)
             _m_network
             ;;
@@ -666,6 +674,7 @@ function _m {
         "hostname:displays or set the computer's hostname"
         "info:print macOS operating system version information"
         "itunes:itunes command line control"
+        "localhost:manage localhost file"
         "lock:lock session"
         "network:manage interfaces and locations"
         "nosleep:prevent sleeping"

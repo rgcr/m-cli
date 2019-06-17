@@ -159,6 +159,12 @@ complete -f -c m -n '__fish_m_using_command itunes ' -a "stop" -d 'stop iTune'
 complete -f -c m -n '__fish_m_using_command itunes ' -a "quit" -d 'quit iTunes'
 complete -f -c m -n '__fish_m_using_command itunes ' -a "help" -d 'Show help'
 
+complete -f -c m -n '__fish_m_needs_command' -a localhost -d 'Manage localhost file'
+complete -f -c m -n '__fish_m_using_command localhost' -a "ls" -d 'list records from localhost file'
+complete -f -c m -n '__fish_m_using_command localhost' -a "add" -d 'add record to localhost file'
+complete -f -c m -n '__fish_m_using_command localhost' -a "remove" -d 'remove record from localhost file'
+complete -f -c m -n '__fish_m_using_command localhost' -a "help" -d 'Show help'
+
 complete -f -c m -n '__fish_m_needs_command' -a lock -d 'Lock session'
 complete -f -c m -n '__fish_m_using_command lock' -a "help" -d 'Show help'
 

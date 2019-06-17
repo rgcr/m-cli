@@ -58,6 +58,7 @@ usage:  m [OPTIONS] COMMAND [help]
         hostname
         info
         itunes
+        localhost
         lock
         ntp
         printer
@@ -295,6 +296,16 @@ usage:  m [OPTIONS] COMMAND [help]
       m itunes vol #        # Set volume level
       m itunes stop         # Stop track
       m itunes quit         # Quit iTunes
+```
+
+#### Localhost:
+```
+    usage: m localhost [ help ]
+
+    Examples:
+      m localhost ls                              # list current records in localhost
+      m localhost add 127.0.0.1 webpage.local     # add a new host to the localhost file
+      m localhost remove webpage.local            # remove a host from the localhost file
 ```
 
 #### Lock:
