@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 _mcli_convert_yes_no_to_boolean() {
     local choice="$1"
 

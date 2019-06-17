@@ -29,15 +29,15 @@ __EOF__
 }
 
 confirm () {
-		# call with a prompt string or use a default
-		read -r -p "${1:-Are you sure? [y/n]} " response
-		case $response in
-			[yY][eE][sS]|[yY])
-				true
-				;;
-			*)
-				false
-				;;
+    # call with a prompt string or use a default
+    read -r -p "${1:-Are you sure? [y/n]} " response
+    case $response in
+        [yY][eE][sS]|[yY])
+            true
+            ;;
+        *)
+            false
+            ;;
     esac
 }
 
@@ -99,6 +99,7 @@ dsfiles(){
         *)
             help && exit 1
             ;;
+    esac
 }
 
 
@@ -127,5 +128,3 @@ case "$1" in
         help
         ;;
 esac
-
-# vim: ts=4 sw=4 softtabstop=4 expandtab

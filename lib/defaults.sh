@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 _mcli_read() {
     local domain="$1"
     local key="$2"

@@ -40,5 +40,3 @@ case $1 in
         shift
         ;;
 esac
-
-# vim: ts=4 sw=4 softtabstop=4 expandtab
