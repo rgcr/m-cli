@@ -27,7 +27,7 @@ case $1 in
         ;;
     remove)
         [ -z "$2" ] && help && exit 1
-        sudo sed -i "" "/$2/d" /etc/hosts
+        sudo sed -i'' "/$2/d" /etc/hosts
         sudo m dns flush
         ;;
     *)
