@@ -402,6 +402,7 @@ function _m_cmd {
                 "sidebariconsize:manage sidebar icon size" \
                 "maincolor:manage main UI color" \
                 "highlightcolor:manage UI highlight color"
+            ;;
         battery)
             _m_solo $sub "status:get the battery status" help
             ;;
