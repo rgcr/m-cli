@@ -2,23 +2,43 @@
 
 :boom: **Swiss Army Knife for macOS !**
 
-## The difference
+[Overview](#overview)</br>
+[Installation](#installation)</br>
+[How To Use](#how-to-use)</br>
 
-**m-cli** differs from other mac command line tools in that:
+# Overview
 
-* Its main purpose is to manage administrative tasks and do it easier
-* It doesn't install 3rd party tools because it doesn't have dependencies
-* The installation is very easy and doesn't require intervention
-* It only uses macOS commands
+**m-cli** is a macOS command line tool that lets you interact with a multitude of utilities entirely in **Terminal**. You can: 
+
+- Display battery life
+- Repair and format disks
+- Control iTunes
+- Enable/disable flightmode
+- Sleep, shutdown, and restart
+- Enable/disable wifi, list known wifi networks, or join a wifi network
+- Set wallpaper
+
+...And much more.
+
+**m-cli** differs from other macOS command line tools in the following ways:
+
+* You can easily manage administrative tasks
+* It doesn't install 3rd party tools since it doesn't have dependencies
+* Installation is very simple and doesn't require intervention
+* Only uses macOS commands
 
 
 ## Installation
 
-* **Using Homebrew:**
+You can install **m-cli** using one of the following options:
+
+#### Option 1: Homebrew install
+If you have **[Homebrew](https://brew.sh/)** installed, run the following command in **Terminal**:
 
   `brew install m-cli`
 
-* **Manual installation:**
+#### Option 2: Manual install
+If you want to manually install **m-cli**, run the following command in **Terminal**:
 
   `curl -fsSL https://raw.githubusercontent.com/rgcr/m-cli/master/install.sh | sudo sh`
 
@@ -28,10 +48,13 @@
 
   _Note: You need privileges_
 
+## How To Use
 
+In **Terminal**, you can run the following commands:
 
-## Usage
+insert table of commands here
 
+ 
 ```
   Swiss Army Knife for macOS ! 
 
@@ -81,6 +104,9 @@ usage:  m [OPTIONS] COMMAND [help]
         wallpaper
         wifi
 ```
+
+The `m` command displays options
+
 
 ####  Battery:
 ```
@@ -279,7 +305,7 @@ usage:  m [OPTIONS] COMMAND [help]
       m info        #  print macOS operating system version information
 ```
 
-### Itunes:
+### iTunes:
 ```
    usage: m itunes [ status | play | pause | next | prev | mute | unmute | vol up | vol down | vol #| stop | quit | help ]
 
