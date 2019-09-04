@@ -47,10 +47,11 @@ If you want to manually install **m-cli**, run:
 
 # How To Use
 
-Run `m` to display all of the commands available. 
-The structure of **m-cli** commands is:
+**m-cli** commands are executed using the following steps:
 
-### `m` *+ utility + command*
+#### 1. Run `m`to display all of the commands (utilities) available in **m-cli**.
+#### 2. Run `m <command>` to display the options available for this command.
+#### 3. Run `m <command> <option>` to execute an option for this command.
 
 A diagram of this structure is shown below:
 
@@ -94,7 +95,7 @@ In this example, running `m itunes play` will play the current selected track in
 
 # All Commands
 
-**m-cli** currently supports the following:
+**m-cli** currently supports the following commands:
 
 `help`</br>
 `battery`</br>
