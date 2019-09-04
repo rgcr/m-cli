@@ -3,59 +3,55 @@
 :boom: **Swiss Army Knife for macOS !**
 
 [Overview](#overview)</br>
-[Installation](#installation)</br>
+[Install](#install)</br>
+[Uninstall](#uninstall)</br>
 [How To Use](#how-to-use)</br>
 [All Commands](#all-commands)
 
 # Overview
 
-**m-cli** is a macOS command line tool that lets you interact with a multitude of utilities entirely in **Terminal**. You can: 
-
-- Display battery life
-- Repair and format disks
-- Control iTunes
-- Enable/disable flightmode
-- Sleep, shutdown, and restart
-- Enable/disable wifi, list known wifi networks, or join a wifi network
-- Set wallpaper
-
-...And more.
-
-**m-cli** differs from other macOS command line tools in the following ways:
+**m-cli** is a macOS command line tool that lets you interact with utilities and applications entirely in **Terminal**. It differs from other macOS command line tools in the following ways:
 
 * You can easily manage administrative tasks
 * It doesn't install 3rd party tools since it doesn't have dependencies
-* Installation is very simple and doesn't require intervention
-* Only uses macOS commands
+* Installation is easy and doesn't require intervention
+* It only uses macOS commands
 
 
-## Installation
+## Install
 
-You can install **m-cli** using one of the following options:
+You can install **m-cli** using [Homebrew](https://brew.sh/), or you can manually install it.
 
-#### Option 1: Homebrew install
-If you have **[Homebrew](https://brew.sh/)** installed, run the following command in **Terminal**:
+#### Homebrew install
+If you have Homebrew installed, run:
 
   `brew install m-cli`
 
-#### Option 2: Manual install
-If you want to manually install **m-cli**, run the following command in **Terminal**:
+#### Manual install
+If you want to manually install **m-cli**, run:
 
   `curl -fsSL https://raw.githubusercontent.com/rgcr/m-cli/master/install.sh | sudo sh`
 
-  You can also install it in a different path
+  You can also install it to a different path, shown below:
 
   `INSTALL_DIR=$HOME/.m-cli sh <(curl -fsSL https://raw.githubusercontent.com/rgcr/m-cli/master/install.sh)`
 
   _Note: You need privileges_
+  
+ ## Uninstall
+ 
+ To uninstall **m-cli** from your system, run:
+ 
+ `m --uninstall`
 
 ## How To Use
 
-The syntax for running **m-cli** commands in **Terminal** is:
+Run `m` to display all of the commands available. 
+The structure of **m-cli** commands is:
 
-### `m` + utility + command. 
+### `m` *+ utility + command*
 
-A diagram of **m-cli**'s command structure is shown below:
+A diagram of this structure is shown below:
 
 ```
 m
@@ -73,7 +69,7 @@ m
       ...
 ```
 
-For example, running `m itunes` will display the commands available for itunes, as shown below:
+For example, running `m itunes` will display the commands available for iTunes, as shown below:
 
 ```
     usage: m itunes [ status | play | pause | next | prev | mute | unmute | vol up | vol down | vol #| stop | quit | help ]
@@ -93,11 +89,11 @@ For example, running `m itunes` will display the commands available for itunes, 
       m itunes quit         # Quit iTunes
 ```
 
-In this example, running `m itunes play` will play the current selected track in your itunes music library. 
+In this example, running `m itunes play` will play the current selected track in your iTunes music library. 
 
 ## All Commands
 
-**m-cli** currently supports the following utilities and applications:
+**m-cli** currently supports the following:
 
 `help`</br>
 `battery`</br>
