@@ -71,7 +71,7 @@ m
       ...
 ```
 
-For example, running `m itunes` will display the commands available for iTunes, as shown below:
+For example, running `m itunes` will display the options available for iTunes, as shown below:
 
 ```
     usage: m itunes [ status | play | pause | next | prev | mute | unmute | vol up | vol down | vol #| stop | quit | help ]
