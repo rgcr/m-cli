@@ -8,7 +8,7 @@
 [How To Use](#how-to-use)</br>
 [All Commands](#all-commands)
 
-# Overview
+## Overview
 
 **m-cli** is a macOS command line tool that lets you interact with utilities and applications entirely in **Terminal**. It differs from other macOS command line tools in the following ways:
 
