@@ -6,9 +6,10 @@
 [Install](#install)</br>
 [Uninstall](#uninstall)</br>
 [How To Use](#how-to-use)</br>
-[All Commands](#all-commands)
+[All Commands](#all-commands)</br>
+[Contributing](#contributing)</br>
 
-## Overview
+# Overview
 
 **m-cli** is a macOS command line tool that lets you interact with utilities and applications entirely in **Terminal**. It differs from other macOS command line tools in the following ways:
 
@@ -18,16 +19,16 @@
 * It only uses macOS commands
 
 
-## Install
+# Install
 
 You can install **m-cli** using [Homebrew](https://brew.sh/), or you can manually install it.
 
-#### Homebrew install
+### Homebrew install
 If you have Homebrew installed, run:
 
   `brew install m-cli`
 
-#### Manual install
+### Manual install
 If you want to manually install **m-cli**, run:
 
   `curl -fsSL https://raw.githubusercontent.com/rgcr/m-cli/master/install.sh | sudo sh`
@@ -38,13 +39,13 @@ If you want to manually install **m-cli**, run:
 
   _Note: You need privileges_
   
- ## Uninstall
+ # Uninstall
  
  To uninstall **m-cli** from your system, run:
  
  `m --uninstall`
 
-## How To Use
+# How To Use
 
 Run `m` to display all of the commands available. 
 The structure of **m-cli** commands is:
@@ -91,7 +92,7 @@ For example, running `m itunes` will display the commands available for iTunes, 
 
 In this example, running `m itunes play` will play the current selected track in your iTunes music library. 
 
-## All Commands
+# All Commands
 
 **m-cli** currently supports the following:
 
@@ -133,7 +134,7 @@ In this example, running `m itunes play` will play the current selected track in
 `wallpaper`</br>
 `wifi`</br>
 
-## Contributing
+# Contributing
 
 1. Fork it!
 2. Create your feature branch: `git checkout -b my-new-feature`
@@ -141,7 +142,7 @@ In this example, running `m itunes play` will play the current selected track in
 4. Push to the branch: `git push origin my-new-feature`
 5. Submit a pull request :metal:
 
-## TODO:
+# TODO:
 * Add more plugins
 * Improve the help
 * Improve the installation script
