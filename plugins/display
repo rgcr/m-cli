@@ -7,11 +7,21 @@ help(){
     Example:
       m display status   # status of displays
       m display help     # show usage
+      m display up       # turn up the brightness
+      m display down     # turn down the brightness
 __EOF__
 }
 
 display_status(){
     system_profiler SPDisplaysDataType
+}
+
+turn_up(){
+    osascript -e 'tell application "System Events"' -e 'key code 144' -e ' end tell'
+}
+
+turn_down(){
+    osascript -e 'tell application "System Events"' -e 'key code 145' -e ' end tell'
 }
 
 case $1 in
@@ -21,6 +31,12 @@ case $1 in
     status)
         display_status
         ;;
+    up)
+        turn_up
+        ;;
+    down)
+        turn_down
+        ;;        
     *)
         help
         ;;
