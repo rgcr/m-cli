@@ -8,6 +8,7 @@ help(){
       m dock showdelay x.x          # Changes how long the Dock takes to show up when auto-hide is enabled
       m dock autohide YES           # Enable Dock's auto hide feature
       m dock autohide NO            # Disable Dock's auto hide feature
+      m dock autohidedelay x.x      # Changes how long it takes to detect you want to show up the dock
       m dock magnification YES      # Turn magnification on
       m dock magnification NO       # Turn magnification off
       m dock position BOTTOM        # Change Dock's position to the bottom of the screen
@@ -55,6 +56,25 @@ auto_hide(){
     esac
     killall Dock
 }
+
+autohide_delay(){
+    case $1 in
+    [0-9][.][0-9])
+        echo "New Auto-Hide delay time: "$1
+        defaults write com.apple.dock autohide-delay -float $1
+      ;;
+    [0-9])
+      echo "New Auto-Hide delay time: "$1
+      defaults write com.apple.dock autohide-delay -int $1
+      ;;
+    *)
+      echo "Current Auto-Hide delay time: $(defaults read com.apple.dock autohide-delay 2>/dev/null)"
+      exit 0
+      ;;
+  esac
+  killall Dock
+}
+
 
 magnify(){
     case $1 in
@@ -125,6 +145,10 @@ case $1 in
     autohide)
         shift
         auto_hide $@
+        ;;
+    autohidedelay)
+        shift
+        autohide_delay $@
         ;;
     magnification)
         shift
