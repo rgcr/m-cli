@@ -53,6 +53,3 @@ else
     echo >&2 ""
     exit 1
 fi
-
-# vim: ts=4 sw=4 softtabstop=4 expandtab
-

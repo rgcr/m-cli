@@ -17,8 +17,6 @@ case $1 in
     "" | 0)
         pmset sleepnow
         ;;
-		*)
-			 (sleep $1 ; pmset sleepnow ) & 
+    *)
+        (sleep $1 ; pmset sleepnow ) & 
 esac
-
-# vim: ts=4 sw=4 softtabstop=4 expandtab

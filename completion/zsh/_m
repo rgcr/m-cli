@@ -3,6 +3,7 @@
 function _m_dir {
     local -a opts args
     local delete_help="delete empty folders recursively in the current or specified path"
+    local dsfiles_help="restore/prohibit generation of .DS_Store"
     local cmd=dir
 
     case $CURRENT in
@@ -11,6 +12,7 @@ function _m_dir {
                 "tree:tree view of folders in the current or specified path"
                 "size:calculate folder size"
                 "delete:$delete_help"
+                "dsfiles:$dsfiles_help"
                 help
             )
             ;;
@@ -28,6 +30,12 @@ function _m_dir {
                     args=(
                         "empty:$delete_help"
                         "dsfiles:delete .DS_Store files recursively"
+                    )
+                    ;;
+                dsfiles)
+                    args=(
+                        "on:restore generation of .DS_Store"
+                        "off:prohibit generation of .DS_Store"
                     )
                     ;;
             esac
@@ -187,6 +195,7 @@ function _m_dock {
         args=(
             "showdelay:changes how long the Dock takes to show up when auto-hide is enabled"
             "autohide:enable or disable Dock's auto hide feature"
+            "autohidedelay:changes how long the Dock takes to detect you want it to show up"
             "magnification:enable or disable magnification"
             "position:change Dock's position"
             "addblankspace:add a blank space(separator) to the dock"
@@ -385,6 +394,16 @@ function _m_cmd {
                 "disable:turn off airdrop" \
                 help
             ;;
+        appearance)
+            _m_solo \
+                $sub \
+                "darkmode:manage dark mode" \
+                "transparency:manage transparency" \
+                "antialiasthreshold:manage anti-alias threshold" \
+                "sidebariconsize:manage sidebar icon size" \
+                "maincolor:manage main UI color" \
+                "highlightcolor:manage UI highlight color"
+            ;;
         battery)
             _m_solo $sub "status:get the battery status" help
             ;;
@@ -478,6 +497,14 @@ function _m_cmd {
                 "vol:increase and decrease volume" \
                 "stop:stop iTunes" \
                 "quit:quit iTunes" \
+                help
+            ;;
+        localhost)
+            _m_solo \
+                $sub \
+                "ls:list localhost records" \
+                "add:add localhost record" \
+                "remove:remove localhost record" \
                 help
             ;;
         network)
@@ -615,6 +642,8 @@ function _m_cmd {
                 "status:wifi status" \
                 "scan:scan wifi" \
                 "showpassword:show wifi network password" \
+                "list:list known networks" \
+                "forget:forget a network" \
                 "history:wifi connection history" \
                 "off:turn off your wifi" \
                 "on:turn on your wifi" \
@@ -647,6 +676,7 @@ function _m {
         "hostname:displays or set the computer's hostname"
         "info:print macOS operating system version information"
         "itunes:itunes command line control"
+        "localhost:manage localhost file"
         "lock:lock session"
         "network:manage interfaces and locations"
         "nosleep:prevent sleeping"

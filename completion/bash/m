@@ -9,6 +9,9 @@ _m_sub () {
         airdrop)
             subcommands=(status on enable off disable help)
             ;;
+        appearance)
+            subcommands=(darkmode transparency antialiasthreshold sidebariconsize maincolor highlightcolor)
+            ;;
         battery)
             subcommands=(status help)
             ;;
@@ -32,9 +35,9 @@ _m_sub () {
             ;;
         dock)
             subcommands=(
-                showdelay autohide magnification
-                position addblankspace addrecentitems
-                prune help
+                showdelay autohide autohidedelay
+                magnification position addblankspace
+                addrecentitems prune help
             )
             ;;
         finder)
@@ -60,6 +63,9 @@ _m_sub () {
             ;;
         itunes)
             subcommands=(status play pause next prev mute unmute vol stop quit help)
+            ;;
+        localhost)
+            subcommands=(ls add remove help)
             ;;
         lock)
             subcommands=(help)
@@ -125,7 +131,7 @@ _m_sub () {
             ;;
         wifi)
             subcommands=(
-                status scan showpassword history on off connect help
+                status scan showpassword ls list forget history on off connect help
             )
             ;;
     esac
@@ -145,6 +151,9 @@ _m_dir() {
             ;;
         delete)
             choices=(empty dsfiles)
+            ;;
+        dsfiles)
+            choices=(on off)
             ;;
         empty)
             choices=(*)
@@ -296,5 +305,3 @@ _m () {
 
 #complete -F _m m
 complete -o bashdefault -o default -F _m m
-
-# vim: ts=4 sw=4 softtabstop=4 expandtab ft=sh

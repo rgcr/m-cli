@@ -43,6 +43,13 @@ complete -f -c m -n '__fish_m_using_command airdrop' -a "off" -d 'turn off airdr
 complete -f -c m -n '__fish_m_using_command airdrop' -a "disable" -d 'turn off airdrop'
 complete -f -c m -n '__fish_m_using_command airdrop' -a "help" -d 'Show help'
 
+complete -f -c m -n '__fish_m_using_command appearance' -a "darkmode" -d 'Manage dark mode'
+complete -f -c m -n '__fish_m_using_command appearance' -a "transparency" -d 'Manage transparency'
+complete -f -c m -n '__fish_m_using_command appearance' -a "antialiasthreshold" -d 'Manage anti-alias threshold'
+complete -f -c m -n '__fish_m_using_command appearance' -a "sidebariconsize" -d 'Manage sidebar icon size'
+complete -f -c m -n '__fish_m_using_command appearance' -a "maincolor" -d 'Manage main UI color'
+complete -f -c m -n '__fish_m_using_command appearance' -a "highlightcolor" -d 'Manage UI highlight color'
+
 complete -f -c m -n '__fish_m_needs_command' -a battery -d 'Get the battery status'
 complete -f -c m -n '__fish_m_using_command battery' -a "status" -d 'Get status'
 complete -f -c m -n '__fish_m_using_command battery' -a "help" -d 'Show help'
@@ -60,6 +67,7 @@ complete -f -c m -n '__fish_m_needs_command' -a dir -d 'Show and delete dir tree
 complete -f -c m -n '__fish_m_using_command dir' -a "tree" -d 'tree view of folders in the current or specified path'
 complete -f -c m -n '__fish_m_using_command dir' -a "size" -d 'calculate folder size'
 complete -f -c m -n '__fish_m_using_command dir' -a "delete" -d 'delete empty folders recursively in the current of specified path'
+complete -f -c m -n '__fish_m_using_command dir' -a "dsfiles" -d 'restore/prohibit generation of .DS_Store'
 complete -f -c m -n '__fish_m_using_command dir' -a "help" -d 'Show help'
 
 # XXX: Add completion for disk subcommands
@@ -87,6 +95,7 @@ complete -f -c m -n '__fish_m_using_command dns' -a "help" -d 'Show help'
 complete -f -c m -n '__fish_m_needs_command' -a dock -d 'Manage dock'
 complete -f -c m -n '__fish_m_using_command dock' -a "showdelay" -d 'changes how long the Dock takes to show up when auto-hide is enabled'
 complete -f -c m -n '__fish_m_using_command dock' -a "autohide" -d "enable or disable Dock's auto hide feature"
+complete -f -c m -n '__fish_m_using_command dock' -a "autohidedelay" -d "changes how long the Dock takes to detect you want it to show up"
 complete -f -c m -n '__fish_m_using_command dock' -a "magnification" -d "enable or disable magnification"
 complete -f -c m -n '__fish_m_using_command dock' -a "position" -d "change Dock's position"
 complete -f -c m -n '__fish_m_using_command dock' -a "addblankspace" -d "add a blank space(separator) to the dock"
@@ -150,6 +159,12 @@ complete -f -c m -n '__fish_m_using_command itunes ' -a "vol" -d 'increase and d
 complete -f -c m -n '__fish_m_using_command itunes ' -a "stop" -d 'stop iTune'
 complete -f -c m -n '__fish_m_using_command itunes ' -a "quit" -d 'quit iTunes'
 complete -f -c m -n '__fish_m_using_command itunes ' -a "help" -d 'Show help'
+
+complete -f -c m -n '__fish_m_needs_command' -a localhost -d 'Manage localhost file'
+complete -f -c m -n '__fish_m_using_command localhost' -a "ls" -d 'list records from localhost file'
+complete -f -c m -n '__fish_m_using_command localhost' -a "add" -d 'add record to localhost file'
+complete -f -c m -n '__fish_m_using_command localhost' -a "remove" -d 'remove record from localhost file'
+complete -f -c m -n '__fish_m_using_command localhost' -a "help" -d 'Show help'
 
 complete -f -c m -n '__fish_m_needs_command' -a lock -d 'Lock session'
 complete -f -c m -n '__fish_m_using_command lock' -a "help" -d 'Show help'
@@ -261,11 +276,10 @@ complete -f -c m -n '__fish_m_needs_command' -a wifi -d 'Manage the wifi'
 complete -f -c m -n '__fish_m_using_command wifi' -a "status" -d 'wifi status'
 complete -f -c m -n '__fish_m_using_command wifi' -a "scan" -d 'scan wifi'
 complete -f -c m -n '__fish_m_using_command wifi' -a "showpassword" -d 'show wifi network password'
+complete -f -c m -n '__fish_m_using_command wifi' -a "list" -d 'list known networks'
+complete -f -c m -n '__fish_m_using_command wifi' -a "forget" -d 'forget a network'
 complete -f -c m -n '__fish_m_using_command wifi' -a "history" -d 'wifi connection history'
 complete -f -c m -n '__fish_m_using_command wifi' -a "off" -d 'turn off your wifi'
 complete -f -c m -n '__fish_m_using_command wifi' -a "on" -d 'turn on your wifi'
 complete -f -c m -n '__fish_m_using_command wifi' -a "connect" -d 'join a wifi network'
 complete -f -c m -n '__fish_m_using_command wifi' -a "help" -d 'Show help'
-
-
-# vim: ft=sh ts=4 sw=4 softtabstop=4 expandtab

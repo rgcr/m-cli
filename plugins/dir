@@ -18,6 +18,9 @@ help(){
       m dir delete dsfiles        # delete .DS_Store files recursively in the current path
       m dir delete dsfiles /path  # delete .DS_Store files recursively in a specific path
 
+      m dir dsfiles on   # restore generation of .DS_Store
+      m dir dsfiles off  # prohibit generation of .DS_Store
+
       m dir size        # calculate current folder size
       m dir size /path  # calculate folder size in a specific path
 
@@ -26,15 +29,15 @@ __EOF__
 }
 
 confirm () {
-		# call with a prompt string or use a default
-		read -r -p "${1:-Are you sure? [y/n]} " response
-		case $response in
-			[yY][eE][sS]|[yY])
-				true
-				;;
-			*)
-				false
-				;;
+    # call with a prompt string or use a default
+    read -r -p "${1:-Are you sure? [y/n]} " response
+    case $response in
+        [yY][eE][sS]|[yY])
+            true
+            ;;
+        *)
+            false
+            ;;
     esac
 }
 
@@ -83,6 +86,22 @@ delete(){
     esac
 }
 
+dsfiles(){
+    case "$1" in
+        on)
+            echo ".DS_Store will generate"
+            confirm && defaults delete com.apple.desktopservices DSDontWriteNetworkStores
+            ;;
+        off)
+            echo ".DS_Store will not generate"
+            confirm && defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool TRUE
+            ;;
+        *)
+            help && exit 1
+            ;;
+    esac
+}
+
 
 
 case "$1" in
@@ -97,6 +116,10 @@ case "$1" in
         shift;
         delete "$@"
         ;;
+    dsfiles)
+        shift
+        dsfiles "$@"
+        ;;
     size)
         shift
         folder_size "$@"
@@ -105,5 +128,3 @@ case "$1" in
         help
         ;;
 esac
-
-# vim: ts=4 sw=4 softtabstop=4 expandtab

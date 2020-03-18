@@ -69,7 +69,3 @@ COMMAND=$1; shift;
 
 [ ! -f ${MPATH}/plugins/${COMMAND} ] && usage
 ${MPATH}/plugins/${COMMAND} "$@"
-
-
-
-# vim: ts=4 sw=4 softtabstop=4 expandtab
