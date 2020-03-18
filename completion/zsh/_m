@@ -195,6 +195,7 @@ function _m_dock {
         args=(
             "showdelay:changes how long the Dock takes to show up when auto-hide is enabled"
             "autohide:enable or disable Dock's auto hide feature"
+            "autohidedelay:changes how long the Dock takes to detect you want it to show up"
             "magnification:enable or disable magnification"
             "position:change Dock's position"
             "addblankspace:add a blank space(separator) to the dock"

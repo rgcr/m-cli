@@ -35,9 +35,9 @@ _m_sub () {
             ;;
         dock)
             subcommands=(
-                showdelay autohide magnification
-                position addblankspace addrecentitems
-                prune help
+                showdelay autohide autohidedelay
+                magnification position addblankspace
+                addrecentitems prune help
             )
             ;;
         finder)

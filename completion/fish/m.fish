@@ -95,6 +95,7 @@ complete -f -c m -n '__fish_m_using_command dns' -a "help" -d 'Show help'
 complete -f -c m -n '__fish_m_needs_command' -a dock -d 'Manage dock'
 complete -f -c m -n '__fish_m_using_command dock' -a "showdelay" -d 'changes how long the Dock takes to show up when auto-hide is enabled'
 complete -f -c m -n '__fish_m_using_command dock' -a "autohide" -d "enable or disable Dock's auto hide feature"
+complete -f -c m -n '__fish_m_using_command dock' -a "autohidedelay" -d "changes how long the Dock takes to detect you want it to show up"
 complete -f -c m -n '__fish_m_using_command dock' -a "magnification" -d "enable or disable magnification"
 complete -f -c m -n '__fish_m_using_command dock' -a "position" -d "change Dock's position"
 complete -f -c m -n '__fish_m_using_command dock' -a "addblankspace" -d "add a blank space(separator) to the dock"
