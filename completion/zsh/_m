@@ -423,6 +423,11 @@ function _m_cmd {
                 "disable:turn off bluetooth" \
                 help
             ;;
+        dialogs)
+            _m_solo \
+                $sub \
+                "autoexpand:Whether dialogs auto-expand"
+            ;;
         dir)
             _m_dir
             ;;
