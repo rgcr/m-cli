@@ -394,6 +394,16 @@ function _m_cmd {
                 "disable:turn off airdrop" \
                 help
             ;;
+        animations)
+            _m_solo \
+                $sub \
+                "mail:use animations in mail" \
+                "inputs:use animations interacting with inputs" \
+                "finder:use animations in finder" \
+                "fullscreen:use animations in fullscreen" \
+                "windows:use animations in windows" \
+                "quicklook:use animations in quicklook"
+            ;;
         appearance)
             _m_solo \
                 $sub \

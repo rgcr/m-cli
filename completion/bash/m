@@ -9,6 +9,9 @@ _m_sub () {
         airdrop)
             subcommands=(status on enable off disable help)
             ;;
+        animations)
+            subcommands=(mail inputs finder fullscreen windows quicklook)
+            ;;
         appearance)
             subcommands=(darkmode transparency antialiasthreshold sidebariconsize maincolor highlightcolor)
             ;;

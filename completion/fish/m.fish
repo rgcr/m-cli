@@ -43,6 +43,15 @@ complete -f -c m -n '__fish_m_using_command airdrop' -a "off" -d 'turn off airdr
 complete -f -c m -n '__fish_m_using_command airdrop' -a "disable" -d 'turn off airdrop'
 complete -f -c m -n '__fish_m_using_command airdrop' -a "help" -d 'Show help'
 
+complete -f -c m -n '__fish_m_needs_command' -a animations -d 'Manage animation use'
+complete -f -c m -n '__fish_m_needs_command animations' -a mail -d 'Use animations in mail'
+complete -f -c m -n '__fish_m_needs_command animations' -a inputs -d 'Use animations interacting with inputs'
+complete -f -c m -n '__fish_m_needs_command animations' -a finder -d 'Use animations in finder'
+complete -f -c m -n '__fish_m_needs_command animations' -a fullscreen -d 'Use animations in fullscreen'
+complete -f -c m -n '__fish_m_needs_command animations' -a windows -d 'Use animations in windows'
+complete -f -c m -n '__fish_m_needs_command animations' -a quicklook -d 'Use animations in quicklook'
+
+complete -f -c m -n '__fish_m_needs_command' -a appearance -d 'Manage appearance'
 complete -f -c m -n '__fish_m_using_command appearance' -a "darkmode" -d 'Manage dark mode'
 complete -f -c m -n '__fish_m_using_command appearance' -a "transparency" -d 'Manage transparency'
 complete -f -c m -n '__fish_m_using_command appearance' -a "antialiasthreshold" -d 'Manage anti-alias threshold'
