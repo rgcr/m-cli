@@ -27,10 +27,10 @@ case $1 in
         ;;
     status)
         state=`osascript -e 'tell application "music" to player state as string'`
-        echo "music is currently $state."
+        echo "Apple Music is currently $state."
         artist=`osascript -e 'tell application "music" to artist of current track as string'`
         track=`osascript -e 'tell application "music" to name of current track as string'`
-        echo "$artist:  $track"
+        echo "$artist – $track"
         ;;
     play)
         osascript -e 'tell application "music" to play'
