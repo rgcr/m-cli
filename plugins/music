@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+
+help () {
+    cat<<__EOF__
+    usage: m music [ status | play | pause | next | prev | mute | unmute | vol up | vol down | vol # | stop | quit | help ]
+
+    Examples:
+      m music status       # Show status
+      m music play         # Play track
+      m music pause        # Pause track
+      m music p            # Toggle play/pause
+      m music next         # Play next track
+      m music prev         # Play previous track
+      m music mute         # Mute music
+      m music unmute       # Unmute music
+      m music vol up       # Volume Up
+      m music vol down     # Volume Down
+      m music vol #        # Set volume level
+      m music stop         # Stop track
+      m music quit         # Quit music
+__EOF__
+}
+
+case $1 in
+    help)
+        help
+        ;;
+    status)
+        state=`osascript -e 'tell application "music" to player state as string'`
+        echo "music is currently $state."
+        artist=`osascript -e 'tell application "music" to artist of current track as string'`
+        track=`osascript -e 'tell application "music" to name of current track as string'`
+        echo "$artist:  $track"
+        ;;
+    play)
+        osascript -e 'tell application "music" to play'
+        ;;
+    pause)
+        osascript -e 'tell application "music" to pause'
+        ;;
+    p)
+        osascript -e 'tell application "music" to playpause'
+        ;;
+    next)
+        osascript -e 'tell application "music" to next track'
+        ;;
+    prev)
+        osascript -e 'tell application "music" to previous track'
+        ;;
+    mute)
+        osascript -e 'tell application "music" to set mute to true'
+        ;;
+    unmute)
+        osascript -e 'tell application "music" to set mute to false'
+        ;;
+    vol)
+        vol=`osascript -e 'tell application "music" to sound volume as integer'`
+
+        case "$2" in
+            up)
+                newvol=$(( vol+10 ))    ;;
+            down)
+                newvol=$(( vol-10 ))    ;;
+            [0-9]*)
+                newvol=$2               ;;
+            *)
+                help  && exit 1         ;;
+        esac
+        osascript -e "tell application \"music\" to set sound volume to $newvol"
+        ;;
+    stop)
+        osascript -e 'tell application "music" to stop'
+        ;;
+    quit)
+        osascript -e 'tell application "music" to quit'
+        ;;
+    *)
+        help
+        ;;
+esac
