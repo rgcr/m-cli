@@ -233,6 +233,7 @@ function _m_firewall {
                 "disable:Disable firewall"
                 "add:Add app to firewall"
                 "remove:Remove app to firewall"
+                "blockall:Block all incoming connections"
                 help
             )
             ;;

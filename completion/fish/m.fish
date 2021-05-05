@@ -120,6 +120,7 @@ complete -f -c m -n '__fish_m_using_command firewall' -a "enable" -d 'Enable fir
 complete -f -c m -n '__fish_m_using_command firewall' -a "disable" -d 'Disable firewall'
 complete -f -c m -n '__fish_m_using_command firewall' -a "add" -d 'Add app to firewall'
 complete -f -c m -n '__fish_m_using_command firewall' -a "remove" -d 'Remove app to firewall'
+complete -f -c m -n '__fish_m_using_command firewall' -a "blockall" -d 'Block all incoming connections'
 complete -f -c m -n '__fish_m_using_command firewall' -a "help" -d 'Show help'
 
 complete -f -c m -n '__fish_m_needs_command' -a flightmode -d 'Manage flightmode'
