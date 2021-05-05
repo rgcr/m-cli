@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+help(){
+    cat<<__EOF__
+    
+    usage: m audio [ reset | help ]
+
+    Examples:
+      m audio reset       # restarts coreaudiod
+__EOF__
+}
+
+reset(){
+    if [ "${1}" == "--hard" ]; then
+        sudo launchctl stop com.apple.audio.coreaudiod
+        sudo launchctl start com.apple.audio.coreaudiod
+    else
+        sudo killall coreaudiod
+    fi
+}
+
+case $1 in
+    help)
+        help
+        ;;
+    reset)
+        shift
+        reset "${@}"
+        ;;
+    *)
+        help
+        ;;
+esac

@@ -1,4 +1,4 @@
-#compdef m
+ #compdef m
 
 function _m_dir {
     local -a opts args
@@ -384,6 +384,11 @@ function _m_cmd {
     case $sub in
         help)
             ;;
+        audio)
+            _m_solo \
+                $sub \
+                "reset: restarts coreaudiod" \
+                help
         airdrop)
             _m_solo \
                 $sub \

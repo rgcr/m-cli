@@ -36,6 +36,9 @@ end
 complete -f -c m -n '__fish_m_needs_command' -l update -d 'Update m-cli'
 complete -f -c m -n '__fish_m_needs_command' -l uninstall -d 'Uninstall m-cli'
 
+complete -f -c m -n '__fish_m_needs_command' -a 'audio' -d 'Manage audio service'
+complete -f -c m -n '__fish_m_needs_command audio' -a 'reset' -d 'resets coreaudiod'
+
 complete -f -c m -n '__fish_m_needs_command' -a airdrop -d 'Manage airdrop status'
 complete -f -c m -n '__fish_m_using_command airdrop' -a "on" -d 'turn on airdrop'
 complete -f -c m -n '__fish_m_using_command airdrop' -a "enable" -d 'turn on airdrop'

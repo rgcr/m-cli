@@ -98,6 +98,7 @@ In this example, running `m itunes play` will play the current selected track in
 **m-cli** currently supports the following commands:
 
 `help`</br>
+`audio`</br>
 `battery`</br>
 `bluetooth`</br>
 `dir`</br>
