@@ -2,7 +2,7 @@
 
 help(){
     cat<<__EOF__
-    usage: m firewall [ status | enable | disable | list | add | remove | help ]
+    usage: m firewall [ status | enable | disable | list | add | remove | blockall | help ]
 
     Examples:
       m firewall status                # Show status
@@ -11,6 +11,7 @@ help(){
       m firewall list                  # List applications handled by firewall
       m firewall add /path/to/file     # Add app to firewall
       m firewall remove /path/to/file  # Remove app from firewall
+      m firewall blockall [ on | off ] # Block all connections (State 2)
 
 __EOF__
 }
@@ -22,7 +23,7 @@ case $1 in
         help
         ;;
     status)
-        sudo /usr/libexec/ApplicationFirewall/socketfilterfw --getglobalstate
+        /usr/libexec/ApplicationFirewall/socketfilterfw --getglobalstate
         ;;
     enable)
         sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on
@@ -31,7 +32,7 @@ case $1 in
         sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate off
         ;;
     list)
-        sudo /usr/libexec/ApplicationFirewall/socketfilterfw --list
+        /usr/libexec/ApplicationFirewall/socketfilterfw --list
         ;;
     add)
         [ -z "$2" ] && help && exit 1
@@ -41,6 +42,11 @@ case $1 in
         [ -z "$2" ] && help && exit 1
         sudo /usr/libexec/ApplicationFirewall/socketfilterfw --remove $2
         ;;
+    blockall)
+	[ "$2" != "on" ] && [ "$2" != "off" ] || [ -z "$2" ] && help && exit 1
+        sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setblockall $2
+        ;;
+	
     *)
         help
         ;;
