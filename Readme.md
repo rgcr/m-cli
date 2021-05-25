@@ -98,6 +98,8 @@ In this example, running `m itunes play` will play the current selected track in
 **m-cli** currently supports the following commands:
 
 `help`</br>
+`airdrop`</br>
+`appearance`</br>
 `audio`</br>
 `battery`</br>
 `bluetooth`</br>
@@ -110,16 +112,17 @@ In this example, running `m itunes play` will play the current selected track in
 `firewall`</br>
 `flightmode`</br>
 `gatekeeper`</br>
+`group`</br>
 `hostname`</br>
 `info`</br>
 `itunes`</br>
 `localhost`</br>
 `lock`</br>
-`ntp`</br>
-`printer`</br>
 `network`</br>
 `nosleep`</br>
 `notification`</br>
+`ntp`</br>
+`printer`</br>
 `restart`</br>
 `safeboot`</br>
 `screensaver`</br>
