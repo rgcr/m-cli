@@ -37,7 +37,7 @@ If you want to manually install **m-cli**, run:
 
   `INSTALL_DIR=$HOME/.m-cli sh <(curl -fsSL https://raw.githubusercontent.com/rgcr/m-cli/master/install.sh)`
 
-  _Note: You need privileges_
+  _Note: Certain plugins will not work without administrative privileges. Certain plugins, such as that for the "trash" command, will not work until and unless your terminal emulator is granted Full Disk Access (look under "Security & Privacy" in System Preferences)._
   
  # Uninstall
  
