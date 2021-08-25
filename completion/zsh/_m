@@ -490,19 +490,19 @@ function _m_cmd {
         hostname | info | lock | sleep)
             _m_help
             ;;
-        itunes)
+        music)
             _m_solo \
                 $sub \
                 "status:show status, current artist and track" \
-                "play:start playing iTunes" \
-                "pause:pause iTunes" \
+                "play:start playing music" \
+                "pause:pause music" \
                 "next:go to the next track" \
                 "prev:go to the previous track" \
                 "mute:mute volume" \
                 "unmute:unmute volume" \
                 "vol:increase and decrease volume" \
-                "stop:stop iTunes" \
-                "quit:quit iTunes" \
+                "stop:stop music" \
+                "quit:quit music" \
                 help
             ;;
         localhost)
@@ -681,7 +681,7 @@ function _m {
         "group:manage groups"
         "hostname:displays or set the computer's hostname"
         "info:print macOS operating system version information"
-        "itunes:itunes command line control"
+        "music:music command line control"
         "localhost:manage localhost file"
         "lock:lock session"
         "network:manage interfaces and locations"

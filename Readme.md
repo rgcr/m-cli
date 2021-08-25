@@ -57,7 +57,7 @@ A diagram of this structure is shown below:
 
 ```
 m
-|___itunes
+|___music
 |     |___status
 |     |___play
 |     |___pause
@@ -71,27 +71,27 @@ m
       ...
 ```
 
-For example, running `m itunes` will display the options available for iTunes, as shown below:
+For example, running `m music` will display the options available for Music, as shown below:
 
 ```
-    usage: m itunes [ status | play | pause | next | prev | mute | unmute | vol up | vol down | vol #| stop | quit | help ]
+    usage: m music [ status | play | pause | next | prev | mute | unmute | vol up | vol down | vol #| stop | quit | help ]
 
     Examples:
-      m itunes status       # Show status
-      m itunes play         # Play track
-      m itunes pause        # Pause track
-      m itunes next         # Play next track
-      m itunes prev         # Play previous track
-      m itunes mute         # Mute iTunes
-      m itunes unmute       # Unmute iTunes
-      m itunes vol up       # Volume Up
-      m itunes vol down     # Volume Down
-      m itunes vol #        # Set volume level
-      m itunes stop         # Stop track
-      m itunes quit         # Quit iTunes
+      m music status       # Show status
+      m music play         # Play track
+      m music pause        # Pause track
+      m music next         # Play next track
+      m music prev         # Play previous track
+      m music mute         # Mute Music
+      m music unmute       # Unmute Music
+      m music vol up       # Volume Up
+      m music vol down     # Volume Down
+      m music vol #        # Set volume level
+      m music stop         # Stop track
+      m music quit         # Quit Music
 ```
 
-In this example, running `m itunes play` will play the current selected track in your iTunes music library. 
+In this example, running `m music play` will play the current selected track in your Music music library. 
 
 # All Commands
 
@@ -115,7 +115,7 @@ In this example, running `m itunes play` will play the current selected track in
 `group`</br>
 `hostname`</br>
 `info`</br>
-`itunes`</br>
+`music`</br>
 `localhost`</br>
 `lock`</br>
 `network`</br>

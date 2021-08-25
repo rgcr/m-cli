@@ -64,7 +64,7 @@ _m_sub () {
         info)
             subcommands=(help)
             ;;
-        itunes)
+        music)
             subcommands=(status play pause next prev mute unmute vol stop quit help)
             ;;
         localhost)
@@ -236,7 +236,7 @@ _m () {
     local cur
     local commands=(
         help audio airdrop battery bluetooth dir disk dns dock finder firewall flightmode gatekeeper group hostname
-        info itunes lock network nosleep notification ntp printer restart safeboot screensaver service
+        info music lock network nosleep notification ntp printer restart safeboot screensaver service
         shutdown sleep timezone touchbar trash user update volume vpn wallpaper wifi
     )
 
