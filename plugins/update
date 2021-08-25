@@ -8,7 +8,7 @@ help(){
     Examples:
       m update list                                                 # list available updates
       m update install all                                          # install all the available updates
-      m update install RAWCameraUpdate6.20-6.2                      # install specific updates
+      m update install RAWCameraUpdate6.20-6.20                     # install specific updates
 
 __EOF__
 }
