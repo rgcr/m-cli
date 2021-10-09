@@ -2,7 +2,7 @@
 
 help(){
     cat<<__EOF__
-usage:  m fan [ monitor | help ]
+usage:  m fan [ speed | monitor | help ]
 __EOF__
 }
 
@@ -22,17 +22,19 @@ fan_speed(){
     fi
 
     echo $'Fan: '"$(sudo powermetrics -s smc -n 1 -i 200 -f plist | plutil -extract 'smc.fan' xml1 -o - - | plutil -p -)"$' RPM'
-
 }
 
 case $1 in
     help)
         help
         ;;
+    speed)
+        fan_speed
+        ;;
     monitor)
         fan_speed_monitor
         ;;
     *)
-        fan_speed
+        help
         ;;
 esac
