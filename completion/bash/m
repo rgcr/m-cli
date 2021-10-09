@@ -43,6 +43,9 @@ _m_sub () {
                 addrecentitems prune help
             )
             ;;
+        fan)
+            subcommands=(speed monitor help)
+            ;;
         finder)
             subcommands=(showhiddenfiles showextensions showdesktop help)
             ;;
