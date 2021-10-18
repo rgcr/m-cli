@@ -2,8 +2,8 @@
 
 spacing="            "
 
-help(){
-    cat<<__EOF__
+help() {
+    cat <<__EOF__
     usage: m localhost [ help ]
 
     Examples:
@@ -14,25 +14,25 @@ __EOF__
 }
 
 case $1 in
-    help)
-        help
-        ;;
-    ls)
-        sudo echo "IP $spacing DOMAIN" && cat /etc/hosts | grep -v "#" | grep -v "^$"
-        ;;
-    add)
-        [ -z "$2" ] && [ -z "$3"] && help && exit 1
-        sudo echo "$2   $3" | sudo tee -a /etc/hosts
-        sudo m dns flush
-        ;;
-    remove)
-        [ -z "$2" ] && help && exit 1
-        sudo sed -i'' "/$2/d" /etc/hosts
-        sudo m dns flush
-        ;;
-    *)
-        help
-        ;;
+help)
+    help
+    ;;
+ls)
+    sudo echo "IP $spacing DOMAIN" && cat /etc/hosts | grep -v "#" | grep -v "^$"
+    ;;
+add)
+    [ -z "$2" ] && [ -z "$3"] && help && exit 1
+    sudo echo "$2   $3" | sudo /usr/bin/tee -a /etc/hosts
+    sudo m dns flush
+    ;;
+remove)
+    [ -z "$2" ] && help && exit 1
+    sudo /usr/bin/sed -i '' "/$2/d" /etc/hosts
+    sudo m dns flush
+    ;;
+*)
+    help
+    ;;
 esac
 
 # vim: ts=4 sw=4 softtabstop=4 expandtab
