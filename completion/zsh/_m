@@ -221,6 +221,21 @@ function _m_dock {
     return
 }
 
+function _m_fan {
+    local -a opts args
+
+    if [[ $CURRENT == 3 ]]; then
+        args=(
+            "speed:view current fan speed"
+            "monitor:monitor fan speed"
+            help
+        ) 
+    fi
+
+    _describe 'fan commands' opts -- args
+    return
+}
+
 function _m_firewall {
     local -a opts args
 
@@ -443,6 +458,9 @@ function _m_cmd {
             ;;
         dock)
             _m_dock
+            ;;
+        fan)
+            _m_fan
             ;;
         finder)
             _m_yesno \

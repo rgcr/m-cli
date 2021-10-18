@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+help(){
+    cat<<__EOF__
+usage:  m fan [ speed | monitor | help ]
+__EOF__
+}
+
+is_on_battery_power(){
+    pmset -g adapter | grep -i wattage >/dev/null 2>&1
+    return "${?}"
+}
+
+fan_speed_monitor() {
+    sudo powermetrics -i 200 --samplers smc |awk 'BEGIN {  print "Monitoring ..." ; } /Fan/{ printf "  %s\r", $0 } fflush(stdout)'
+}
+
+fan_speed(){
+    if ! is_on_battery_power; then
+        printf 'This machine appears to be running on battery power. Please try again after connecting to a power outlet.\n'
+      return
+    fi
+
+    echo $'Fan: '"$(sudo powermetrics -s smc -n 1 -i 200 -f plist | plutil -extract 'smc.fan' xml1 -o - - | plutil -p -)"$' RPM'
+}
+
+case $1 in
+    help)
+        help
+        ;;
+    speed)
+        fan_speed
+        ;;
+    monitor)
+        fan_speed_monitor
+        ;;
+    *)
+        help
+        ;;
+esac
