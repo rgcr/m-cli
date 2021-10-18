@@ -106,6 +106,12 @@ complete -f -c m -n '__fish_m_using_command dock' -a "addrecentitems" -d "add a 
 complete -f -c m -n '__fish_m_using_command dock' -a "prune" -d "removes all apps from dock"
 complete -f -c m -n '__fish_m_using_command dock' -a "help" -d 'Show help'
 
+## XXX: Add completion for fan subcommands and options
+complete -f -c m -n '__fish_m_needs_command' -a fan -d 'Manage fan'
+complete -f -c m -n '__fish_m_needs_command fan' -a 'speed' -d 'view current fan speed'
+complete -f -c m -n '__fish_m_needs_command fan' -a 'monitor' -d 'monitor fan speed'
+complete -f -c m -n '__fish_m_needs_command fan' -a 'help' -d 'Show help'
+
 ## XXX: Add completion for finder subcommands and options
 complete -f -c m -n '__fish_m_needs_command' -a finder -d 'Manage finder properties'
 complete -f -c m -n '__fish_m_using_command finder' -a "showhiddenfiles" -d 'manage hidden file visibitlity'
