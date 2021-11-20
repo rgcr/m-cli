@@ -2,9 +2,10 @@
 
 help(){
     cat<<__EOF__
-    usage:  m dns [ flush | help ]
+    usage:  m dns [ list | flush | help ]
 
     Examples:
+      m dns list        # lists DNS servers
       m dns flush       # flushes local DNS
 __EOF__
 }
@@ -22,10 +23,18 @@ flushdns(){
     fi
 }
 
+listdns(){
+    echo "List of the DNS servers:"
+    cat /etc/resolv.conf | grep nameserver | cut -b 11-
+}
+
 
 case $1 in
     help)
         help
+        ;;
+    list)
+        listdns
         ;;
     flush)
         flushdns
