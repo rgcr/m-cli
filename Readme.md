@@ -108,6 +108,7 @@ In this example, running `m itunes play` will play the current selected track in
 `display`</br>
 `dns`</br>
 `dock`</br>
+`fan`</br>
 `finder`</br>
 `firewall`</br>
 `flightmode`</br>
