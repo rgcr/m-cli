@@ -30,9 +30,9 @@ listdns(){
 }
 
 adddns(){
-    [ -z "${1}" ] && help && exit 1
-    sudo sh -c "echo nameserver '${1}' >> /etc/resolv.conf"
-    echo "${1} added"
+    [ -z "${2}" ] && help && exit 1
+    sudo sh -c "echo nameserver '${2}' >> /etc/resolv.conf"
+    echo "${2} added"
 }
 
 
