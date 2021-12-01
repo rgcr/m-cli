@@ -34,7 +34,7 @@ _m_sub () {
             subcommands=(status help)
             ;;
         dns)
-            subcommands=(list flush help)
+            subcommands=(list add flush help)
             ;;
         dock)
             subcommands=(
