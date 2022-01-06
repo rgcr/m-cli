@@ -11,7 +11,7 @@ __EOF__
 }
 
 set_wallpaper(){
-    osascript -e "tell application \"Finder\" to set desktop picture to \"${1}\" as POSIX file"
+    osascript -e "tell application \"System Events\" to tell every desktop to set picture to \"${1}\" as POSIX file"
 }
 
 case $1 in
