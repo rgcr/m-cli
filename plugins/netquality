@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+
+help(){
+    cat<<__EOF__
+    usage:  m netquality
+__EOF__
+}
+
+case $1 in
+    help)
+        help
+        ;;
+    *)
+        networkQuality
+        ;;
+esac
