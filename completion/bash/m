@@ -40,7 +40,7 @@ _m_sub () {
             subcommands=(
                 showdelay autohide autohidedelay
                 magnification position addblankspace
-                addrecentitems prune help
+                additem addrecentitems prune help
             )
             ;;
         fan)
