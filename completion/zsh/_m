@@ -425,6 +425,18 @@ function _m_cmd {
                 "maincolor:manage main UI color" \
                 "highlightcolor:manage UI highlight color"
             ;;
+        ard)
+            _m_solo \
+                $sub \
+                "on:turn on ARD" \
+                "enable:turn on ARD" \
+                "off:turn off ARD" \
+                "disable:turn off ARD" \
+                "restart:restart ARD" \
+                "status:show ARD status" \
+                "acl:configure ARD acls" \
+                "text:set ARD text fields"
+            ;;
         battery)
             _m_solo $sub "status:get the battery status" help
             ;;

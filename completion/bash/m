@@ -15,6 +15,9 @@ _m_sub () {
         appearance)
             subcommands=(darkmode transparency antialiasthreshold sidebariconsize maincolor highlightcolor)
             ;;
+        ard)
+            subcommands=(on enable off disable restart status acl text)
+            ;;
         battery)
             subcommands=(status help)
             ;;

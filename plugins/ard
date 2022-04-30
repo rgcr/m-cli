@@ -1,0 +1,270 @@
+#!/usr/bin/env bash
+
+help(){
+    cat<<__EOF__
+    Configure Apple Remote Desktop (ARD), aka Remote Management in System Preferences
+
+    usage:  m ard ( on | enable | off | disable | restart | status )
+            m ard acl ( allowAllOn [ <priv list> ] | allowAllOff )
+            m ard acl ( allow <user> [ <priv list> ] | disallow [-a] <user> )
+            m ard text ( 1 | 2 | 3 | 4 ) <text>
+
+    Examples:
+      m ard on                               # Turn on ARD
+      m ard off                              # Turn off ARD
+      m ard restart                          # Restart ARD when it's unresponsive
+      m ard status                           # Access control list status
+      m ard acl allowAllOn                   # Allow all users with all privileges
+      m ard acl allowAllOn -ControlObserve   # Allow all users with only ControlObserve
+      m ard acl allowAllOff                  # Turn off allowAll
+      m ard acl allow admin                  # Allow admin with all privileges
+      m ard acl allow admin -ControlObserve  # Allow admin with only ControlObserve
+      m ard acl disallow -a                  # Disallow all accounts
+      m ard acl disallow student             # Disallow account named "student"
+      m ard text 1 "\$(date)"                 # Set Info field 1 to the output of \`date\`
+
+    "allowAllOn"/"allowAllOff" is the checkbox that allows all users. "allow"/"disallow"
+    configures each user. "allowAllOn" superceeds each user privileges.
+
+    "allow" and "allowAllOn" default to all privileges. Optional privileges are:
+
+        -TextMessages
+        -ControlObserve
+        -SendFiles
+        -DeleteFiles
+        -GenerateReports
+        -OpenQuitApps
+        -ChangeSettings
+        -RestartShutDown
+        -ObserveOnly
+        -ShowObserve
+
+    Note, -ShowObserve was removed from System Preferences in macOS 12 "Monterey" and
+    it appears that set or not, the ARD menu extra always loads and shows when the
+    computer is being observed.
+
+__EOF__
+    exit
+}
+
+kickstart=/System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart
+
+mask2privs(){
+    local naprivs=0
+    local str=""
+    local ard_privs=(-TextMessages -ControlObserve -SendFiles -DeleteFiles -GenerateReports 
+               -OpenQuitApps -ChangeSettings -RestartShutDown -ObserveOnly)
+    if [ $1 -gt -1073741825 ]
+    then
+        naprivs=-1073741824
+        str="-ShowObserve "
+    else
+        naprivs=-2147483648
+    fi
+    eval D2B='('$(for ((i=0; i<9; i++)); do printf '%s' "{0..1}"; done)')'
+    local dec=$(($1 - $naprivs))
+    local bin=${D2B[$dec]}
+    for i in $(seq 1 ${#bin})
+    do
+        local val=${bin:i-1:1}
+        if [ "$val" == 1 ]
+        then
+            str="$str${ard_privs[9-$i]} "
+        fi
+    done
+    str="${str% }"
+    echo $str
+}
+
+privs2mask(){
+    for priv in $@
+    do
+        case $priv in
+            -TextMessages)
+                naprivs=$(($naprivs+1))
+                ;;
+            -ControlObserve)
+                naprivs=$(($naprivs+2))
+                ;;
+            -SendFiles)
+                naprivs=$(($naprivs+4))
+                ;;
+            -DeleteFiles)
+                naprivs=$(($naprivs+8))
+                ;;
+            -GenerateReports)
+                naprivs=$(($naprivs+16))
+                ;;
+            -OpenQuitApps)
+                naprivs=$(($naprivs+32))
+                ;;
+            -ChangeSettings)
+                naprivs=$(($naprivs+64))
+                ;;
+            -RestartShutDown)
+                naprivs=$(($naprivs+128))
+                ;;
+            -ObserveOnly)
+                naprivs=$(($naprivs+256))
+                ;;
+            -ShowObserve)
+                naprivs=$(($naprivs+1073741824))
+                ;;
+            *)
+                echo 1
+                return
+                ;;
+        esac
+    done
+    echo $naprivs
+}
+
+status(){
+    local allowAll=`defaults read /Library/Preferences/com.apple.RemoteManagement.plist ARD_AllLocalUsers`
+    if [ "$allowAll" -gt 0 ]
+    then
+        allmask=`defaults read /Library/Preferences/com.apple.RemoteManagement.plist ARD_AllLocalUsersPrivs`
+        allprivs=`mask2privs $allmask`
+        if [ "$allprivs" = "" ]
+        then
+            echo "Allow all users ON, $allmask: No privileges"
+        else
+            echo "Allow all users ON, $allmask: $allprivs"
+        fi
+    else
+        echo "Allow all users: OFF"
+    fi
+    echo "Users who have access:"
+    IFS=$'\n'
+    local user_list=$(/usr/bin/dscl . list /Users naprivs)
+    for user in $user_list
+    do
+        local username=$( echo $user | awk '{print $1}')
+        local mask=$( echo $user | awk '{print $2}')
+        privs=`mask2privs $mask`
+        if [ "$privs" = "" ]
+        then
+            echo "  $username, $mask: No privileges"
+        else
+            echo "  $username, $mask: $privs"
+        fi
+    done
+}
+
+acl(){
+    local mask=0
+    local user=""
+    case $1 in
+        help)
+            help
+            ;;
+        status)
+            status $@
+            ;;
+        allowAllOn)
+            shift
+            defaults write /Library/Preferences/com.apple.RemoteManagement.plist ARD_AllLocalUsers -bool YES
+            if [ ! -z "${1}" ]
+            then
+                mask=`privs2mask $@`
+                if [ "$mask" == 1 ]
+                then
+                    help
+                fi
+                mask=$(( $mask - 1073741824 ))
+            else
+                mask=-1073741569
+            fi
+            defaults write /Library/Preferences/com.apple.RemoteManagement.plist ARD_AllLocalUsersPrivs -int $mask
+            ;;
+        allowAllOff)
+            defaults write /Library/Preferences/com.apple.RemoteManagement.plist ARD_AllLocalUsers -bool NO
+            ;;
+        allow)
+            if [ ! -z "${2}" ]
+            then
+                user=$2
+                if [ -z "${3}" ]
+                then
+                    mask="-2147483393"
+                else
+                    shift 2
+                    mask=`privs2mask $@`
+                    if [ "$mask" == 1 ]
+                    then
+                        help
+                    fi
+                    mask=$(( $mask - 2147483648 ))
+                fi
+                defaults write /Library/Preferences/com.apple.RemoteManagement.plist ARD_AllLocalUsers -bool NO
+                /usr/bin/dscl . create /Users/"${user}" naprivs $mask
+            else
+                help
+            fi
+            ;;
+        disallow)
+            if [ ! -z "${2}" ]
+            then
+                /usr/bin/dscl . delete /Users/"${2}" naprivs
+            elif [ "${2}" == "-a" ]
+            then
+                echo "Removing all ARD privileges from all users"
+                local user_list=$(/usr/bin/dscl . list /Users naprivs | awk '{print $1}')
+                for user in $user_list
+                do
+                    if [ -z "${user}" ]
+                    then
+                        /usr/bin/dscl . delete /Users/"${user}" naprivs
+                    fi
+                done
+            else
+                help
+            fi
+            ;;
+        *)
+            help
+            ;;
+    esac
+}
+
+text(){
+    key=$1
+    shift
+    if [ "${key}" != "1" -a "${key}" != "2" -a "${key}" != "3" -a "${key}" != "4" ]
+    then
+        help
+    else
+        if [ -z "${1}" ]
+        then
+            defaults read /Library/Preferences/com.apple.RemoteDesktop.plist Text$key
+        else
+            defaults write /Library/Preferences/com.apple.RemoteDesktop.plist Text$key "$@"
+        fi
+    fi
+}
+
+case $1 in
+    help)
+        help
+        ;;
+    on|enable)
+        $kickstart -activate -agent
+        ;;
+    off|disable)
+        $kickstart -deactivate -stop -agent
+        ;;
+    acl)
+        shift
+        acl $@
+        ;;
+    restart)
+        $kickstart -restart -agent
+        ;;
+    text)
+        shift
+        text "$@"
+        ;;
+    *)
+        help
+        ;;
+esac
