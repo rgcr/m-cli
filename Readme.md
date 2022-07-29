@@ -133,6 +133,7 @@ In this example, running `m itunes play` will play the current selected track in
 `timezone`</br>
 `touchbar`</br>
 `trash`</br>
+`usb`</br>
 `update`</br>
 `user`</br>
 `volume`</br>

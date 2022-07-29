@@ -120,6 +120,9 @@ _m_sub () {
         trash)
             subcommands=(status clean help)
             ;;
+        usb)
+            subcommands=(help)
+            ;;
         user)
             subcommands=(ls info create delete help)
             ;;
@@ -240,7 +243,7 @@ _m () {
     local commands=(
         help audio airdrop battery bluetooth dir disk dns dock finder firewall flightmode gatekeeper group hostname
         info itunes lock network nosleep notification ntp printer restart safeboot screensaver service
-        shutdown sleep timezone touchbar trash user update volume vpn wallpaper wifi
+        shutdown sleep timezone touchbar trash usb user update volume vpn wallpaper wifi
     )
 
     COMPREPLY=()
