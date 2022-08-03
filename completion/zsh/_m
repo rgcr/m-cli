@@ -532,6 +532,21 @@ function _m_cmd {
                 "remove:remove localhost record" \
                 help
             ;;
+        music)
+            _m_solo \
+                $sub \
+                "status:show status, current artist and track" \
+                "play:start playing Music" \
+                "pause:pause Music" \
+                "next:go to the next track" \
+                "prev:go to the previous track" \
+                "mute:mute volume" \
+                "unmute:unmute volume" \
+                "vol:increase and decrease volume" \
+                "stop:stop Music" \
+                "quit:quit Music" \
+                help
+            ;;
         network)
             _m_network
             ;;
@@ -703,6 +718,7 @@ function _m {
         "itunes:itunes command line control"
         "localhost:manage localhost file"
         "lock:lock session"
+        "music:music command line control"
         "network:manage interfaces and locations"
         "nosleep:prevent sleeping"
         "notification:manage the notification settings"
