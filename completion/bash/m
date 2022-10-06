@@ -88,6 +88,13 @@ _m_sub () {
         ntp)
             subcommands=(status enable disable set help)
             ;;
+        powermode)
+            subcommands=(
+                battery ac
+                auto low high
+                help
+            )
+            ;;
         printer)
             subcommands=(settings name queue drivers web help)
             ;;
@@ -235,11 +242,24 @@ _m_dock() {
     COMPREPLY=( $( compgen -W "${choices[*]}" -- $cur  )  )
 }
 
+_m_powermode() {
+    local prev="$1"
+    local sub="$2"
+    local choices=()
+
+    case "$sub" in
+        ac|battery)
+            [[ $COMP_CWORD == 3 ]] && choices=("", auto, low, high)
+            ;;
+    esac
+    COMPREPLY=( $( compgen -W "${choices[*]}" -- $cur  )  )
+}
+
 _m () {
     local cur
     local commands=(
         help audio airdrop battery bluetooth dir disk dns dock finder firewall flightmode gatekeeper group hostname
-        info itunes lock network nosleep notification ntp printer restart safeboot screensaver service
+        info itunes lock network nosleep notification ntp powermode printer restart safeboot screensaver service
         shutdown sleep timezone touchbar trash user update volume vpn wallpaper wifi
     )
 
@@ -298,6 +318,9 @@ _m () {
                     local _tmp=(*)
                     [[ $COMP_CWORD == 3 ]] \
                         && COMPREPLY=($(compgen -W "${_tmp[*]}" -- $cur))
+                    ;;
+                powermode)
+                    _m_powermode "$prev" "$sub"
                     ;;
                 screensaver)
                     [[ $sub == "askforpassword" && $COMP_CWORD == 3 ]] \

@@ -201,6 +201,14 @@ complete -f -c m -n '__fish_m_using_command ntp' -a "disable" -d 'disable clock 
 complete -f -c m -n '__fish_m_using_command ntp' -a "set" -d 'set network time server'
 complete -f -c m -n '__fish_m_using_command ntp' -a "help" -d 'Show help'
 
+# XXX: Add completion for powermode subcommands and options
+complete -f -c m -n '__fish_m_needs_command' -a powermode -d 'Manage power mode'
+complete -f -c m -n '__fish_m_using_command powermode' -a "battery" -d "show/change power mode on battery"
+complete -f -c m -n '__fish_m_using_command powermode' -a "ac" -d "show/change power mode on ac"
+complete -f -c m -n '__fish_m_using_command powermode' -a "auto" -d "set global power mode to auto"
+complete -f -c m -n '__fish_m_using_command powermode' -a "low" -d "set global power mode to low"
+complete -f -c m -n '__fish_m_using_command powermode' -a "high" -d "set global power mode to high"
+
 complete -f -c m -n '__fish_m_needs_command' -a printer -d 'Display information about the printers'
 complete -f -c m -n '__fish_m_using_command printer' -a "settings" -d 'Display printer settings'
 complete -f -c m -n '__fish_m_using_command printer' -a "name" -d 'Display printer names on system'
