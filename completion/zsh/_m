@@ -343,6 +343,33 @@ function _m_nosleep {
     _describe 'nosleep commands' opts -- args
 }
 
+function _m_powermode {
+    local -a opts args
+
+    if [[ $CURRENT == 3 ]]; then
+        args=(
+            "battery:show/change power mode on battery"
+            "ac:show/change power mode on ac"
+            "auto:set global power mode to auto"
+            "low:set global power mode to low"
+            "high:set global power mode to high"
+            help
+        )
+
+        #_describe 'manage power mode' opts -- args
+        #return
+    fi
+    local sub=${words[3]}
+
+    case $sub in
+        battery|ac)
+            [[ $CURRENT == 4 ]] && args=("" auto low high)
+            ;;
+    esac
+    _describe 'manage power mode' opts -- args
+    return
+}
+
 function _m_user {
     case $CURRENT in
         3)
@@ -405,6 +432,7 @@ function _m_cmd {
                 $sub \
                 "reset: restarts coreaudiod" \
                 help
+            ;;
         airdrop)
             _m_solo \
                 $sub \
@@ -555,6 +583,9 @@ function _m_cmd {
                 "disable:disable clock to use network time" \
                 "set:set network time server" \
                 help
+            ;;
+        powermode)
+            _m_powermode
             ;;
         printer)
             _m_solo \
@@ -707,6 +738,7 @@ function _m {
         "nosleep:prevent sleeping"
         "notification:manage the notification settings"
         "ntp:manage the network time service"
+        "powermode:manage power mode"
         "printer:display information about the printers"
         "restart:restart computer"
         "safeboot:manage safeboot"

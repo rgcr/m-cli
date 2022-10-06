@@ -17,7 +17,6 @@ __EOF__
 }
 
 get_powermode() {
-    echo $1
     # convert to words
     case $1 in
     0)
