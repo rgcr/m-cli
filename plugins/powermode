@@ -49,8 +49,7 @@ powermode() {
             sudo pmset -c powermode 2
             ;;
         "")
-            # TODO: figure out selecting this
-            get_powermode "$(pmset -g live | grep -i 'powermode' | awk '{print $2}')"
+            get_powermode "$(pmset -g custom | grep -A5000 -m1 -e 'AC Power' | grep -i 'powermode' -m1 | awk '{print $2}')"
             ;;
         *)
             help
@@ -69,8 +68,7 @@ powermode() {
             sudo pmset -b powermode 2
             ;;
         "")
-            # TODO: figure out selecting this
-            get_powermode "$(pmset -g live | grep -i 'powermode' | awk '{print $2}')"
+            get_powermode "$(pmset -g custom | grep -A5000 -m1 -e 'Battery Power' | grep -i 'powermode' -m1 | awk '{print $2}')"
             ;;
         *)
             help
