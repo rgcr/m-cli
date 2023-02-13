@@ -508,7 +508,7 @@ function _m_cmd {
                 "ismember:show if the user is a member of a specific group" \
                 help
             ;;
-        hostname | info | lock | sleep)
+        hostname | info | lock | sleep | usb)
             _m_help
             ;;
         itunes)
@@ -719,6 +719,7 @@ function _m {
         "timezone:manage timezone"
         "touchbar:manage touchbar"
         "trash:manage the trash"
+        "usb:list usb devices"
         "user:manage users"
         "update:manage macOS updates"
         "volume:manage the sound's volume"

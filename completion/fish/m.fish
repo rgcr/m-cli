@@ -255,6 +255,9 @@ complete -f -c m -n '__fish_m_using_command trash' -a "status" -d 'get trash inf
 complete -f -c m -n '__fish_m_using_command trash' -a "clean" -d 'clean trash'
 complete -f -c m -n '__fish_m_using_command trash' -a "help" -d 'Show help'
 
+complete -f -c m -n '__fish_m_needs_command' -a usb -d 'List usb devices'
+complete -f -c m -n '__fish_m_needs_command usb' -a "help" -d 'Show help'
+
 complete -f -c m -n '__fish_m_needs_command' -a user -d 'Manage users'
 complete -f -c m -n '__fish_m_using_command user' -a "list" -d 'list users'
 complete -f -c m -n '__fish_m_using_command user' -a "info" -d 'display user information'
