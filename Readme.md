@@ -119,6 +119,7 @@ In this example, running `m itunes play` will play the current selected track in
 `itunes`</br>
 `localhost`</br>
 `lock`</br>
+`netquality`</br>
 `network`</br>
 `nosleep`</br>
 `notification`</br>
