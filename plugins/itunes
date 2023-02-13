@@ -1,22 +1,34 @@
 #!/usr/bin/env bash
 
+macOSVersion=`/usr/bin/sw_vers -productVersion | /usr/bin/awk -F. '{printf "%d%03d%03d\n", $1, $2, $3}'`
+
+music_cmd="iTunes"
+music_desc="itunes"
+# check if >= Catalina (10.15)
+# ${music_cmd} was renamed to Music
+if [ `echo "${macOSVersion} > 10015000" | bc -l` ]
+then
+  music_cmd="Music"
+  music_desc="music"
+fi
+
 help () {
     cat<<__EOF__
-    usage: m itunes [ status | play | pause | next | prev | mute | unmute | vol up | vol down | vol # | stop | quit | help ]
+    usage: m ${music_desc} [ status | play | pause | next | prev | mute | unmute | vol up | vol down | vol # | stop | quit | help ]
 
     Examples:
-      m itunes status       # Show status
-      m itunes play         # Play track
-      m itunes pause        # Pause track
-      m itunes next         # Play next track
-      m itunes prev         # Play previous track
-      m itunes mute         # Mute iTunes
-      m itunes unmute       # Unmute iTunes
-      m itunes vol up       # Volume Up
-      m itunes vol down     # Volume Down
-      m itunes vol #        # Set volume level
-      m itunes stop         # Stop track
-      m itunes quit         # Quit iTunes
+      m ${music_desc} status       # Show status
+      m ${music_desc} play         # Play track
+      m ${music_desc} pause        # Pause track
+      m ${music_desc} next         # Play next track
+      m ${music_desc} prev         # Play previous track
+      m ${music_desc} mute         # Mute ${music_cmd}
+      m ${music_desc} unmute       # Unmute ${music_cmd}
+      m ${music_desc} vol up       # Volume Up
+      m ${music_desc} vol down     # Volume Down
+      m ${music_desc} vol #        # Set volume level
+      m ${music_desc} stop         # Stop track
+      m ${music_desc} quit         # Quit ${music_cmd}
 __EOF__
 }
 
@@ -25,34 +37,34 @@ case $1 in
         help
         ;;
     status)
-        state=`osascript -e 'tell application "iTunes" to player state as string'`
-        echo "iTunes is currently $state."
+        state=`osascript -e "tell application \"${music_cmd}\" to player state as string"`
+        echo "${music_cmd} is currently $state."
         if [ $state = "playing" ]; then
-            artist=`osascript -e 'tell application "iTunes" to artist of current track as string'`
-            track=`osascript -e 'tell application "iTunes" to name of current track as string'`
+            artist=`osascript -e "tell application \"${music_cmd}\" to artist of current track as string"`
+            track=`osascript -e "tell application \"${music_cmd}\" to name of current track as string"`
             echo "Current track $artist:  $track"
         fi
         ;;
     play)
-        osascript -e 'tell application "iTunes" to play'
+        osascript -e "tell application \"${music_cmd}\" to play"
         ;;
     pause)
-        osascript -e 'tell application "iTunes" to pause'
+        osascript -e "tell application \"${music_cmd}\" to pause"
         ;;
     next)
-        osascript -e 'tell application "iTunes" to next track'
+        osascript -e "tell application \"${music_cmd}\" to next track"
         ;;
     prev)
-        osascript -e 'tell application "iTunes" to previous track'
+        osascript -e "tell application \"${music_cmd}\" to previous track"
         ;;
     mute)
-        osascript -e 'tell application "iTunes" to set mute to true'
+        osascript -e "tell application \"${music_cmd}\" to set mute to true"
         ;;
     unmute)
-        osascript -e 'tell application "iTunes" to set mute to false'
+        osascript -e "tell application \"${music_cmd}\" to set mute to false"
         ;;
     vol)
-        vol=`osascript -e 'tell application "iTunes" to sound volume as integer'`
+        vol=`osascript -e "tell application \"${music_cmd}\" to sound volume as integer"`
 
         case "$2" in
             up)
@@ -64,13 +76,13 @@ case $1 in
             *)
                 help  && exit 1         ;;
         esac
-        osascript -e "tell application \"iTunes\" to set sound volume to $newvol"
+        osascript -e "tell application \"${music_cmd}\" to set sound volume to ${newvol}"
         ;;
     stop)
-        osascript -e 'tell application "iTunes" to stop'
+        osascript -e "tell application \"${music_cmd}\" to stop"
         ;;
     quit)
-        osascript -e 'tell application "iTunes" to quit'
+        osascript -e "tell application \"${music_cmd}\" to quit"
         ;;
     *)
         help

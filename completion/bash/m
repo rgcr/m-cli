@@ -76,6 +76,9 @@ _m_sub () {
         lock)
             subcommands=(help)
             ;;
+        music)
+            subcommands=(status play pause next prev mute unmute vol stop quit help)
+            ;;
         network)
             subcommands=(ls location help)
             ;;
