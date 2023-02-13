@@ -454,6 +454,7 @@ function _m_cmd {
             _m_solo \
                 $sub \
                 "list:lists DNS servers" \
+                "add:adds DNS server" \
                 "flush:flushes local DNS" \
                 help
             ;;

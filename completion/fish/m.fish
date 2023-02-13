@@ -92,6 +92,7 @@ complete -f -c m -n '__fish_m_using_command display' -a "help" -d 'Show help'
 
 complete -f -c m -n '__fish_m_needs_command' -a dns -d 'Manage dns'
 complete -f -c m -n '__fish_m_using_command dns' -a "list" -d 'lists DNS servers'
+complete -f -c m -n '__fish_m_using_command dns' -a "add" -d 'adds DNS server'
 complete -f -c m -n '__fish_m_using_command dns' -a "flush" -d 'flushes local DNS'
 complete -f -c m -n '__fish_m_using_command dns' -a "help" -d 'Show help'
 
