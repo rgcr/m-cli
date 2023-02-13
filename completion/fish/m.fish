@@ -104,6 +104,7 @@ complete -f -c m -n '__fish_m_using_command dock' -a "autohidedelay" -d "changes
 complete -f -c m -n '__fish_m_using_command dock' -a "magnification" -d "enable or disable magnification"
 complete -f -c m -n '__fish_m_using_command dock' -a "position" -d "change Dock's position"
 complete -f -c m -n '__fish_m_using_command dock' -a "addblankspace" -d "add a blank space(separator) to the dock"
+complete -f -c m -n '__fish_m_using_command dock' -a "additem" -d "add an item to the Dock, e.g. /Applications/Safari.app"
 complete -f -c m -n '__fish_m_using_command dock' -a "addrecentitems" -d "add a stack containg your recent items to the Dock"
 complete -f -c m -n '__fish_m_using_command dock' -a "prune" -d "removes all apps from dock"
 complete -f -c m -n '__fish_m_using_command dock' -a "help" -d 'Show help'

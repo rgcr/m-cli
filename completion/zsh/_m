@@ -199,6 +199,7 @@ function _m_dock {
             "magnification:enable or disable magnification"
             "position:change Dock's position"
             "addblankspace:add a blank space(separator) to the dock"
+            "additem:add an item to the Dock, e.g. /Applications/Safari.app"
             "addrecentitems:add a stack containg your recent items to the Dock"
             "prune:removes all apps from dock"
             help

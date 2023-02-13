@@ -2,7 +2,7 @@
 
 help(){
     cat<<__EOF__
-    usage: m dock [ showdelay | autohide | magnification | position | addblankspace | addrecentitems | prune | help ]
+    usage: m dock [ showdelay | autohide | magnification | position | addblankspace | additem | addrecentitems | prune | help ]
 
     Examples:
       m dock showdelay x.x          # Changes how long the Dock takes to show up when auto-hide is enabled
@@ -15,6 +15,7 @@ help(){
       m dock position LEFT          # Change Dock's position to the left of the screen
       m dock position RIGHT         # Change Dock's position to the right of the screen
       m dock addblankspace          # Add a blank space (separator) to the Dock
+      m dock additem PATH           # Add an item to the Dock, e.g. /Applications/Safari.app
       m dock addrecentitems         # Add a stack containg your recent items to the Dock
                                     #  (You can change the stack's type by right clicking on it)
       m dock prune                  # remove all items from dock
@@ -122,6 +123,13 @@ add_blank_space(){
     killall Dock
 }
 
+add_item(){
+    [ -z "$1" ] && help && exit 1
+    echo "Item added to the Dock: $1"
+    defaults write com.apple.dock persistent-apps -array-add "<dict><key>tile-data</key><dict><key>file-data</key><dict><key>_CFURLString</key><string>$1</string><key>_CFURLStringType</key><integer>0</integer></dict></dict></dict>"
+    killall Dock
+}
+
 add_recent_items(){
     echo "Add recent items stack"
     defaults write com.apple.dock persistent-others -array-add '{"tile-data" = {"list-type" = 1;}; "tile-type" = "recents-tile";}';
@@ -161,6 +169,10 @@ case $1 in
     addblankspace)
         shift
         add_blank_space
+        ;;
+    additem)
+        shift
+        add_item $@
         ;;
     addrecentitems)
         shift
