@@ -92,6 +92,7 @@ complete -f -c m -n '__fish_m_using_command display' -a "help" -d 'Show help'
 
 complete -f -c m -n '__fish_m_needs_command' -a dns -d 'Manage dns'
 complete -f -c m -n '__fish_m_using_command dns' -a "list" -d 'lists DNS servers'
+complete -f -c m -n '__fish_m_using_command dns' -a "add" -d 'adds DNS server'
 complete -f -c m -n '__fish_m_using_command dns' -a "flush" -d 'flushes local DNS'
 complete -f -c m -n '__fish_m_using_command dns' -a "help" -d 'Show help'
 
@@ -103,6 +104,7 @@ complete -f -c m -n '__fish_m_using_command dock' -a "autohidedelay" -d "changes
 complete -f -c m -n '__fish_m_using_command dock' -a "magnification" -d "enable or disable magnification"
 complete -f -c m -n '__fish_m_using_command dock' -a "position" -d "change Dock's position"
 complete -f -c m -n '__fish_m_using_command dock' -a "addblankspace" -d "add a blank space(separator) to the dock"
+complete -f -c m -n '__fish_m_using_command dock' -a "additem" -d "add an item to the Dock, e.g. /Applications/Safari.app"
 complete -f -c m -n '__fish_m_using_command dock' -a "addrecentitems" -d "add a stack containg your recent items to the Dock"
 complete -f -c m -n '__fish_m_using_command dock' -a "prune" -d "removes all apps from dock"
 complete -f -c m -n '__fish_m_using_command dock' -a "help" -d 'Show help'
@@ -260,6 +262,9 @@ complete -f -c m -n '__fish_m_needs_command' -a trash -d 'Manage the trash'
 complete -f -c m -n '__fish_m_using_command trash' -a "status" -d 'get trash info'
 complete -f -c m -n '__fish_m_using_command trash' -a "clean" -d 'clean trash'
 complete -f -c m -n '__fish_m_using_command trash' -a "help" -d 'Show help'
+
+complete -f -c m -n '__fish_m_needs_command' -a usb -d 'List usb devices'
+complete -f -c m -n '__fish_m_needs_command usb' -a "help" -d 'Show help'
 
 complete -f -c m -n '__fish_m_needs_command' -a user -d 'Manage users'
 complete -f -c m -n '__fish_m_using_command user' -a "list" -d 'list users'

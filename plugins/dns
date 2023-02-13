@@ -2,11 +2,12 @@
 
 help(){
     cat<<__EOF__
-    usage:  m dns [ list | flush | help ]
+    usage:  m dns [ list | add | flush | help ]
 
     Examples:
-      m dns list        # lists DNS servers
-      m dns flush       # flushes local DNS
+      m dns list                    # lists DNS servers
+      m dns add [IP/Hostname]       # adds DNS server
+      m dns flush                   # flushes local DNS
 __EOF__
 }
 
@@ -28,6 +29,12 @@ listdns(){
     cat /etc/resolv.conf | grep nameserver | cut -b 11-
 }
 
+adddns(){
+    [ -z "${2}" ] && help && exit 1
+    sudo sh -c "echo nameserver '${2}' >> /etc/resolv.conf"
+    echo "${2} added"
+}
+
 
 case $1 in
     help)
@@ -35,6 +42,9 @@ case $1 in
         ;;
     list)
         listdns
+        ;;
+    add)
+        adddns
         ;;
     flush)
         flushdns

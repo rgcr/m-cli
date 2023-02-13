@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+help(){
+    cat<<__EOF__
+
+    usage: m usb [ help ]
+
+    Examples:
+      m usb               # list usb devices
+__EOF__
+}
+
+case $1 in
+    help)
+        help
+        ;;
+    *)
+        ioreg -p IOUSB
+        ;;
+esac

@@ -199,6 +199,7 @@ function _m_dock {
             "magnification:enable or disable magnification"
             "position:change Dock's position"
             "addblankspace:add a blank space(separator) to the dock"
+            "additem:add an item to the Dock, e.g. /Applications/Safari.app"
             "addrecentitems:add a stack containg your recent items to the Dock"
             "prune:removes all apps from dock"
             help
@@ -482,6 +483,7 @@ function _m_cmd {
             _m_solo \
                 $sub \
                 "list:lists DNS servers" \
+                "add:adds DNS server" \
                 "flush:flushes local DNS" \
                 help
             ;;
@@ -534,7 +536,7 @@ function _m_cmd {
                 "ismember:show if the user is a member of a specific group" \
                 help
             ;;
-        hostname | info | lock | sleep)
+        hostname | info | lock | sleep | usb)
             _m_help
             ;;
         itunes)
@@ -558,6 +560,21 @@ function _m_cmd {
                 "ls:list localhost records" \
                 "add:add localhost record" \
                 "remove:remove localhost record" \
+                help
+            ;;
+        music)
+            _m_solo \
+                $sub \
+                "status:show status, current artist and track" \
+                "play:start playing Music" \
+                "pause:pause Music" \
+                "next:go to the next track" \
+                "prev:go to the previous track" \
+                "mute:mute volume" \
+                "unmute:unmute volume" \
+                "vol:increase and decrease volume" \
+                "stop:stop Music" \
+                "quit:quit Music" \
                 help
             ;;
         network)
@@ -734,6 +751,7 @@ function _m {
         "itunes:itunes command line control"
         "localhost:manage localhost file"
         "lock:lock session"
+        "music:music command line control"
         "network:manage interfaces and locations"
         "nosleep:prevent sleeping"
         "notification:manage the notification settings"
@@ -749,6 +767,7 @@ function _m {
         "timezone:manage timezone"
         "touchbar:manage touchbar"
         "trash:manage the trash"
+        "usb:list usb devices"
         "user:manage users"
         "update:manage macOS updates"
         "volume:manage the sound's volume"

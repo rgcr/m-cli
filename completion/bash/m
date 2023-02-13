@@ -34,13 +34,13 @@ _m_sub () {
             subcommands=(status help)
             ;;
         dns)
-            subcommands=(list flush help)
+            subcommands=(list add flush help)
             ;;
         dock)
             subcommands=(
                 showdelay autohide autohidedelay
                 magnification position addblankspace
-                addrecentitems prune help
+                additem addrecentitems prune help
             )
             ;;
         fan)
@@ -75,6 +75,9 @@ _m_sub () {
             ;;
         lock)
             subcommands=(help)
+            ;;
+        music)
+            subcommands=(status play pause next prev mute unmute vol stop quit help)
             ;;
         network)
             subcommands=(ls location help)
@@ -126,6 +129,9 @@ _m_sub () {
             ;;
         trash)
             subcommands=(status clean help)
+            ;;
+        usb)
+            subcommands=(help)
             ;;
         user)
             subcommands=(ls info create delete help)
