@@ -65,6 +65,9 @@ complete -f -c m -n '__fish_m_using_command bluetooth' -a "off" -d 'turn off blu
 complete -f -c m -n '__fish_m_using_command bluetooth' -a "disable" -d 'turn off bluetooth'
 complete -f -c m -n '__fish_m_using_command bluetooth' -a "help" -d 'Show help'
 
+complete -f -c m -n '__fish_m_needs_command' -a dialogs -d 'Manage dialogs'
+complete -f -c m -n '__fish_m_needs_command dialogs' -a "autoexpand" -d 'Whether print, save and other dialogs auto-expand'
+
 ## XXX:
 complete -f -c m -n '__fish_m_needs_command' -a dir -d 'Show and delete dir trees'
 complete -f -c m -n '__fish_m_using_command dir' -a "tree" -d 'tree view of folders in the current or specified path'

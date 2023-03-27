@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/defaults.sh"
+source "$( dirname "${BASH_SOURCE[0]}" )/../lib/converters.sh"
+
+declare command
+command="$(basename "$0")"
+declare subcommand="$1"
+
+[ $# -gt 0 ] && shift
+
+help(){
+    cat<<__EOF__
+    Usage:
+      m dialogs autoexpand  [ YES | NO ]  # Whether print, save and other dialogs auto-expand
+__EOF__
+}
+
+autoexpand(){
+    value="$(_mcli_defaults_yes_no_to_boolean "NSGlobalDomain" \
+                                              "NSNavPanelExpandedStateForSaveMode" \
+                                              "$1")"
+    value="$(_mcli_defaults_yes_no_to_boolean "NSGlobalDomain" \
+                                              "NSNavPanelExpandedStateForSaveMode2" \
+                                              "$1")"
+    value="$(_mcli_defaults_yes_no_to_boolean "NSGlobalDomain" \
+                                              "PMPrintingExpandedStateForPrint" \
+                                              "$1")"
+    value="$(_mcli_defaults_yes_no_to_boolean "NSGlobalDomain" \
+                                              "PMPrintingExpandedStateForPrint2" \
+                                              "$1")"
+
+    echo "${command} ${subcommand}: ${value}"
+}
+
+case "${subcommand}" in
+    help)
+        help
+        ;;
+    autoexpand)
+        autoexpand "$@"
+        ;;
+    *)
+        help
+        ;;
+esac
