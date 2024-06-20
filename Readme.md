@@ -1,5 +1,15 @@
 #  m-cli
 
+## Project Status
+
+![maintenance-status](https://img.shields.io/badge/maintenance-looking--for--maintainer-orange.svg)
+
+## [:warning: Hello, we are looking for New Maintainers 🚀](looking-for-maintainer.md)
+
+
+<br>
+<br>
+
 :boom: **Swiss Army Knife for macOS !**
 
 [Overview](#overview)</br>
