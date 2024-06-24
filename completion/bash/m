@@ -68,7 +68,7 @@ _m_sub () {
             subcommands=(help)
             ;;
         itunes)
-            subcommands=(status play pause next prev mute unmute vol stop quit help)
+            subcommands=(status state progress play pause next prev mute unmute repeat shuffle vol stop quit help)
             ;;
         localhost)
             subcommands=(ls add remove help)
