@@ -94,16 +94,16 @@ start_vpn(){
         ask_parameters
     fi
 
-    scutil --nc start ${_VPN} ${_USER} ${_PASSWORD} ${_SECRET}
+    scutil --nc start "${_VPN}" ${_USER} ${_PASSWORD} ${_SECRET}
 
 }
 
 stop_vpn(){
-    scutil --nc stop $1
+    scutil --nc stop "$1"
 }
 
 vpn_status(){
-    scutil --nc status $1
+    scutil --nc status "$1"
 }
 
 
@@ -120,11 +120,11 @@ case $1 in
         ;;
     stop)
         [ -z "$2" ] && help && exit 1;
-        stop_vpn $2
+        stop_vpn "$2"
         ;;
     status)
         [ -z "$2" ] && help && exit 1;
-        vpn_status $2
+        vpn_status "$2"
         ;;
     *)
         help
