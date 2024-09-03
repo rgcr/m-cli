@@ -168,9 +168,6 @@ In this example, running `m itunes play` will play the current selected track in
 - [Awesome OSX Command Line](https://github.com/herrbischoff/awesome-osx-command-line)
 - [Apple MacOS Command Line Documentation](https://ss64.com/osx/)
 
-## Thanks
-[guarinogabriel/Mac-CLI](https://github.com/guarinogabriel/Mac-CLI) was a great source of inspiration.
-
 
 ---
 [MIT License](LICENSE.md) © Rogelio Cedillo
