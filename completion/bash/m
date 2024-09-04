@@ -21,6 +21,9 @@ _m_sub () {
         bluetooth)
             subcommands=(status on enable off disable help)
             ;;
+        dialogs)
+            subcommands=(autoexpand)
+            ;;
         dir)
             subcommands=(tree size delete help)
             ;;
