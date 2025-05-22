@@ -2,35 +2,49 @@
 
 help(){
     cat<<__EOF__
-    
-    usage: m airdrop [ status | on | enable | off | disable | help ]
 
-    Examples:
-      m airdrop status    # airdrop status
-      m airdrop on        # turn on airdrop
-      m airdrop enable    # turn on airdrop
-      m airdrop off       # turn off airdrop
-      m airdrop disable   # turn off airdrop
+Usage: m airdrop [options]
+
+Options:
+  --status          Show AirDrop status
+  --enable          Enable airdrop
+  --disable         Disable airdrop
 __EOF__
+    exit 0
 }
 
+show_status() {
+    local status
+    status="$(defaults read com.apple.NetworkBrowser DisableAirDrop 2>/dev/null)"
+    if [[ "$status" == "1" ]]; then
+        echo "AirDrop: enabled"
+    else
+        echo "AirDrop: disabled"
+    fi
+}
+
+toggle_airdrop() {
+    local state=$1
+    defaults write com.apple.NetworkBrowser DisableAirDrop -bool "${state}" && \
+        killall -HUP Finder
+}
+
+
 case $1 in
-    help)
+    --help)
         help
         ;;
-    status)
-        defaults read com.apple.NetworkBrowser DisableAirDrop | \
-            awk '{ if($1 != 0) {print "AirDrop: OFF"} else { print "AirDrop: ON" }  }'
+    --status)
+        show_status
         ;;
-    on|enable)
-        defaults write com.apple.NetworkBrowser DisableAirDrop -bool NO && \
-            killall -HUP Finder
+    --enable)
+        toggle_airdrop false
         ;;
-    off|disable)
-        defaults write com.apple.NetworkBrowser DisableAirDrop -bool YES && \
-            killall -HUP Finder
+    --disable)
+        toggle_airdrop true
         ;;
     *)
         help
         ;;
 esac
+
