@@ -6,6 +6,7 @@ help(){
 Usage: m airdrop [options]
 
 Options:
+  --help            Show this help message
   --status          Show AirDrop status
   --enable          Enable airdrop
   --disable         Disable airdrop
@@ -16,7 +17,7 @@ __EOF__
 show_status() {
     local status
     status="$(defaults read com.apple.NetworkBrowser DisableAirDrop 2>/dev/null)"
-    if [[ "$status" == "1" ]]; then
+    if [[ "${status}" == "1" || "${status}" == "true" ]]; then
         echo "AirDrop: enabled"
     else
         echo "AirDrop: disabled"

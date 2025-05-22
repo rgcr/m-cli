@@ -1,5 +1,7 @@
 #!/usr/bin/env bats
 
+# XXX: need to test
+
 # Path to your plugin
 PLUGIN="./plugins/airdrop"
 
