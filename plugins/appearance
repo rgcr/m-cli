@@ -2,35 +2,34 @@
 
 help(){
     cat<<__EOF__
-    Usage: m appearance [option]
+Usage: m appearance [option]
 
-    Options:
-     --help                                  Show this help message
-     --antialiasthreshold [number]           Set the antialiasing threshold (e.g., 0, 2, 6, etc.).
-                                             If you set it to 0, antialiasing will be disabled.
-                                             If you dont pass a number, it will show the current value
-     --darkmode [enable|disable]             Enable or disable dark mode
-     --transparency [enable|disable]         Enable or disable transparency
-     --iconsize [small|medium|large]         Set the size of the icons in window sidebars, dock, and finder
-     --maincolor [blue|graphite]             Set the main color of the interface
+Description: Manage appearance settings on macOS.
 
-     --highlightcolor [
-                        graphite  | cayenne    | asparagus  | clover    |
-                        teal      | midnight   | plum       | tin       |
-                        nickel    | mocha      | fern       | moss      |
-                        ocean     | eggplant   | maroon     | steel     |
-                        aluminum  | maraschino | lemon      | spring    |
-                        turquoise | blueberry  | magenta    | iron      |
-                        magnesium | tangerine  | lime       | seafoam   |
-                        aqua      | grape      | strawberry | tungsten  |
-                        silver    | salmon     | banana     | flora     |
-                        ice       | orchid     | bubblegum  | lead      |
-                        mercery   | cantaloupe | honeydew   | spindrift |
-                        sky       | lavender   | carnation  | licorice  |
-                        snow
-                      ]                      Set the highlight color of the text selection
-                                             in the interface.
+Options:
+  --help                                  Show this help message
+  --antialiasthreshold [number]           Set the antialiasing threshold (e.g., 0, 2, 6, etc.).
+                                          If you set it to 1, antialiasing will be disabled.
+                                          If you dont pass a number, it will show the current value
+  --darkmode [enable|disable]             Enable or disable dark mode
+  --transparency [enable|disable]         Enable or disable transparency
+  --iconsize [small|medium|large]         Set the size of the icons in window sidebars, dock, and finder
+  --maincolor [blue|graphite]             Set the main color of the interface
 
+  --highlightcolor [graphite  | cayenne    | asparagus  | clover
+                  | teal      | midnight   | plum       | tin
+                  | nickel    | mocha      | fern       | moss
+                  | ocean     | eggplant   | maroon     | steel
+                  | aluminum  | maraschino | lemon      | spring
+                  | turquoise | blueberry  | magenta    | iron
+                  | magnesium | tangerine  | lime       | seafoam
+                  | aqua      | grape      | strawberry | tungsten
+                  | silver    | salmon     | banana     | flora
+                  | ice       | orchid     | bubblegum  | lead
+                  | mercery   | cantaloupe | honeydew   | spindrift
+                  | sky       | lavender   | carnation  | licorice
+                  | snow]               Set the highlight color of the text selection
+                                        in the interface.
 __EOF__
 exit 0
 }
@@ -56,7 +55,8 @@ darkmode(){
 
 # Helper function used in transparency options
 show_trancparency_status(){
-  local current="$(defaults read com.apple.universalaccess ReduceTransparency 2>/dev/null || echo "false")"
+  local current
+  current="$(defaults read com.apple.universalaccess ReduceTransparency 2>/dev/null || echo "false")"
   if [[ "$current" == "1" || "$current" == "true" ]]; then
     echo "Transparency: disabled"
   else
@@ -65,8 +65,7 @@ show_trancparency_status(){
 }
 
 transparency(){
-    local current=$(defaults read com.apple.universalaccess ReduceTransparency 2>/dev/null || echo 0)
-    case $1) in
+    case "${1}" in
         enable)
             defaults write com.apple.universalaccess ReduceTransparency -bool false
             echo "Transparency enabled"
@@ -276,7 +275,7 @@ highlightcolor(){
 }
 
 
-local option="${1}"; shift
+option="${1}"; shift
 case "${option}" in
     --help)
         help

@@ -2,8 +2,9 @@
 
 help(){
     cat<<__EOF__
+Usage: m airdrop [OPTIONS]
 
-Usage: m airdrop [options]
+Description: Manage AirDrop settings on macOS.
 
 Options:
   --help            Show this help message
