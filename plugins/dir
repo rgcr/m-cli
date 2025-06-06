@@ -2,7 +2,7 @@
 
 help(){
     cat<<__EOF__
-Usage: m dir [OPTIONS] [path]
+Usage: m dir [OPTIONS] [PATH]
 
 Description:  Manage directories and files in the current or specified path.
 

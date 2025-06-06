@@ -2,7 +2,7 @@
 
 help(){
     cat<<__EOF__
-Usage: m appearance [option]
+Usage: m appearance [OPTIONS] [ARGUMENTS]
 
 Description: Manage appearance settings on macOS.
 
