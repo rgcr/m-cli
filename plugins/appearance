@@ -8,15 +8,15 @@ Description: Manage appearance settings on macOS.
 
 Options:
   --help                                  Show this help message
-  --antialiasthreshold [number]           Set the antialiasing threshold (e.g., 0, 2, 6, etc.).
+  --antialiasthreshold [value]            Set the antialiasing threshold (e.g., 0, 2, 6, etc.).
                                           If you set it to 1, antialiasing will be disabled.
                                           If you dont pass a number, it will show the current value
-  --darkmode [enable|disable]             Enable or disable dark mode
-  --transparency [enable|disable]         Enable or disable transparency
-  --iconsize [small|medium|large]         Set the size of the icons in window sidebars, dock, and finder
-  --maincolor [blue|graphite]             Set the main color of the interface
+  --darkmode <enable|disable>             Enable or disable dark mode
+  --transparency <enable|disable>         Enable or disable transparency
+  --iconsize <small|medium|large>         Set the size of the icons in window sidebars, dock, and finder
+  --maincolor <blue|graphite>             Set the main color of the interface
 
-  --highlightcolor [graphite  | cayenne    | asparagus  | clover
+  --highlightcolor <graphite  | cayenne    | asparagus  | clover
                   | teal      | midnight   | plum       | tin
                   | nickel    | mocha      | fern       | moss
                   | ocean     | eggplant   | maroon     | steel
@@ -28,7 +28,7 @@ Options:
                   | ice       | orchid     | bubblegum  | lead
                   | mercery   | cantaloupe | honeydew   | spindrift
                   | sky       | lavender   | carnation  | licorice
-                  | snow]               Set the highlight color of the text selection
+                  | snow>               Set the highlight color of the text selection
                                         in the interface.
 __EOF__
 exit 0

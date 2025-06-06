@@ -9,8 +9,7 @@ Description: Manage audio settings on macOS.
 
 Options:
   --help            Show this help message
-  --reset [hard]    Reset audio settings
-                    (use 'hard' to restart coreaudiod service)
+  --reset [hard]    Reset audio settings (pass 'hard' to restart coreaudiod service)
 __EOF__
 }
 

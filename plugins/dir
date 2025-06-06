@@ -7,8 +7,8 @@ Usage: m dir [OPTIONS] [path]
 Description:  Manage directories and files in the current or specified path.
 
 Options:
-  --delete  [empty|dsfiles]  Delete DS_Files files or empty folders recursively in the current path or a specified path.
-  --dsfiles [enable|disable] Enable or disable the generation of .DS_Store files.
+  --delete  <empty|dsfiles>  Delete DS_Files files or empty folders recursively in the current path or a specified path.
+  --dsfiles <enable|disable> Enable or disable the generation of .DS_Store files.
   --size                     Calculate the size of the current folder or a specified path.
   --tree                     Display a tree view of folders in the current path or a specified path.
 __EOF__
