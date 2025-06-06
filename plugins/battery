@@ -2,10 +2,13 @@
 
 help(){
     cat<<__EOF__
-    usage: m battery [ status | help ]
+Usage: m battery [OPTIONS]
 
-    Examples:
-      m battery status    # get the battery status
+Description: battery management commands
+
+Options:
+  --help        Show this help message
+  --status      Show the current battery status
 __EOF__
 }
 
@@ -14,10 +17,10 @@ battery_status(){
 }
 
 case $1 in
-    help)
+    --help)
         help
         ;;
-    status)
+    --status)
         battery_status
         ;;
     *)
