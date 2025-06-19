@@ -2,23 +2,21 @@
 
 help(){
     cat<<__EOF__
-    usage: m dock [ showdelay | autohide | magnification | position | addblankspace | additem | addrecentitems | prune | help ]
+Usage: m dock [OPTIONS] [ARGUMENTS]
 
-    Examples:
-      m dock showdelay x.x          # Changes how long the Dock takes to show up when auto-hide is enabled
-      m dock autohide YES           # Enable Dock's auto hide feature
-      m dock autohide NO            # Disable Dock's auto hide feature
-      m dock autohidedelay x.x      # Changes how long it takes to detect you want to show up the dock
-      m dock magnification YES      # Turn magnification on
-      m dock magnification NO       # Turn magnification off
-      m dock position BOTTOM        # Change Dock's position to the bottom of the screen
-      m dock position LEFT          # Change Dock's position to the left of the screen
-      m dock position RIGHT         # Change Dock's position to the right of the screen
-      m dock addblankspace          # Add a blank space (separator) to the Dock
-      m dock additem PATH           # Add an item to the Dock, e.g. /Applications/Safari.app
-      m dock addrecentitems         # Add a stack containg your recent items to the Dock
-                                    #  (You can change the stack's type by right clicking on it)
-      m dock prune                  # remove all items from dock
+Description: Manage the macOS Dock settings and items
+
+Options:
+  --autohide <enable|disable>       Enable or disable the Dock's auto-hide feature
+  --autohidedelay SECONDS           Changes how long it takes to detect you want to show up the dock
+  --additem PATH                    Add an item to the Dock, e.g. /Applications/Safari.app
+  --addblankspace                   Add a blank space (separator) to the Dock
+  --addrecentitems                  Add a stack containing your recent items to the Dock
+                                     (You can change the stack's type by right-clicking on it)
+  --magnification <enable|disable>  Enable or disable magnification of Dock icons
+  --position <bottom|left|right>    Change the Dock's position on the screen
+  --prune                           Remove all items from the Dock
+  --showdelay SECONDS               Changes how long the Dock takes to show up when auto-hide is enabled
 __EOF__
 }
 
@@ -42,12 +40,12 @@ show_delay(){
 
 auto_hide(){
     case $1 in
-        [yY][eE][sS])
-            echo "Auto Hide: YES"
+        enable)
+            echo "Auto Hide: enable"
             defaults write com.apple.dock autohide -boolean YES
             ;;
-        [nN][oO])
-            echo "Auto Hide: No"
+        disable)
+            echo "Auto Hide: disable"
             defaults write com.apple.dock autohide -boolean NO
             ;;
         *)
@@ -79,12 +77,12 @@ autohide_delay(){
 
 magnify(){
     case $1 in
-        [yY][eE][sS])
-            echo "Magnification: YES"
+        enable)
+            echo "Magnification: enable"
             defaults write com.apple.dock magnification -boolean YES
             ;;
-        [nN][oO])
-            echo "Magnification: NO"
+        disable)
+            echo "Magnification: disable"
             defaults write com.apple.dock magnification -boolean NO
             ;;
         *)
@@ -126,7 +124,11 @@ add_blank_space(){
 add_item(){
     [ -z "$1" ] && help && exit 1
     echo "Item added to the Dock: $1"
-    defaults write com.apple.dock persistent-apps -array-add "<dict><key>tile-data</key><dict><key>file-data</key><dict><key>_CFURLString</key><string>$1</string><key>_CFURLStringType</key><integer>0</integer></dict></dict></dict>"
+    defaults write \
+        com.apple.dock \
+        persistent-apps \
+        -array-add \
+        "<dict><key>tile-data</key><dict><key>file-data</key><dict><key>_CFURLString</key><string>$1</string><key>_CFURLStringType</key><integer>0</integer></dict></dict></dict>"
     killall Dock
 }
 
@@ -142,44 +144,39 @@ prune(){
     killall Dock
 }
 
-case $1 in
-    help)
+## Main script execution
+option="${1}"
+shift
+
+case "${option}" in
+    --help)
         help
         ;;
-    showdelay)
-        shift
+    --showdelay)
         show_delay $@
         ;;
-    autohide)
-        shift
+    --autohide)
         auto_hide $@
         ;;
-    autohidedelay)
-        shift
+    --autohidedelay)
         autohide_delay $@
         ;;
-    magnification)
-        shift
+    --magnification)
         magnify $@
         ;;
-    position)
-        shift
+    --position)
         dock_position $@
         ;;
-    addblankspace)
-        shift
+    --addblankspace)
         add_blank_space
         ;;
-    additem)
-        shift
+    --additem)
         add_item $@
         ;;
-    addrecentitems)
-        shift
+    --addrecentitems)
         add_recent_items
         ;;
-    prune)
-        shift
+    --prune)
         prune
         ;;
     *)
