@@ -102,47 +102,43 @@ rename(){
 
 }
 
-case $1 in
+
+# Main script execution
+option="${1}"
+shift
+
+case "${option}" in
     help)
         help
         ;;
     --list)
-        shift
         disk_ls "$@"
         ;;
     --info)
-        shift
         disk_info "$@"
         ;;
     --filesystems)
-        shift
         list_filesystems
         ;;
     --ejectall)
-        shift
         ejectall
         ;;
     --verify)
-        shift
         verify "$@"
         ;;
     --repair)
-        shift
         repair "$@"
         ;;
     --format)
-        shift
         format "$@"
         ;;
     --reformat)
-        shift
         reformat "$@"
         ;;
     --rename)
-        shift
         rename "$@"
         ;;
     *)
-        help
+        help && exit 1
         ;;
 esac
