@@ -35,20 +35,25 @@ listdns(){
 adddns(){
     [ -z "${1}" ] && help && exit 1
     sudo sh -c "echo nameserver '${1}' >> /etc/resolv.conf"
-    echo "${2} added"
+    echo "${1} added"
 }
 
 
 case $1 in
     --help)
-        help ;;
+        help
+        ;;
     --list)
-        listdns ;;
+        listdns
+        ;;
     --add)
         shift
-        adddns "$@";;
+        adddns "$@"
+        ;;
     --flush)
-        flushdns ;;
+        flushdns
+        ;;
     *)
-        help ;;
+        help && exit 1
+        ;;
 esac
