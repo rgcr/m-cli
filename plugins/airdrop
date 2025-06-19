@@ -34,19 +34,14 @@ toggle_airdrop() {
 
 case $1 in
     --help)
-        help
-        ;;
+        help ;;
     --status)
-        show_status
-        ;;
+        show_status ;;
     --enable)
-        toggle_airdrop false
-        ;;
+        toggle_airdrop false ;;
     --disable)
-        toggle_airdrop true
-        ;;
+        toggle_airdrop true ;;
     *)
-        help
-        ;;
+        help && exit 1 ;;
 esac
 
