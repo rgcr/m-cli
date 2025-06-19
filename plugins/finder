@@ -1,79 +1,70 @@
 #!/usr/bin/env bash
 
-# TODO: add more functionalities
-
 help(){
     cat<<__EOF__
-    usage: m finder [ showhiddenfiles | showfileextensions | showdesktop | showpath | help ]
+Usage: m finder [OPTIONS]
 
-    Examples:
-      m finder showhiddenfiles           # get the current status
-      m finder showhiddenfiles YES       # show hidden files
-      m finder showhiddenfiles NO        # don't show hidden files
+Description: Manage Finder settings on macOS
 
-      m finder showextensions            # get the current status
-      m finder showextensions YES        # show all file extensions
-      m finder showextensions NO         # don't show all file extensions
-
-      m finder showdesktop               # get the current desktop status
-      m finder showdesktop YES           # enable the desktop
-      m finder showdesktop NO            # disable the desktop
-
-      m finder showpath YES              # show the current opened folder path on the top bar of the Finder window
-      m finder showpath NO               # show the current opened folder name on the top bar of the Finder window
+Options:
+ --help                                      Show this help message
+ --showhiddenfiles <status|enable|disable>   Show or hide hidden files in Finder
+ --showextensions  <status|enable|disable>   Show or hide file extensions in Finder
+ --showdesktop <status|enable|disable>       Enable or disable the desktop in Finder
+ --showpath    <status|enable|disable>       Show or hide the current folder path in Finder's title bar
 __EOF__
 }
 
 hidden_files(){
     case $1 in
-        [yY][eE][sS])
-            echo "Show hidden files: YES"
-            defaults write com.apple.finder AppleShowAllFiles -bool true
+        enable)
+            defaults write com.apple.finder AppleShowAllFiles -bool true && \
+                echo "Show hidden files: enabled"
             ;;
-        [nN][oO])
-            echo "Show hidden files: NO"
-            defaults write com.apple.finder AppleShowAllFiles -bool false
+        disable)
+            defaults write com.apple.finder AppleShowAllFiles -bool false && \
+                echo "Show hidden files: disabled"
             ;;
-        *)
+        status)
             HIDDEN_FILE_STATUS=$(defaults read com.apple.finder AppleShowAllFiles 2>/dev/null)
 
             case $HIDDEN_FILE_STATUS in
                 0|[nN][oO]|[fF][aA][lL][sS][eE])
-                    HIDDEN_FILE_STATUS="NO"
+                    HIDDEN_FILE_STATUS="disabled"
                     ;;
                 1|[yY][eE][sS]|[tT][rU][eE])
-                    HIDDEN_FILE_STATUS="YES"
+                    HIDDEN_FILE_STATUS="enabled"
                     ;;
                 *)
                     echo "We can't read AppleShowAllFiles property" && exit 1
                     ;;
             esac
-
-            echo "Show hidden files: $HIDDEN_FILE_STATUS"
-            exit 0
+            echo "Show hidden files: $HIDDEN_FILE_STATUS" && exit 0
             ;;
+        *)
+            help && exit 1
     esac
     killall Finder
 }
 
 file_extensions(){
     case $1 in
-        [yY][eE][sS])
-            echo "Show file extensions: YES"
-            defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+        enable)
+            defaults write NSGlobalDomain AppleShowAllExtensions -bool true && \
+                echo "Show file extensions: enabled"
             ;;
-        [nN][oO])
-            echo "Show file extensions: NO"
-            defaults write NSGlobalDomain AppleShowAllExtensions -bool false
+        disable)
+            defaults write NSGlobalDomain AppleShowAllExtensions -bool false && \
+                echo "Show file extensions: disabled"
             ;;
-        *)
+        status)
             EXTENSION_STATUS=$(defaults read NSGlobalDomain AppleShowAllExtensions 2>/dev/null)
             case $EXTENSION_STATUS in
                 0|[nN][oO]|[fF][aA][lL][sS][eE])
-                    EXTENSION_STATUS="NO"
+                    EXTENSION_STATUS="disabled"
                     ;;
                 1|[yY][eE][sS]|[tT][rU][eE])
-                    EXTENSION_STATUS="YES"
+                    EXTENSION_STATUS="enabled"
                     ;;
                 *)
                     echo "We can't read AppleShowAllExtension property" && exit 1
@@ -82,21 +73,24 @@ file_extensions(){
             echo "Show file extensions: $EXTENSION_STATUS"
             exit 0
             ;;
+        *)
+            help && exit 1
+            ;;
     esac
     killall Finder
 }
 
 desktop(){
     case $1 in
-        [yY][eE][sS])
-            echo "Enable desktop: YES"
-            defaults write com.apple.finder CreateDesktop -bool true
+        enable)
+            defaults write com.apple.finder CreateDesktop -bool true && \
+                echo "Desktop: enabled"
             ;;
-        [nN][oO])
-            echo "Enable desktop: NO"
-            defaults write com.apple.finder CreateDesktop -bool false
+        disable)
+            defaults write com.apple.finder CreateDesktop -bool false && \
+                echo "Desktop: disabled"
             ;;
-        *)
+        status)
             DESKTOP_STATUS=$(defaults read com.apple.finder CreateDesktop 2>/dev/null)
             case $DESKTOP_STATUS in
                 0|[nN][oO]|[fF][aA][lL][sS][eE])
@@ -111,28 +105,31 @@ desktop(){
             esac
             echo "Desktop: $DESKTOP_STATUS"
             ;;
+        *)
+            help && exit 1
+            ;;
     esac
     killall Finder
 }
 
 path(){
     case $1 in
-        [yY][eE][sS])
-            echo "Show folder path: YES"
-            defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
+        enable)
+            defaults write com.apple.finder _FXShowPosixPathInTitle -bool true && \
+            echo "Show folder path: enabled"
             ;;
-        [nN][oO])
-            echo "Show folder path: NO"
-            defaults write com.apple.finder _FXShowPosixPathInTitle -bool false
+        disable)
+            defaults write com.apple.finder _FXShowPosixPathInTitle -bool false && \
+            echo "Show folder path: disabled"
             ;;
-        *)
+        status)
             EXTENSION_STATUS=$(defaults read com.apple.finder _FXShowPosixPathInTitle 2>/dev/null)
             case $EXTENSION_STATUS in
                 0|[nN][oO]|[fF][aA][lL][sS][eE])
-                    EXTENSION_STATUS="NO"
+                    EXTENSION_STATUS="disabled"
                     ;;
                 1|[yY][eE][sS]|[tT][rU][eE])
-                    EXTENSION_STATUS="YES"
+                    EXTENSION_STATUS="enabled"
                     ;;
                 *)
                     echo "We can't read _FXShowPosixPathInTitle property" && exit 1
@@ -141,31 +138,35 @@ path(){
             echo "Show folder path: $EXTENSION_STATUS"
             exit 0
             ;;
+        *)
+            help && exit 1
+            ;;
     esac
     killall Finder
 }
 
-case $1 in
-    help)
+
+# Main script execution
+option="${1}"
+shift
+
+case "${option}" in
+    --help)
         help
         ;;
-    showhiddenfiles)
-        shift
+    --showhiddenfiles)
         hidden_files "$@"
         ;;
-    showextensions)
-        shift
+    --showextensions)
         file_extensions "$@"
         ;;
-    showdesktop)
-        shift
+    --showdesktop)
         desktop "$@"
         ;;
-    showpath)
-        shift
+    --showpath)
         path "$@"
         ;;
     *)
-        help
+        help && exit 1
         ;;
 esac
