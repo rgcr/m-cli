@@ -41,6 +41,6 @@ case $1 in
         turn_down
         ;;
     *)
-        help
+        help && exit 1
         ;;
 esac
