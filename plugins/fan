@@ -33,11 +33,15 @@ fan_speed(){
 
 case $1 in
     --help)
-        help ;;
+        help
+        ;;
     --speed)
-        fan_speed ;;
+        fan_speed
+        ;;
     --monitor)
-        fan_speed_monitor ;;
+        fan_speed_monitor
+        ;;
     *)
-        help ;;
+        help && exit 1
+        ;;
 esac
