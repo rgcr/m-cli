@@ -3,35 +3,38 @@
 
 help(){
     cat<<__EOF__
-    usage: m ntp [ status | enable | disable | set | help ]
+Usage: m ntp [OPTION] [ARGUMENT]
 
-    Examples:
-      m ntp status                          # status of the network time service
-      m ntp enable                          # enable clock to use network time
-      m ntp disable                         # disable clock to use network time
-      m ntp set timehost1.net.sap.corp      # set network time server
+Description: Manage the network time service on macOS
+
+Options:
+  --help        Show this help message
+  --status      Show the current status of the network time service
+  --enable      Enable the clock to use network time
+  --disable     Disable the clock from using network time
+  --set HOST    Set the network time server to HOST
 __EOF__
 }
 
 case $1 in
-    help)
+    --help)
         help
         ;;
-    status)
+    --status)
         sudo systemsetup -getusingnetworktime
         sudo systemsetup -getnetworktimeserver 2>/dev/null
         ;;
-    enable)
+    --enable)
         sudo systemsetup -setusingnetworktime on
         ;;
-    disable)
+    --disable)
         sudo systemsetup -setusingnetworktime off
         ;;
-    set)
+    --set)
         [ -z "$2" ] && help && exit 1
         sudo systemsetup -setnetworktimeserver "$2"
         ;;
     *)
-        help
+        help && exit 1
         ;;
 esac
