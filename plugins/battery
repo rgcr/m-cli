@@ -18,12 +18,9 @@ battery_status(){
 
 case $1 in
     --help)
-        help
-        ;;
+        help ;;
     --status)
-        battery_status
-        ;;
+        battery_status ;;
     *)
-        help
-        ;;
+        help && exit 1 ;;
 esac
