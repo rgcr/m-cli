@@ -3,15 +3,14 @@
 
 help(){
     cat<<__EOF__
-    usage:  m network [ ls | list | location | help ]
+Usage: m network [OPTIONS]
 
-    Examples:
-      m network ls                          # list network interfaces
-      m network location                    # get current location
-      m network location ls                 # list locations
-      m network location create XYZ         # create a location
-      m network location delete XYZ         # delete a location
-      m network location switch XYZ         # switch location
+Description: Manage network interfaces and locations on macOS.
+
+Options:
+  --help                                            Show this help message and exit
+  --list                                            List all network interfaces and their IP addresses
+  --location <info|list|create|delete|switch> NAME  Manage network locations (info & list don't require NAME)
 __EOF__
 
 }
@@ -35,7 +34,7 @@ location(){
             [ -z "$2" ] && help && exit 1;
             networksetup -createlocation $2
             ;;
-        delete|rm)
+        delete)
             [ -z "$2" ] && help && exit 1;
             networksetup -deletelocation $2
             ;;
@@ -43,12 +42,15 @@ location(){
             [ -z "$2" ] && help && exit 1;
             networksetup -switchtolocation $2
             ;;
-        list|ls)
+        list)
             echo "Locations: "
             networksetup -listlocations
             ;;
-        *)
+        info)
             echo "Current location: $(networksetup -getcurrentlocation)"
+            ;;
+        *)
+            help && exit 1
             ;;
     esac
 }
@@ -59,10 +61,10 @@ case $1 in
     help)
         help
         ;;
-    ls|list)
+    --list)
         list_netservices
         ;;
-    location)
+    --location)
         shift
         location $@
         ;;
