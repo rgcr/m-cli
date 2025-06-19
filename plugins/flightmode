@@ -1,50 +1,59 @@
 #!/usr/bin/env bash
 
 
-_W_DEVICE=${_W_DEVICE:-en0}
-
-
 help(){
     cat<<__EOF__
-    usage:  m flightmode [ on | off | help ]
+Usage:  m flightmode [OPTIONS]
 
-    Examples:
+Description:  Turn flightmode on or off, this will affect both Wi-Fi and Bluetooth.
 
-      m flightmode off                     # turn flightmode off
-      m flightmode on                      # turn flightmode on
-
+Options:
+  --help      Show this help message
+  --enable    Enable flightmode
+  --disable   Disable flightmode
 __EOF__
 }
 
+# default wifi device
+_WIFI_DEVICE=${_WIFI_DEVICE:-en0}
 
-
-flightmode_on(){
-    networksetup -setairportpower ${_W_DEVICE} off
-    sudo defaults write /Library/Preferences/com.apple.Bluetooth ControllerPowerState -int 0 && \
-            sudo killall -HUP blued
+toggle_flightmode(){
+    local mode
+    local int_mode
+    case "${1}" in
+        off)
+            # this is not wrong, it is just the opposite
+            mode="on"
+            int_mode=1
+            ;;
+        on)
+            # this is not wrong, it is just the opposite
+            mode="off"
+            int_mode=0
+            ;;
+        *)
+            echo "Invalid mode: ${1}"
+            return 1
+            ;;
+    esac
+    networksetup -setairportpower ${_WIFI_DEVICE} ${mode}
+    sudo defaults write \
+        /Library/Preferences/com.apple.Bluetooth ControllerPowerState -int ${int_mode} && \
+        sudo killall -HUP blued
 }
 
-flightmode_off(){
-    networksetup -setairportpower ${_W_DEVICE} on
-    sudo defaults write /Library/Preferences/com.apple.Bluetooth ControllerPowerState -int 1 && \
-            sudo killall -HUP blued
-}
-
-
-
+# Main script execution
 case $1 in
-    help)
+    --help)
         help
         ;;
-
-    off)
-        flightmode_off
+    --disable)
+        toggle_flightmode off
         ;;
-    on)
-        flightmode_on
+    --enable)
+        toggle_flightmode on
         ;;
-
     *)
-        help
+        help && exit 1
         ;;
 esac
