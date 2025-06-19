@@ -2,12 +2,15 @@
 
 help(){
     cat<<__EOF__
-    usage:  m dns [ list | add | flush | help ]
+Usage:  m dns [OPTIONS]
 
-    Examples:
-      m dns list                    # lists DNS servers
-      m dns add [IP/Hostname]       # adds DNS server
-      m dns flush                   # flushes local DNS
+Description:  Manage DNS settings on macOS
+
+Options:
+  --help                Show this help message
+  --list                List current DNS servers
+  --flush               Flush local DNS cache
+  --add IP|HOSTNAME     Add a DNS server by IP or hostname
 __EOF__
 }
 
@@ -37,19 +40,14 @@ adddns(){
 
 
 case $1 in
-    help)
-        help
-        ;;
-    list)
-        listdns
-        ;;
-    add)
-        adddns
-        ;;
-    flush)
-        flushdns
-        ;;
+    --help)
+        help ;;
+    --list)
+        listdns ;;
+    --add)
+        adddns ;;
+    --flush)
+        flushdns ;;
     *)
-        help
-        ;;
+        help ;;
 esac
