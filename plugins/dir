@@ -28,7 +28,6 @@ confirm () {
     esac
 }
 
-# I'm not proud of it, this function is a chatgpt version
 tree_dirs() {
     local dir="${1:-.}"
 
@@ -111,27 +110,28 @@ dsfiles(){
     esac
 }
 
-case "$1" in
+
+# Main script execution
+option="${1}"
+shift
+
+case "${option}" in
     --help)
         help
         ;;
     --tree)
-        shift
         tree_dirs "$@"
         ;;
     --delete)
-        shift;
         delete "$@"
         ;;
     --dsfiles)
-        shift
         dsfiles "$@"
         ;;
     --size)
-        shift
         folder_size "$@"
         ;;
     *)
-        help
+        help && exit 1
         ;;
 esac
