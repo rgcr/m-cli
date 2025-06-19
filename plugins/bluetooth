@@ -35,6 +35,6 @@ case $1 in
             sudo killall -HUP ${DAEMON}
         ;;
     *)
-        help
+        help && exit 1
         ;;
 esac
