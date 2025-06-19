@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+
+help() {
+    cat <<__EOF__
+Usage: m hosts [OPTION] [ARGUMENTS]
+
+Description: Manage the /etc/hosts file on your system
+
+Options:
+  --help            Show this help message
+  --ls              List current records in the /etc/hosts file
+  --add IP HOST     Add a new host to the /etc/hosts file
+  --remove HOST     Remove a host from the /etc/hosts file
+__EOF__
+}
+
+SPACE="            "
+
+case $1 in
+help)
+    help
+    ;;
+ls)
+    sudo echo "IP $SPACE DOMAIN" && \
+        cat /etc/hosts | grep -v "#" | grep -v "^$"
+    ;;
+add)
+    [ -z "$2" ] || [ -z "$3"] && help && exit 1
+    sudo echo "$2   $3" | sudo /usr/bin/tee -a /etc/hosts
+    m dns --flush
+    ;;
+remove)
+    [ -z "$2" ] && help && exit 1
+    sudo /usr/bin/sed -i '' "/$2/d" /etc/hosts
+    m dns --flush
+    ;;
+*)
+    help && exit 1
+    ;;
+esac
