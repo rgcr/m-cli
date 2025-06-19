@@ -1,17 +1,18 @@
 #!/usr/bin/env bash
 
-
 help(){
     cat<<__EOF__
-    usage: m info [ help ]
+Usage: m info [OPTIONS]
 
-    Examples:
-      m info        #  print macOS operating system version information
+Description: Print macOS operating system version information.
+
+Options:
+  --help  Show this help message and exit.
 __EOF__
 }
 
 case $1 in
-    help)
+    --help)
         help
         ;;
     *)
