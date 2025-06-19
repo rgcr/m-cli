@@ -2,17 +2,17 @@
 
 help(){
     cat<<__EOF__
-    usage: m group [ list | ls | info | adduser | removeuser | ismember | help ]
+Usage: m group [OPTIONS] [ARGUMENTS]
 
-    Examples:
-      m group list                          # get list of groups
-      m group info mygroup                  # display group information
+Description: Manage groups on macOS.
 
-      m group adduser myuser mygroup        # add an user to a specific group
-      m group removeuser myuser mygroup     # remove an user from a specific group
-
-      m group ismember myuser mygroup       # show if the user is a member of a specific group
-
+Options:
+  --help                     Show this help message
+  --list                     List all Groups
+  --info GROUP               Show information about a specific groups
+  --adduser USER GROUP       Add an user to a specific groups
+  --removeuser USER GROUP    Remove an user from a specific Groups
+  --ismember USER GROUP      Check if an user is a member of a specific group
 __EOF__
 }
 
@@ -40,30 +40,31 @@ group_is_a_member(){
     dseditgroup -o checkmember -m ${1} ${2}
 }
 
-case $1 in
-    help)
+
+# Main script execution
+option="${1}"
+shift
+
+case "${option}" in
+    --help)
         help
         ;;
-    list|ls)
+    --list)
         group_ls
         ;;
-    info)
-        shift
+    --info)
         group_info $@
         ;;
-    adduser)
-        shift
+    --adduser)
         group_add_user $@
         ;;
-    removeuser)
-        shift
+    --removeuser)
         group_remove_user $@
         ;;
-    ismember)
-        shift
+    --ismember)
         group_is_a_member $@
         ;;
     *)
-        help
+        help && exit 1
         ;;
 esac
