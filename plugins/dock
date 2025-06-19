@@ -180,6 +180,6 @@ case "${option}" in
         prune
         ;;
     *)
-        help
+        help && exit 1
         ;;
 esac
