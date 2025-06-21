@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+help() {
+    cat <<__EOF__
+usage: m temp [ monitor | help]
+__EOF__
+}
+
+temp_monitor() {
+    sudo powermetrics --samplers smc | grep -i "CPU die temperature"
+}
+
+case $1 in
+help)
+    help
+    ;;
+monitor)
+    temp_monitor
+    ;;
+*)
+    help
+    ;;
+esac
