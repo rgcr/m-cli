@@ -7,7 +7,7 @@ __EOF__
 }
 
 temp_monitor() {
-    sudo powermetrics --samplers smc | grep -i "CPU die temperature"
+    sudo powermetrics -i 200 --samplers smc | awk 'BEGIN {  print "Monitoring ..." ; } /CPU die temperature/{ printf "  %s\r", $0 } fflush(stdout)'
 }
 
 case $1 in
