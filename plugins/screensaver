@@ -3,50 +3,41 @@
 
 help(){
     cat<<__EOF__
-    usage: m screensaver [ status | askforpassword | help ]
+Usage: m screensaver [OPTIONS]
 
-    Examples:
-      m screensaver                         # launch screensaver
+Description: Launch the screensaver, check its status, or set password requirement to unlock.
 
-      m screensaver status                  #  get the current status
-      m screensaver askforpassword          #  get password requirement to unlock
-      m screensaver askforpassword YES      #  enable password requirement to unlock
-      m screensaver askforpassword NO       #  disable password requirement to unlock
+Options:
+  --help                             Show this help message
+  --askforpassword [enable|disable]  Get or set password requirement to unlock the screensaver.
+                                     If no argument is provided, it will display the current setting.
+
+Examples:
+  m screensaver                            # launch screensaver
+  m screensaver --askforpassword           # display current askforpassword setting
+  m screensaver --askforpassword disable   # disable password requirement to unlock
 __EOF__
 }
 
 askforpassword(){
     case $1 in
-        [yY][eE][sS])
+        enable)
             defaults write com.apple.screensaver askForPassword -int 1
-            echo "Screensaver askforpassword: YES"
+            echo "Screensaver askforpassword: enabled"
             ;;
-        [nN][oO])
+        disable)
             defaults write com.apple.screensaver askForPassword -int 0
-            echo "Screensaver askforpassword: NO"
+            echo "Screensaver askforpassword: disabled"
             ;;
         *)
-            VALUE=$(defaults read com.apple.screensaver askForPassword)
-            if [ "${VALUE}" -eq 1 ]; then
-                echo "Screensaver askforpassword: YES"
+            local value="$(defaults read com.apple.screensaver askForPassword 2>/dev/null)"
+            if [ -z "${value}" ] || [ "${value}" -eq 0  ]; then
+                echo "Screensaver askforpassword: disabled"
             else
-                echo "Screensaver askforpassword: NO"
+                echo "Screensaver askforpassword: enabled"
             fi
             ;;
     esac
-}
-
-status(){
-    VALUE=$(osascript -e 'tell application "System Events"' \
-        -e 'get running of screen saver preferences' \
-        -e 'end tell')
-    if [ "${VALUE}" == 'true' ]; then
-        echo 'Screensaver is running: YES'
-    elif [ "${VALUE}" == 'false' ]; then
-        echo 'Screensaver is running: NO'
-    else
-        echo 'Screensaver is running: ERROR'
-    fi
 }
 
 screensaver(){
@@ -64,15 +55,12 @@ screensaver(){
 
 
 case $1 in
-    help)
+    --help)
         help
         ;;
-    askforpassword)
+    --askforpassword)
         shift
         askforpassword $@
-        ;;
-    status)
-        status
         ;;
     *)
         screensaver
