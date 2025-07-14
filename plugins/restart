@@ -12,8 +12,8 @@ Options:
   --force   Force restart without confirmation
 
 Examples:
-  m restart     # Restart computer (needs confirmation)
-  m restart -f  # Restart computer (without confirmation)
+  m restart          # Restart computer (needs confirmation)
+  m restart --force  # Restart computer (without confirmation)
 __EOF__
 }
 
