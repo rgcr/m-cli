@@ -3,32 +3,35 @@
 
 help(){
     cat<<__EOF__
-    usage: m safeboot [ status | enable | disable | help ]
+Usage: m safeboot [ --status | --enable | --disable | --help ]
 
-    Examples:
-      m safeboot status     # get the boot args
-      m safeboot enable     # enable safe boot
-      m safeboot disable    # disable safeboot
+Description: Enable or disable safe boot on macOS
+
+Options:
+  --help      Show this help message
+  --status    Get the current boot arguments
+  --enable    Enable safe boot-args
+  --disable   Disable safe boot-args
 __EOF__
 }
 
 
 case $1 in
-    help)
+    --help)
         help
         ;;
-    enable)
+    --enable)
         sudo nvram boot-args="-x"
-        echo "safeboot: true "
+        echo "safeboot: enabled"
         ;;
-    disable)
+    --disable)
         sudo nvram boot-args=""
-        echo "safeboot: false"
+        echo "safeboot: disabled"
         ;;
-    status)
+    --status)
         nvram boot-args
         ;;
     *)
-        help
+        help && exit 1
         ;;
 esac
