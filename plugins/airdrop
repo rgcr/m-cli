@@ -28,7 +28,7 @@ show_status() {
 toggle_airdrop() {
     local state=$1
     defaults write com.apple.NetworkBrowser DisableAirDrop -bool "${state}" && \
-        killall -HUP Finder
+        killall -HUP Finder 2>/dev/null
 }
 
 
