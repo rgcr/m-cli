@@ -3,11 +3,17 @@
 
 help(){
     cat<<__EOF__
-    usage:  m restart [ -f | --force | help ]
+Usage: m restart [OPTIONS]
 
-    Examples:
-      m restart     # restart computer (needs confirmation)
-      m restart -f  # restart computer (without confirmation)
+Description: Restart the computer.
+
+Options:
+  --help    Show this help message
+  --force   Force restart without confirmation
+
+Examples:
+  m restart     # Restart computer (needs confirmation)
+  m restart -f  # Restart computer (without confirmation)
 __EOF__
 }
 
