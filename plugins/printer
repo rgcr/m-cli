@@ -2,16 +2,17 @@
 
 help(){
     cat<<__EOF__
+Usage: m printer [OPTION]
 
-    usage: m printer [ settings | name | queue | drivers | web | help ]
+Description: Manage printers on the system
 
-    Examples:
-      m printer settings    # Printer settings
-      m printer name        # Display printer names on system
-      m printer queue       # Display items in printer queue on system
-      m printer drivers     # Display all printer drivers
-      m printer web         # Enable and show web interface
-
+Options:
+  --help      Show this help message
+  --settings  Show printer settings
+  --names     Show printer names on the system
+  --queue     Show items in the printer queue
+  --drivers   Show all printer drivers
+  --open-web       Enable and show web interface for printers
 __EOF__
 }
 
@@ -19,19 +20,19 @@ case $1 in
     help)
         help
         ;;
-    settings)
+    --settings)
         /usr/bin/lpoptions -l
         ;;
-    name)
+    --name)
         lpstat -p | awk '{print $2}'
         ;;
-    queue)
+    --queue)
         lpstat -p | awk '{print $2}' | xargs -n1 lpq -P
         ;;
-    drivers)
+    --drivers)
         lpinfo -m
         ;;
-    web)
+    --open-web)
         cupsctl WebInterface=yes && open http://localhost:631/printers
         ;;
     *)
