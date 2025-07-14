@@ -3,7 +3,7 @@
 
 help(){
     cat<<__EOF__
-Usage: m restart [OPTIONS]
+Usage: m restart [--force | --help]
 
 Description: Restart the computer.
 
