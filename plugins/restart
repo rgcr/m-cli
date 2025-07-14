@@ -27,7 +27,7 @@ force_restart(){
 
 
 case $1 in
-    help)
+    --help)
         help
         ;;
     -f|--force)
