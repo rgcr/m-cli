@@ -9,7 +9,7 @@ Description: Launch the screensaver, check its status, or set password requireme
 
 Options:
   --help                             Show this help message
-  --askforpassword [enable|disable]  Get or set password requirement to unlock the screensaver.
+  --askforpassword <enable|disable>  Get or set password requirement to unlock the screensaver.
                                      If no argument is provided, it will display the current setting.
 
 Examples:
