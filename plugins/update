@@ -2,45 +2,38 @@
 
 help(){
     cat<<__EOF__
-    usage: m update [ list | install | help ]
+Usage: m update [OPTION]
 
+Description: Manage software updates on MacOS.
 
-    Examples:
-      m update list                                                 # list available updates
-      m update install all                                          # install all the available updates
-      m update install iTunesX-12.4.1 RAWCameraUpdate6.20-6.20      # install specific updates
-
+Options:
+  --help             Show this help message
+  --list             List available updates
+  --install NAME     Install specific update by name
+  --install-all      Install all available updates
 __EOF__
 }
 
-
-install_updates(){
-    # at least one package
-    [ -z "$1" ] && help && exit 1
-    case $1 in
-        all)
-            sudo softwareupdate --install --all
-            ;;
-        *)
-            sudo softwareupdate --install "$@"
-            ;;
-    esac
+sw_update(){
+    sudo softwareupdate $@
 }
 
-
-case $1 in
-    help)
+option="${1}"
+shift
+case ${option} in
+    --help)
         help
         ;;
-    list|ls)
-        sudo softwareupdate --list
+    --list)
+        sw_update --list
         ;;
-    install)
-        shift
-        install_updates "$@"
+    --install)
+        sw_update --install "$@"
+        ;;
+    --install-all)
+        sw_update --install --all
         ;;
     *)
         help
         ;;
-
 esac
