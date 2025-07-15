@@ -7,15 +7,15 @@ Usage: m disk [OPTIONS] [ARGUMENTS]
 Description: Manage disks and volumes on macOS using diskutil.
 
 Options:
-  --info DISK                                       Display disk information
-  --list [DISK]                                     List all disks or a specific disk if 'DISK' is provided (disk is optional)
-  --filesystems                                     List available filesystems for formatting
-  --ejectall                                        Eject all mountable Volumes
-  --verify <disk|volme> DISK|VOLUME                 Verify a volume or disk
-  --repair <disk|volume> DISK|VOLUME                Repair a volume or disk
-  --reformat VOLUME                                 Reformat a volume
-  --rename CURRENT_NAME NEW_NAME                    Rename a volume
-  --format <disk|volume> FS_TYPE NAME DISK|VOLUME   Format a disk or volume with a specified filesystem type and name
+  --info DISK_NAME                                 Display disk information
+  --list [DISK_NAME]                               List all disks or a specific disk if 'DISK' is provided (disk is optional)
+  --filesystems                                    List available filesystems for formatting
+  --ejectall                                       Eject all mountable Volumes
+  --verify <disk|volme> DISK_NAME|VOLUME_NAME      Verify a volume or disk
+  --repair <disk|volume> DISK_NAME|VOLUME_NAME     Repair a volume or disk
+  --reformat VOLUME                                Reformat a volume
+  --rename CURRENT_NAME NEW_NAME                   Rename a volume
+  --format <disk|volume> FS_TYPE NEW_NAME DISK_NAME|VOLUME_NAME  Format a disk or volume with a specified filesystem type and name
 __EOF__
 }
 
