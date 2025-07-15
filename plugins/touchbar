@@ -2,27 +2,29 @@
 
 help(){
     cat<<__EOF__
-    usage:  m touchbar [ reset | help ]
+Usage: m touchbar [OPTION]
 
-    Examples:
-      m touchbar reset       # reset touchbar
+Description: Manage the touchbar on MacOS.
+
+Options:
+  --help        Show this help message
+  --reset       Reset the touchbar
 __EOF__
 }
 
 
-resettouchbar(){
-    # Force a reset of the touchbar and the control strip
-    pkill "Touch Bar agent"
-    killall ControlStrip
+# Force a reset of the touchbar and the control strip
+touchbar_reset(){
+    pkill "Touch Bar agent" 2>/dev/null
+    killall ControlStrip 2>/dev/null
 }
-
 
 case $1 in
     help)
         help
         ;;
-    reset)
-        resettouchbar
+    --reset)
+        touchbar_reset
         ;;
     *)
         help
