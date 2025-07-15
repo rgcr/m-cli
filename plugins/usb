@@ -2,16 +2,21 @@
 
 help(){
     cat<<__EOF__
+Usage: m usb [OPTION]
 
-    usage: m usb [ help ]
+Description: List USB devices connected to the system.
 
-    Examples:
-      m usb               # list usb devices
+Options:
+  --help       Show this help message
+
+
+Example:
+      m usb        # list usb devices
 __EOF__
 }
 
 case $1 in
-    help)
+    --help)
         help
         ;;
     *)
