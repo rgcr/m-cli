@@ -1,35 +1,62 @@
 #!/usr/bin/env bash
 
-
-help(){
+note_msg(){
     cat<<__EOF__
-    usage: m trash [ status | clean | help ]
 
-    Examples:
-      m trash status    # get trash info
-      m trash clean     # clean trash
+Note: This requires Terminal 'Full Disk Access' permission to work properly.
+       You can grant this permission in System Preferences > Security & Privacy > Privacy > Full Disk Access.
+       Add your terminal application (e.g., Terminal, iTerm2) to the list and restart the terminal.
 __EOF__
 }
 
-clean_trash(){
-    [ ! -e "$HOME/.Trash"  ] && echo "Trash not found" && exit 1
+help(){
+    cat<<__EOF__
+Usage: m trash [OPTION]
+
+Description: Manage the trash on MacOS
+
+Options:
+  --help        Show this help message
+  --status      Show the status of the trash
+  --clean       Clean the trash
+__EOF__
+    note_msg
+}
+
+
+trash_clean(){
+    if [ ! -d "$HOME/.Trash" ]; then
+        echo "Trash directory not found."
+        exit 1
+    fi
+    echo "Cleaning trash..."
     sudo chflags -R nouchg $HOME/.Trash/* 2>/dev/null
     sudo rm -rf $HOME/.Trash/* 2>/dev/null
-    echo "Done!"
+    echo "Trash cleaned successfully!"
+}
+
+trash_status(){
+    du -ch $HOME/.Trash/* 2>/dev/null | tail -n 1 | awk '{print "Size: ", $1}'
+    find $HOME/.Trash/* 2>/dev/null | wc -l | awk '{print "Number of files:", $1}'
+}
+
+check_privilege(){
+     ls $HOME/.Trash &>/dev/null || { note_msg && exit 1; }
 }
 
 case $1 in
-    help)
+    --help)
         help
         ;;
-    clean)
-        clean_trash
+    --clean)
+        check_privilege
+        trash_clean
         ;;
-    status)
-        du -ch $HOME/.Trash/* 2>/dev/null | tail -n 1 | awk '{print "Size: ", $1}'
-        find $HOME/.Trash/* 2>/dev/null | wc -l | awk '{print "Number of files:", $1}'
+    --status)
+        check_privilege
+        trash_status
         ;;
     *)
-        help
+        help && exit 1
         ;;
 esac
