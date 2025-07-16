@@ -1,80 +1,72 @@
 #!/usr/bin/env bash
 
-
 help(){
     cat<<__EOF__
-    usage:  m volume [ level(0-100) | change(-n|+n) | up | down | mute | unmute | ismute ]
+Usage: m volume [OPTIONS] [ARGUMENTS]
 
-    Examples:
-      m volume 70     # set the volume to 70 %
-      m volume +5     # increase the volume by 5 (up to 100)
-      m volume -10    # decrease the volume by 10 (down to 0)
-      m volume up     # increase the volume by 6.25
-      m volume down   # decrease the volume by 6.25
-      m volume        # get the volume level
-      m volume mute   # set mute
-      m volume unmute # unset mute
-      m volume ismute # check the volume status
+Description: Manage the system volume on macOS from the command line
+
+Options:
+  --help         Show this help message and exit
+  --set LEVEL    Set the volume to LEVEL (0-100),
+  --mute         Mute the system volume
+  --unmute       Unmute the system volume
+
+Examples:
+  m volume --set 70     # set the volume to 70%
+  m volume              # get the volume level and if muted or not
+  m volume --unmute     # unmute
 __EOF__
+}
+
+vol_status(){
+    local value=$(osascript -e 'output muted of (get volume settings)')
+    local level=$(osascript -e "output volume of (get volume settings)")
+    if [[ "$value" == "true" ]]; then
+        echo "Vol: $level [Muted]"
+    else
+        echo "Vol: $level [Unmuted]"
+    fi
 }
 
 mute(){
     osascript -e "set volume output muted true"
-    echo "Vol, Mute: true "
+    echo "Vol: Muted"
 }
 
 unmute(){
     osascript -e "set volume output muted false"
-    echo "Vol, Mute: false"
+    echo "Vol: Unmuted"
 
-}
-
-is_mute(){
-    VALUE=$(osascript -e 'output muted of (get volume settings)')
-    echo "Vol, is mute: ${VALUE}"
 }
 
 set_vol(){
-    osascript -e "set volume output volume $1"
-    echo "Vol: $1"
-}
-
-adj_vol(){
-    osascript -e "set volume output volume (get output volume of (get volume settings) $1)"
-    get_vol
-}
-
-get_vol(){
-    VALUE=$(osascript -e "output volume of (get volume settings)")
-    echo "Vol: $VALUE"
+    case "${1}" in
+        [0-9]*)
+        ;;
+        *)
+            echo "Invalid volume level: '${1}'" >&2
+            exit 1
+    esac
+    # osascript -e "set volume output volume (get output volume of (get volume settings) $1)"
+    osascript -e "set volume output volume ${1}"
+    vol_status
 }
 
 case $1 in
-    [0-9]*)
-        set_vol $1
-        ;;
-    +[0-9]*|-[0-9]*)
-        adj_vol $1
-        ;;
-    up)
-        adj_vol +6.25
-        ;;
-    down)
-        adj_vol -6.25
-        ;;
-    mute)
-        mute
-        ;;
-    unmute)
-        unmute
-        ;;
-    ismute)
-        is_mute
-        ;;
-    help)
+    --help)
         help
         ;;
+    --set)
+        set_vol "${2}"
+        ;;
+    --mute)
+        mute
+        ;;
+    --unmute)
+        unmute
+        ;;
     *)
-        get_vol
+        vol_status
         ;;
 esac
