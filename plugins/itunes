@@ -12,21 +12,21 @@ fi
 
 help () {
     cat<<__EOF__
-Usage: m itunes [OPTION] [ARGUMENTS]
+Usage: m ${music_cmd} [OPTION] [ARGUMENTS]
 
-Description: Control iTunes via command line
+Description: Control ${music_cmd} via command line
 
 Options:
-  --help                  Show this help message
-  --status                Show current status
-  --play                  Play current track
-  --stop                  Stop current track
-  --pause                 Pause current track
-  --next                  Play next track
-  --prev                  Play previous track
-  --mute                  Mute ${music_cmd}
-  --vol <up|down|NUMBER>  Adjust volume (up, down, or set to NUMBER)
-  --quit                  Quit ${music_cmd}
+  --help            Show this help message
+  --status          Show current status
+  --play            Play current track
+  --stop            Stop current track
+  --pause           Pause current track
+  --next            Play next track
+  --prev            Play previous track
+  --mute            Mute ${music_cmd}
+  --vol LEVEL       Set volume to LEVEL (0-100)
+  --quit            Quit ${music_cmd}
 __EOF__
 }
 
@@ -41,55 +41,53 @@ show_status(){
 }
 
 set_volume(){
-    local action_or_value="${1}"
+    local value="${1}"
     local vol=`osascript -e "tell application \"${music_cmd}\" to sound volume as integer"`
 
-    case "${action_or_value}" in
-        up)
-            newvol=$(( vol+10 ))    ;;
-        down)
-            newvol=$(( vol-10 ))    ;;
+    case "${value}" in
         [0-9]*)
-            newvol=$2               ;;
+            newvol="${1}"
+            ;;
         *)
-            help  && exit 1         ;;
+            help  && exit 1
+            ;;
     esac
     osascript -e "tell application \"${music_cmd}\" to set sound volume to ${newvol}"
 }
 
 case $1 in
-    help)
+    --help)
         help
         ;;
-    status)
+    --status)
         show_status
         ;;
-    play)
+    --play)
         osascript -e "tell application \"${music_cmd}\" to play"
         ;;
-    pause)
+    --pause)
         osascript -e "tell application \"${music_cmd}\" to pause"
         ;;
-    next)
+    --next)
         osascript -e "tell application \"${music_cmd}\" to next track"
         ;;
-    prev)
+    --prev)
         osascript -e "tell application \"${music_cmd}\" to previous track"
         ;;
-    mute)
+    --mute)
         osascript -e "tell application \"${music_cmd}\" to set mute to true"
         ;;
-    unmute)
+    --unmute)
         osascript -e "tell application \"${music_cmd}\" to set mute to false"
         ;;
-    vol)
+    --vol)
         shift
         set_volume "$@"
         ;;
-    stop)
+    --stop)
         osascript -e "tell application \"${music_cmd}\" to stop"
         ;;
-    quit)
+    --quit)
         osascript -e "tell application \"${music_cmd}\" to quit"
         ;;
     *)
