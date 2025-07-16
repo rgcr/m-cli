@@ -7,19 +7,27 @@ _SECRET="--secret"
 
 help(){
     cat<<__EOF__
-    usage:  m vpn [ ls | list | start | stop | status | help ]
+Usage: m vpn [OPTIONS] [ARGUMENTS]
 
-    Examples:
-      m vpn ls                              # list VPN connections
+Description: Manage VPN connections on macOS from the command line
 
-      m vpn start                           # interactive mode
-      m vpn start VPN                       # start vpn connection named VPN
-      m vpn start VPN USER                  # start a vpn connection with a given user
-      m vpn start VPN USER PASS             # start a vpn connection with a given user and password
-      m vpn start VPN USER PASS SECRET      # start a vpn connection with a given user,password, and secret
+Options:
+  --help                       Show this help message and exit
+  --list                       List available VPN connections
+  --start [VPN] [USER] [PASS]  Start a VPN connection
+  --stop VPN                   Stop a VPN connection
+  --status VPN                 Show the status of a VPN connection
 
-      m vpn stop VPN                        # stop vpn connection named VPN
-      m vpn status VPN                      # status vpn connection named VPN
+
+Examples:
+  m vpn --list                         # list VPN connections
+  m vpn --start                        # interactive mode if no arguments are provided
+  m vpn --start VPN                    # start vpn connection named VPN
+  m vpn --start VPN USER               # start a vpn connection with a given user
+  m vpn --start VPN USER PASS          # start a vpn connection with a given user and password
+  m vpn --start VPN USER PASS SECRET   # start a vpn connection with a given user,password, and secret
+  m vpn --stop VPN                     # stop a vpn connection named VPN
+  m vpn --status VPN                   # show the status of a vpn connection named VPN
 __EOF__
 
 }
@@ -108,25 +116,25 @@ vpn_status(){
 
 
 case $1 in
-    help)
+    --help)
         help
         ;;
-    ls|list)
+    --list)
         list_vpns
         ;;
-    start)
+    --start)
         shift
         start_vpn "$@"
         ;;
-    stop)
+    --stop)
         [ -z "$2" ] && help && exit 1;
         stop_vpn "$2"
         ;;
-    status)
+    --status)
         [ -z "$2" ] && help && exit 1;
         vpn_status "$2"
         ;;
     *)
-        help
+        help && exit 1
         ;;
 esac
