@@ -46,7 +46,7 @@ user_info(){
         help && exit 1
     fi
     dscl . -read "/Users/${1}" 2>/dev/null || {
-        echo "User '${1}' not found" 2>&1
+        echo "User '${1}' not found" >&2
         exit 1
     }
 }
@@ -80,9 +80,9 @@ user_create(){
     _usershell=${_usershell:-/bin/bash}
     read -s -r -p "Password: " _password
 
-    [ -z "${_username}" ] && 2>&1 echo "Username is required" && exit 1
-    [ -z "${_fullname}" ] && 2>&1 echo "Full name is required" && exit 1
-    [ -z "${_password}" ] && 2>&1 echo "Password is required" && exit 1
+    [ -z "${_username}" ] && echo "Username is required" >&2 && exit 1
+    [ -z "${_fullname}" ] && echo "Full name is required" >&2 && exit 1
+    [ -z "${_password}" ] && echo "Password is required" >&2 && exit 1
 
     printf "\nCreating user '${_username}' (UID: ${last_id})\n"
     sudo dscl . -create /Users/${_username}
@@ -99,8 +99,8 @@ user_create(){
 
     # set password
     sudo dscl . -passwd /Users/${_username} "${_password}" &>/dev/null || {
-        printf "\nFailed to set password for user '${_username}' maybe because does not comply with password policy.\n" 2>&1
-        printf "Please set the password manually using 'System Preferences > Users & Groups'\n" 2>&1
+        printf "\nFailed to set password for user '${_username}' maybe because does not comply with password policy.\n" >&2
+        printf "Please set the password manually using 'System Preferences > Users & Groups'\n" >&2
         exit 1
     }
 
