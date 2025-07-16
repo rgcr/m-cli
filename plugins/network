@@ -18,7 +18,7 @@ __EOF__
 list_netservices(){
     networksetup -listallhardwareports | while IFS= read -r line; do
         # if it is a device we will print the ip in the next line
-        if echo ${line} | grep -i "Device" >/dev/null 2>&1; then
+        if echo ${line} | grep -i "Device" &>/dev/null; then
             printf "${line}\nIP:$(ipconfig getifaddr $(echo ${line} | cut -d: -f2 2>/dev/null))\n"
 
         else
