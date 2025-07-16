@@ -34,12 +34,12 @@ gk_toggle_rule(){
         enable) ;;
         disable) ;;
         *)
-            echo "Invalid action: ${action}. Use 'enable' or 'disable'." 2>&1
+            echo "Invalid action: ${action}. Use 'enable' or 'disable'." >&2
             return 1
             ;;
     esac
     if [ -z "${rule_name}" ]; then
-        echo "Rule name is required." 2>&1
+        echo "Rule name is required." >&2
         return 1
     fi
     spctl --${action} --label "${rule_name}"
@@ -49,7 +49,7 @@ gk_create_rule(){
     local rule_name="${1}"
     local app_path="${2}"
     if [ -z "${rule_name}" ] || [ -z "${app_path}" ]; then
-        echo "Usage: m gatekeeper create-rule RULENAME /path/to/program" 2>&1
+        echo "Usage: m gatekeeper create-rule RULENAME /path/to/program" >&2
         return 1
     fi
     spctl --add --label "${rule_name}" "${app_path}"
