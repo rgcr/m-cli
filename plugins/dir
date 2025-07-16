@@ -31,7 +31,7 @@ confirm () {
 tree_dirs() {
     local dir="${1:-.}"
 
-    [[ ! -d "$dir" ]] && 2>&1 echo "Directory ${dir} does not exist." && return
+    [[ ! -d "$dir" ]] && echo "Directory ${dir} does not exist." >&2 && return
 
     local prefix="$2"
 
