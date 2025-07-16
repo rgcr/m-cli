@@ -3,125 +3,150 @@
 
 help(){
     cat<<__EOF__
-    usage: m user [ list | ls | info | create | delete | help ]
+Usage: m user [OPTIONS]
 
-    Examples:
-      m user ls                # list users
-      m user info demouser     # display user information
+Description: Manage users on MacOS.
 
-      m user create            # create a user, it will ask you the below information
-                                    Username:
-                                    Full name:
-                                    Shell [/bin/bash]:
-                                    Password:
-
-      m user delete demouser   # delete user
+Options:
+  --help              Show this help message
+  --list              List all users
+  --info USERNAME     Display information about a user
+  --delete USERNAME   Delete a user
+  --create            Create a new user, it will ask you for the following information:
+                        Username:
+                        Full name:
+                        Shell [/bin/bash]:
+                        Password:
 __EOF__
 }
 
-search_byname(){
-    # dscl . -search always returns 0
-    # dscl . -search /Users name "${1}" > /dev/null 2>&1
-    dscl . -list /Users | grep -i "${1}" >/dev/null 2>&1
+confirm(){
+    read -r -p "${1} [y/N]: " response
+    case ${response,,} in
+        [yY]|[yYeEsS])
+            return 0
+            ;;
+        *)
+            return 1
+            ;;
+    esac
 }
 
-user_ls(){
+
+user_exists(){
+    dscl . -list /Users | grep -i "${1}" &>/dev/null
+}
+
+user_list(){
     dscl . -list /Users uid
 }
 
-
 user_info(){
-    [ -z "$1" ] && help && exit 1
-
-    dscl . -read "/Users/$1"
+    if [ -z "$1" ]; then
+        help && exit 1
+    fi
+    dscl . -read "/Users/${1}" 2>/dev/null || {
+        echo "User '${1}' not found" 2>&1
+        exit 1
+    }
 }
 
 remove_user_from_group(){
-    [ -z "$1" -o -z "$2" ] && help && exit 1
-    sudo dscl . -delete /Groups/$2 GroupMembership $1
+    if [ -z "$1" ] || [ -z "$2" ]; then
+        help && exit 1
+    fi
+    sudo dscl . -delete "/Groups/${2}" GroupMembership "${1}"
 }
 
 groups_user_belongs(){
-    [ -z "$1" ] && help && exit 1
+    if [ -z "$1" ]; then
+        help && exit 1
+    fi
     sudo dscl . -list /groups GroupMembership | grep -i "${1}" | awk '{print $1}'
 }
 
 user_create(){
-
     #SECONDARY_GROUPS=""  # for a non-admin user
     #SECONDARY_GROUPS="admin _lpadmin _appserveradm _appserverusr" # for an admin user
 
+    local last_id=$(dscl . -list /Users UniqueID | awk '{print $2}' | sort -n | tail -1)
+    last_id=$(expr $last_id + 1)
 
-    LAST_ID=$(dscl . -list /Users UniqueID | awk '{print $2}' | sort -n | tail -1)
-    LAST_ID=$(expr $LAST_ID + 1)
+    local _username _fullname _usershell _password
 
-    read -r -p "Username: " _USERNAME
-    read -r -p "Full name: " _FULLNAME
-    read -r -p "Shell [/bin/bash]: " _USERSHELL
-    _USERSHELL=${_USERSHELL:-/bin/bash}
-    read -s -r -p "Password: " _PASSWORD
+    read -r -p "Username: " _username
+    read -r -p "Full name: " _fullname
+    read -r -p "Shell [/bin/bash]: " _usershell
+    _usershell=${_usershell:-/bin/bash}
+    read -s -r -p "Password: " _password
 
-    echo "\n"
-    [ -z "${_USERNAME}" ] && echo "Enter a username" && exit 1
-    [ -z "${_FULLNAME}" ] && echo "Enter a real name" && exit 1
-    [ -z "${_PASSWORD}" ] && echo "Enter a password" && exit 1
+    [ -z "${_username}" ] && 2>&1 echo "Username is required" && exit 1
+    [ -z "${_fullname}" ] && 2>&1 echo "Full name is required" && exit 1
+    [ -z "${_password}" ] && 2>&1 echo "Password is required" && exit 1
 
-    echo "Creating user..."
-    sudo dscl . -create /Users/${_USERNAME}
-    sudo dscl . -create /Users/${_USERNAME} UserShell ${_USERSHELL}
-    sudo dscl . -create /Users/${_USERNAME} RealName "${_FULLNAME}"
-    sudo dscl . -create /Users/${_USERNAME} UniqueID "${LAST_ID}"
+    printf "\nCreating user '${_username}' (UID: ${last_id})\n"
+    sudo dscl . -create /Users/${_username}
+    sudo dscl . -create /Users/${_username} UserShell ${_usershell}
+    sudo dscl . -create /Users/${_username} RealName "${_fullname}"
+    sudo dscl . -create /Users/${_username} UniqueID "${last_id}"
     # staff group by default
-    sudo dscl . -create /Users/${_USERNAME} PrimaryGroupID 20
-    sudo dscl . -create /Users/${_USERNAME} NFSHomeDirectory /Users/${_USERNAME}
-    # set password
-    sudo dscl . -passwd /Users/${_USERNAME} ${_PASSWORD}
+    sudo dscl . -create /Users/${_username} PrimaryGroupID 20
+    sudo dscl . -create /Users/${_username} NFSHomeDirectory /Users/${_username}
 
     # Create the home directory
-    sudo createhomedir -c -u ${_USERNAME} 2>/dev/null
+    echo "Creating home directory for user '${_username}'"
+    sudo createhomedir -c -u ${_username} &>/dev/null
 
-    echo "Created user ${_USERNAME} - ${_FULLNAME} (${LAST_ID})"
+    # set password
+    sudo dscl . -passwd /Users/${_username} "${_password}" &>/dev/null || {
+        printf "\nFailed to set password for user '${_username}' maybe because does not comply with password policy.\n" 2>&1
+        printf "Please set the password manually using 'System Preferences > Users & Groups'\n" 2>&1
+        exit 1
+    }
+
 }
 
 
 user_delete(){
     [ -z "$1" ] && help && exit
-    if search_byname "$1"; then
-        sudo dscl . -delete "/Users/${1}"
-        sudo rm -rf /Users/${1} 2>/dev/null
 
-        for group in $(groups_user_belongs $1); do
-            remove_user_from_group $1 $group
-        done
-
-        echo "\"${1}\" was deleted!"
-    else
-        echo "\"${1}\" not found, try other one"
+    if ! user_exists "$1"; then
+        echo "User '${1}' not found"
+        exit 1
     fi
+
+    if ! confirm "User '${1}' is going to be deleted, are you sure?"; then
+        exit 0
+    fi
+
+    sudo dscl . -delete "/Users/${1}"
+    sudo rm -rf /Users/${1} 2>/dev/null
+
+    for group in $(groups_user_belongs $1); do
+        remove_user_from_group $1 $group
+    done
 }
 
 
-
-case $1 in
-    help)
+option="${1}"
+shift
+case ${option} in
+    --help)
         help
         ;;
-    list|ls)
-        user_ls
+    --list)
+        user_list
         ;;
-    info)
-        shift
+    --info)
         user_info $@
         ;;
-    create)
-        shift
+    --create)
         user_create
         ;;
-    delete)
-        shift
+    --delete)
         user_delete $@
         ;;
     *)
-        help
+        help && exit 1
         ;;
 esac
