@@ -3,10 +3,17 @@
 
 help(){
     cat<<__EOF__
-    usage: m wallpaper [ /path/to/file.jpg | help ]
+Usage: m wallpaper [OPTIONS]
 
-    Examples:
-      m wallpaper ./wallpapers/tree.jpg  # set wallpaper
+Description: Set the desktop wallpaper to the specified image file
+
+Options:
+  --help             Show this help message
+  --set IMAGE_PATH  Set the wallpaper to the specified image file
+
+
+Examples:
+  m wallpaper --set ~/wallpapers/tree.jpg       # set wallpaper
 __EOF__
 }
 
@@ -15,12 +22,15 @@ set_wallpaper(){
 }
 
 case $1 in
-    help)
+    --help)
         help
         ;;
-    *)
+    --set)
+        shift
         [ -z "$1" ] && help && exit 1
         set_wallpaper "$1"
-        shift
+        ;;
+    *)
+        help && exit 1
         ;;
 esac
