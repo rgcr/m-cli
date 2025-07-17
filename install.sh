@@ -65,7 +65,7 @@ cat <<_EOF_
 
 NOTE:
 
-    Please ensure that ${BIN_DIR} is in your PATH.
+    Please make sure that ${BIN_DIR} is in your PATH.
 
     You can add it by running:
       export PATH="${BIN_DIR}:\$PATH"
