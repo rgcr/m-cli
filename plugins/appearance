@@ -1,115 +1,161 @@
 #!/usr/bin/env bash
 
-source "$( dirname "${BASH_SOURCE[0]}" )/../lib/defaults.sh"
-source "$( dirname "${BASH_SOURCE[0]}" )/../lib/converters.sh"
-
-declare command="$(basename "$0")"
-declare subcommand="$1"
-
-[ $# -gt 0 ] && shift
-
 help(){
     cat<<__EOF__
-    Usage:
-      m appearance darkmode           [ YES | NO ]                # Whether to use dark versions of interface elements
-      m appearance transparency       [ YES | NO ]                # Whether to allow the OS to make certain elements semi-transparent
-      m appearance antialiasthreshold x                           # The threshold above which antialiasing is turned on
-      m appearance sidebariconsize    [ small | medium | large ]  # The size of the icons in various window sidebars
-      m appearance maincolor          [ blue | graphite ]         # The color used for the majority of the interface elements
-      m appearance highlightcolor     [                           # The color used for highlights
-                                        graphite  | cayenne    | asparagus  | clover    |
-                                        teal      | midnight   | plum       | tin       |
-                                        nickel    | mocha      | fern       | moss      |
-                                        ocean     | eggplant   | maroon     | steel     |
-                                        aluminum  | maraschino | lemon      | spring    |
-                                        turquoise | blueberry  | magenta    | iron      |
-                                        magnesium | tangerine  | lime       | seafoam   |
-                                        aqua      | grape      | strawberry | tungsten  |
-                                        silver    | salmon     | banana     | flora     |
-                                        ice       | orchid     | bubblegum  | lead      |
-                                        mercery   | cantaloupe | honeydew   | spindrift |
-                                        sky       | lavender   | carnation  | licorice  |
-                                        snow
-                                      ]
+Usage: m appearance [OPTIONS] [ARGUMENTS]
 
-    Examples:
-      m appearance antialiasthreshold 8                           # Only a font size of 8pt or above will be anti-aliased
+Description: Manage appearance settings on macOS.
+
+Options:
+  --help                                  Show this help message
+  --antialiasthreshold [value]            Set the antialiasing threshold (e.g., 0, 2, 6, etc.).
+                                          If you set it to 1, antialiasing will be disabled.
+                                          If you dont pass a number, it will show the current value
+  --darkmode <enable|disable>             Enable or disable dark mode
+  --transparency <enable|disable>         Enable or disable transparency
+  --iconsize <small|medium|large>         Set the size of the icons in window sidebars, dock, and finder
+  --maincolor <blue|graphite>             Set the main color of the interface
+
+  --highlightcolor <graphite  | cayenne    | asparagus  | clover
+                  | teal      | midnight   | plum       | tin
+                  | nickel    | mocha      | fern       | moss
+                  | ocean     | eggplant   | maroon     | steel
+                  | aluminum  | maraschino | lemon      | spring
+                  | turquoise | blueberry  | magenta    | iron
+                  | magnesium | tangerine  | lime       | seafoam
+                  | aqua      | grape      | strawberry | tungsten
+                  | silver    | salmon     | banana     | flora
+                  | ice       | orchid     | bubblegum  | lead
+                  | mercery   | cantaloupe | honeydew   | spindrift
+                  | sky       | lavender   | carnation  | licorice
+                  | snow>               Set the highlight color of the text selection
+                                        in the interface.
 __EOF__
+exit 0
 }
 
+
 darkmode(){
-    local choice="$(_mcli_convert_yes_no_to_boolean "$1")"
-    local mode="$(if [[ "${choice}" == "true" ]]; then echo "Dark"; else echo "Light"; fi)"
+    case $1 in
+        enable)
+            osascript -e \
+                'tell application "System Events" to tell appearance preferences to set dark mode to true'
+            ;;
+        disable)
+            osascript -e \
+                'tell application "System Events" to tell appearance preferences to set dark mode to false'
+            ;;
+        *)
+            current_mode=$(defaults read NSGlobalDomain AppleInterfaceStyle 2>/dev/null || echo "Light")
+            echo "Appearance: ${current_mode}"
+            ;;
+    esac
+}
 
-    value="$(_mcli_defaults_string            "NSGlobalDomain" \
-                                              "AppleInterfaceStyle" \
-                                              "${mode}")"
-    value="$(_mcli_defaults_yes_no_to_boolean "NSGlobalDomain" \
-                                              "NSFullScreenDarkMenu" \
-                                              "$1")"
 
-    echo "${command} ${subcommand}: ${value}"
+# Helper function used in transparency options
+show_trancparency_status(){
+  local current
+  current="$(defaults read com.apple.universalaccess ReduceTransparency 2>/dev/null || echo "false")"
+  if [[ "$current" == "1" || "$current" == "true" ]]; then
+    echo "Transparency: disabled"
+  else
+    echo "Transparency: enabled"
+  fi
 }
 
 transparency(){
-    value="$(_mcli_defaults_yes_no_to_inverted_boolean "com.apple.universalaccess" \
-                                                       "reduceTransparency" \
-                                                       "$1")"
-
-    echo "${command} ${subcommand}: ${value}"
+    case "${1}" in
+        enable)
+            defaults write com.apple.universalaccess ReduceTransparency -bool false
+            echo "Transparency enabled"
+            ;;
+        disable)
+            defaults write com.apple.universalaccess ReduceTransparency -bool true
+            echo "Transparency disabled"
+            ;;
+        *)
+            show_trancparency_status
+            ;;
+    esac
 }
+
+
+show_antialiasthreshold_status(){
+  local current="$(defaults read NSGlobalDomain AppleAntiAliasingThreshold 2>/dev/null || echo "0")"
+  if [[ "$current" == "0" ]]; then
+    echo "Antialiasing: disabled"
+  else
+    echo "Antialiasing: ${current}"
+  fi
+}
+
 
 antialiasthreshold(){
-    value="$(_mcli_defaults_number "NSGlobalDomain" \
-                                   "AppleAntiAliasingThreshold" \
-                                   "$1")"
-
-    echo "${command} ${subcommand}: ${value}"
+    if [[ "$1" =~ ^[0-9]+$ ]]; then
+        defaults write NSGlobalDomain AppleAntiAliasingThreshold -int "${1}"
+        echo "Antialiasing set to ${1}"
+    else
+        show_antialiasthreshold_status
+    fi
 }
 
-sidebariconsize(){
-    local size
+
+iconsize(){
+    local sidebar_icon_size
+    local dock_icon_size
+    local finder_icon_size
 
     case $1 in
         small)
-            size="1"
+            sidebar_icon_size="1"
+            dock_icon_size="36"
+            finder_icon_size="32"
             ;;
         medium)
-            size="2"
+            sidebar_icon_size="2"
+            dock_icon_size="48"
+            finder_icon_size="64"
             ;;
         large)
-            size="3"
+            sidebar_icon_size="3"
+            dock_icon_size="96"
+            finder_icon_size="128"
+            ;;
+        *)
+            help
             ;;
     esac
 
-    value="$(_mcli_defaults_number "NSGlobalDomain" \
-                                   "NSTableViewDefaultSizeMode" \
-                                   "${size}")"
-    value="$(_mcli_defaults_number "NSGlobalDomain" \
-                                   "NSNavPanelIconViewIconSizeForOpenMode" \
-                                   "${size}")"
+    # sidebar icon size
+    defaults write NSGlobalDomain NSTableViewDefaultSizeMode \
+        -int "${sidebar_icon_size}" 2>/dev/null
+    defaults write NSGlobalDomain NSNavPanelIconViewIconSizeForOpenMode \
+        -int "${sidebar_icon_size}" 2>/dev/null
 
-    echo "${command} ${subcommand}: ${value}"
+    # dock icon size
+    defaults write com.apple.dock "tilesize" \
+        -int "${dock_icon_size}" 2>/dev/null && killall Dock
+
+    # Finder icon size
+    defaults write com.apple.finder DesktopViewSettings.IconViewSettings.iconSize \
+        -int 64 2>/dev/null && killall Finder
 }
+
 
 maincolor(){
     local color
 
     case $1 in
-        blue)
-            color="1"
-            ;;
-        graphite)
-            color="6"
-            ;;
+        blue)     color="1" ;;
+        graphite) color="6" ;;
+        *)        help ;;
     esac
 
-    value="$(_mcli_defaults_number "NSGlobalDomain" \
-                                   "AppleAquaColorVariant" \
-                                   "${color}")"
-
-    echo "${command} ${subcommand}: ${value}"
+    default write NSGlobalDomain AppleAquaColorVariant \
+        -int "${color}" 2>/dev/null && killall SystemUIServer
 }
+
 
 highlightcolor(){
     local color
@@ -214,39 +260,43 @@ highlightcolor(){
             color="0.000000 0.000000 0.000000";;
         snow)
             color="1.000000 1.000000 1.000000";;
+        *)
+            help ;;
     esac
 
-    value="$(_mcli_defaults_string            "NSGlobalDomain" \
-                                              "AppleHighlightColor" \
-                                              "${color}")"
-    value="$(_mcli_defaults_string            "com.apple.systempreferences" \
-                                              "AppleOtherHighlightColor" \
-                                              "${color}")"
+    defaults write NSGlobalDomain AppleHighlightColor \
+        -string "${color}" 2>/dev/null
 
-    echo "${command} ${subcommand}: ${value}"
+    defaults write com.apple.systempreferences \
+        AppleOtherHighlightColor \
+        -string "${color}" 2>/dev/null
+
+    echo "Highlight color set to ${1}"
 }
 
-case "${subcommand}" in
-    help)
+
+option="${1}"; shift
+case "${option}" in
+    --help)
         help
         ;;
-    darkmode)
-        darkmode "$@"
-        ;;
-    transparency)
-        transparency "$@"
-        ;;
-    antialiasthreshold)
+    --antialiasthreshold)
         antialiasthreshold "$@"
         ;;
-    sidebariconsize)
-        sidebariconsize "$@"
+    --darkmode)
+        darkmode "$@"
         ;;
-    maincolor)
+    --highlightcolor)
+        highlightcolor "$@"
+        ;;
+    --iconsize)
+        iconsize "$@"
+        ;;
+    --maincolor)
         maincolor "$@"
         ;;
-    highlightcolor)
-        highlightcolor "$@"
+    --transparency)
+        transparency "$@"
         ;;
     *)
         help

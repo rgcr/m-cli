@@ -2,51 +2,52 @@
 
 help(){
     cat<<__EOF__
-    usage: m firewall [ status | enable | disable | list | add | remove | blockall | help ]
+Usage: m firewall [OPTONS]
 
-    Examples:
-      m firewall status                # Show status
-      m firewall enable                # Enable firewall
-      m firewall disable               # Disable firewall
-      m firewall list                  # List applications handled by firewall
-      m firewall add /path/to/file     # Add app to firewall
-      m firewall remove /path/to/file  # Remove app from firewall
-      m firewall blockall [ on | off ] # Block all connections (State 2)
+Description: Manage the macOS ApplicationFirewall
 
+Options:
+  --help                        Show this help message
+  --status                      Show the current status of the firewall
+  --enable                      Enable the firewall
+  --disable                     Disable the firewall
+  --list                        List applications handled by the firewall
+  --add PATH_TO_APP             Add an application to the firewall
+  --remove PATH_TO_APP          Remove an application from the firewall
+  --blockall <enable|disable>   Block all connections (State 2)
 __EOF__
 }
 
-
+FW_EXE="/usr/libexec/ApplicationFirewall/socketfilterfw"
 
 case $1 in
-    help)
+    --help)
         help
         ;;
-    status)
-        /usr/libexec/ApplicationFirewall/socketfilterfw --getglobalstate
+    --status)
+        ${FW_EXE} --getglobalstate
         ;;
-    enable)
-        sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on
+    --enable)
+        sudo ${FW_EXE} --setglobalstate on
         ;;
-    disable)
-        sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate off
+    --disable)
+        sudo ${FW_EXE} --setglobalstate off
         ;;
-    list)
-        /usr/libexec/ApplicationFirewall/socketfilterfw --list
+    --list)
+        ${FW_EXE} --list
         ;;
-    add)
+    --add)
         [ -z "$2" ] && help && exit 1
-        sudo /usr/libexec/ApplicationFirewall/socketfilterfw --add $2
+        sudo ${FW_EXE} --add "${2}"
         ;;
-    remove)
+    --remove)
         [ -z "$2" ] && help && exit 1
-        sudo /usr/libexec/ApplicationFirewall/socketfilterfw --remove $2
+        sudo ${FW_EXE} --remove "${2}"
         ;;
-    blockall)
-	[ "$2" != "on" ] && [ "$2" != "off" ] || [ -z "$2" ] && help && exit 1
-        sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setblockall $2
+    --blockall)
+        [ "$2" != "enable" ] && [ "$2" != "disable" ] || [ -z "$2" ] && help && exit 1
+        sudo ${FW_EXE} --setblockall $2
         ;;
-	
     *)
         help
         ;;

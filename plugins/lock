@@ -5,10 +5,12 @@ from ctypes import CDLL
 import sys
 
 def help():
-    print("""    usage: m lock [ help ]
+    print("""
+Usage: m lock [options]
 
-    Examples:
-      m lock     # lock session""")
+Options:
+  --help      Show this help message and exit
+""")
     sys.exit()
 
 def lock():
@@ -22,11 +24,16 @@ def lock():
         print("Function is not available.")
 
 def main(args):
-    for arg in args:
-        if arg == 'help':
-            help()
+    if '--help' in args:
+        help()
+        sys.exit(0)
+
+    if len(args) > 0:
+        help()
+        sys.exit(1)
 
     lock()
+
 
 if __name__ == "__main__":
     main(sys.argv[1:])

@@ -2,22 +2,45 @@
 
 help() {
     cat <<__EOF__
-    usage: m powermode [ battery | ac | auto | low | high | help ]
+Usage: m powermode [OPTION] [ARGUMENT]
 
-    Examples:
-      m powermode                             # get the current power mode
-      m powermode battery                     # get the power mode for battery
-      m powermode ac                          # get the power mode for ac
+Description: Manage the power mode of your Mac
 
-      m powermode auto | low | high           # set the current power mode
-      m powermode battery auto | low | high   # set the power mode for battery
-      m powermode ac auto | low | high        # set the power mode for ac
-
+Options:
+  --help                           Show this help message
+  --status      <ac|battery|all>   Get the current power mode for the specified power source
+  --set-battery <auto|low|high>    Set the power mode for Battery powermode
+  --set-ac      <auto|low|high>    Set the power mode for AC powermode
+  --set-all     <auto|low|high>    Set the power mode for both AC and Battery powermode
 __EOF__
 }
 
-get_powermode() {
-    # convert to words
+print_err() {
+    echo "$@" 1>&2
+}
+
+get_ac_powermode_value(){
+    local value=""
+    value=$(pmset -g custom | grep -A5000 -m1 -e 'AC Power' | grep -i 'powermode' -m1 | awk '{print $2}')
+    return $value
+}
+
+get_battery_powermode_value(){
+    local value=""
+    value=$(pmset -g custom | grep -A5000 -m1 -e 'Battery Power' | grep -i 'powermode' -m1 | awk '{print $2}')
+    return $value
+}
+
+get_all_powermode_value(){
+    local value=""
+    value=$(pmset -g live | grep -i 'powermode' | awk '{print $2}')
+    return $value
+}
+
+# convert to words
+print_pretty_powermode(){
+# get_powermode() {
+    local powermode=""
     case $1 in
     0)
         powermode="auto"
@@ -35,7 +58,7 @@ get_powermode() {
     echo "Power mode: $powermode"
 }
 
-powermode() {
+set_powermode() {
     case $1 in
     ac)
         case $2 in
@@ -47,9 +70,6 @@ powermode() {
             ;;
         high)
             sudo pmset -c powermode 2
-            ;;
-        "")
-            get_powermode "$(pmset -g custom | grep -A5000 -m1 -e 'AC Power' | grep -i 'powermode' -m1 | awk '{print $2}')"
             ;;
         *)
             help
@@ -67,17 +87,13 @@ powermode() {
         high)
             sudo pmset -b powermode 2
             ;;
-        "")
-            get_powermode "$(pmset -g custom | grep -A5000 -m1 -e 'Battery Power' | grep -i 'powermode' -m1 | awk '{print $2}')"
-            ;;
         *)
             help
             ;;
         esac
         ;;
-    "" | auto | low | high)
-        # no ac/battery specified
-        case $1 in
+    all)
+        case $2 in
         auto)
             sudo pmset -a powermode 0
             ;;
@@ -87,30 +103,64 @@ powermode() {
         high)
             sudo pmset -a powermode 2
             ;;
-        "")
-            get_powermode "$(pmset -g live | grep -i 'powermode' | awk '{print $2}')"
-            ;;
         *)
             help
             ;;
         esac
         ;;
     *)
-        help
+        help && exit 1
         ;;
     esac
 }
 
-case $1 in
-help)
-    help
-    ;;
-# powermode)
-#     shift
-#     powermode "$@"
-#     ;;
-*)
-    # help
-    powermode "$@"
-    ;;
+# Main script logic
+option="$1"
+shift
+
+case $option in
+    --help)
+        help
+        ;;
+    --status)
+        case $1 in
+            ac)
+                print_pretty_powermode $(get_ac_powermode_value)
+                ;;
+            battery)
+                print_pretty_powermode $(get_battery_powermode_value)
+                ;;
+            all)
+                print_pretty_powermode $(get_all_powermode_value)
+                ;;
+            *)
+                help && exit 1
+                ;;
+        esac
+        ;;
+    --set-battery)
+        if [[ -z $1 ]]; then
+            print_err "Please specify a power mode (auto, low, high)"
+            exit 1
+        fi
+        set_powermode battery "$1"
+        ;;
+    --set-ac)
+        if [[ -z $2 ]]; then
+            print_err "Please specify a power mode (auto, low, high)"
+            exit 1
+        fi
+        set_powermode ac "$2"
+        ;;
+    --set-all)
+        if [[ -z $2 ]]; then
+            print_err "Please specify a power mode (auto, low, high)"
+            exit 1
+        fi
+        set_powermode all "$2"
+        ;;
+
+    *)
+        help && exit 1
+        ;;
 esac

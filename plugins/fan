@@ -2,7 +2,14 @@
 
 help(){
     cat<<__EOF__
-usage:  m fan [ speed | monitor | help ]
+Usage: m fan [OPTIONS]
+
+Description: Manage fan speed on macOS
+
+Options:
+  --help     Show this help message
+  --speed    Show current fan speed
+  --monitor  Monitor fan speed in real-time
 __EOF__
 }
 
@@ -25,16 +32,16 @@ fan_speed(){
 }
 
 case $1 in
-    help)
+    --help)
         help
         ;;
-    speed)
+    --speed)
         fan_speed
         ;;
-    monitor)
+    --monitor)
         fan_speed_monitor
         ;;
     *)
-        help
+        help && exit 1
         ;;
 esac

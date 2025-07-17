@@ -3,24 +3,30 @@
 
 help(){
     cat<<__EOF__
-    usage: m timezone [ list | ls | set | help ]
+Usage: m timezone [OPTIONS]
 
-    Examples:
-      m timezone                    # get current timezone
-      m timezone ls                 # list available timezones
-      m timezone set Europe/Berlin  # set timezone
+Description: Manage the system timezone on macOS
+
+Options:
+ --help             Show this help message and exit
+ --list             List available timezones
+ --set TIMEZONE     Set the system timezone
+
+
+Examples:
+  m timezone                      # get current timezone
+  m timezone --set Europe/Berlin  # set timezone
 __EOF__
 }
 
-
 case $1 in
-    help)
+    --help)
         help
         ;;
-    list|ls)
+    --list)
         sudo systemsetup -listtimezones
         ;;
-    set)
+    --set)
         [ -z "$2" ] && help && exit 1;
         sudo systemsetup -settimezone $2
         ;;

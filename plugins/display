@@ -2,13 +2,16 @@
 
 help(){
     cat<<__EOF__
-    usage: m display [ status | help ]
+Usage: m display [OPTIONS]
 
-    Example:
-      m display status   # status of displays
-      m display help     # show usage
-      m display up       # turn up the brightness
-      m display down     # turn down the brightness
+Description: Manage display settings on macOS
+
+Options:
+  --help     Show this help message
+  --status   Show current display status
+  --up       Increase display brightness
+  --down     Decrease display brightness
+
 __EOF__
 }
 
@@ -25,19 +28,19 @@ turn_down(){
 }
 
 case $1 in
-    help)
+    --help)
         help
         ;;
-    status)
+    --status)
         display_status
         ;;
-    up)
+    --up)
         turn_up
         ;;
-    down)
+    --down)
         turn_down
-        ;;        
+        ;;
     *)
-        help
+        help && exit 1
         ;;
 esac

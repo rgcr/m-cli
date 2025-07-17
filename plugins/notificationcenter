@@ -2,29 +2,34 @@
 
 help(){
     cat<<__EOF__
-    usage: m notification [ showcenter | help ]
+Usage: m notificationcenter [OPTION]
 
-    Examples:
-      m notification showcenter      # get the current status
-      m notification showcenter YES  # enable the notification center
-      m notification showcenter NO   # disable the notification center
+Description: Manage the macOS Notification center
+
+Options:
+  --help     Show this help message
+  --status   Show the current status of the notification Center
+  --enable   Enable the notification Center
+  --disable  Disable the notification Center
 __EOF__
 }
 
-showcenter(){
+notification_center(){
     case $1 in
-        [yY][eE][sS])
-            echo "Enable notification center: YES"
+        --enable)
             launchctl load -w /System/Library/LaunchAgents/com.apple.notificationcenterui.plist
             killall NotificationCenter
+            echo "Notification center enabled..."
             echo "Restart your computer for this to take effect"
             ;;
-        [nN][oO])
+        --disable)
             echo "Enable notification center: NO"
             launchctl unload -w /System/Library/LaunchAgents/com.apple.notificationcenterui.plist
             killall NotificationCenter
+            echo "Notification center disabled..."
+            echo "Restart your computer for this to take effect"
             ;;
-        *)
+        --status)
             ps -A | grep apsd | grep -v grep &>/dev/null
             if [ $? -eq 0 ]; then
                 CENTER_STATUS="enabled"
@@ -33,18 +38,20 @@ showcenter(){
             fi
             echo "Notification Center: $CENTER_STATUS"
             ;;
+        *)
+            help && exit 1
+            ;;
     esac
 }
 
 case $1 in
-    help)
+    --help)
         help
         ;;
-    showcenter)
-        shift
-        showcenter "$@"
+    --enable|--disable|--status)
+        notification_center "$@"
         ;;
     *)
-        help
+        help && exit 1
         ;;
 esac

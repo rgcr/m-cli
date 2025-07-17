@@ -2,16 +2,19 @@
 
 help(){
     cat<<__EOF__
-    
-    usage: m audio [ reset | help ]
+Usage: m audio [OPTIONS]
 
-    Examples:
-      m audio reset       # restarts coreaudiod
+Description: Manage audio settings on macOS.
+
+
+Options:
+  --help            Show this help message
+  --reset [hard]    Reset audio settings (pass 'hard' to restart coreaudiod service)
 __EOF__
 }
 
 reset(){
-    if [ "${1}" == "--hard" ]; then
+    if [ "${1}" == "hard" ]; then
         sudo launchctl stop com.apple.audio.coreaudiod
         sudo launchctl start com.apple.audio.coreaudiod
     else
@@ -20,10 +23,10 @@ reset(){
 }
 
 case $1 in
-    help)
+    --help)
         help
         ;;
-    reset)
+    --reset)
         shift
         reset "${@}"
         ;;

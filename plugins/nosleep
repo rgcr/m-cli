@@ -1,18 +1,21 @@
 #!/usr/bin/env bash
 
-
 help(){
     cat<<__EOF__
-    usage: m nosleep [ until | help ]
+Usage: m nosleep [OPTION] [ARGUMENTS]
 
-    Examples:
-      m nosleep until 3600            # no sleep until 3600 seconds
-      m nosleep until my_script.sh    # no sleep until the script ends
+Description: Simple script to prevent the system from sleeping.
 
-      m nosleep until pid 64377       # no sleep until the process id ends
+Options:
+  --help                        Show this help message and exit
+  --until SECONDS|SCRIPT|PID    Prevent sleep until the specified time in seconds, until a script finishes, or until a process with the given PID ends.
+
+Examples:
+    m nosleep --until 3600            # no sleep until 3600 SECONDS
+    m nosleep --until my_script.sh    # no sleep until the script ends
+    m nosleep --until pid 64377       # no sleep until the process id ends
 __EOF__
 }
-
 
 nosleep_until(){
     case $1 in
@@ -25,25 +28,22 @@ nosleep_until(){
             caffeinate -w "${1}"
             ;;
         *)
-            #caffeinate "$@"
-            help && exit 1
+            caffeinate "$@"
+            # help && exit 1
             ;;
     esac
 
 }
 
-
-
 case $1 in
     help)
         help
         ;;
-    until)
-        shift  # remove "until" arg
+    --until)
+        shift
         nosleep_until $@
         ;;
-
     *)
-        help
+        help && exit 1
         ;;
 esac

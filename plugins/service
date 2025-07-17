@@ -10,27 +10,24 @@ LAUNCHCTLPATHS=( \
 
 help(){
     cat<<__EOF__
-    usage: m service [ --status-all | --list |  --ls | start | stop | load | unload | help ]
+Usage: m service [OPTIONS]
 
+Description: Manage macOS services using launchctl
 
-    Examples:
-      m service --status-all                        # list all services
-
-      m service --list                              # list all services
-      m service --ls                                # list all services
-      m service --ls com.apple.sessionlogoutd       # show information about a specific service
-
-      m service start com.apple.sessionlogoutd      # start a service
-      m service stop com.apple.sessionlogoutd       # stop a service
-
-      m service load com.apple.sessionlogoutd       # load a service
-      m service unload com.apple.sessionlogoutd     # unload a service
-
+Options:
+  --help              Show this help message and exit
+  --list              List all services
+  --info   SERVICE    Show information about a specific service
+  --start  SERVICE    Start a service
+  --stop   SERVICE    Stop a service
+  --status SERVICE    Show status of a service
+  --enable  SERVICE   Enable a service
+  --disable SERVICE   Disable a service
 __EOF__
 }
 
 find_service(){
-    [ -z "$1" ] && >&2 echo "Please enter servicename" && exit 1
+    [ -z "$1" ] && help && exit 1
 
     for p in "${LAUNCHCTLPATHS[@]}"; do
         if [ -f "${p}/${1}" ]; then
@@ -41,76 +38,85 @@ find_service(){
     done
 }
 
-service_list(){
-    if [ -z "$@" ]; then
-        sudo launchctl list
-    else
-        sudo launchctl list $@
+service_info(){
+    sudo launchctl list ${1}
+}
+
+service_status(){
+    local service_name="${1}"
+    if [ -z "${service_name}" ]; then
+        help && exit 1
     fi
+    printf "PID\tStatus\tLabel\n"
+    service_info | grep $@
 }
 
-service_load(){
-    [ -z "${1}" ] && >&2 echo "Please enter servicename" && exit 1
-
-    SERVICE_PATH=$(find_service $1)
-
-
-    echo "Loading < ${SERVICE_PATH} >"
-    sudo launchctl load -w ${SERVICE_PATH} 2>/dev/null
+service_do(){
+    local action="${1}"
+    local service_name="${2}"
+    if [ -z "${action}" ] || [ -z "${service_name}" ]; then
+        help && exit 1
+    fi
+    local service_path=$(find_service "${service_name}")
+    if [ -z "${service_path}" ]; then
+        echo "Service path for '${service_name}' not found." 1>&2
+        exit 1
+    fi
+    # local
+    local override="-w"
+    case "${action}" in
+        # convert action to launchctl command
+        enable)
+            action="load" ;;
+        disable)
+            action="unload" ;;
+        # override argument applies only to load/unload
+        start)
+            override="" ;;
+        stop)
+            override="" ;;
+        *)
+            help && exit 1
+            ;;
+        esac
+        sudo launchctl "${action}" ${override} "${service_path}" 2>/dev/null
+        echo "Service '${service_name}' ${action}ed"
 }
 
-service_unload(){
-    [ -z "${1}" ] && >&2 echo "Please enter servicename" && exit 1
 
-    SERVICE_PATH=$(find_service $1)
+option="${1}"
+if [ -z "${option}" ]; then
+    help && exit 1
+fi
 
-    echo "Unloading < ${SERVICE_PATH} >"
-    sudo launchctl unload -w ${SERVICE_PATH} 2>/dev/null
-}
-
-service_start(){
-    [ -z "${1}" ] && >&2 echo "Please enter servicename" && exit 1
-
-    echo "Starting < ${1} >"
-    sudo launchctl start "${1}"
-}
-
-service_stop(){
-    [ -z "${1}" ] && >&2 echo "Please enter servicename" && exit 1
-
-    echo "Stoping < ${1} >"
-    sudo launchctl stop "${1}"
-}
-
-
-case $1 in
-    help)
+shift
+case ${option} in
+    --help)
         help
         ;;
-    --status-all)
-        service_list
+    --info)
+        service_info $@
         ;;
-    --list|--ls)
-        shift
-        service_list $@
+    --list)
+        # if no arguments are given, list all services
+        service_info
         ;;
-    load)
-        shift
-        service_load $@
+    --enable)
+        service_do enable $@
         ;;
-    unload)
-        shift
-        service_unload $@
+    --disable)
+        service_do disable $@
         ;;
-    start)
-        shift
-        service_start $@
+    --start)
+        service_do start $@
         ;;
-    stop)
-        shift
-        service_stop $@
+    --stop)
+        service_do stop $@
+        ;;
+    --status)
+        service_status $@
         ;;
     *)
-        help
+        help && exit 1
         ;;
 esac

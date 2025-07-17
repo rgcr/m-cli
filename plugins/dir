@@ -1,29 +1,16 @@
 #!/usr/bin/env bash
 
-# TODO:
-# * include a function to delete older directories by days or mins
-# * include a function to delete newest directories by days or mins
-
 help(){
     cat<<__EOF__
-    usage: m dir [ tree | size | delete | help ]
+Usage: m dir [OPTIONS] [PATH]
 
-    Examples:
-      m dir tree        # tree view of folders in the current path
-      m dir tree /path  # tree view of folders in a specific path
+Description:  Manage directories and files in the current or specified path.
 
-      m dir delete empty          # delete empty folders recursively in the current path
-      m dir delete empty /path    # delete empty folders recursively in a specific path
-
-      m dir delete dsfiles        # delete .DS_Store files recursively in the current path
-      m dir delete dsfiles /path  # delete .DS_Store files recursively in a specific path
-
-      m dir dsfiles on   # restore generation of .DS_Store
-      m dir dsfiles off  # prohibit generation of .DS_Store
-
-      m dir size        # calculate current folder size
-      m dir size /path  # calculate folder size in a specific path
-
+Options:
+  --delete  <empty|dsfiles>  Delete DS_Files files or empty folders recursively in the current path or a specified path.
+  --dsfiles <enable|disable> Enable or disable the generation of .DS_Store files.
+  --size                     Calculate the size of the current folder or a specified path.
+  --tree                     Display a tree view of folders in the current path or a specified path.
 __EOF__
 
 }
@@ -41,12 +28,35 @@ confirm () {
     esac
 }
 
-tree_dirs(){
-    dir="${1:-.}"
-    ls -R "${dir}"| grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
+tree_dirs() {
+    local dir="${1:-.}"
+
+    [[ ! -d "$dir" ]] && echo "Directory ${dir} does not exist." >&2 && return
+
+    local prefix="$2"
+
+    local -a entries
+    IFS=$'\n' read -rd '' -a entries <<< "$(ls -A "$dir" 2>/dev/null | sort)"
+
+    local total=${#entries[@]}
+    local i=1
+
+    for name in "${entries[@]}"; do
+        local connector="├──"
+        [[ $i -eq $total ]] && connector="└──"
+
+        echo "${prefix}${connector} $name"
+
+        if [[ -d "$dir/$name" ]]; then
+            local new_prefix="$prefix"
+            [[ $i -eq $total ]] && new_prefix+="    " || new_prefix+="│   "
+            tree_dirs "$dir/$name" "$new_prefix"
+        fi
+        ((i++))
+    done
 }
 
-
+# delete empty folders
 delete_empty(){
     DIRS="${@:-.}"
     echo "Folders to be deleted: "
@@ -54,7 +64,7 @@ delete_empty(){
     confirm && find "${DIRS}" -type d -empty -delete
 }
 
-
+# delete .DS_Store files
 delete_dsfiles(){
     DIRS="${@:-.}"
     echo "Files to be deleted: "
@@ -62,13 +72,11 @@ delete_dsfiles(){
     confirm && find "${DIRS}" -type f -name .DS_Store -print -delete
 }
 
-
 folder_size(){
     dir="${@:-.}"
     echo "Folder size:"
     du -sh "${dir}"
 }
-
 
 delete(){
     case "$1" in
@@ -88,13 +96,13 @@ delete(){
 
 dsfiles(){
     case "$1" in
-        on)
-            echo ".DS_Store will generate"
-            confirm && defaults delete com.apple.desktopservices DSDontWriteNetworkStores
+        enable)
+            defaults delete com.apple.desktopservices DSDontWriteNetworkStores
+            echo ".DS_Store files enabled"
             ;;
-        off)
-            echo ".DS_Store will not generate"
-            confirm && defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool TRUE
+        disable)
+            defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool TRUE
+            echo ".DS_Store files disabled"
             ;;
         *)
             help && exit 1
@@ -103,28 +111,27 @@ dsfiles(){
 }
 
 
+# Main script execution
+option="${1}"
+shift
 
-case "$1" in
-    help)
+case "${option}" in
+    --help)
         help
         ;;
-    tree)
-        shift
+    --tree)
         tree_dirs "$@"
         ;;
-    delete)
-        shift;
+    --delete)
         delete "$@"
         ;;
-    dsfiles)
-        shift
+    --dsfiles)
         dsfiles "$@"
         ;;
-    size)
-        shift
+    --size)
         folder_size "$@"
         ;;
     *)
-        help
+        help && exit 1
         ;;
 esac

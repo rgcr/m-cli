@@ -1,2 +1,5 @@
 *.log
+*.~undo-tree~
+*.swp
 .DS_Store
+bak

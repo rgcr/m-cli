@@ -3,13 +3,17 @@
 
 help(){
     cat<<__EOF__
-    usage: m hostname [ help ]
+Usage: m hostname [OPTION] [newhostname]
 
-    Examples:
-      m hostname                # get the current hostname information (computername, hostname, localhostname and netbiosname)
-      m hostname newhostname    # set a new hostname (computername, hostname, localhostname, netbiosname)
+Description: Manage the hostname of the system. This includes ComputerName, HostName, LocalHostName, and NetBIOSName.
 
-      m hostname help           # only shows this help
+Options:
+  --help       Show this help message and exit
+
+
+Examples:
+  m hostname                # get the current hostname information (computername, hostname, localhostname and netbiosname)
+  m hostname newhostname    # set a new hostname (computername, hostname, localhostname, netbiosname)
 __EOF__
 }
 
@@ -18,22 +22,25 @@ show_hostname(){
     scutil --get ComputerName | awk '{print "ComputerName: ", $1}'
     scutil --get HostName | awk '{print "HostName: ", $1}'
     scutil --get LocalHostName | awk '{print "LocalHostName: ", $1}'
-    defaults read /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName | awk '{print "NetBIOSName: " $1}'
+    defaults \
+        read /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName | \
+        awk '{print "NetBIOSName: " $1}'
 
 }
 
-
 set_hostname(){
-    echo "Changing hostname to: $1"
     sudo scutil --set ComputerName "$1" && \
         sudo scutil --set HostName "$1" && \
         sudo scutil --set LocalHostName "$1" && \
-        sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "$1"
+        sudo defaults \
+        write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName \
+        -string "$1"
+    echo "Hostname changed to: ${1}"
 }
 
 
 case $1 in
-    help)
+    --help)
         help
         ;;
     *)

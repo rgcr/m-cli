@@ -3,20 +3,23 @@
 
 help(){
     cat<<__EOF__
-    usage: m sleep [ help ]
+Usage: m sleep [--help]
 
-    Examples:
-      m sleep       #  put the mac to sleep
+Description: Put the Mac to sleep immediately or after a specified delay
+
+Options:
+  --help      Show this help message and exit
+
+Examples:
+  m sleep       #  put the mac to sleep
 __EOF__
 }
 
 case $1 in
-    help)
+    --help)
         help
         ;;
-    "" | 0)
+    *)
         pmset sleepnow
         ;;
-    *)
-        (sleep $1 ; pmset sleepnow ) & 
 esac

@@ -2,12 +2,15 @@
 
 help(){
     cat<<__EOF__
-    usage:  m dns [ list | add | flush | help ]
+Usage:  m dns [OPTIONS]
 
-    Examples:
-      m dns list                    # lists DNS servers
-      m dns add [IP/Hostname]       # adds DNS server
-      m dns flush                   # flushes local DNS
+Description:  Manage DNS settings on macOS
+
+Options:
+  --help                Show this help message
+  --list                List current DNS servers
+  --flush               Flush local DNS cache
+  --add IP|HOSTNAME     Add a DNS server by IP or hostname
 __EOF__
 }
 
@@ -15,9 +18,9 @@ __EOF__
 flushdns(){
     VERSION=$(sw_vers -productVersion)
     echo "Flushing dns..."
-    if echo $VERSION | grep -E '^10\.10(\.[0-3])?$' >/dev/null 2>&1; then
+    if echo $VERSION | grep -E '^10\.10(\.[0-3])?$' &>/dev/null; then
         sudo discoveryutil mdnsflushcache
-    elif echo $VERSION | grep -E '^10\.6(\.[0-8])?$' >/dev/null 2>&1; then
+    elif echo $VERSION | grep -E '^10\.6(\.[0-8])?$' &>/dev/null; then
         sudo dscacheutil -flushcache
     else
         sudo killall -HUP mDNSResponder
@@ -30,26 +33,27 @@ listdns(){
 }
 
 adddns(){
-    [ -z "${2}" ] && help && exit 1
-    sudo sh -c "echo nameserver '${2}' >> /etc/resolv.conf"
-    echo "${2} added"
+    [ -z "${1}" ] && help && exit 1
+    sudo sh -c "echo nameserver '${1}' >> /etc/resolv.conf"
+    echo "${1} added"
 }
 
 
 case $1 in
-    help)
+    --help)
         help
         ;;
-    list)
+    --list)
         listdns
         ;;
-    add)
-        adddns
+    --add)
+        shift
+        adddns "$@"
         ;;
-    flush)
+    --flush)
         flushdns
         ;;
     *)
-        help
+        help && exit 1
         ;;
 esac

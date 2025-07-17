@@ -2,35 +2,46 @@
 
 help(){
     cat<<__EOF__
-    
-    usage: m airdrop [ status | on | enable | off | disable | help ]
+Usage: m airdrop [OPTIONS]
 
-    Examples:
-      m airdrop status    # airdrop status
-      m airdrop on        # turn on airdrop
-      m airdrop enable    # turn on airdrop
-      m airdrop off       # turn off airdrop
-      m airdrop disable   # turn off airdrop
+Description: Manage AirDrop settings on macOS.
+
+Options:
+  --help            Show this help message
+  --status          Show AirDrop status
+  --enable          Enable airdrop
+  --disable         Disable airdrop
 __EOF__
+    exit 0
 }
 
+show_status() {
+    local status
+    status="$(defaults read com.apple.NetworkBrowser DisableAirDrop 2>/dev/null)"
+    if [[ "${status}" == "1" || "${status}" == "true" ]]; then
+        echo "AirDrop: disabled"
+    else
+        echo "AirDrop: enabled"
+    fi
+}
+
+toggle_airdrop() {
+    local state=$1
+    defaults write com.apple.NetworkBrowser DisableAirDrop -bool "${state}" && \
+        killall -HUP Finder 2>/dev/null
+}
+
+
 case $1 in
-    help)
-        help
-        ;;
-    status)
-        defaults read com.apple.NetworkBrowser DisableAirDrop | \
-            awk '{ if($1 != 0) {print "AirDrop: OFF"} else { print "AirDrop: ON" }  }'
-        ;;
-    on|enable)
-        defaults write com.apple.NetworkBrowser DisableAirDrop -bool NO && \
-            killall -HUP Finder
-        ;;
-    off|disable)
-        defaults write com.apple.NetworkBrowser DisableAirDrop -bool YES && \
-            killall -HUP Finder
-        ;;
+    --help)
+        help ;;
+    --status)
+        show_status ;;
+    --enable)
+        toggle_airdrop NO;;
+    --disable)
+        toggle_airdrop YES;;
     *)
-        help
-        ;;
+        help && exit 1 ;;
 esac
+

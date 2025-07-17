@@ -2,32 +2,20 @@
 
 help(){
     cat<<__EOF__
-    usage: m disk [ ls | list | info | fs | filesystems | ejectall | verify | repair | help ]
+Usage: m disk [OPTIONS] [ARGUMENTS]
 
-    Examples:
-      m disk ls                                 # list disks
-      m disk list                               # list disks
-      m disk list /dev/disk0                    # list a specific disk
+Description: Manage disks and volumes on macOS using diskutil.
 
-      m disk fs                                 # list available filesystems for formatting
-      m disk filesystems                        # list available filesystems for formatting
-
-      m disk info /dev/disk0                    # display information
-
-      m disk ejectall                           # eject all mountable volumes
-
-      m disk verify volume /Volume/MyVol        # verify volume
-      m disk verify disk /dev/disk0             # verify disk
-
-      m disk repair volume /Volume/MyVol        # repair volume
-      m disk repair disk /dev/disk0             # repair disk
-
-      m disk format MS-DOS MYNAME /dev/disk2              # format the entire disk with a windows format (MS-DOS)
-      m disk format volume MS-DOS MYNAME /Volumes/myvol   # format the volume with a windows format (MS-DOS)
-
-      m disk reformat /Volumes/myvol            # reformat a volume
-      m disk rename CURRENTNAME NEWNAME         # rename a volume
-
+Options:
+  --info DISK_NAME                                 Display disk information
+  --list [DISK_NAME]                               List all disks or a specific disk if 'DISK' is provided (disk is optional)
+  --filesystems                                    List available filesystems for formatting
+  --ejectall                                       Eject all mountable Volumes
+  --verify <disk|volme> DISK_NAME|VOLUME_NAME      Verify a volume or disk
+  --repair <disk|volume> DISK_NAME|VOLUME_NAME     Repair a volume or disk
+  --reformat VOLUME                                Reformat a volume
+  --rename CURRENT_NAME NEW_NAME                   Rename a volume
+  --format <disk|volume> FS_TYPE NEW_NAME DISK_NAME|VOLUME_NAME  Format a disk or volume with a specified filesystem type and name
 __EOF__
 }
 
@@ -86,14 +74,21 @@ repair(){
 
 
 format(){
-
-    [ -z "$1" -o -z "$2" -o -z "$3" ] && help && exit 1
-
-    if [ "$1" == "volume" -a ! -z "$4" ]; then
-        diskutil eraseVolume "${2}" "${3}" "${4}"
-    else
-        diskutil eraseDisk "${1} "${2} "${3}"
-    fi
+    case $1 in
+        volume)
+            shift
+            [ -z "$1" -o -z "$2" -o -z "$3" ] && help && exit 1
+            diskutil eraseVolume "${1}" "${2}" "${3}"
+            ;;
+        disk)
+            shift
+            [ -z "$1" -o -z "$2" -o -z "$3" ] && help && exit 1
+            diskutil eraseDiskk "${1}" "${2}" "${3}"
+            ;;
+        *)
+            help
+            ;;
+    esac
 }
 
 reformat(){
@@ -107,47 +102,43 @@ rename(){
 
 }
 
-case $1 in
+
+# Main script execution
+option="${1}"
+shift
+
+case "${option}" in
     help)
         help
         ;;
-    list|ls)
-        shift
+    --list)
         disk_ls "$@"
         ;;
-    info)
-        shift
+    --info)
         disk_info "$@"
         ;;
-    filesystems|fs)
-        shift
+    --filesystems)
         list_filesystems
         ;;
-    ejectall)
-        shift
+    --ejectall)
         ejectall
         ;;
-    verify)
-        shift
+    --verify)
         verify "$@"
         ;;
-    repair)
-        shift
+    --repair)
         repair "$@"
         ;;
-    format)
-        shift
+    --format)
         format "$@"
         ;;
-    reformat)
-        shift
+    --reformat)
         reformat "$@"
         ;;
-    rename)
-        shift
+    --rename)
         rename "$@"
         ;;
     *)
-        help
+        help && exit 1
         ;;
 esac

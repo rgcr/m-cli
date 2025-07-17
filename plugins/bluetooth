@@ -2,36 +2,39 @@
 
 help(){
     cat<<__EOF__
-    usage: m bluetooth [ status | on | enable | off | disable | help ]
+Usage: m bluetooth [OPTIONS]
 
-    Examples:
-      m bluetooth status    # bluetooth status
-      m bluetooth on        # turn on bluetooth
-      m bluetooth enable    # turn on bluetooth
-      m bluetooth off       # turn off bluetooth
-      m bluetooth disable   # turn off bluetooth
+Description: Manage Bluetooth settings on macOS
+
+Options:
+  --help       Show this help message
+  --status     Show the current Bluetooth status
+  --enable     Turn on bluetooth
+  --disable    Turn off bluetoothd
 __EOF__
 }
 
-DAEMON=`[ -e /usr/sbin/bluetoothd ] && echo bluetoothd || echo blued`
+[ -e /usr/sbin/bluetoothd ] && DAEMON=bluetoothd || DAEMON=blued
 
 case $1 in
-    help)
+    --help)
         help
         ;;
-    status)
+    --status)
         defaults read /Library/Preferences/com.apple.Bluetooth ControllerPowerState | \
-            awk '{ if($1 != 0) {print "Bluetooth: ON"} else { print "Bluetooth: OFF" }  }'
+            awk '{ if($1 != 0) {print "Bluetooth: Enabled"} else { print "Bluetooth: Disabled" }  }'
         ;;
-    on|enable)
-        sudo defaults write /Library/Preferences/com.apple.Bluetooth ControllerPowerState -int 1 && \
+    --enable)
+        sudo defaults write \
+            /Library/Preferences/com.apple.Bluetooth ControllerPowerState -int 1 && \
             sudo killall -HUP ${DAEMON}
         ;;
-    off|disable)
-        sudo defaults write /Library/Preferences/com.apple.Bluetooth ControllerPowerState -int 0 && \
+    --disable)
+        sudo defaults write \
+            /Library/Preferences/com.apple.Bluetooth ControllerPowerState -int 0 && \
             sudo killall -HUP ${DAEMON}
         ;;
     *)
-        help
+        help && exit 1
         ;;
 esac
