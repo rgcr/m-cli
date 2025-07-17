@@ -19,9 +19,9 @@ show_status() {
     local status
     status="$(defaults read com.apple.NetworkBrowser DisableAirDrop 2>/dev/null)"
     if [[ "${status}" == "1" || "${status}" == "true" ]]; then
-        echo "AirDrop: enabled"
-    else
         echo "AirDrop: disabled"
+    else
+        echo "AirDrop: enabled"
     fi
 }
 
@@ -38,9 +38,9 @@ case $1 in
     --status)
         show_status ;;
     --enable)
-        toggle_airdrop false ;;
+        toggle_airdrop NO;;
     --disable)
-        toggle_airdrop true ;;
+        toggle_airdrop YES;;
     *)
         help && exit 1 ;;
 esac
