@@ -7,8 +7,21 @@ function __m_complete --description 'Completion function for m command'
     set -l argc (count $words)
 
     # Get the directory where the script lives, then plugins dir
-    set -l script_dir (dirname (status -f))
-    set -l plugins_dir "$script_dir/plugins"
+    # set -l script_dir (dirname (status -f))
+    # set -l plugins_dir "$script_dir/plugins"
+
+    if test -n "$MCLI_PATH"
+        set script_dir "$MCLI_PATH"
+    else
+        set script_dir "$HOME/.local/opt/m-cli"
+    end
+
+    set plugins_dir "$script_dir/plugins"
+
+    if not test -d "$plugins_dir"
+        return
+    end
+
 
     # If no subcommand yet or second word is option-like, complete subcommands (plugins)
     if test $argc -le 1 -o (test $argc -ge 2; and string match -qr '^-' -- $words[2])

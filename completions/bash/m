@@ -5,7 +5,12 @@ _m() {
   words=("${COMP_WORDS[@]}")
   cword=$COMP_CWORD
 
-  local PLUGINS_DIR="${BASH_SOURCE[0]%/*}/plugins"
+  # local PLUGINS_DIR="${BASH_SOURCE[0]%/*}/plugins"
+  local PLUGINS_DIR="${MCLI_PATH:-$HOME/.local/opt/m-cli}/plugins"
+
+  if [[ ! -d "$PLUGINS_DIR" ]]; then
+      return 1
+  fi
 
   # Subcommand completion
   if [[ $cword -eq 1 ]]; then
