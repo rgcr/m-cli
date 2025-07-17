@@ -34,6 +34,9 @@
 brew install m-cli
 ```
 
+> **Note:** When installed via Homebrew, shell autocompletion scripts are installed and configured automatically for Bash, Zsh, and Fish. No additional setup is needed.
+<br/>
+
 ###  Manual Installation
 ```sh
 curl -fsSL https://raw.githubusercontent.com/rgcr/m-cli/master/install.sh | bash
@@ -47,6 +50,34 @@ export PATH="${HOME}/.local/bin:$PATH"
 
 Add the line above to your shell config file (e.g. `~/.bashrc`, `~/.zshrc`) for persistence.
 
+<br/>
+
+---
+
+### Shell Autocompletion (Manual Installation)
+
+To enable shell autocompletion for `m`, source the appropriate file based on your shell:
+
+#### Bash
+```sh
+source ~/.local/opt/m-cli/completions/bash/m
+```
+
+To make it persistent, add the above line to your `~/.bashrc` or `~/.bash_profile`.
+
+#### Zsh
+```sh
+source ~/.local/opt/m-cli/completions/zsh/_m
+```
+
+To make it persistent, add the above line to your `~/.zshrc`.
+
+#### Fish
+```fish
+source ~/.local/opt/m-cli/completions/fish/m.fish
+```
+
+To make it persistent, add the line to `~/.config/fish/config.fish`.
 
 ---
 
