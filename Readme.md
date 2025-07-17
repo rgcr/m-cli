@@ -1,7 +1,7 @@
 #  m-cli
 
 > ⚠️ Version 2 includes breaking changes due to a new standardized syntax and improved shell autocompletion.
-> See the [changelog](#CHANGELOG.md) for details.
+> See the [changelog](CHANGELOG.md) for details.
 
 
 💥 **The Swiss Army Knife for macOS – in your Terminal!**
