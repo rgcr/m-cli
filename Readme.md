@@ -39,7 +39,7 @@ brew install m-cli
 
 ###  Manual Installation
 ```sh
-curl -fsSL https://raw.githubusercontent.com/rgcr/m-cli/master/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/rgcr/m-cli/main/install.sh | bash
 ```
 
 Ensure that `${HOME}/.local/bin` is in your `$PATH`. You can add it with:

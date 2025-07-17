@@ -40,7 +40,7 @@ install_or_update_from_git(){
         command git --git-dir="${INSTALL_DIR}/.git" --work-tree="${INSTALL_DIR}" fetch --depth=1 || \
             die "Failed to fetch changes => ${GIT_URL}"
 
-        command git --git-dir="${INSTALL_DIR}/.git" --work-tree="${INSTALL_DIR}" reset --hard origin/master || \
+        command git --git-dir="${INSTALL_DIR}/.git" --work-tree="${INSTALL_DIR}" reset --hard origin/main || \
             die "Failed to reset changes => ${GIT_URL}"
     else
         # package is not installed, we clone it
