@@ -29,7 +29,7 @@ get_version(){
 
     local git_tag=$(git -C ${MCLI_PATH} describe --tags --exact-match HEAD 2>/dev/null)
     local git_hash=$(git -C ${MCLI_PATH} rev-parse --short HEAD 2>/dev/null)
-    if [ -n "$TAG" ]; then
+    if [ -n "$git_tag" ]; then
         echo "m-cli version: $git_tag ($git_hash)"
     else
         echo "m-cli version: $git_hash (not tagged)"
