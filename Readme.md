@@ -33,6 +33,10 @@
 ```sh
 brew install m-cli
 ```
+###  Or if you want to have the latest version
+```sh
+brew install rgcr/formulae/m-cli
+```
 
 > **Note:** When installed via Homebrew, shell autocompletion scripts are installed and configured automatically for Bash, Zsh, and Fish. No additional setup is needed.
 <br/>
