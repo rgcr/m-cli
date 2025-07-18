@@ -1,8 +1,20 @@
 # Changelog
 
 ### All notable changes to this project will be documented in this file.
+--
 
 
+## [2.0.2]
+
+### Updated
+- **`m`**
+  - fixed `--version` option
+- `Readme.md`
+  - updated instructions and examples
+  - updated `CHANGELOG.md`
+
+
+--
 ## [2.0.0]
 
 ### Updated
