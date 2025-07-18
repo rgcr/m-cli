@@ -3,6 +3,11 @@
 ### All notable changes to this project will be documented in this file.
 --
 
+## [2.0.4]
+
+### updated
+- **`completions/zsh/_m`**
+  - Fixed completion script
 
 ## [2.0.2]
 

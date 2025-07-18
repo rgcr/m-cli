@@ -8,7 +8,7 @@ _m() {
   cur="${words[CURRENT]}"
   prev="${words[CURRENT-1]}"
 
-  local PLUGINS_DIR="${0:a:h}/plugins"
+  local PLUGINS_DIR="${MCLI_PATH:-$HOME/.local/opt/m-cli}/plugins"
 
   if (( CURRENT == 2 )); then
     local -a subcommands
@@ -66,4 +66,4 @@ _m() {
 }
 
 _m "$@"
-# compdef _m m
+compdef _m m
