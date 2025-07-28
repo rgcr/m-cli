@@ -22,24 +22,23 @@ print_err() {
 get_ac_powermode_value(){
     local value=""
     value=$(pmset -g custom | grep -A5000 -m1 -e 'AC Power' | grep -i 'powermode' -m1 | awk '{print $2}')
-    return $value
+    echo $value
 }
 
 get_battery_powermode_value(){
     local value=""
     value=$(pmset -g custom | grep -A5000 -m1 -e 'Battery Power' | grep -i 'powermode' -m1 | awk '{print $2}')
-    return $value
+    echo $value
 }
 
 get_all_powermode_value(){
     local value=""
     value=$(pmset -g live | grep -i 'powermode' | awk '{print $2}')
-    return $value
+    echo $value
 }
 
 # convert to words
 print_pretty_powermode(){
-# get_powermode() {
     local powermode=""
     case $1 in
     0)
@@ -125,13 +124,13 @@ case $option in
     --status)
         case $1 in
             ac)
-                print_pretty_powermode $(get_ac_powermode_value)
+                print_pretty_powermode "$(get_ac_powermode_value)"
                 ;;
             battery)
-                print_pretty_powermode $(get_battery_powermode_value)
+                print_pretty_powermode "$(get_battery_powermode_value)"
                 ;;
             all)
-                print_pretty_powermode $(get_all_powermode_value)
+                print_pretty_powermode "$(get_all_powermode_value)"
                 ;;
             *)
                 help && exit 1
