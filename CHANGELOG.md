@@ -41,7 +41,7 @@
   - Eliminates manual maintenance of completion scripts
   - Ensures completions always stay in sync with plugin capabilities
 
-## [0.2.6]
+## [0.3.1]
 
 ### Updated
 
@@ -56,9 +56,6 @@
 
 - `bluetooth` now works on 10.12+
 
-## [0.2.5]
-
-TODO: Back-populate the changelog...
 
 ## [0.3.0]
 
