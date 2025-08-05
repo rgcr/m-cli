@@ -1,7 +1,7 @@
 # Changelog
 
 ### All notable changes to this project will be documented in this file.
---
+----
 
 ## [2.0.4]
 
@@ -19,7 +19,7 @@
   - updated `CHANGELOG.md`
 
 
---
+----
 ## [2.0.0]
 
 ### Updated
@@ -41,7 +41,8 @@
   - Eliminates manual maintenance of completion scripts
   - Ensures completions always stay in sync with plugin capabilities
 
---
+## [0.2.6]
+
 ### Updated
 
 - `dir` can now manage .DS_Store generations with `m dir dsfiles`
