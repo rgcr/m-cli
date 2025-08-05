@@ -106,7 +106,7 @@ m --uninstall
 
 Example:
 ```sh
-m bluetooth --help
+m dock --help
 ```
 
 - Enjoy!
