@@ -42,9 +42,12 @@ find_service(){
 
 service_info(){
     if [ -n "${1}" ]; then
+        # check in system and user scope
         sudo launchctl list ${1} 2>/dev/null || launchctl list ${1}
     else
+        # system scope
         sudo launchctl list
+        # user scope
         launchctl list
     fi
 }
@@ -55,7 +58,9 @@ service_status(){
         help && exit 1
     fi
     printf "PID\tStatus\tLabel\n"
+    # system scope
     sudo launchctl list | grep $@
+    # user scope
     launchctl list | grep $@
 }
 
