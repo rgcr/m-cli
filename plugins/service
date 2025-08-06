@@ -23,6 +23,8 @@ Options:
   --status SERVICE    Show status of a service
   --enable  SERVICE   Enable a service
   --disable SERVICE   Disable a service
+  --load   PLISTPATH   Load plist file as a service
+  --unload PLISTPATH  Unload plist file as a service
 __EOF__
 }
 
@@ -39,7 +41,12 @@ find_service(){
 }
 
 service_info(){
-    sudo launchctl list ${1}
+    if [ -n "${1}" ]; then
+        sudo launchctl list ${1} 2>/dev/null || launchctl list ${1}
+    else
+        sudo launchctl list
+        launchctl list
+    fi
 }
 
 service_status(){
@@ -48,7 +55,8 @@ service_status(){
         help && exit 1
     fi
     printf "PID\tStatus\tLabel\n"
-    service_info | grep $@
+    sudo launchctl list | grep $@
+    launchctl list | grep $@
 }
 
 service_do(){
