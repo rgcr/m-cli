@@ -25,8 +25,14 @@
 -  Simple, non-intrusive installation
 -  Clean and safe – doesn’t modify your system unnecessarily
 
----
+<br></br>
+## Support
 
+Enjoying this tool? Consider [supporting development](https://www.buymeacoffee.com/rgcr) ☕
+
+<a href="https://www.buymeacoffee.com/rgcr"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-green.png" alt="Buy Me A Coffee" height="40"></a>
+
+---
 ## Installation
 
 ###  Using [Homebrew](https://brew.sh/)
