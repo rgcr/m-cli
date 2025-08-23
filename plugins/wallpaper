@@ -1,36 +1,92 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
-
-help(){
-    cat<<__EOF__
+help() {
+    cat <<__EOF__
 Usage: m wallpaper [OPTIONS]
 
 Description: Set the desktop wallpaper to the specified image file
 
 Options:
-  --help             Show this help message
+  --help            Show this help message
   --set IMAGE_PATH  Set the wallpaper to the specified image file
-
 
 Examples:
   m wallpaper --set ~/wallpapers/tree.jpg       # set wallpaper
 __EOF__
 }
 
-set_wallpaper(){
+WALLPAPER_PLIST_PATH="${HOME}/Library/Application Support/com.apple.wallpaper/Store/Index.plist"
+WALLPAPER_PLIST_BACKUP_PATH="${WALLPAPER_PLIST_PATH}_bkp"
+WALLPAPER_REPLACEMENT_PLIST="${0:A:h}/resources/AllSpacesAndDisplays.plist"
+
+buddy() {
+    /usr/libexec/PlistBuddy -c "${1}" "${WALLPAPER_PLIST_PATH}"
+}
+
+plist_backup_exists() {
+    [ -f "${WALLPAPER_PLIST_BACKUP_PATH}" ]
+}
+
+backup_plist() {
+    cp "${WALLPAPER_PLIST_PATH}" "${WALLPAPER_PLIST_BACKUP_PATH}"
+}
+
+reset_wallpaper_plist() {
+    buddy "Clear dict" 1>/dev/null
+    buddy "Merge '${WALLPAPER_REPLACEMENT_PLIST}'"
+}
+
+restart_wallpaper_agent() {
+    killall WallpaperAgent
+}
+
+set_path() {
+    local path="${1}"
+    buddy "Set AllSpacesAndDisplays:Desktop:Content:Choices:0:Files:0:relative file://${path}"
+    buddy "Set SystemDefault:Desktop:Content:Choices:0:Files:0:relative file://${path}"
+}
+
+set_wallpaper_sonoma() {
+    if ! plist_backup_exists; then
+        backup_plist
+    fi
+
+    reset_wallpaper_plist
+    set_path "${1:A}"
+    restart_wallpaper_agent
+}
+
+set_wallpaper_fallback() {
     osascript -e "tell application \"System Events\" to tell every desktop to set picture to \"${1}\" as POSIX file"
 }
 
-case $1 in
-    --help)
-        help
-        ;;
-    --set)
-        shift
-        [ -z "$1" ] && help && exit 1
-        set_wallpaper "$1"
-        ;;
-    *)
-        help && exit 1
-        ;;
+migrated_to_sonoma() {
+    local major_version="$(sw_vers -productVersion | cut -d'.' -f1)"
+    local sonoma_major_version="14"
+
+    (( "${major_version}" >= "${sonoma_major_version}" )) &&
+    [ "$(defaults read 'com.apple.wallpaper' 'SonomaFirstRunMigrationPerformed' 2>/dev/null)" = "1" ]
+}
+
+set_wallpaper() {
+    if ! migrated_to_sonoma; then
+        echo "You're using macOS older than Sonoma (version 14), or you've just updated and the wallpaper agent hasn't perfomed migration yet. Falling back to an osascript wallpaper setter."
+        set_wallpaper_fallback "${1}"
+    else
+        set_wallpaper_sonoma "${1}"
+    fi
+}
+
+case "${1}" in
+--help)
+    help
+    ;;
+--set)
+    shift
+    [ -z "${1}" ] && help && exit 1
+    set_wallpaper "${1}"
+    ;;
+*)
+    help && exit 1
+    ;;
 esac
