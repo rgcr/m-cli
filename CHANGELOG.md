@@ -26,10 +26,10 @@
 - **`m` command**
   - Added `--help` and `--version` flags to the main script.
   - **Breaking Change**: New command syntax
-  		- Old: `m <plugin> <subcommand> <args>` (deprecated)
-    	- New: `m <plugin> <options> <args>`
-    	- Example: `m bluetooth on` → `m bluetooth --enable`
-    	- Note: This change may break existing scripts but provides better consistency and enables automatic completions
+    - Old: `m <plugin> <subcommand> <args>` (deprecated)
+    - New: `m <plugin> <options> <args>`
+    - Example: `m bluetooth on` → `m bluetooth --enable`
+    - Note: This change may break existing scripts but provides better consistency and enables automatic completions
 
 - **`plugins/*`**
   - Standardized `--help` output format for improved automatic completion support
