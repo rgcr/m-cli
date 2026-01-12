@@ -20,12 +20,13 @@ Options:
   --help            Show this help message
   --status          Show current status
   --play            Play current track
+  --playpause       Play/pause current track
   --stop            Stop current track
   --pause           Pause current track
   --next            Play next track
   --prev            Play previous track
   --mute            Mute ${music_cmd}
-  --vol LEVEL       Set volume to LEVEL (0-100)
+  --vol LEVEL       Set application volume to LEVEL (0-100)
   --quit            Quit ${music_cmd}
 __EOF__
 }
@@ -64,6 +65,9 @@ case $1 in
         ;;
     --play)
         osascript -e "tell application \"${music_cmd}\" to play"
+        ;;
+    --playpause)
+        osascript -e "tell application \"${music_cmd}\" to playpause"
         ;;
     --pause)
         osascript -e "tell application \"${music_cmd}\" to pause"
