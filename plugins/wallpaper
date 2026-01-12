@@ -17,8 +17,27 @@ Examples:
 __EOF__
 }
 
+WALLPAPER_PLIST="${HOME}/Library/Application Support/com.apple.wallpaper/Store/Index.plist"
+
 set_wallpaper(){
-    osascript -e "tell application \"System Events\" to tell every desktop to set picture to \"${1}\" as POSIX file"
+    local image_path="${1}"
+
+    # Expand ~ to full path
+    image_path="${image_path/#\~/$HOME}"
+
+    # Set wallpaper via osascript
+    osascript -e "tell application \"System Events\" to tell every desktop to set picture to \"${image_path}\" as POSIX file"
+
+    sleep 1
+
+    # Clear individual space/display settings to apply to all spaces
+    /usr/libexec/PlistBuddy -c "Delete :Spaces" "$WALLPAPER_PLIST" 2>/dev/null
+    /usr/libexec/PlistBuddy -c "Add :Spaces dict" "$WALLPAPER_PLIST"
+    /usr/libexec/PlistBuddy -c "Delete :Displays" "$WALLPAPER_PLIST" 2>/dev/null
+    /usr/libexec/PlistBuddy -c "Add :Displays dict" "$WALLPAPER_PLIST"
+
+    # Restart WallpaperAgent to apply changes
+    killall WallpaperAgent 2>/dev/null
 }
 
 case $1 in
