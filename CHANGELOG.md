@@ -10,9 +10,6 @@
   - New plugin to manage Remote Login(`SSH`)
 
 ### Updated
-- **`plugins/remotelogin`**
-  - Improved daemon start/stop logic to match macOS settings behavior.
-  - Added `dscl`-based allow list inspection with clearer messaging.
 - **`plugins/display`**
   - Simplified brightness control to repeated `--up/--down` invocations with optional counts.
 - **`Readme.md`**
