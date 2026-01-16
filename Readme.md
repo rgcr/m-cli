@@ -124,7 +124,7 @@ m dock --help
 `airdrop` • `appearance` • `audio` • `battery` • `bluetooth` • `dir` • `disk` • `display` • `dns` • `dock`
 `fan` • `finder` • `firewall` • `flightmode` • `gatekeeper` • `group` • `hostname` • `hosts` • `info`
 `itunes` • `lock` • `network` • `nosleep` • `notificationcenter` • `ntp` • `powermode` • `printer`
-`restart` • `safeboot` • `screensaver` • `service` • `shutdown` • `sleep` • `timezone` • `touchbar`
+`restart` • `remotelogin` • `safeboot` • `screensaver` • `service` • `shutdown` • `sleep` • `timezone` • `touchbar`
 `trash` • `update` • `usb` • `user` • `volume` • `vpn` • `wallpaper` • `wifi`
 
 ---
@@ -169,4 +169,3 @@ We ❤️ contributions!
 ---
 
 © Rogelio Cedillo – Licensed under the [MIT License](LICENSE.md)
-

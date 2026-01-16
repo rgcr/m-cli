@@ -3,9 +3,24 @@
 ### All notable changes to this project will be documented in this file.
 ----
 
+## [2.0.7]
+
+### Added
+- **`plugins/remotelogin`**
+  - New plugin to manage Remote Login(`SSH`)
+
+### Updated
+- **`plugins/remotelogin`**
+  - Improved daemon start/stop logic to match macOS settings behavior.
+  - Added `dscl`-based allow list inspection with clearer messaging.
+- **`plugins/display`**
+  - Simplified brightness control to repeated `--up/--down` invocations with optional counts.
+- **`Readme.md`**
+  - Documented the new `remotelogin` command in the Available Commands list.
+
 ## [2.0.4]
 
-### updated
+### Updated
 - **`completions/zsh/_m`**
   - Fixed completion script
 

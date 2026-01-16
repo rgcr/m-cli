@@ -7,10 +7,11 @@ Usage: m display [OPTIONS]
 Description: Manage display settings on macOS
 
 Options:
-  --help     Show this help message
-  --status   Show current display status
-  --up       Increase display brightness
-  --down     Decrease display brightness
+  --help              Show this help message
+  --status            Show current display status
+  --up [COUNT]        Increase display brightness (default COUNT=1)
+  --down [COUNT]      Decrease display brightness (default COUNT=1)
+
 
 __EOF__
 }
@@ -19,12 +20,31 @@ display_status(){
     system_profiler SPDisplaysDataType
 }
 
+
+send_brightness_key(){
+    local key_code="$1"
+    local count="${2:-1}"
+
+    if [ -z "${key_code}" ]; then
+        help && exit 1
+    fi
+
+    if ! [[ "${count}" =~ ^[0-9]+$ ]] || [ "${count}" -le 0 ]; then
+        help && exit 1
+    fi
+
+    local repeats=$((count * 2))
+    osascript -e "repeat ${repeats} times" -e "tell application \"System Events\" to key code ${key_code}" -e 'delay 0.3' -e 'end repeat'
+}
+
 turn_up(){
-    osascript -e 'tell application "System Events"' -e 'key code 144' -e ' end tell'
+    local count="${1:-1}"
+    send_brightness_key 144 "${count}"
 }
 
 turn_down(){
-    osascript -e 'tell application "System Events"' -e 'key code 145' -e ' end tell'
+    local count="${1:-1}"
+    send_brightness_key 145 "${count}"
 }
 
 case $1 in
@@ -35,10 +55,10 @@ case $1 in
         display_status
         ;;
     --up)
-        turn_up
+        turn_up "$2"
         ;;
     --down)
-        turn_down
+        turn_down "$2"
         ;;
     *)
         help && exit 1

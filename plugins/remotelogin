@@ -1,0 +1,145 @@
+#!/usr/bin/env bash
+
+REMOTE_GROUP="com.apple.access_ssh"
+REMOTE_GROUP_PATH="/Groups/${REMOTE_GROUP}"
+SSH_LABEL="system/com.openssh.sshd"
+SSH_PLIST="/System/Library/LaunchDaemons/ssh.plist"
+
+help(){
+    cat<<__HELP__
+Usage: m remotelogin [OPTIONS]
+
+Description: Manage macOS Remote Login (SSH)
+
+Options:
+  --help                      Show this help message
+  --status                    Show the current Remote Login status
+  --enable                    Enable Remote Login for all users
+  --disable                   Disable Remote Login
+  --list-users                List users explicitly allowed to use Remote Login
+  --allow USERNAME            Add a user to the Remote Login allow list
+  --remove USERNAME           Remove a user from the Remote Login allow list
+  --allow-all                 Allow all users to connect by clearing the allow list
+__HELP__
+}
+
+group_exists(){
+    sudo dscl . -read "${REMOTE_GROUP_PATH}" >/dev/null 2>&1
+}
+
+print_group_info(){
+    local info
+    info=$(sudo dscl . -read "${REMOTE_GROUP_PATH}" 2>/dev/null) || return 1
+    echo "${info}"
+    if ! echo "${info}" | awk -F': ' '/^(GroupMembers|GroupMembership):/ {if (NF>1 && length($2)>0) found=1} END {exit !found}'; then
+        echo ""
+        echo "Allow list is empty. All users can log in remotely."
+    fi
+}
+
+ensure_group(){
+    if ! group_exists; then
+        sudo dseditgroup -o create "${REMOTE_GROUP}" >/dev/null
+    fi
+}
+
+remote_status(){
+    sudo systemsetup -getremotelogin
+    if group_exists; then
+        print_group_info
+    else
+        echo "Allow list: All users"
+    fi
+}
+
+start_remote_login(){
+    sudo launchctl enable "${SSH_LABEL}" >/dev/null 2>&1 || true
+    sudo launchctl bootstrap system "${SSH_PLIST}" >/dev/null 2>&1 || sudo launchctl load -w "${SSH_PLIST}" >/dev/null 2>&1
+    sudo launchctl kickstart -k "${SSH_LABEL}" >/dev/null 2>&1 || sudo launchctl start com.openssh.sshd >/dev/null 2>&1
+}
+
+stop_remote_login(){
+    sudo launchctl bootout "${SSH_LABEL}" >/dev/null 2>&1 || sudo launchctl unload -w "${SSH_PLIST}" >/dev/null 2>&1 || sudo launchctl stop com.openssh.sshd >/dev/null 2>&1
+    sudo launchctl disable "${SSH_LABEL}" >/dev/null 2>&1 || true
+}
+
+remote_enable(){
+    if ! sudo systemsetup -setremotelogin on; then
+        echo "Grant Full Disk Access to your terminal application and retry." >&2
+        exit 1
+    fi
+    start_remote_login
+}
+
+remote_disable(){
+    if ! sudo systemsetup -setremotelogin off; then
+        echo "Grant Full Disk Access to your terminal application and retry." >&2
+        exit 1
+    fi
+    stop_remote_login
+}
+
+remote_list_users(){
+    if group_exists; then
+        print_group_info
+    else
+        echo "No explicit allow list configured. All users can log in remotely."
+    fi
+}
+
+remote_allow(){
+    local user="${1}"
+    [ -z "${user}" ] && help && exit 1
+    ensure_group
+    sudo dseditgroup -o edit -a "${user}" -t user "${REMOTE_GROUP}"
+}
+
+remote_remove(){
+    local user="${1}"
+    [ -z "${user}" ] && help && exit 1
+    if ! group_exists; then
+        echo "No allow list configured. Nothing to remove."
+        exit 1
+    fi
+    sudo dseditgroup -o edit -d "${user}" -t user "${REMOTE_GROUP}"
+}
+
+remote_allow_all(){
+    if sudo dseditgroup -o delete "${REMOTE_GROUP}" >/dev/null 2>&1; then
+        echo "Allow list cleared. All users can log in remotely."
+    else
+        echo "Allow list was already clear or could not be removed."
+    fi
+}
+
+case $1 in
+    --help)
+        help
+        ;;
+    --status)
+        remote_status
+        ;;
+    --enable)
+        remote_enable
+        ;;
+    --disable)
+        remote_disable
+        ;;
+    --list-users)
+        remote_list_users
+        ;;
+    --allow)
+        shift
+        remote_allow "$1"
+        ;;
+    --remove)
+        shift
+        remote_remove "$1"
+        ;;
+    --allow-all)
+        remote_allow_all
+        ;;
+    *)
+        help
+        ;;
+esac
