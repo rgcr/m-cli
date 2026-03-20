@@ -142,29 +142,30 @@ We ❤️ contributions!
 
 1. Fork the repo
 2. Create your feature branch:
-   ```sh
-   git checkout -b my-new-feature
-   ```
+   `git checkout -b my-new-feature`
 3. Commit your changes:
-   ```sh
-   git commit -m 'Add some feature'
-   ```
+   `git commit -m 'Add some feature'`
 4. Push the branch:
-   ```sh
-   git push origin my-new-feature
-   ```
+   `git push origin my-new-feature`
 5. Open a Pull Request 🚀
-
----
-
-## TODO
-- [ ] Add more plugins
 
 ---
 
 ## Resources
 
 - [macOS Command Line Reference (ss64)](https://ss64.com/osx/)
+
+---
+
+## 🔗 More Projects
+
+If you found this useful, you might also enjoy:
+
+- **[iproute-mac](https://github.com/rgcr/iproute-mac)** — Native Go implementation of Linux `iproute2` for macOS (`ip`, `bridge` & `ss`). No Python/Shell wrappers.
+- **[t-mux-manager](https://github.com/rgcr/t-mux-manager)** — Lightweight tmux session and project manager written in Bash.
+
+- **[StickyShot](https://github.com/rgcr/stickyshot)** — Screenshot tool with floating sticky preview windows.
+- **[Snape](https://github.com/rgcr/snape)** — A Severus Snippet Manager — handle your snippets with precision.
 
 ---
 
