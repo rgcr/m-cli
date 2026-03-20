@@ -162,7 +162,6 @@ We ❤️ contributions!
 If you found this useful, you might also enjoy:
 
 - **[iproute-mac](https://github.com/rgcr/iproute-mac)** — Native Go implementation of Linux `iproute2` for macOS (`ip`, `bridge` & `ss`).
-  No Python/Shell wrappers.
   
 - **[t-mux-manager](https://github.com/rgcr/t-mux-manager)** — Lightweight tmux session and project manager written in Bash.
 
