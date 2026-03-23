@@ -25,7 +25,6 @@
 -  Simple, non-intrusive installation
 -  Clean and safe – doesn’t modify your system unnecessarily
 
-<br></br>
 ## Support
 
 Enjoying this tool? Consider [supporting development](https://www.buymeacoffee.com/rgcr) ☕
