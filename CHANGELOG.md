@@ -3,6 +3,12 @@
 ### All notable changes to this project will be documented in this file.
 ----
 
+## [2.0.8]
+
+### Updated
+- **`plugins/restart`**
+  - Added `--auth` flag: performs an authenticated restart via `fdesetup authrestart`, keeping FileVault unlock active across the reboot.
+
 ## [2.0.7]
 
 ### Added
