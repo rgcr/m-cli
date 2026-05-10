@@ -54,9 +54,9 @@ function __m_complete --description 'Completion function for m command'
 
     # Parse help output line by line
     for line in $help_text
-        if string match -r '^\s*--[a-zA-Z0-9_-]+' -- $line
+        if string match -qr '^\s*--[a-zA-Z0-9_-]+' -- "$line"
             # Extract option name (e.g. --enable)
-            set -l opt (string match -r -- '--[a-zA-Z0-9_-]+' -- $line)[1]
+            set -l opt (string match -r -- '--[a-zA-Z0-9_-]+' -- "$line")[1]
             # Extract possible values inside brackets [val1|val2]
             # set -l vals (string match -r '\[[^]]*\]' -- $line | string replace -r '\[|\]' '' | string replace '|' ' ')
             # Extract description by removing option and possible [values]
@@ -66,14 +66,14 @@ function __m_complete --description 'Completion function for m command'
             # FIXME: The above regexes are not working as expected, so we need to use a different approach
             # Extract possible values inside angle brackets <val1|val2>
             # set -l vals (string match -r '<[^>]*>' -- $line | string replace -r '<|>' '' | string replace '|' ' ')
-            set -l vals (string match -r '<[^>]*>' -- $line)
+            set -l vals (string match -r '<[^>]*>' -- "$line")
             if test -n "$vals"
-                set vals (string replace -r '<|>' '' -- $vals | string replace '|' ' ')
+                set vals (string replace -ar '[<>]' '' -- "$vals" | string replace -a '|' ' ')
             end
             # FIXME: The above regexes are not working as expected, so we need to use a different approach
             # Extract description by removing option and possible <values>
             set -l pattern "^\\s*$opt(\\s*<[^>]*>)?\\s*"
-            set -l desc (string replace -r $pattern '' -- $line)
+            set -l desc (string replace -r $pattern '' -- "$line")
 
             # Prepare tab char
             set -l tab (printf '\t')
@@ -87,20 +87,12 @@ function __m_complete --description 'Completion function for m command'
         end
     end
 
-    # If current word starts with --
-    if string match -q -- '--*' -- $cur
-        # Complete options with descriptions
-        for optdesc in $options
-            echo $optdesc
-        end
-        return
-    end
-
     # If previous word is an option expecting values, complete those values
-    if test $argc -ge 2
+    set -l opts_count (count $opts_keys)
+    if test $argc -ge 2; and test $opts_count -gt 0; and not string match -qr '^-' -- "$cur"
         set -l prev $words[-1]
-        for i in (seq (count $opts_keys))
-            if test $opts_keys[$i] = $prev
+        for i in (seq $opts_count)
+            if test "$opts_keys[$i]" = "$prev"
                 for val in (string split ' ' -- $opts_vals[$i])
                     echo $val
                 end
@@ -109,8 +101,16 @@ function __m_complete --description 'Completion function for m command'
         end
     end
 
+    # If current word starts with -- or is empty, complete options with descriptions
+    if test -z "$cur"; or string match -qr '^--' -- "$cur"
+        # Complete options with descriptions
+        for optdesc in $options
+            echo $optdesc
+        end
+        return
+    end
+
 end
 
 # Register completion for command m
 complete -c m -f -a "(__m_complete)"
-
