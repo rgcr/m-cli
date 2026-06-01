@@ -3,6 +3,16 @@
 ### All notable changes to this project will be documented in this file.
 ----
 
+## [2.0.8]
+
+### Added
+- **`plugins/permissions`**
+  - New plugin to manage app permissions and macOS privacy services (TCC), with support for listing, granting, resetting, and inspecting permissions for camera, microphone, location, full-disk-access, and more.
+
+### Updated
+- **`Readme.md`**
+  - Documented the new `permissions` command and the existing `music` alias in the Available Commands list.
+
 ## [2.0.7]
 
 ### Added
