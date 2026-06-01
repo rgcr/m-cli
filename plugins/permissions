@@ -1,0 +1,288 @@
+#!/usr/bin/env bash
+
+help(){
+    cat<<__EOF__
+Usage: m permissions [OPTIONS]
+
+Description: Manage app permissions and privacy settings on macOS
+
+Options:
+  --help                          Show this help message
+  --info SERVICE                  Show apps with access to SERVICE
+  --grant APP SERVICE             Grant app access to service (requires user approval)
+  --reset APP SERVICE             Reset app permission for service
+  --reset-all SERVICE             Reset all permissions for service
+  --apps                          List all installed applications (bundle IDs)
+  --services                      List all available privacy services
+
+Services:
+  camera                        Camera access
+  microphone                    Microphone access
+  location                      Location services
+  contacts                      Address book access
+  calendar                      Calendar access
+  reminders                     Reminders access
+  photos                        Photos library access
+  accessibility                 Accessibility access
+  screen-recording              Screen recording access
+  system-events                 System Events (automation)
+  full-disk-access              Full Disk Access
+  developer-tools               Developer Tools access
+
+Examples:
+  m permissions --info camera
+  m permissions --apps
+  m permissions --grant com.apple.Safari location
+  m permissions --reset com.apple.Safari location
+  m permissions --reset-all camera
+__EOF__
+}
+
+# Privacy database path
+TCC_DB="/Library/Application Support/com.apple.TCC/TCC.db"
+USER_TCC_DB="$HOME/Library/Application Support/com.apple.TCC/TCC.db"
+
+# Service mappings for TCC database
+declare -A SERVICES=(
+    ["camera"]="kTCCServiceCamera"
+    ["microphone"]="kTCCServiceMicrophone"
+    ["location"]="kTCCServiceLocation"
+    ["contacts"]="kTCCServiceAddressBook"
+    ["calendar"]="kTCCServiceCalendar"
+    ["reminders"]="kTCCServiceReminders"
+    ["photos"]="kTCCServicePhotos"
+    ["accessibility"]="kTCCServiceAccessibility"
+    ["screen-recording"]="kTCCServiceScreenCapture"
+    ["system-events"]="kTCCServiceAppleEvents"
+    ["full-disk-access"]="kTCCServiceSystemPolicyAllFiles"
+    ["developer-tools"]="kTCCServiceDeveloperTool"
+)
+
+list_apps_for_service() {
+    local service=$1
+    local tcc_service=${SERVICES[$service]}
+
+    if [ -z "$tcc_service" ]; then
+        echo "Unknown service: $service"
+        echo "Use 'm permissions --services' to see available services"
+        exit 1
+    fi
+
+    echo "Apps with $service access:"
+    echo "=========================="
+
+    # Check system database
+    if [ -r "$TCC_DB" ]; then
+        echo "System-wide permissions:"
+        sudo sqlite3 "$TCC_DB" \
+            "SELECT client, auth_value, auth_reason FROM access WHERE service='$tcc_service';" \
+            2>/dev/null | while IFS='|' read -r client auth_value auth_reason; do
+            status=$( [ "$auth_value" = "2" ] && echo " Allowed" || echo " Denied" )
+            echo "  $client: $status"
+        done
+    fi
+
+    # Check user database
+    if [ -r "$USER_TCC_DB" ]; then
+        echo "User permissions:"
+        sqlite3 "$USER_TCC_DB" \
+            "SELECT client, auth_value, auth_reason FROM access WHERE service='$tcc_service';" \
+            2>/dev/null | while IFS='|' read -r client auth_value auth_reason; do
+            status=$( [ "$auth_value" = "2" ] && echo " Allowed" || echo " Denied" )
+            echo "  $client: $status"
+        done
+    fi
+}
+
+reset_permission() {
+    local app=$1
+    local service=$2
+    local tcc_service=${SERVICES[$service]}
+
+    if [ -z "$tcc_service" ]; then
+        echo "Unknown service: $service"
+        exit 1
+    fi
+
+    # Try multiple client identifiers: app name, bundle ID, and path
+    local identifiers=("$app")
+
+    # Add bundle ID if it's an app path
+    if [[ "$app" == *.app ]] || [[ "$app" == */* ]]; then
+        local info_plist="${app}/Contents/Info.plist"
+        if [ -f "$info_plist" ]; then
+            local bundle_id=$(defaults read "${info_plist%/*}" CFBundleIdentifier 2>/dev/null)
+            [ -n "$bundle_id" ] && identifiers+=("$bundle_id")
+        fi
+    else
+        # Try to find bundle ID for app name
+        local app_path="/Applications/${app}.app"
+        if [ -d "$app_path" ]; then
+            local bundle_id=$(defaults read "$app_path/Contents/Info" CFBundleIdentifier 2>/dev/null)
+            [ -n "$bundle_id" ] && identifiers+=("$bundle_id")
+        fi
+    fi
+
+    # Direct TCC database deletion - try all identifiers
+    if [ -w "$USER_TCC_DB" ] || [ -w "$(dirname "$USER_TCC_DB")" ]; then
+        local total_deleted=0
+
+        for identifier in "${identifiers[@]}"; do
+            local rows_deleted=$(sqlite3 "$USER_TCC_DB" \
+                "DELETE FROM access WHERE service='$tcc_service' AND client='$identifier'; SELECT changes();" \
+                2>/dev/null | tail -1)
+            total_deleted=$((total_deleted + rows_deleted))
+        done
+
+        if [ "$total_deleted" -gt 0 ]; then
+            echo " Permission reset for $app"
+        else
+            echo " No permission found for $app (app may not have had $service access)"
+        fi
+    else
+        echo " Cannot write to TCC database. Manual reset required via System Settings > Privacy & Security"
+    fi
+}
+
+reset_all_permissions() {
+    local service=$1
+    local tcc_service=${SERVICES[$service]}
+
+    if [ -z "$tcc_service" ]; then
+        echo "Unknown service: $service"
+        exit 1
+    fi
+
+    # Direct TCC database deletion for all entries of this service
+    if [ -w "$USER_TCC_DB" ] || [ -w "$(dirname "$USER_TCC_DB")" ]; then
+        # First, count how many entries exist
+        local entries_count=$(sqlite3 "$USER_TCC_DB" \
+            "SELECT COUNT(*) FROM access WHERE service='$tcc_service';" \
+            2>/dev/null)
+
+        if [ "$entries_count" -gt 0 ]; then
+            # Delete the entries
+            sqlite3 "$USER_TCC_DB" \
+                "DELETE FROM access WHERE service='$tcc_service';" \
+                2>/dev/null && \
+                echo " All $service permissions reset ($entries_count entries removed)" || \
+                echo " Failed to delete $service permissions"
+        else
+            echo " No $service permissions found to reset"
+        fi
+    else
+        echo " Cannot write to TCC database. Manual reset required via System Settings > Privacy & Security"
+    fi
+}
+
+grant_permission() {
+    local app=$1
+    local service=$2
+    local tcc_service=${SERVICES[$service]}
+
+    if [ -z "$tcc_service" ]; then
+        echo "Unknown service: $service"
+        echo "Use 'm permissions --services' to see available services"
+        exit 1
+    fi
+
+    # Get app bundle identifier if it's a path
+    local bundle_id="$app"
+    if [[ "$app" == *.app ]] || [[ "$app" == */* ]]; then
+        # Try to get bundle ID from app path
+        local info_plist="${app}/Contents/Info.plist"
+        if [ -f "$info_plist" ]; then
+            bundle_id=$(defaults read "${info_plist%/*}" CFBundleIdentifier 2>/dev/null) || bundle_id="$app"
+        fi
+    fi
+
+    # Direct TCC database insertion
+    local timestamp=$(date +%s)
+
+    if [ -w "$USER_TCC_DB" ] || [ -w "$(dirname "$USER_TCC_DB")" ]; then
+        sqlite3 "$USER_TCC_DB" \
+            "INSERT OR REPLACE INTO access (service, client, client_type, auth_value, auth_reason, auth_version, csreq, policy_id, indirect_object_identifier_type, indirect_object_identifier, indirect_object_code_identity, flags, last_modified) VALUES ('$tcc_service', '$bundle_id', 0, 2, 3, 1, NULL, NULL, NULL, 'UNUSED', NULL, 0, $timestamp);" \
+            2>/dev/null && \
+            echo " Permission granted successfully" && return
+    fi
+
+    # Fallback to manual instructions if database method fails
+    echo " Failed to grant permission automatically"
+    echo ""
+    echo "Manual steps:"
+    echo "1. Open System Settings > Privacy & Security (or System Preferences > Security & Privacy)"
+    echo "2. Go to Privacy tab"
+    echo "3. Select '$service' from the list"
+    echo "4. Click the lock to make changes"
+    echo "5. Click '+' and add '$app' to the list"
+}
+
+show_status() {
+    echo "macOS Privacy & Permissions Overview"
+    echo "==================================="
+    echo ""
+
+    # Show some general TCC info
+    echo "Privacy databases:"
+    [ -r "$TCC_DB" ] && echo " System: $TCC_DB" || echo " System: Not accessible"
+    [ -r "$USER_TCC_DB" ] && echo " User: $USER_TCC_DB" || echo " User: Not accessible"
+
+    echo ""
+    echo "Use 'm permissions --list SERVICE' to see apps with specific permissions"
+    echo "Use 'm permissions --services' to see all available services"
+}
+
+list_services() {
+    echo "Available privacy services:"
+    echo "=========================="
+    for service in "${!SERVICES[@]}"; do
+        echo "  $service"
+    done
+}
+
+list_apps() {
+    echo "Installed applications:"
+    echo "======================"
+    mdfind "kMDItemContentType == 'com.apple.application-bundle'" | \
+        while read -r app_path; do
+            # Get bundle identifier from Info.plist
+            local bundle_id=$(defaults read "$app_path/Contents/Info" CFBundleIdentifier 2>/dev/null)
+            if [ -n "$bundle_id" ]; then
+                echo "$bundle_id"
+            else
+                # Fallback to app name without .app extension if no bundle ID found
+                echo "$(basename "$app_path" .app)"
+            fi
+        done | sort
+}
+
+case $1 in
+    --help)
+        help
+        ;;
+    --info)
+        [ -z "$2" ] && help && exit 1
+        list_apps_for_service "$2"
+        ;;
+    --grant)
+        [ -z "$2" ] || [ -z "$3" ] && help && exit 1
+        grant_permission "$2" "$3"
+        ;;
+    --reset)
+        [ -z "$2" ] || [ -z "$3" ] && help && exit 1
+        reset_permission "$2" "$3"
+        ;;
+    --reset-all)
+        [ -z "$2" ] && help && exit 1
+        reset_all_permissions "$2"
+        ;;
+    --apps)
+        list_apps
+        ;;
+    --services)
+        list_services
+        ;;
+    *)
+        help && exit 1
+        ;;
+esac
