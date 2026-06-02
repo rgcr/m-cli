@@ -3,17 +3,19 @@
 
 help(){
     cat<<__EOF__
-Usage: m restart [--force | --help]
+Usage: m restart [--force | --auth | --help]
 
 Description: Restart the computer.
 
 Options:
   --help    Show this help message
   --force   Force restart without confirmation
+  --auth    Authenticated restart; keeps FileVault unlock active across reboot
 
 Examples:
   m restart          # Restart computer (needs confirmation)
   m restart --force  # Restart computer (without confirmation)
+  m restart --auth   # Authenticated restart (requires sudo; prompts for FileVault password)
 __EOF__
 }
 
@@ -25,6 +27,10 @@ force_restart(){
    osascript -e 'tell app "System Events" to restart'
 }
 
+auth_restart(){
+    sudo fdesetup authrestart
+}
+
 
 case $1 in
     --help)
@@ -32,6 +38,9 @@ case $1 in
         ;;
     -f|--force)
         force_restart
+        ;;
+    -a|--auth)
+        auth_restart
         ;;
     *)
         restart
