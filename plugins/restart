@@ -24,7 +24,7 @@ restart(){
 }
 
 force_restart(){
-   osascript -e 'tell app "System Events" to restart'
+    osascript -e 'tell app "System Events" to restart'
 }
 
 auth_restart(){
