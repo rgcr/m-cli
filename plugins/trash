@@ -25,19 +25,67 @@ __EOF__
 
 
 trash_clean(){
-    if [ ! -d "$HOME/.Trash" ]; then
-        echo "Trash directory not found."
-        exit 1
+    local user_uid
+    user_uid=$(id -u)
+    local cleaned_any=0
+
+    # Home trash (includes hidden dotfiles like .DS_Store)
+    if [ -d "$HOME/.Trash" ]; then
+        echo "Cleaning $HOME/.Trash..."
+        sudo chflags -R nouchg "$HOME/.Trash/." 2>/dev/null
+        sudo find "$HOME/.Trash" -mindepth 1 -delete 2>/dev/null
+        cleaned_any=1
     fi
-    echo "Cleaning trash..."
-    sudo chflags -R nouchg $HOME/.Trash/* 2>/dev/null
-    sudo rm -rf $HOME/.Trash/* 2>/dev/null
-    echo "Trash cleaned successfully!"
+
+    # Per-volume trash (each mounted volume has /Volumes/<NAME>/.Trashes/<UID>)
+    if [ -d /Volumes ]; then
+        for vol in /Volumes/*; do
+            local vol_trash="$vol/.Trashes/$user_uid"
+            if [ -d "$vol_trash" ]; then
+                echo "Cleaning $vol_trash..."
+                sudo chflags -R nouchg "$vol_trash/." 2>/dev/null
+                sudo find "$vol_trash" -mindepth 1 -delete 2>/dev/null
+                cleaned_any=1
+            fi
+        done
+    fi
+
+    if [ "$cleaned_any" -eq 1 ]; then
+        echo "Trash cleaned successfully!"
+    else
+        echo "No trash found to clean."
+    fi
 }
 
 trash_status(){
-    du -ch $HOME/.Trash/* 2>/dev/null | tail -n 1 | awk '{print "Size: ", $1}'
-    find $HOME/.Trash/* 2>/dev/null | wc -l | awk '{print "Number of files:", $1}'
+    local user_uid
+    user_uid=$(id -u)
+    local total_files=0
+
+    if [ -d "$HOME/.Trash" ]; then
+        local size
+        size=$(du -sh "$HOME/.Trash" 2>/dev/null | awk '{print $1}')
+        local files
+        files=$(find "$HOME/.Trash" -mindepth 1 2>/dev/null | wc -l | tr -d ' ')
+        echo "$HOME/.Trash: size=${size:-0B}, files=$files"
+        total_files=$((total_files + files))
+    fi
+
+    if [ -d /Volumes ]; then
+        for vol in /Volumes/*; do
+            local vol_trash="$vol/.Trashes/$user_uid"
+            if [ -d "$vol_trash" ]; then
+                local size
+                size=$(du -sh "$vol_trash" 2>/dev/null | awk '{print $1}')
+                local files
+                files=$(find "$vol_trash" -mindepth 1 2>/dev/null | wc -l | tr -d ' ')
+                echo "$vol_trash: size=${size:-0B}, files=$files"
+                total_files=$((total_files + files))
+            fi
+        done
+    fi
+
+    echo "Total files: $total_files"
 }
 
 check_privilege(){
