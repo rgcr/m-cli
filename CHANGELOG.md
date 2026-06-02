@@ -3,6 +3,22 @@
 ### All notable changes to this project will be documented in this file.
 ----
 
+## [2.0.9]
+
+### Added
+- **`plugins/restart`**
+  - New `--auth` flag: performs an authenticated restart via `sudo fdesetup authrestart`,
+    keeping FileVault unlock active across the reboot. Useful in Screen Sharing / remote
+    sessions. Contributed by @cgoldsby (PR #212).
+- **`tests/test_restart.sh`**
+  - Bats tests covering `--help`, `--force`, and `--auth` documentation.
+
+### Fixed
+- **`completions/fish/m.fish`**
+  - Suppress duplicate option-name leakage from unquoted `string match` in fish completion.
+  - Correctly handle `<value1|value2>` placeholder parsing and value-completion for option arguments.
+  - Contributed by @keta1 (PR #213).
+
 ## [2.0.8]
 
 ### Added
