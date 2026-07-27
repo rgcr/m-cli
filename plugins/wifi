@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 
+MAC_MAJOR=$(/usr/bin/sw_vers -productVersion | /usr/bin/awk -F. '{print $1}')
+
 # Detect WiFi device dynamically, allow override via environment variable
 _W_DEVICE=${_W_DEVICE:-$(networksetup -listallhardwareports | awk '/Wi-Fi|AirPort/{getline; print $2}')}
 _W_DEVICE=${_W_DEVICE:-en0}  # fallback if detection fails
@@ -22,6 +24,9 @@ Options:
   --disable                   Turn off wifi
   --enable                    Turn on wifi
   --connect ESSID [PASSWORD]  Connect to a wifi network (prompt for password if not provided)
+  --showmenu                  Show Wi-Fi status icon in menu bar
+  --hidemenu                  Hide Wi-Fi status icon in menu bar
+  --menustatus                Check Wi-Fi menu bar icon visibility
 __EOF__
 }
 
@@ -74,40 +79,109 @@ wifi_forget(){
     sudo networksetup -removepreferredwirelessnetwork ${_W_DEVICE} "${essid}"
 }
 
+wifi_show_menu(){
+    if [ "$MAC_MAJOR" -ge 11 ]; then
+        defaults write com.apple.controlcenter "NSStatusItem Visible WiFi" -bool true 2>/dev/null
+        defaults write com.apple.controlcenter "NSStatusItem VisibleCC WiFi" -bool true 2>/dev/null
+        defaults write com.apple.controlcenter WiFi -int 18 2>/dev/null || true
+        killall ControlCenter &>/dev/null || true
+    else
+        defaults write com.apple.systemuiserver "NSStatusItem Visible com.apple.menuextra.airport" -bool true 2>/dev/null
+        killall SystemUIServer &>/dev/null || true
+    fi
+    echo "Wi-Fi menu bar status set to: Visible"
+}
+
+wifi_hide_menu(){
+    if [ "$MAC_MAJOR" -ge 11 ]; then
+        defaults write com.apple.controlcenter "NSStatusItem Visible WiFi" -bool false 2>/dev/null
+        defaults write com.apple.controlcenter "NSStatusItem VisibleCC WiFi" -bool false 2>/dev/null
+        defaults write com.apple.controlcenter WiFi -int 24 2>/dev/null || true
+        killall ControlCenter &>/dev/null || true
+    else
+        defaults write com.apple.systemuiserver "NSStatusItem Visible com.apple.menuextra.airport" -bool false 2>/dev/null
+        killall SystemUIServer &>/dev/null || true
+    fi
+    echo "Wi-Fi menu bar status set to: Hidden"
+}
+
+wifi_menu_status(){
+    local status="Hidden"
+    if [ "$MAC_MAJOR" -ge 11 ]; then
+        local val
+        val=$(defaults read com.apple.controlcenter "NSStatusItem VisibleCC WiFi" 2>/dev/null || echo "0")
+        if [ "$val" = "1" ] || [ "$val" = "true" ]; then
+            status="Visible"
+        fi
+    else
+        local val
+        val=$(defaults read com.apple.systemuiserver "NSStatusItem Visible com.apple.menuextra.airport" 2>/dev/null || echo "0")
+        if [ "$val" = "1" ] || [ "$val" = "true" ]; then
+            status="Visible"
+        fi
+    fi
+    echo "Wi-Fi menu bar icon: $status"
+}
+
 case $1 in
-    --help)
+    --help|help|-h)
         help
         ;;
-    --scan)
+    --scan|scan)
         wifi_scan
         ;;
-    --status)
+    --status|status)
         wifi_status
         ;;
-    --disable)
+    --disable|disable)
         wifi_disable
         ;;
-    --enable)
+    --enable|enable)
         wifi_enable
         ;;
-    --list)
+    --list|list)
         wifi_list_known
         ;;
-    --connect)
+    --connect|connect)
         shift
         connect_network "$@"
         ;;
-    --history)
+    --history|history)
         shift
         wifi_history
         ;;
-    --showpassword)
+    --showpassword|showpassword)
         shift
         wifi_showpassword "$@"
         ;;
-    --forget)
+    --forget|forget)
         shift
         wifi_forget "$@"
+        ;;
+    --showmenu|showmenu)
+        wifi_show_menu
+        ;;
+    --hidemenu|hidemenu)
+        wifi_hide_menu
+        ;;
+    --menustatus|menustatus)
+        wifi_menu_status
+        ;;
+    --menubar|menubar)
+        case $2 in
+            show|enable|on)
+                wifi_show_menu
+                ;;
+            hide|disable|off)
+                wifi_hide_menu
+                ;;
+            status)
+                wifi_menu_status
+                ;;
+            *)
+                wifi_menu_status
+                ;;
+        esac
         ;;
     *)
         help
