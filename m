@@ -27,23 +27,23 @@ get_version(){
         return 1
     fi
 
-    local git_tag=$(git -C ${MCLI_PATH} describe --tags --exact-match HEAD 2>/dev/null)
-    local git_hash=$(git -C ${MCLI_PATH} rev-parse --short HEAD 2>/dev/null)
+    local git_tag=$(git -C "${MCLI_PATH}" describe --tags --exact-match HEAD 2>/dev/null)
+    local git_hash=$(git -C "${MCLI_PATH}" rev-parse --short HEAD 2>/dev/null)
     if [ -n "$git_tag" ]; then
         echo "m-cli version: $git_tag ($git_hash)"
-    else
+        else
         echo "m-cli version: $git_hash (not tagged)"
     fi
 }
 
 update_mcli(){
     confirm "Do you want to update m-cli? [y/n]: " || exit 0
-    INSTALL_DIR=${MCLI_PATH} bash ${MCLI_PATH}/install.sh
+    INSTALL_DIR="${MCLI_PATH}" bash "${MCLI_PATH}/install.sh"
 }
 
 uninstall_mcli(){
     confirm "Do you want to uninstall m-cli? [y/n]: " || exit 0
-    sudo rm -rf ${MCLI_PATH} 2>/dev/null \
+    sudo rm -rf "${MCLI_PATH}" 2>/dev/null \
         sudo rm -f "/usr/local/bin/m" 2>/dev/null \
         sudo rm -f "${HOME}/.local/bin/m" 2>/dev/null \
         echo "Done !"
@@ -65,7 +65,7 @@ Options:
 COMMANDS:
 __EOF__
 
-    for i in "$MCLI_PATH"/plugins/*; do
+    for i in "${MCLI_PATH}"/plugins/*; do
         [ -f "$i" ] && [ ! -L "$i" ] && echo "    ${i##*/}"
     done
 }
@@ -89,6 +89,6 @@ esac
 COMMAND=${1}
 shift;
 
-[ ! -f ${MCLI_PATH}/plugins/${COMMAND} ] && usage && exit 1
+[ ! -f "${MCLI_PATH}/plugins/${COMMAND}" ] && usage && exit 1
 
-${MCLI_PATH}/plugins/${COMMAND} "$@"
+"${MCLI_PATH}/plugins/${COMMAND}" "$@"
