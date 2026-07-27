@@ -2,25 +2,40 @@
 
 help(){
     cat<<__EOF__
-Usage:  m dns [OPTIONS]
+Usage: m dns [OPTIONS] [ARGUMENTS]
 
-Description:  Manage DNS settings on macOS
+Description: Manage DNS settings on macOS
 
 Options:
-  --help                Show this help message
-  --list                List current DNS servers
-  --flush               Flush local DNS cache
-  --add IP|HOSTNAME     Add a DNS server by IP or hostname
+  --help                 Show this help message
+  --list [SERVICE]       List current DNS servers for network service (default: active service)
+  --flush                Flush local DNS cache
+  --add IP [SERVICE]     Add a DNS server IP to network service
+  --remove IP [SERVICE]  Remove a DNS server IP from network service
+  --clear [SERVICE]      Reset DNS servers to DHCP defaults for network service
 __EOF__
 }
 
+get_primary_service(){
+    local default_if
+    default_if=$(route -n get default 2>/dev/null | awk '/interface:/ {print $2}')
+    [ -z "$default_if" ] && default_if="en0"
+
+    local service
+    service=$(networksetup -listnetworkserviceorder 2>/dev/null | grep -B 1 "Device: ${default_if}" | head -n 1 | sed -E 's/^\([0-9]+\) //')
+    if [ -z "$service" ]; then
+        service="Wi-Fi"
+    fi
+    echo "$service"
+}
 
 flushdns(){
+    local VERSION
     VERSION=$(sw_vers -productVersion)
     echo "Flushing dns..."
-    if echo $VERSION | grep -E '^10\.10(\.[0-3])?$' &>/dev/null; then
+    if echo "$VERSION" | grep -E '^10\.10(\.[0-3])?$' &>/dev/null; then
         sudo discoveryutil mdnsflushcache
-    elif echo $VERSION | grep -E '^10\.6(\.[0-8])?$' &>/dev/null; then
+    elif echo "$VERSION" | grep -E '^10\.6(\.[0-8])?$' &>/dev/null; then
         sudo dscacheutil -flushcache
     else
         sudo killall -HUP mDNSResponder
@@ -28,29 +43,138 @@ flushdns(){
 }
 
 listdns(){
-    echo "List of the DNS servers:"
-    cat /etc/resolv.conf | grep nameserver | cut -b 11-
+    local service="${1}"
+    if [ -z "$service" ]; then
+        service=$(get_primary_service)
+    fi
+
+    echo "DNS servers for network service: ${service}"
+    local servers
+    servers=$(networksetup -getdnsservers "${service}" 2>/dev/null)
+    if echo "$servers" | grep -q "aren't any DNS Servers"; then
+        echo "  (Using default router / DHCP DNS)"
+    else
+        echo "$servers"
+    fi
+
+    echo ""
+    echo "Active resolver addresses (/etc/resolv.conf):"
+    grep nameserver /etc/resolv.conf 2>/dev/null | cut -d ' ' -f 2- | sed 's/^/  /'
 }
 
 adddns(){
-    [ -z "${1}" ] && help && exit 1
-    sudo sh -c "echo nameserver '${1}' >> /etc/resolv.conf"
-    echo "${1} added"
+    local ip="${1}"
+    local service="${2}"
+
+    if [ -z "$ip" ]; then
+        help && exit 1
+    fi
+
+    if [ -z "$service" ]; then
+        service=$(get_primary_service)
+    fi
+
+    local current_servers_raw
+    current_servers_raw=$(networksetup -getdnsservers "${service}" 2>/dev/null)
+
+    local current_servers=()
+    if ! echo "$current_servers_raw" | grep -q "aren't any DNS Servers"; then
+        while read -r line; do
+            [ -n "$line" ] && current_servers+=("$line")
+        done <<< "$current_servers_raw"
+    fi
+
+    for existing in "${current_servers[@]}"; do
+        if [ "$existing" = "$ip" ]; then
+            echo "DNS server ${ip} is already configured on ${service}"
+            return 0
+        fi
+    done
+
+    current_servers+=("$ip")
+
+    sudo networksetup -setdnsservers "${service}" "${current_servers[@]}"
+    echo "Added ${ip} to DNS servers on ${service}"
+    flushdns
 }
 
+removedns(){
+    local ip="${1}"
+    local service="${2}"
+
+    if [ -z "$ip" ]; then
+        help && exit 1
+    fi
+
+    if [ -z "$service" ]; then
+        service=$(get_primary_service)
+    fi
+
+    local current_servers_raw
+    current_servers_raw=$(networksetup -getdnsservers "${service}" 2>/dev/null)
+
+    if echo "$current_servers_raw" | grep -q "aren't any DNS Servers"; then
+        echo "No custom DNS servers configured on ${service}"
+        return 0
+    fi
+
+    local new_servers=()
+    local found=0
+    while read -r line; do
+        if [ "$line" = "$ip" ]; then
+            found=1
+        elif [ -n "$line" ]; then
+            new_servers+=("$line")
+        fi
+    done <<< "$current_servers_raw"
+
+    if [ $found -eq 0 ]; then
+        echo "DNS server ${ip} not found on ${service}"
+        return 0
+    fi
+
+    if [ ${#new_servers[@]} -eq 0 ]; then
+        sudo networksetup -setdnsservers "${service}" empty
+    else
+        sudo networksetup -setdnsservers "${service}" "${new_servers[@]}"
+    fi
+
+    echo "Removed ${ip} from DNS servers on ${service}"
+    flushdns
+}
+
+cleardns(){
+    local service="${1}"
+    if [ -z "$service" ]; then
+        service=$(get_primary_service)
+    fi
+
+    sudo networksetup -setdnsservers "${service}" empty
+    echo "Reset DNS servers to DHCP defaults on ${service}"
+    flushdns
+}
 
 case $1 in
-    --help)
+    --help|help|-h)
         help
         ;;
-    --list)
-        listdns
+    --list|list)
+        shift
+        listdns "$@"
         ;;
-    --add)
+    --add|add)
         shift
         adddns "$@"
         ;;
-    --flush)
+    --remove|remove|del|delete)
+        shift
+        removedns "$@"
+        ;;
+    --clear|clear|reset)
+        shift
+        cleardns "$@"
+        ;;
+    --flush|flush)
         flushdns
         ;;
     *)
