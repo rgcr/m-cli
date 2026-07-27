@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
-MAC_VERSION=`/usr/bin/sw_vers -productVersion | /usr/bin/awk -F. '{printf "%d%03d%03d\n", $1, $2, $3}'`
+MAC_MAJOR=$(/usr/bin/sw_vers -productVersion | /usr/bin/awk -F. '{print $1}')
+MAC_MINOR=$(/usr/bin/sw_vers -productVersion | /usr/bin/awk -F. '{print $2}')
 
 music_cmd="iTunes"
 # check if >= Catalina (10.15)
 # iTunes was renamed to Music
-if [ `echo "${MAC_VERSION} > 10015000" | bc -l` ]
-then
+if [ "${MAC_MAJOR}" -gt 10 ] || { [ "${MAC_MAJOR}" -eq 10 ] && [ "${MAC_MINOR}" -ge 15 ]; }; then
   music_cmd="Music"
 fi
 
@@ -21,11 +21,13 @@ Options:
   --status          Show current status
   --play            Play current track
   --playpause       Play/pause current track
+  --toggle          Toggle play/pause current track
   --stop            Stop current track
   --pause           Pause current track
   --next            Play next track
   --prev            Play previous track
   --mute            Mute ${music_cmd}
+  --unmute          Unmute ${music_cmd}
   --vol LEVEL       Set application volume to LEVEL (0-100)
   --quit            Quit ${music_cmd}
 __EOF__
@@ -57,41 +59,41 @@ set_volume(){
 }
 
 case $1 in
-    --help)
+    --help|help|-h)
         help
         ;;
-    --status)
+    --status|status)
         show_status
         ;;
-    --play)
+    --play|play)
         osascript -e "tell application \"${music_cmd}\" to play"
         ;;
-    --playpause)
+    --playpause|--toggle|playpause|toggle|play/pause)
         osascript -e "tell application \"${music_cmd}\" to playpause"
         ;;
-    --pause)
+    --pause|pause)
         osascript -e "tell application \"${music_cmd}\" to pause"
         ;;
-    --next)
+    --next|next)
         osascript -e "tell application \"${music_cmd}\" to next track"
         ;;
-    --prev)
+    --prev|prev)
         osascript -e "tell application \"${music_cmd}\" to previous track"
         ;;
-    --mute)
+    --mute|mute)
         osascript -e "tell application \"${music_cmd}\" to set mute to true"
         ;;
-    --unmute)
+    --unmute|unmute)
         osascript -e "tell application \"${music_cmd}\" to set mute to false"
         ;;
-    --vol)
+    --vol|vol)
         shift
         set_volume "$@"
         ;;
-    --stop)
+    --stop|stop)
         osascript -e "tell application \"${music_cmd}\" to stop"
         ;;
-    --quit)
+    --quit|quit)
         osascript -e "tell application \"${music_cmd}\" to quit"
         ;;
     *)
