@@ -8,9 +8,10 @@ Description:  Manage DNS settings on macOS
 
 Options:
   --help                Show this help message
-  --list                List current DNS servers
+  --list [SERVICE]      Show active DNS resolvers, or configured servers for SERVICE
   --flush               Flush local DNS cache
-  --add IP|HOSTNAME     Add a DNS server by IP or hostname
+  --add IP [SERVICE]    Add a DNS server to SERVICE (default: primary network service).
+                        If SERVICE uses automatic DNS, this sets an explicit server list.
 __EOF__
 }
 
@@ -28,14 +29,56 @@ flushdns(){
 }
 
 listdns(){
-    echo "List of the DNS servers:"
-    cat /etc/resolv.conf | grep nameserver | cut -b 11-
+    if [ -n "$1" ]; then
+        networksetup -getdnsservers "$1"
+    else
+        scutil --dns
+    fi
+}
+
+primary_service(){
+    local service_id service_name
+    service_id=$(printf 'get State:/Network/Global/IPv4\nd.show\n' | scutil | \
+        awk '$1 == "PrimaryService" { print $3; exit }')
+    if [ -z "$service_id" ]; then
+        echo "Could not find the primary network service. Specify SERVICE." >&2
+        return 1
+    fi
+
+    service_name=$(printf 'get Setup:/Network/Service/%s\nd.show\n' "$service_id" | scutil | \
+        awk '/UserDefinedName[[:space:]]*:/ { sub(/^.*UserDefinedName[[:space:]]*:[[:space:]]*/, ""); print; exit }')
+    if [ -z "$service_name" ]; then
+        echo "Could not find the primary network service name. Specify SERVICE." >&2
+        return 1
+    fi
+    printf '%s\n' "$service_name"
 }
 
 adddns(){
     [ -z "${1}" ] && help && exit 1
-    sudo sh -c "echo nameserver '${1}' >> /etc/resolv.conf"
-    echo "${1} added"
+    local server="$1"
+    local service="$2"
+    local current line
+    local servers=()
+
+    if [ -z "$service" ]; then
+        service=$(primary_service) || return 1
+    fi
+    current=$(networksetup -getdnsservers "$service") || return 1
+    if [[ "$current" != "There aren't any DNS Servers set on "* ]]; then
+        while IFS= read -r line; do
+            [ -z "$line" ] && continue
+            if [[ "$line" == *[[:space:]]* ]]; then
+                echo "Unexpected DNS server list for '$service': $line" >&2
+                return 1
+            fi
+            [ "$line" = "$server" ] && echo "$server is already configured for $service" && return 0
+            servers+=("$line")
+        done <<< "$current"
+    fi
+
+    sudo networksetup -setdnsservers "$service" "${servers[@]}" "$server" || return 1
+    echo "$server added to $service"
 }
 
 
@@ -44,11 +87,11 @@ case $1 in
         help
         ;;
     --list)
-        listdns
+        listdns "$2"
         ;;
     --add)
         shift
-        adddns "$@"
+        adddns "$1" "$2"
         ;;
     --flush)
         flushdns
