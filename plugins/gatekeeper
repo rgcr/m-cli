@@ -11,7 +11,7 @@ OPTIONS:
   --status                                  Show the current status of Gatekeeper.
   --list                                    List all Gatekeeper rules.
   --enable                                  Enable Gatekeeper
-  --disable                                 Disable gatekeeper
+  --disable                                 Disable Gatekeeper (requires a Settings step on macOS 15+)
   --enable-rule  RULE_NAME                  Enable a specific Gatekeeper rule.
   --disable-rule RULE_NAME                  Disable a specific Gatekeeper rule.
   --create-rule  RULENAME /path/to/program  Create a new Gatekeeper rule for the specified application.
@@ -42,17 +42,52 @@ gk_toggle_rule(){
         echo "Rule name is required." >&2
         return 1
     fi
-    spctl --${action} --label "${rule_name}"
+    sudo spctl --${action} --label "${rule_name}"
 }
 
 gk_create_rule(){
     local rule_name="${1}"
     local app_path="${2}"
     if [ -z "${rule_name}" ] || [ -z "${app_path}" ]; then
-        echo "Usage: m gatekeeper create-rule RULENAME /path/to/program" >&2
+        echo "Usage: m gatekeeper --create-rule RULENAME /path/to/program" >&2
         return 1
     fi
-    spctl --add --label "${rule_name}" "${app_path}"
+    sudo spctl --add --label "${rule_name}" "${app_path}"
+}
+
+macos_major_version(){
+    local version major
+    version=$(sw_vers -productVersion) || return 1
+    major=${version%%.*}
+    case "$major" in
+        ''|*[!0-9]*)
+            echo "Could not determine the macOS version: $version" >&2
+            return 1
+            ;;
+    esac
+    printf '%s\n' "$major"
+}
+
+gk_enable(){
+    local major
+    major=$(macos_major_version) || return 1
+    if [ "$major" -ge 15 ]; then
+        sudo spctl --global-enable
+    else
+        sudo spctl --master-enable
+    fi
+}
+
+gk_disable(){
+    local major
+    major=$(macos_major_version) || return 1
+    if [ "$major" -ge 15 ]; then
+        sudo spctl --global-disable || return 1
+        echo "Choose Anywhere in System Settings > Privacy & Security > Security to disable Gatekeeper." >&2
+        return 1
+    else
+        sudo spctl --master-disable
+    fi
 }
 
 option="${1}"
@@ -69,10 +104,10 @@ case "${option}" in
         gk_list "$*"
         ;;
     --enable)
-        spctl --master-enable
+        gk_enable
         ;;
     --disable)
-        spctl --master-disable
+        gk_disable
         ;;
     --enable-rule)
         gk_toggle_rule enable "$*"
