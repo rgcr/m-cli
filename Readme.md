@@ -130,6 +130,7 @@ m dock --help
 
 ### Notes
 - Some `macos` commands needs to be executed with `sudo` internally, so it's recommended you have `sudo` privileges.
+- `m fan --speed` and `m fan --monitor` use the `powermetrics` SMC sampler when available. On Macs without that sampler, install [iSMC](https://github.com/dkorunic/iSMC) to read fan speeds.
 - The `trash` command will not work unless your terminal (e.g. `iTerm2`, `Terminal.app`) has the necessary permissions to access the Trash folder. You can grant this permission in `System Preferences > Security & Privacy > Privacy > Full Disk Access`.
 
 ---

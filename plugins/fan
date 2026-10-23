@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -o pipefail
+
 help(){
     cat<<__EOF__
 Usage: m fan [OPTIONS]
@@ -18,17 +20,51 @@ is_on_battery_power(){
     return "${?}"
 }
 
+fan_reader(){
+    if powermetrics --help 2>&1 | grep -Eq '^[[:space:]]+smc[[:space:]]'; then
+        printf 'powermetrics\n'
+    elif command -v iSMC >/dev/null 2>&1; then
+        printf 'ismc\n'
+    else
+        printf 'Fan readings require the smc powermetrics sampler or iSMC (https://github.com/dkorunic/iSMC).\n' >&2
+        return 1
+    fi
+}
+
+ismc_fan_speeds(){
+    iSMC fans --output ascii | awk '/Current Speed/ { print; found = 1 } END { if (!found) exit 1 }'
+}
+
 fan_speed_monitor() {
-    sudo powermetrics -i 200 --samplers smc |awk 'BEGIN {  print "Monitoring ..." ; } /Fan/{ printf "  %s\r", $0 } fflush(stdout)'
+    local reader
+    reader="$(fan_reader)" || return
+    if [[ "$reader" == powermetrics ]]; then
+        sudo powermetrics -i 200 --samplers smc | awk 'BEGIN { print "Monitoring ..." } /Fan/ { printf "  %s\r", $0; fflush(stdout) }'
+    else
+        while :; do
+            [[ -t 1 ]] && printf '\033[H\033[2J'
+            printf 'Monitoring ... (Ctrl-C to stop)\n'
+            ismc_fan_speeds || return
+            sleep 1
+        done
+    fi
 }
 
 fan_speed(){
-    if ! is_on_battery_power; then
-        printf 'This machine appears to be running on battery power. Please try again after connecting to a power outlet.\n'
-      return
-    fi
+    local reader
+    reader="$(fan_reader)" || return
+    if [[ "$reader" == ismc ]]; then
+        ismc_fan_speeds
+    else
+        if ! is_on_battery_power; then
+            printf 'This machine appears to be running on battery power. Please try again after connecting to a power outlet.\n'
+            return
+        fi
 
-    echo $'Fan: '"$(sudo powermetrics -s smc -n 1 -i 200 -f plist | plutil -extract 'smc.fan' xml1 -o - - | plutil -p -)"$' RPM'
+        local speed
+        speed="$(sudo powermetrics -s smc -n 1 -i 200 -f plist | plutil -extract 'smc.fan' xml1 -o - - | plutil -p -)" || return
+        printf 'Fan: %s RPM\n' "$speed"
+    fi
 }
 
 case $1 in
