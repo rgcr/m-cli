@@ -27,13 +27,17 @@ force_shutdown(){
 
 
 case $1 in
-    help)
+    --help|help)
         help
         ;;
     --force)
         force_shutdown
         ;;
-    *)
+    '')
         shutdown
+        ;;
+    *)
+        help >&2
+        exit 1
         ;;
 esac

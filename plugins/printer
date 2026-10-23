@@ -17,13 +17,13 @@ __EOF__
 }
 
 case $1 in
-    help)
+    --help|help)
         help
         ;;
     --settings)
         /usr/bin/lpoptions -l
         ;;
-    --name)
+    --names)
         lpstat -p | awk '{print $2}'
         ;;
     --queue)

@@ -15,25 +15,67 @@ Options:
 __EOF__
 }
 
-SPACE="            "
+HOSTS_FILE="${HOSTS_FILE:-/etc/hosts}"
+
+remove_host(){
+    local host="$1"
+    local temporary
+    temporary=$(mktemp "${TMPDIR:-/tmp}/m-cli-hosts.XXXXXX") || return 1
+
+    if ! awk -v host="$host" '
+        /^[[:space:]]*#/ { print; next }
+        {
+            entry = $1
+            aliases = 0
+            matched = 0
+            for (i = 2; i <= NF; i++) {
+                if ($i ~ /^#/) break
+                if ($i == host) {
+                    matched = 1
+                } else {
+                    entry = entry "\t" $i
+                    aliases++
+                }
+            }
+            if (!matched) {
+                print
+            } else if (aliases > 0) {
+                for (; i <= NF; i++) entry = entry " " $i
+                print entry
+            }
+        }
+    ' "$HOSTS_FILE" > "$temporary"; then
+        rm -f "$temporary"
+        return 1
+    fi
+
+    if ! sudo cp "$temporary" "$HOSTS_FILE"; then
+        rm -f "$temporary"
+        return 1
+    fi
+    rm -f "$temporary"
+    m dns --flush
+}
 
 case $1 in
-help)
+--help|help)
     help
     ;;
-ls)
-    sudo echo "IP $SPACE DOMAIN" && \
-        cat /etc/hosts | grep -v "#" | grep -v "^$"
+--ls)
+    printf 'IP\tDOMAIN\n'
+    awk '!/^[[:space:]]*(#|$)/' "$HOSTS_FILE"
     ;;
-add)
-    [ -z "$2" ] || [ -z "$3"] && help && exit 1
-    sudo echo "$2   $3" | sudo /usr/bin/tee -a /etc/hosts
+--add)
+    if [ -z "$2" ] || [ -z "$3" ]; then
+        help
+        exit 1
+    fi
+    printf '%s\t%s\n' "$2" "$3" | sudo /usr/bin/tee -a "$HOSTS_FILE" || exit 1
     m dns --flush
     ;;
-remove)
+--remove)
     [ -z "$2" ] && help && exit 1
-    sudo /usr/bin/sed -i '' "/$2/d" /etc/hosts
-    m dns --flush
+    remove_host "$2"
     ;;
 *)
     help && exit 1

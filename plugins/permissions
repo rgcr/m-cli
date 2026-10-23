@@ -42,25 +42,29 @@ __EOF__
 TCC_DB="/Library/Application Support/com.apple.TCC/TCC.db"
 USER_TCC_DB="$HOME/Library/Application Support/com.apple.TCC/TCC.db"
 
-# Service mappings for TCC database
-declare -A SERVICES=(
-    ["camera"]="kTCCServiceCamera"
-    ["microphone"]="kTCCServiceMicrophone"
-    ["location"]="kTCCServiceLocation"
-    ["contacts"]="kTCCServiceAddressBook"
-    ["calendar"]="kTCCServiceCalendar"
-    ["reminders"]="kTCCServiceReminders"
-    ["photos"]="kTCCServicePhotos"
-    ["accessibility"]="kTCCServiceAccessibility"
-    ["screen-recording"]="kTCCServiceScreenCapture"
-    ["system-events"]="kTCCServiceAppleEvents"
-    ["full-disk-access"]="kTCCServiceSystemPolicyAllFiles"
-    ["developer-tools"]="kTCCServiceDeveloperTool"
-)
+# The system Bash on macOS is 3.2, which does not support associative arrays.
+service_code() {
+    case "$1" in
+        camera) printf '%s\n' kTCCServiceCamera ;;
+        microphone) printf '%s\n' kTCCServiceMicrophone ;;
+        location) printf '%s\n' kTCCServiceLocation ;;
+        contacts) printf '%s\n' kTCCServiceAddressBook ;;
+        calendar) printf '%s\n' kTCCServiceCalendar ;;
+        reminders) printf '%s\n' kTCCServiceReminders ;;
+        photos) printf '%s\n' kTCCServicePhotos ;;
+        accessibility) printf '%s\n' kTCCServiceAccessibility ;;
+        screen-recording) printf '%s\n' kTCCServiceScreenCapture ;;
+        system-events) printf '%s\n' kTCCServiceAppleEvents ;;
+        full-disk-access) printf '%s\n' kTCCServiceSystemPolicyAllFiles ;;
+        developer-tools) printf '%s\n' kTCCServiceDeveloperTool ;;
+        *) return 1 ;;
+    esac
+}
 
 list_apps_for_service() {
     local service=$1
-    local tcc_service=${SERVICES[$service]}
+    local tcc_service
+    tcc_service=$(service_code "$service") || tcc_service=""
 
     if [ -z "$tcc_service" ]; then
         echo "Unknown service: $service"
@@ -97,7 +101,8 @@ list_apps_for_service() {
 reset_permission() {
     local app=$1
     local service=$2
-    local tcc_service=${SERVICES[$service]}
+    local tcc_service
+    tcc_service=$(service_code "$service") || tcc_service=""
 
     if [ -z "$tcc_service" ]; then
         echo "Unknown service: $service"
@@ -146,7 +151,8 @@ reset_permission() {
 
 reset_all_permissions() {
     local service=$1
-    local tcc_service=${SERVICES[$service]}
+    local tcc_service
+    tcc_service=$(service_code "$service") || tcc_service=""
 
     if [ -z "$tcc_service" ]; then
         echo "Unknown service: $service"
@@ -178,7 +184,8 @@ reset_all_permissions() {
 grant_permission() {
     local app=$1
     local service=$2
-    local tcc_service=${SERVICES[$service]}
+    local tcc_service
+    tcc_service=$(service_code "$service") || tcc_service=""
 
     if [ -z "$tcc_service" ]; then
         echo "Unknown service: $service"
@@ -235,9 +242,8 @@ show_status() {
 list_services() {
     echo "Available privacy services:"
     echo "=========================="
-    for service in "${!SERVICES[@]}"; do
-        echo "  $service"
-    done
+    printf '  %s\n' camera microphone location contacts calendar reminders photos \
+        accessibility screen-recording system-events full-disk-access developer-tools
 }
 
 list_apps() {

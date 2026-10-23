@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 LAUNCHCTLPATHS=( \
-    $HOME/Library/LaunchAgents \
+    "$HOME/Library/LaunchAgents" \
     /Library/LaunchAgents \
     /Library/LaunchDaemons \
     /System/Library/LaunchAgents \
@@ -43,7 +43,7 @@ find_service(){
 service_info(){
     if [ -n "${1}" ]; then
         # check in system and user scope
-        sudo launchctl list ${1} 2>/dev/null || launchctl list ${1}
+        sudo launchctl list "${1}" 2>/dev/null || launchctl list "${1}"
     else
         # system scope
         sudo launchctl list
@@ -59,9 +59,9 @@ service_status(){
     fi
     printf "PID\tStatus\tLabel\n"
     # system scope
-    sudo launchctl list | grep $@
+    sudo launchctl list | grep -F -- "$service_name"
     # user scope
-    launchctl list | grep $@
+    launchctl list | grep -F -- "$service_name"
 }
 
 service_do(){
@@ -92,10 +92,29 @@ service_do(){
             help && exit 1
             ;;
         esac
-        sudo launchctl "${action}" ${override} "${service_path}" 2>/dev/null
-        echo "Service '${service_name}' ${action}ed"
+        if sudo launchctl "${action}" ${override} "${service_path}"; then
+            echo "Service '${service_name}' ${action}ed"
+        else
+            return 1
+        fi
 }
 
+service_plist(){
+    local action="$1"
+    local service_path="$2"
+    if [ -z "$service_path" ] || [ ! -f "$service_path" ]; then
+        echo "Service plist '${service_path}' not found." >&2
+        return 1
+    fi
+    case "$service_path" in
+        "$HOME"/Library/LaunchAgents/*)
+            launchctl "$action" -w "$service_path"
+            ;;
+        *)
+            sudo launchctl "$action" -w "$service_path"
+            ;;
+    esac
+}
 
 option="${1}"
 if [ -z "${option}" ]; then
@@ -108,26 +127,32 @@ case ${option} in
         help
         ;;
     --info)
-        service_info $@
+        service_info "$@"
         ;;
     --list)
         # if no arguments are given, list all services
         service_info
         ;;
     --enable)
-        service_do enable $@
+        service_do enable "$@"
         ;;
     --disable)
-        service_do disable $@
+        service_do disable "$@"
         ;;
     --start)
-        service_do start $@
+        service_do start "$@"
         ;;
     --stop)
-        service_do stop $@
+        service_do stop "$@"
         ;;
     --status)
-        service_status $@
+        service_status "$@"
+        ;;
+    --load)
+        service_plist load "$1"
+        ;;
+    --unload)
+        service_plist unload "$1"
         ;;
     *)
         help && exit 1

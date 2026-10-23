@@ -83,7 +83,7 @@ format(){
         disk)
             shift
             [ -z "$1" -o -z "$2" -o -z "$3" ] && help && exit 1
-            diskutil eraseDiskk "${1}" "${2}" "${3}"
+            diskutil eraseDisk "${1}" "${2}" "${3}"
             ;;
         *)
             help
@@ -108,7 +108,7 @@ option="${1}"
 shift
 
 case "${option}" in
-    help)
+    --help|help)
         help
         ;;
     --list)

@@ -22,8 +22,8 @@ __EOF__
 
 confirm(){
     read -r -p "${1} [y/N]: " response
-    case ${response,,} in
-        [yY]|[yYeEsS])
+    case ${response} in
+        [yY]|[yY][eE][sS])
             return 0
             ;;
         *)
@@ -34,7 +34,7 @@ confirm(){
 
 
 user_exists(){
-    dscl . -list /Users | grep -i "${1}" &>/dev/null
+    dscl . -read "/Users/${1}" &>/dev/null
 }
 
 user_list(){
@@ -120,10 +120,10 @@ user_delete(){
     fi
 
     sudo dscl . -delete "/Users/${1}"
-    sudo rm -rf /Users/${1} 2>/dev/null
+    sudo rm -rf "/Users/${1}" 2>/dev/null
 
-    for group in $(groups_user_belongs $1); do
-        remove_user_from_group $1 $group
+    for group in $(groups_user_belongs "$1"); do
+        remove_user_from_group "$1" "$group"
     done
 }
 
@@ -138,13 +138,13 @@ case ${option} in
         user_list
         ;;
     --info)
-        user_info $@
+        user_info "$@"
         ;;
     --create)
         user_create
         ;;
     --delete)
-        user_delete $@
+        user_delete "$@"
         ;;
     *)
         help && exit 1
